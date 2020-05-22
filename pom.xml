@@ -21,6 +21,12 @@
             <artifactId>kotlin-stdlib</artifactId>
             <version>${kotlin.version}</version>
         </dependency>
+        <!-- Kotlin JSON parser -->
+        <dependency>
+            <groupId>com.beust</groupId>
+            <artifactId>klaxon</artifactId>
+            <version>5.0.1</version>
+        </dependency>
         <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
@@ -66,5 +72,13 @@
             </plugin>
         </plugins>
     </build>
+
+    <repositories>
+        <!-- Klaxon dependency is located in spring-io maven repository -->
+        <repository>
+            <id>spring-io</id>
+            <url>https://repo.spring.io/libs-release/</url>
+        </repository>
+    </repositories>
 
 </project>
