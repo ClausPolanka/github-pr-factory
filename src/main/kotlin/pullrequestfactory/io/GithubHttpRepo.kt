@@ -42,11 +42,3 @@ class GithubHttpRepo(val repoName: String, val basicAuth: String) : GithubRepo {
     }
 
 }
-
-fun main() {
-    val pullRequest = PullRequest(
-            "Radek Leifer Iteration 1 / Session 2 Berni",
-            "radek_leifer_interation_1_berni",
-            "radek_leifer_interation_1_claus")
-    GithubHttpRepo("wordcount", "Q2xhdXNQb2xhbmthOkloQ1BiMjgh").create_pull_request(pullRequest)
-}
