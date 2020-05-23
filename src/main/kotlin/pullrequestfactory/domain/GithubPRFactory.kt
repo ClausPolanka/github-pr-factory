@@ -4,7 +4,8 @@ class GithubPRFactory(private val githubRepo: GithubRepo, private val candidate:
 
     fun create_pull_requests() {
         val branches = get_branches()
-        create_pull_requests(branches)
+        val prTitles = create_pull_request_titles(branches)
+        prTitles.forEach { githubRepo.create_pull_request(it) }
     }
 
     private fun get_branches(): List<Branch> {
@@ -13,15 +14,14 @@ class GithubPRFactory(private val githubRepo: GithubRepo, private val candidate:
                 .filter { it.name.contains(candidate.lastName, ignoreCase = true) }
     }
 
-    private fun create_pull_requests(branches: List<Branch>) {
-        branches.forEachIndexed { idx, br ->
+    private fun create_pull_request_titles(branches: List<Branch>): List<String> {
+        return branches.mapIndexed { idx, br ->
             val (_, _, _, iterationNr, pairingPartner) = br.name.split("_")
             val sessionNr = when {
                 idx != 0 && branches[idx.dec()].name.endsWith(pairingPartner) -> idx
                 else -> idx.inc()
             }
-            val prTitle = "${candidate.firstName} ${candidate.lastName} Iteration $iterationNr / Session $sessionNr ${pairingPartner.capitalize()}"
-            githubRepo.create_pull_request(prTitle)
+            "${candidate.firstName} ${candidate.lastName} Iteration $iterationNr / Session $sessionNr ${pairingPartner.capitalize()}"
         }
     }
 }
