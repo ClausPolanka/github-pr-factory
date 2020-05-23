@@ -2,11 +2,12 @@ package pullrequestfactory.io
 
 import com.beust.klaxon.Klaxon
 import pullrequestfactory.domain.Branch
-import pullrequestfactory.domain.GithubRepo
+import pullrequestfactory.domain.GithubReadRepo
+import pullrequestfactory.domain.GithubWriteRepo
 import pullrequestfactory.domain.PullRequest
 import java.io.File
 
-class GithubHttpRepo(val repoName: String, val basicAuth: String) : GithubRepo {
+class GithubHttpRepo(val repoName: String, val basicAuth: String) : GithubReadRepo, GithubWriteRepo {
     override fun get_all_branches(): List<Branch> {
         val response = khttp.get("https://api.github.com/repos/ClausPolanka/$repoName/branches?page=1")
         if (response.statusCode == 403) { // too many requests to Github.com

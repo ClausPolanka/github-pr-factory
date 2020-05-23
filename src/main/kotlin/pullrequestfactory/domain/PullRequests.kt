@@ -3,7 +3,7 @@ package pullrequestfactory.domain
 class PullRequests {
 
     fun create_pull_requests(branches: List<Branch>, candidate: Candidate): List<PullRequest> {
-        var sNr = 0
+        var sessionNumber = 0
         return branches.mapIndexed { idx, br ->
             val (_, _, _, iterationNr, pairingPartner) = br.name.split("_")
             val base = when (idx) {
@@ -11,15 +11,15 @@ class PullRequests {
                 else -> branches[idx.dec()].name
             }
             val sessionNr = when {
-                sNr != 0 && branches[idx.dec()].name.endsWith(pairingPartner) -> sNr // same session
-                sNr != 0 && (!branches[idx.dec()].name.endsWith(pairingPartner) && idx > sNr) -> sNr.inc() // previous session switched iteration
-                else -> sNr.inc()
+                idx != 0 && branches[idx.dec()].name.endsWith(pairingPartner) -> sessionNumber // same session
+                idx != 0 && (!branches[idx.dec()].name.endsWith(pairingPartner) && idx > sessionNumber) -> sessionNumber.inc() // previous session switched iteration
+                else -> sessionNumber.inc()
             }
-            sNr = sessionNr
+            sessionNumber = sessionNr
             PullRequest(
-                    "${candidate.firstName} ${candidate.lastName} Iteration $iterationNr / Session $sessionNr ${pairingPartner.capitalize()}",
-                    base,
-                    br.name)
+                    title = "${candidate.firstName} ${candidate.lastName} Iteration $iterationNr / Session $sessionNr ${pairingPartner.capitalize()}",
+                    base = base,
+                    head = br.name)
         }
     }
 
