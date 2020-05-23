@@ -4,6 +4,7 @@ import com.beust.klaxon.Klaxon
 import pullrequestfactory.domain.Branch
 import pullrequestfactory.domain.GithubRepo
 import pullrequestfactory.domain.PullRequest
+import java.io.File
 
 class GithubHttpRepo(val repoName: String, val basicAuth: String) : GithubRepo {
     override fun get_all_branches(): List<Branch> {
@@ -15,9 +16,11 @@ class GithubHttpRepo(val repoName: String, val basicAuth: String) : GithubRepo {
         val linkHeader = response.headers["link"]
         val lastPage = last_page(linkHeader!!)
         val allBranches = mutableListOf<List<Branch>>()
+        File("json/branches-page-1.json").writeText(response.text)
         allBranches.add(Klaxon().parseArray(response.text)!!)
         (2..lastPage.toInt()).forEach {
             val json = khttp.get("https://api.github.com/repos/ClausPolanka/$repoName/branches?page=$it").text
+            File("json/branches-page-$it.json").writeText(json)
             allBranches.add(Klaxon().parseArray(json)!!)
         }
         return allBranches.flatten()

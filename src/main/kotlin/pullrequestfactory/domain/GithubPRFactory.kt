@@ -4,7 +4,8 @@ class GithubPRFactory(private val githubRepo: GithubRepo) {
 
     fun create_pull_requests(candidate: Candidate) {
         val branches = get_branches_for(candidate)
-        val pullRequests = PullRequests().create_pull_requests(branches, candidate)
+        val sortedBranches = BranchSorter().sort_branches(branches, order = listOf("Claus", "Berni", "Dominik", "Christian", "Shubi", "Markus", "Mihai"))
+        val pullRequests = PullRequests().create_pull_requests(sortedBranches, candidate)
         pullRequests.forEach { githubRepo.create_pull_request(it) }
     }
 
