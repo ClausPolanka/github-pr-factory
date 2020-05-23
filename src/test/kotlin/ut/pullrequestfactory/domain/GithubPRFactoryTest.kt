@@ -4,10 +4,7 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import org.junit.jupiter.api.Test
-import pullrequestfactory.domain.Branch
-import pullrequestfactory.domain.Candidate
-import pullrequestfactory.domain.GithubPRFactory
-import pullrequestfactory.domain.GithubRepo
+import pullrequestfactory.domain.*
 
 class GithubPRFactoryTest {
 
@@ -22,7 +19,7 @@ class GithubPRFactoryTest {
 
         sut.create_pull_requests(Candidate("Firstname", "Lastname"))
 
-        verify { githubRepo.create_pull_request("Firstname Lastname Iteration 1 / Session 1 Claus") }
-        verify { githubRepo.create_pull_request("Firstname Lastname Iteration 2 / Session 2 Berni") }
+        verify { githubRepo.create_pull_request(PullRequest("Firstname Lastname Iteration 1 / Session 1 Claus", "master", "firstname_lastname_iteration_1_claus")) }
+        verify { githubRepo.create_pull_request(PullRequest("Firstname Lastname Iteration 2 / Session 2 Berni", "firstname_lastname_iteration_1_claus", "firstname_lastname_iteration_2_berni")) }
     }
 }
