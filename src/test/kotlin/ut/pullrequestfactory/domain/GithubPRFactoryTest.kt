@@ -9,7 +9,7 @@ import pullrequestfactory.domain.Candidate
 import pullrequestfactory.domain.GithubPRFactory
 import pullrequestfactory.domain.GithubRepo
 
-internal class GithubPRFactoryTest {
+class GithubPRFactoryTest {
 
     @Test
     fun create_pull_requests_for_candidate() {
