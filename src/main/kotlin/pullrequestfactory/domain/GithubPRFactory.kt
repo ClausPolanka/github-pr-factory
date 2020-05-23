@@ -14,4 +14,5 @@ class GithubPRFactory(private val githubReadRepo: GithubReadRepo, private val gi
                 .filter { it.name.contains(candidate.firstName, ignoreCase = true) }
                 .filter { it.name.contains(candidate.lastName, ignoreCase = true) }
     }
+
 }

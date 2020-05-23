@@ -8,6 +8,7 @@ import pullrequestfactory.domain.PullRequest
 import java.io.File
 
 class GithubHttpRepo(val repoName: String, val basicAuth: String) : GithubReadRepo, GithubWriteRepo {
+
     override fun get_all_branches(): List<Branch> {
         val response = khttp.get("https://api.github.com/repos/ClausPolanka/$repoName/branches?page=1")
         if (response.statusCode == 403) { // too many requests to Github.com

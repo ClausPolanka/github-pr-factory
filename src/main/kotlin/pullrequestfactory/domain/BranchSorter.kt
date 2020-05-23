@@ -1,6 +1,7 @@
 package pullrequestfactory.domain
 
 class BranchSorter {
+
     fun sort_branches(branches: List<Branch>, order: List<String>): List<Branch> {
         val sortedBranches = mutableListOf<List<Branch>>()
         order.forEach { o ->
@@ -16,4 +17,5 @@ class BranchSorter {
         }
         return sortedBranches.flatten()
     }
+
 }
