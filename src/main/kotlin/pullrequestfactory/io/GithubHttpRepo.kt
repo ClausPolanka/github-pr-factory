@@ -22,6 +22,12 @@ class GithubHttpRepo(val repoName: String) : GithubRepo {
     }
 
     override fun create_pull_request(title: String) {
+        // https://api.github.com/repos/ClausPolanka/wordcount/pulls
+//        {
+//            "title": "Radek Leifer Iteration 1 / Session 2 Berni",
+//            "head": "radek_leifer_interation_1_berni",
+//            "base": "radek_leifer_interation_1_claus"
+//        }
         TODO("not implemented")
     }
 }
