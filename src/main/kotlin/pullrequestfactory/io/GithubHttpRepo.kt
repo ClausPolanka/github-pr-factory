@@ -7,6 +7,9 @@ import pullrequestfactory.domain.GithubRepo
 class GithubHttpRepo(val repoName: String) : GithubRepo {
     override fun get_all_branches(): List<Branch> {
         val response = khttp.get("https://api.github.com/repos/ClausPolanka/$repoName/branches?page=1")
+        if (response.statusCode == 403) { // too many requests to Github.com
+            return emptyList()
+        }
         val linkHeader = response.headers["link"]
         val lastPage = last_page(linkHeader!!)
         val allBranches = mutableListOf<List<Branch>>()
