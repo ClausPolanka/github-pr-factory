@@ -18,7 +18,7 @@ class GithubPRFactoryTest {
                 pullRequests.add(pullRequest)
             }
         })
-        sut.create_pull_requests(Candidate("Radek", "Leifer"))
+        sut.create_pull_requests(Candidate("Radek", "Leifer"), listOf("Claus", "Berni", "Dominik", "Christian", "Shubi", "Markus", "Mihai"))
         assertThat(pullRequests).hasSize(8)
     }
 }
