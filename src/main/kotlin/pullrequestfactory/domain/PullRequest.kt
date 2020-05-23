@@ -1,5 +1,5 @@
 package pullrequestfactory.domain
 
-data class PullRequest(val title: String) {
+data class PullRequest(val title: String, val head: String, val base: String) {
 
 }

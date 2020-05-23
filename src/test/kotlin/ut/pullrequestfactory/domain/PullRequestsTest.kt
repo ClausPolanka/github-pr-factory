@@ -17,7 +17,10 @@ class PullRequestsTest {
                 listOf(Branch("firstname_lastname_iteration_1_pairingpartner")),
                 Candidate("Firstname", "Lastname"))
 
-        assertThat(prTitles).containsExactly(PullRequest("Firstname Lastname Iteration 1 / Session 1 Pairingpartner"))
+        assertThat(prTitles).containsExactly(PullRequest(
+                "Firstname Lastname Iteration 1 / Session 1 Pairingpartner",
+                "master",
+                "firstname_lastname_iteration_1_pairingpartner"))
     }
 
     @Test
@@ -30,8 +33,14 @@ class PullRequestsTest {
                 Candidate("Firstname", "Lastname"))
 
         assertThat(prTitles)
-                .contains(PullRequest("Firstname Lastname Iteration 1 / Session 1 Pairingpartner"))
-                .contains(PullRequest("Firstname Lastname Iteration 2 / Session 1 Pairingpartner"))
+                .contains(PullRequest(
+                        "Firstname Lastname Iteration 1 / Session 1 Pairingpartner",
+                        "master",
+                        "firstname_lastname_iteration_1_pairingpartner"))
+                .contains(PullRequest(
+                        "Firstname Lastname Iteration 2 / Session 1 Pairingpartner",
+                        "firstname_lastname_iteration_1_pairingpartner",
+                        "firstname_lastname_iteration_2_pairingpartner"))
     }
 
     @Test
@@ -44,8 +53,14 @@ class PullRequestsTest {
                 Candidate("Firstname", "Lastname"))
 
         assertThat(prTitles)
-                .contains(PullRequest("Firstname Lastname Iteration 1 / Session 1 Pairingpartner1"))
-                .contains(PullRequest("Firstname Lastname Iteration 1 / Session 2 Pairingpartner2"))
+                .contains(PullRequest(
+                        "Firstname Lastname Iteration 1 / Session 1 Pairingpartner1",
+                        "master",
+                        "firstname_lastname_iteration_1_pairingpartner1"))
+                .contains(PullRequest(
+                        "Firstname Lastname Iteration 1 / Session 2 Pairingpartner2",
+                        "firstname_lastname_iteration_1_pairingpartner1",
+                        "firstname_lastname_iteration_1_pairingpartner2"))
     }
 
     @Test
@@ -58,8 +73,14 @@ class PullRequestsTest {
                 Candidate("Firstname", "Lastname"))
 
         assertThat(prTitles)
-                .contains(PullRequest("Firstname Lastname Iteration 1 / Session 1 Pairingpartner1"))
-                .contains(PullRequest("Firstname Lastname Iteration 2 / Session 2 Pairingpartner2"))
+                .contains(PullRequest(
+                        "Firstname Lastname Iteration 1 / Session 1 Pairingpartner1",
+                        "master",
+                        "firstname_lastname_iteration_1_pairingpartner1"))
+                .contains(PullRequest(
+                        "Firstname Lastname Iteration 2 / Session 2 Pairingpartner2",
+                        "firstname_lastname_iteration_1_pairingpartner1",
+                        "firstname_lastname_iteration_2_pairingpartner2"))
     }
 
 }
