@@ -13,6 +13,7 @@
         <kotlin.compiler.incremental>true</kotlin.compiler.incremental>
         <junit-jupiter.version>5.6.2</junit-jupiter.version>
         <assertj.version>3.16.1</assertj.version>
+        <mockk.version>1.10.0</mockk.version>
     </properties>
 
     <dependencies>
@@ -26,6 +27,11 @@
             <groupId>com.beust</groupId>
             <artifactId>klaxon</artifactId>
             <version>5.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>khttp</groupId>
+            <artifactId>khttp</artifactId>
+            <version>1.0.0</version>
         </dependency>
         <dependency>
             <groupId>org.assertj</groupId>
@@ -43,6 +49,12 @@
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
             <version>${junit-jupiter.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.mockk</groupId>
+            <artifactId>mockk</artifactId>
+            <version>${mockk.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -74,7 +86,7 @@
     </build>
 
     <repositories>
-        <!-- Klaxon dependency is located in spring-io maven repository -->
+        <!-- Klaxon, khttp dependencies are located in spring-io maven repository -->
         <repository>
             <id>spring-io</id>
             <url>https://repo.spring.io/libs-release/</url>
