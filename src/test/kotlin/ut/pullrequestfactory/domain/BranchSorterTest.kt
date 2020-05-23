@@ -9,7 +9,7 @@ import pullrequestfactory.domain.BranchSorter
 internal class BranchSorterTest {
 
     @Test
-    fun sorts_unsorted_branches_for_the_same_pairing_partner() {
+    fun sorts_unsorted_branches_by_iteration_number_for_the_same_pairing_partner() {
         val sut = BranchSorter()
 
         val sortedBranches = sut.sort_branches(
@@ -19,6 +19,19 @@ internal class BranchSorterTest {
         assertThat(sortedBranches).containsExactly(
                 Branch("firstname_lastname_iteration_1_claus"),
                 Branch("firstname_lastname_iteration_2_claus"))
+    }
+
+    @Test
+    fun sorts_unsorted_branches_by_pairing_partner_for_the_same_iteration_number() {
+        val sut = BranchSorter()
+
+        val sortedBranches = sut.sort_branches(
+                listOf(Branch("firstname_lastname_iteration_1_claus"), Branch("firstname_lastname_iteration_1_berni")),
+                listOf("Berni", "Claus"))
+
+        assertThat(sortedBranches).containsExactly(
+                Branch("firstname_lastname_iteration_1_berni"),
+                Branch("firstname_lastname_iteration_1_claus"))
     }
 
 }
