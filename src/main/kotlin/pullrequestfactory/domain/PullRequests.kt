@@ -6,18 +6,17 @@ class PullRequests(val branches: List<Branch>) {
         var sessionNr = 0
         return branches.mapIndexed { currentBrIdx, currentBranch ->
             val (_, _, _, iterationNr, pairingPartner) = currentBranch.name.split("_")
-            val base = create_base_branch(currentBrIdx)
             val newSessionNr = create_session_number(currentBrIdx, pairingPartner, sessionNr)
             sessionNr = newSessionNr
             PullRequest(
                     title = "${candidate.firstName} ${candidate.lastName} " +
                             "Iteration $iterationNr / Session $newSessionNr ${pairingPartner.capitalize()}",
-                    base = base,
+                    base = base_branch(currentBrIdx),
                     head = currentBranch.name)
         }
     }
 
-    private fun create_base_branch(currentBrIdx: Int): String {
+    private fun base_branch(currentBrIdx: Int): String {
         return when (currentBrIdx) {
             0 -> "master"
             else -> branches[currentBrIdx.dec()].name
