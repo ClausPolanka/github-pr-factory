@@ -10,7 +10,7 @@ class GithubPRFactory(private val githubReadRepo: GithubReadRepo, private val gi
      */
     fun create_pull_requests(candidate: Candidate, orderByPairingPartner: List<String>) {
         val branches = get_branches_for(candidate)
-        val sortedBranches = BranchSorter().sort_branches(branches, orderByPairingPartner)
+        val sortedBranches = BranchSorter().sort_branches_by_pairing_partner(branches, orderByPairingPartner)
         val pullRequests = PullRequests().create_pull_requests(sortedBranches, candidate)
         pullRequests.forEach { githubWriteRepo.create_pull_request(it) }
     }
