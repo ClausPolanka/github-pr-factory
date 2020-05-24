@@ -4,22 +4,30 @@ class PullRequests {
 
     fun create_pull_requests(branches: List<Branch>, candidate: Candidate): List<PullRequest> {
         var sessionNumber = 0
-        return branches.mapIndexed { idx, br ->
-            val (_, _, _, iterationNr, pairingPartner) = br.name.split("_")
-            val base = when (idx) {
+        return branches.mapIndexed { currentBrIdx, currentBranch ->
+            val (_, _, _, iterationNr, pairingPartner) = currentBranch.name.split("_")
+            val base = when (currentBrIdx) {
                 0 -> "master"
-                else -> branches[idx.dec()].name
+                else -> branches[currentBrIdx.dec()].name
             }
             val sessionNr = when {
-                idx != 0 && branches[idx.dec()].name.endsWith(pairingPartner) -> sessionNumber // same session
-                idx != 0 && (!branches[idx.dec()].name.endsWith(pairingPartner) && idx > sessionNumber) -> sessionNumber.inc() // previous session switched iteration
+                // same session because previous branch is from same pairing partner
+                currentBrIdx != 0 &&
+                        branches[currentBrIdx.dec()].name.endsWith(pairingPartner) -> sessionNumber
+
+                // current branch idx is higher than session number because previous session switched iterations but
+                // stayed in same session
+                currentBrIdx != 0
+                        && (!branches[currentBrIdx.dec()].name.endsWith(pairingPartner)
+                        && currentBrIdx > sessionNumber) -> sessionNumber.inc()
+
                 else -> sessionNumber.inc()
             }
             sessionNumber = sessionNr
             PullRequest(
                     title = "${candidate.firstName} ${candidate.lastName} Iteration $iterationNr / Session $sessionNr ${pairingPartner.capitalize()}",
                     base = base,
-                    head = br.name)
+                    head = currentBranch.name)
         }
     }
 

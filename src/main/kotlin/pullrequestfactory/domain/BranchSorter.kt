@@ -2,9 +2,9 @@ package pullrequestfactory.domain
 
 class BranchSorter {
 
-    fun sort_branches_by_pairing_partner(branches: List<Branch>, orderByPairingPartner: List<String>): List<Branch> {
-        return orderByPairingPartner.map { pairingPartner ->
-            create_sorted_branches(branches, pairingPartner)
+    fun sort_branches_by_pairing_partner(branches: List<Branch>, pairingPartner: List<String>): List<Branch> {
+        return pairingPartner.map {
+            create_sorted_branches(branches, it)
         }.flatten()
     }
 

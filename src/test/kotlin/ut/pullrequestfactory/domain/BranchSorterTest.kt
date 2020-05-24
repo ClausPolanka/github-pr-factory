@@ -15,7 +15,7 @@ class BranchSorterTest {
         val sortedBranches = sut.sort_branches_by_pairing_partner(listOf(
                 Branch("firstname_lastname_iteration_2_claus"),
                 Branch("firstname_lastname_iteration_1_claus")),
-                orderByPairingPartner = listOf("claus"))
+                pairingPartner = listOf("claus"))
 
         assertThat(sortedBranches).containsExactly(
                 Branch("firstname_lastname_iteration_1_claus"),
@@ -29,7 +29,7 @@ class BranchSorterTest {
         val sortedBranches = sut.sort_branches_by_pairing_partner(listOf(
                 Branch("firstname_lastname_iteration_1_claus"),
                 Branch("firstname_lastname_iteration_1_berni")),
-                orderByPairingPartner = listOf("berni", "claus"))
+                pairingPartner = listOf("berni", "claus"))
 
         assertThat(sortedBranches).containsExactly(
                 Branch("firstname_lastname_iteration_1_berni"),
@@ -43,7 +43,7 @@ class BranchSorterTest {
         val sortedBranches = sut.sort_branches_by_pairing_partner(listOf(
                 Branch("firstname_lastname_iteration_2_claus"),
                 Branch("firstname_lastname_iteration_1_claus")),
-                orderByPairingPartner = listOf("Claus"))
+                pairingPartner = listOf("Claus"))
 
         assertThat(sortedBranches).containsExactly(
                 Branch("firstname_lastname_iteration_1_claus"),
