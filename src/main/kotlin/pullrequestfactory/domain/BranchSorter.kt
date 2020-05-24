@@ -3,14 +3,12 @@ package pullrequestfactory.domain
 class BranchSorter {
 
     fun sort_branches_by_pairing_partner(branches: List<Branch>, orderByPairingPartner: List<String>): List<Branch> {
-        val sortedBranches = mutableListOf<List<Branch>>()
-        orderByPairingPartner.forEach { pairingPartner ->
-            sortedBranches.add(sort(branches, pairingPartner))
-        }
-        return sortedBranches.flatten()
+        return orderByPairingPartner.map { pairingPartner ->
+            create_sorted_branches(branches, pairingPartner)
+        }.flatten()
     }
 
-    private fun sort(branches: List<Branch>, pairingPartner: String): List<Branch> {
+    private fun create_sorted_branches(branches: List<Branch>, pairingPartner: String): List<Branch> {
         return branches
                 .filter { it.name.endsWith(pairingPartner.toLowerCase()) }
                 .map { branch ->
