@@ -7,10 +7,10 @@ class BranchSorter {
         orderByPairingPartner.forEach { pairingPartner ->
             sortedBranches.add(branches
                     .filter { it.name.endsWith(pairingPartner.toLowerCase()) }
-                    .map {
-                        val branch_name_parts = it.name.split("_")
-                        val iteration = branch_name_parts.dropLast(1).last()
-                        Pair(it.name, iteration)
+                    .map { branch ->
+                        val branchNameParts = branch.name.split("_")
+                        val iteration = branchNameParts.dropLast(1).last()
+                        Pair(branch.name, iteration)
                     }
                     .sortedBy { it.second }
                     .map { Branch(it.first) })
