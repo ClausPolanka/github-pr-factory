@@ -15,7 +15,7 @@ class BranchSorterTest {
         val sortedBranches = sut.sort_branches(listOf(
                 Branch("firstname_lastname_iteration_2_claus"),
                 Branch("firstname_lastname_iteration_1_claus")),
-                listOf("Claus"))
+                order = listOf("Claus"))
 
         assertThat(sortedBranches).containsExactly(
                 Branch("firstname_lastname_iteration_1_claus"),
@@ -29,7 +29,7 @@ class BranchSorterTest {
         val sortedBranches = sut.sort_branches(listOf(
                 Branch("firstname_lastname_iteration_1_claus"),
                 Branch("firstname_lastname_iteration_1_berni")),
-                listOf("Berni", "Claus"))
+                order = listOf("Berni", "Claus"))
 
         assertThat(sortedBranches).containsExactly(
                 Branch("firstname_lastname_iteration_1_berni"),
