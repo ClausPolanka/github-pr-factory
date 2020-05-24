@@ -10,7 +10,8 @@ class PullRequests(val branches: List<Branch>) {
             val newSessionNr = create_session_number(currentBrIdx, pairingPartner, sessionNr)
             sessionNr = newSessionNr
             PullRequest(
-                    title = "${candidate.firstName} ${candidate.lastName} Iteration $iterationNr / Session $newSessionNr ${pairingPartner.capitalize()}",
+                    title = "${candidate.firstName} ${candidate.lastName} " +
+                            "Iteration $iterationNr / Session $newSessionNr ${pairingPartner.capitalize()}",
                     base = base,
                     head = currentBranch.name)
         }
