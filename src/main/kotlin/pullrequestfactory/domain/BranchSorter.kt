@@ -2,9 +2,9 @@ package pullrequestfactory.domain
 
 class BranchSorter {
 
-    fun sort_branches(branches: List<Branch>, order: List<String>): List<Branch> {
+    fun sort_branches(branches: List<Branch>, orderByPairingPartner: List<String>): List<Branch> {
         val sortedBranches = mutableListOf<List<Branch>>()
-        order.forEach { o ->
+        orderByPairingPartner.forEach { o ->
             sortedBranches.add(branches
                     .filter { it.name.endsWith(o.toLowerCase()) }
                     .map {
