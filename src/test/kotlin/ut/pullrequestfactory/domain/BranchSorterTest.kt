@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test
 import pullrequestfactory.domain.Branch
 import pullrequestfactory.domain.BranchSorter
 
-internal class BranchSorterTest {
+class BranchSorterTest {
 
     @Test
     fun sorts_unsorted_branches_by_iteration_number_for_the_same_pairing_partner() {
