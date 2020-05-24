@@ -7,7 +7,7 @@ import pullrequestfactory.domain.GithubWriteRepo
 import pullrequestfactory.domain.PullRequest
 import java.io.File
 
-class GithubHttpRepo(val repoName: String, val basicAuth: String) : GithubReadRepo, GithubWriteRepo {
+class GithubHttpRepo(val repoName: String, val basicAuthToken: String) : GithubReadRepo, GithubWriteRepo {
 
     override fun get_all_branches(): List<Branch> {
         val response = khttp.get("https://api.github.com/repos/ClausPolanka/$repoName/branches?page=1")
@@ -34,7 +34,7 @@ class GithubHttpRepo(val repoName: String, val basicAuth: String) : GithubReadRe
                 url = "https://api.github.com/repos/ClausPolanka/$repoName/pulls",
                 headers = mapOf(
                         "Accept" to "application/vnd.github.sailor-v-preview+json",
-                        "Authorization" to "Basic $basicAuth",
+                        "Authorization" to "Basic $basicAuthToken",
                         "Content-Type" to "application/json"),
                 data = Klaxon().toJsonString(pullRequest))
         println(response)
