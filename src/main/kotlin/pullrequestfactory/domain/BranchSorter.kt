@@ -8,8 +8,8 @@ class BranchSorter {
             sortedBranches.add(branches
                     .filter { it.name.endsWith(pairingPartner.toLowerCase()) }
                     .map {
-                        val parts = it.name.split("_")
-                        val iteration = parts[parts.size - 2]
+                        val branch_name_parts = it.name.split("_")
+                        val iteration = branch_name_parts.dropLast(1).last()
                         Pair(it.name, iteration)
                     }
                     .sortedBy { it.second }
