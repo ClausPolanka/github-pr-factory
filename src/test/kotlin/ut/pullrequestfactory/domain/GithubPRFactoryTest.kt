@@ -20,7 +20,7 @@ class GithubPRFactoryTest {
 
         sut.create_pull_requests(Candidate("Firstname", "Lastname"), listOf("Claus", "Berni"))
 
-        verify { githubWriteRepo.create_pull_request(PullRequest("Firstname Lastname Iteration 1 / Session 1 Claus", "master", "firstname_lastname_iteration_1_claus")) }
+        verify { githubWriteRepo.create_pull_request(PullRequest("Firstname Lastname Iteration 1 / Session 1 Claus [PR]", "master", "firstname_lastname_iteration_1_claus")) }
         verify { githubWriteRepo.create_pull_request(PullRequest("Firstname Lastname Iteration 2 / Session 2 Berni", "firstname_lastname_iteration_1_claus", "firstname_lastname_iteration_2_berni")) }
     }
 }

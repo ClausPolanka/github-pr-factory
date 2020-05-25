@@ -4,7 +4,7 @@ class PullRequests(val branches: List<Branch>) {
 
     fun create_pull_requests_for(candidate: Candidate): List<PullRequest> {
         var sessionNr = 0
-        return branches.mapIndexed { currentBrIdx, currentBranch ->
+        val pullRequests = branches.mapIndexed { currentBrIdx, currentBranch ->
             val (_, _, _, iterationNr, pairingPartner) = currentBranch.name.split("_")
             val newSessionNr = create_session_number(currentBrIdx, pairingPartner, sessionNr)
             sessionNr = newSessionNr
@@ -14,6 +14,7 @@ class PullRequests(val branches: List<Branch>) {
                     base = base_branch(currentBrIdx),
                     head = currentBranch.name)
         }
+        return mark_pull_requests_with_pr(pullRequests.toMutableList())
     }
 
     private fun base_branch(currentBrIdx: Int): String {
@@ -38,4 +39,26 @@ class PullRequests(val branches: List<Branch>) {
         }
     }
 
+    private fun mark_pull_requests_with_pr(pullRequests: MutableList<PullRequest>): List<PullRequest> {
+        for (i in pullRequests.indices) {
+            if (pullRequests[i].base == "master") {
+                continue
+            }
+            val currBaseIterNr = pullRequests[i].base.split("_").dropLast(1).last().toInt()
+            val currHeadIterNr = pullRequests[i].head.split("_").dropLast(1).last().toInt()
+
+            when {
+                currBaseIterNr < currHeadIterNr -> pullRequests[i - 1] = PullRequest(
+                        pullRequests[i - 1].title + " [PR]",
+                        pullRequests[i - 1].base,
+                        pullRequests[i - 1].head)
+            }
+        }
+        return pullRequests
+    }
 }
+
+
+
+
+
