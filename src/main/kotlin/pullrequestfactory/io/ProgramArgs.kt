@@ -4,24 +4,32 @@ import pullrequestfactory.domain.Candidate
 
 class ProgramArgs(private val args: Array<String>) {
 
-    private val programUsageMsg = listOf(
-            "Usage:", "java -jar <EXEC_JAR>.jar",
-            "<CANDIDATE_FIRST_NAME>-<CANDIDATE_LAST_NAME>",
-            "<BASIC_AUTH_TOKEN>",
-            "<[PAIRING_PARTNER]>").joinToString(" ")
+    private val programUsageMsg =
+            listOf("[Error]", "Wrong number of arguments", "\n").joinToString(" ") +
+                    listOf("[Usage]", "java -jar <EXEC_JAR>.jar",
+                            "<CANDIDATE_FIRST_NAME>-<CANDIDATE_LAST_NAME>",
+                            "<BASIC_AUTH_TOKEN>",
+                            "<[PAIRING_PARTNER]>").joinToString(" ")
 
     private val candidateSyntaxMsg = listOf(
+            "[Error]",
             "Candidate first name and last name must be separated by hypen:",
             "<CANDIDATE_FIRST_NAME>-<CANDIDATE_LAST_NAME>").joinToString(" ")
 
-    private val nrOfRequiredPairingPartnerMsg = "Exactly 7 pairing partner must be provided separated by hyphen"
+    private val nrOfRequiredPairingPartnerMsg = listOf(
+            "[Error]",
+            "Exactly 7 pairing partner must be provided separated by hyphen").joinToString(" ")
 
-    private val unknownPairingPartnerMsg = "At least one provided pairing partner is unknown. Please check the list of provided pairing partner."
+    private val unknownPairingPartnerMsg = listOf(
+            "[Error]",
+            "At least one provided pairing partner is unknown. Please check the list of provided pairing partner.")
+            .joinToString(" ")
 
     private val backendChapterTeamMembers = listOf("claus", "berni", "nandor", "dominik", "mihai", "lampe", "shubi",
             "markus", "tibor", "christian", "michal", "tomas", "peter", "martin", "john", "andrej")
 
     private val indexOfCandidate = 0
+    private val indexOfBasicAuthToken = 0
     private val indexOfPairingPartner = 2
     private val nrOfRequiredArgs = 3
     private val nrOfRequiredPairingPartner = 7
@@ -32,7 +40,10 @@ class ProgramArgs(private val args: Array<String>) {
             return Candidate(candidateFullName.split("-")[indexOfCandidate], candidateFullName.split("-")[1])
         }
 
-    val basicAuthToken: String = args[1]
+    val basicAuthToken: String
+        get() {
+            return if (args.size == 2) args[indexOfBasicAuthToken] else ""
+        }
 
     val pairingPartner: List<String>
         get() {
