@@ -1,26 +1,27 @@
 package pullrequestfactory.io
 
 import pullrequestfactory.domain.Candidate
+import pullrequestfactory.domain.UI
 
-class ProgramArgs(private val args: Array<String>) {
+class ProgramArgs(private val args: Array<String>, private val ui: UI) {
 
-    private val programUsageMsg =
+    val programUsageMsg =
             listOf("[Error]", "Wrong number of arguments", "\n").joinToString(" ") +
                     listOf("[Usage]", "java -jar <EXEC_JAR>.jar",
                             "<CANDIDATE_FIRST_NAME>-<CANDIDATE_LAST_NAME>",
                             "<BASIC_AUTH_TOKEN>",
                             "<[PAIRING_PARTNER]>").joinToString(" ")
 
-    private val candidateSyntaxMsg = listOf(
+    val candidateSyntaxMsg = listOf(
             "[Error]",
             "Candidate first name and last name must be separated by hypen:",
             "<CANDIDATE_FIRST_NAME>-<CANDIDATE_LAST_NAME>").joinToString(" ")
 
-    private val nrOfRequiredPairingPartnerMsg = listOf(
+    val nrOfRequiredPairingPartnerMsg = listOf(
             "[Error]",
             "Exactly 7 pairing partner must be provided separated by hyphen").joinToString(" ")
 
-    private val unknownPairingPartnerMsg = listOf(
+    val unknownPairingPartnerMsg = listOf(
             "[Error]",
             "At least one provided pairing partner is unknown. Please check the list of provided pairing partner.")
             .joinToString(" ")
@@ -78,7 +79,7 @@ class ProgramArgs(private val args: Array<String>) {
     }
 
     fun printErrorMessage() {
-        println(errorMessage())
+        ui.show(errorMessage())
     }
 
 }
