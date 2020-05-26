@@ -48,7 +48,7 @@ class ProgramArgs(private val args: Array<String>, private val ui: UI) {
 
     val pairingPartner: List<String>
         get() {
-            return if (args.size == indexOfPairingPartner + 1) args[indexOfPairingPartner].split("-") else emptyList()
+            return if (args.size == indexOfPairingPartner + 1) pairingPartner() else emptyList()
         }
 
     fun areValid(): Boolean {
@@ -70,13 +70,15 @@ class ProgramArgs(private val args: Array<String>, private val ui: UI) {
 
     private fun candidateSyntaxIsWrong() = !args[indexOfCandidate].contains("-")
 
-    private fun nrOfPairingPartnerIsWrong() = args[indexOfPairingPartner].split("-").size != nrOfRequiredPairingPartner
+    private fun nrOfPairingPartnerIsWrong() = pairingPartner().size != nrOfRequiredPairingPartner
 
     private fun atLeastOnePairingPartnerIsUnknown(): Boolean {
-        return args[indexOfPairingPartner].split("-").filter {
+        return pairingPartner().filter {
             backendChapterTeamMembers.contains(it.toLowerCase())
         }.size != nrOfRequiredPairingPartner
     }
+
+    private fun pairingPartner() = args[indexOfPairingPartner].split("-")
 
     fun printErrorMessage() {
         ui.show(errorMessage())
