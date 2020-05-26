@@ -5,7 +5,7 @@ import pullrequestfactory.domain.Candidate
 class ProgramArgs(private val args: Array<String>) {
 
     private val backendChapterTeamMembers = listOf("claus", "berni", "nandor", "dominik", "mihai", "lampe", "shubi",
-            "markus", "tibor", "christian", "michal", "tomas", "peter", "martin", "john")
+            "markus", "tibor", "christian", "michal", "tomas", "peter", "martin", "john", "andrej")
 
     val candidate: Candidate
         get() {
