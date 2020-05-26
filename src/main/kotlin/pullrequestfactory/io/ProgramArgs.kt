@@ -29,25 +29,25 @@ class ProgramArgs(private val args: Array<String>) {
             "markus", "tibor", "christian", "michal", "tomas", "peter", "martin", "john", "andrej")
 
     private val indexOfCandidate = 0
-    private val indexOfBasicAuthToken = 0
+    private val indexOfBasicAuthToken = 1
     private val indexOfPairingPartner = 2
     private val nrOfRequiredArgs = 3
     private val nrOfRequiredPairingPartner = 7
 
     val candidate: Candidate
         get() {
-            val candidateFullName = args[indexOfCandidate]
+            val candidateFullName = if (args.size == indexOfCandidate + 1) args[indexOfCandidate] else "Wrong-Candidate"
             return Candidate(candidateFullName.split("-")[indexOfCandidate], candidateFullName.split("-")[1])
         }
 
     val basicAuthToken: String
         get() {
-            return if (args.size == 2) args[indexOfBasicAuthToken] else ""
+            return if (args.size == indexOfBasicAuthToken + 1) args[indexOfBasicAuthToken] else ""
         }
 
     val pairingPartner: List<String>
         get() {
-            return args[indexOfPairingPartner].split("-")
+            return if (args.size == indexOfPairingPartner + 1) args[indexOfPairingPartner].split("-") else emptyList()
         }
 
     fun areValid(): Boolean {
