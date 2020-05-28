@@ -1,7 +1,7 @@
 package it.pullrequestfactory.io
 
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.jupiter.api.Test
+import org.junit.Test
 import pullrequestfactory.domain.Candidate
 import pullrequestfactory.domain.GithubPRFactory
 import pullrequestfactory.domain.GithubWriteRepo

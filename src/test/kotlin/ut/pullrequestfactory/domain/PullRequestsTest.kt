@@ -1,7 +1,7 @@
 package ut.pullrequestfactory.domain
 
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.jupiter.api.Test
+import org.junit.Test
 import pullrequestfactory.domain.Branch
 import pullrequestfactory.domain.Candidate
 import pullrequestfactory.domain.PullRequest
