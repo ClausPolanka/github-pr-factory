@@ -6,6 +6,7 @@ import com.github.tomakehurst.wiremock.junit.WireMockRule
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.ClassRule
 import org.junit.Test
+import pullrequestfactory.domain.Branch
 import pullrequestfactory.domain.NoopCache
 import pullrequestfactory.io.GithubHttpRepo
 import java.io.File
@@ -22,14 +23,17 @@ class GithubHttpRepoTest {
 
     @Test
     fun get_all_branches_for_given_repository_name() {
-        val sut = GithubHttpRepo(baseUrl(), repoName, "basic-auth-token", NoopCache())
+        val branch = Branch("first_name_iteration_1_claus")
+        val sut = createGithubHttpRepo()
 
-        stubForGithubBranchesRequest()
+        stubGithubRequestToReturn(branch.name)
 
         val branches = sut.get_all_branches()
 
-        assertThat(branches).isNotEmpty
+        assertThat(branches).containsExactly(branch)
     }
+
+    private fun createGithubHttpRepo() = GithubHttpRepo(baseUrl(), repoName, "basic-auth-token", NoopCache())
 
     private fun baseUrl(): String {
         val resource = File("src/test/resources/app.properties")
@@ -37,12 +41,12 @@ class GithubHttpRepoTest {
         return properties.split("=")[1]
     }
 
-    private fun stubForGithubBranchesRequest() {
+    private fun stubGithubRequestToReturn(branchName: String) {
         stubFor(get("/repos/ClausPolanka/$repoName/branches?page=1").willReturn(aResponse()
                 .withStatus(200)
                 .withHeader("Content-Type", "application/json; charset=utf-8")
                 .withBody(Klaxon().toJsonString((arrayOf(GithubResponse(
-                        name = "first_name_iteration_1_claus",
+                        name = branchName,
                         commit = GithubCommit(
                                 sha = "4861382d8bd73481b98f72706cb57dc493de592b",
                                 url = "https://api.github.com/repos/ClausPolanka/wordcount/commits/4861382d8bd73481b98f72706cb57dc493de592b"),
