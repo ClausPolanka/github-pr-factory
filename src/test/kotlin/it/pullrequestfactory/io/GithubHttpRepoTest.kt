@@ -17,11 +17,13 @@ class GithubHttpRepoTest {
         val wireMockRule = WireMockRule()
     }
 
+    private val repoName = "repository-name"
+
     @Test
     fun get_all_branches_for_given_repository_name() {
-        val sut = GithubHttpRepo(baseUrl(), "repository-name", "basic-auth-token", branchesMustBeCached = false)
+        val sut = GithubHttpRepo(baseUrl(), repoName, "basic-auth-token", branchesMustBeCached = false)
 
-        stubForGithubBranchesRequestPage("repository-name")
+        stubForGithubBranchesRequest()
 
         val branches = sut.get_all_branches()
 
@@ -34,7 +36,7 @@ class GithubHttpRepoTest {
         return properties.split("=")[1]
     }
 
-    private fun stubForGithubBranchesRequestPage(repoName: String) {
+    private fun stubForGithubBranchesRequest() {
         stubFor(get("/repos/ClausPolanka/$repoName/branches?page=1").willReturn(aResponse()
                 .withStatus(200)
                 .withHeader("Content-Type", "application/json; charset=utf-8")
