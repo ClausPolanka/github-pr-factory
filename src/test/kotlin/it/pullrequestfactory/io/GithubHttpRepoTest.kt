@@ -6,6 +6,7 @@ import com.github.tomakehurst.wiremock.junit.WireMockRule
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.ClassRule
 import org.junit.Test
+import pullrequestfactory.domain.NoopCache
 import pullrequestfactory.io.GithubHttpRepo
 import java.io.File
 
@@ -21,7 +22,7 @@ class GithubHttpRepoTest {
 
     @Test
     fun get_all_branches_for_given_repository_name() {
-        val sut = GithubHttpRepo(baseUrl(), repoName, "basic-auth-token", branchesMustBeCached = false)
+        val sut = GithubHttpRepo(baseUrl(), repoName, "basic-auth-token", NoopCache())
 
         stubForGithubBranchesRequest()
 

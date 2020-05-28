@@ -2,17 +2,13 @@ package pullrequestfactory.io
 
 import com.beust.klaxon.Klaxon
 import khttp.responses.Response
-import pullrequestfactory.domain.Branch
-import pullrequestfactory.domain.GithubReadRepo
-import pullrequestfactory.domain.GithubWriteRepo
-import pullrequestfactory.domain.PullRequest
-import java.io.File
+import pullrequestfactory.domain.*
 
 class GithubHttpRepo(
         private val baseUrl: String,
         private val repoName: String,
         private val basicAuthToken: String,
-        private val branchesMustBeCached: Boolean) : GithubReadRepo, GithubWriteRepo {
+        private val cacheRepo: CacheRepo) : GithubReadRepo, GithubWriteRepo {
 
     override fun get_all_branches(): List<Branch> {
         val response = khttp.get("$baseUrl/repos/ClausPolanka/$repoName/branches?page=1")
@@ -26,15 +22,11 @@ class GithubHttpRepo(
     private fun get_all_branches_for(response: Response): List<Branch> {
         val lastPage = last_page_of_branches(response)
         val allBranches = mutableListOf<List<Branch>>()
-        if (branchesMustBeCached) {
-            File("json/branches-page-1.json").writeText(response.text)
-        }
+        cacheRepo.cache(response.text, pageNr = 1)
         allBranches.add(Klaxon().parseArray(response.text)!!)
         (2..lastPage.toInt()).forEach {
             val json = khttp.get("$baseUrl/repos/ClausPolanka/$repoName/branches?page=$it").text
-            if (branchesMustBeCached) {
-                File("json/branches-page-$it.json").writeText(json)
-            }
+            cacheRepo.cache(response.text, pageNr = it)
             allBranches.add(Klaxon().parseArray(json)!!)
         }
         return allBranches.flatten()
