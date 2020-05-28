@@ -20,6 +20,10 @@ class GithubHttpRepo(
             println("Too many requests to Github within time limit")
             return emptyList()
         }
+        return get_all_branches_for(response)
+    }
+
+    private fun get_all_branches_for(response: Response): List<Branch> {
         val lastPage = last_page_of_branches(response)
         val allBranches = mutableListOf<List<Branch>>()
         if (branchesMustBeCached) {
