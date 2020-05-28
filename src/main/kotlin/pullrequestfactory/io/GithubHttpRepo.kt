@@ -1,6 +1,7 @@
 package pullrequestfactory.io
 
 import com.beust.klaxon.Klaxon
+import khttp.responses.Response
 import pullrequestfactory.domain.Branch
 import pullrequestfactory.domain.GithubReadRepo
 import pullrequestfactory.domain.GithubWriteRepo
@@ -10,7 +11,8 @@ import java.io.File
 class GithubHttpRepo(
         private val baseUrl: String,
         private val repoName: String,
-        private val basicAuthToken: String) : GithubReadRepo, GithubWriteRepo {
+        private val basicAuthToken: String,
+        private val branchesMustBeCached: Boolean) : GithubReadRepo, GithubWriteRepo {
 
     override fun get_all_branches(): List<Branch> {
         val response = khttp.get("$baseUrl/repos/ClausPolanka/$repoName/branches?page=1")
@@ -18,14 +20,17 @@ class GithubHttpRepo(
             println("Too many requests to Github within time limit")
             return emptyList()
         }
-        val linkHeader = response.headers["link"]
-        val lastPage = last_page(linkHeader!!)
+        val lastPage = last_page_of_branches(response)
         val allBranches = mutableListOf<List<Branch>>()
-        File("json/branches-page-1.json").writeText(response.text)
+        if (branchesMustBeCached) {
+            File("json/branches-page-1.json").writeText(response.text)
+        }
         allBranches.add(Klaxon().parseArray(response.text)!!)
         (2..lastPage.toInt()).forEach {
             val json = khttp.get("$baseUrl/repos/ClausPolanka/$repoName/branches?page=$it").text
-            File("json/branches-page-$it.json").writeText(json)
+            if (branchesMustBeCached) {
+                File("json/branches-page-$it.json").writeText(json)
+            }
             allBranches.add(Klaxon().parseArray(json)!!)
         }
         return allBranches.flatten()
@@ -43,10 +48,14 @@ class GithubHttpRepo(
         println(response)
     }
 
-    private fun last_page(linkHeader: String): String {
-        val pattern = "page=([0-9]+)".toRegex()
-        val matches = pattern.findAll(linkHeader)
-        return matches.last().groupValues[1]
+    private fun last_page_of_branches(response: Response): String {
+        if (response.headers["link"] == null) {
+            return "-1"
+        } else {
+            val pattern = "page=([0-9]+)".toRegex()
+            val matches = pattern.findAll(response.headers["link"] ?: "")
+            return matches.last().groupValues[1]
+        }
     }
 
 }
