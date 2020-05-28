@@ -37,18 +37,18 @@ class ProgramArgs(private val args: Array<String>, private val ui: UI) {
 
     val candidate: Candidate
         get() {
-            val candidateFullName = if (args.size == indexOfCandidate + 1) args[indexOfCandidate] else "Wrong-Candidate"
+            val candidateFullName = if (args.size >= indexOfCandidate + 1) args[indexOfCandidate] else "Wrong-Candidate"
             return Candidate(candidateFullName.split("-")[indexOfCandidate], candidateFullName.split("-")[1])
         }
 
     val basicAuthToken: String
         get() {
-            return if (args.size == indexOfBasicAuthToken + 1) args[indexOfBasicAuthToken] else ""
+            return if (args.size >= indexOfBasicAuthToken + 1) args[indexOfBasicAuthToken] else ""
         }
 
     val pairingPartner: List<String>
         get() {
-            return if (args.size == indexOfPairingPartner + 1) pairingPartner() else emptyList()
+            return if (args.size >= indexOfPairingPartner + 1) pairingPartner() else emptyList()
         }
 
     fun areValid(): Boolean {
