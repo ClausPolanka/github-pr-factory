@@ -1,8 +1,8 @@
 package it.pullrequestfactory
 
 import com.beust.klaxon.Klaxon
+import com.github.tomakehurst.wiremock.client.WireMock
 import com.github.tomakehurst.wiremock.client.WireMock.*
-import com.github.tomakehurst.wiremock.core.WireMockConfiguration
 import com.github.tomakehurst.wiremock.junit.WireMockRule
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.After
@@ -23,11 +23,9 @@ class MainKtTest {
     private val userOutput = ByteArrayOutputStream()
 
     companion object {
-        private val failOnUnmatchedRequests = false
-
         @ClassRule
         @JvmField
-        val wireMockRule = WireMockRule(WireMockConfiguration.options(), failOnUnmatchedRequests)
+        val wireMockRule = WireMockRule()
     }
 
     @Before
@@ -37,6 +35,7 @@ class MainKtTest {
 
     @After
     fun tearDown() {
+        WireMock.reset()
         System.setIn(systemIn)
         System.setOut(systemOut)
     }

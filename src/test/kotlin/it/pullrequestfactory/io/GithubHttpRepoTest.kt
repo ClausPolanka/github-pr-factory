@@ -1,15 +1,19 @@
 package it.pullrequestfactory.io
 
 import com.beust.klaxon.Klaxon
+import com.github.tomakehurst.wiremock.client.WireMock
 import com.github.tomakehurst.wiremock.client.WireMock.*
 import com.github.tomakehurst.wiremock.junit.WireMockRule
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.After
 import org.junit.ClassRule
 import org.junit.Test
 import pullrequestfactory.domain.Branch
 import pullrequestfactory.domain.NoopCache
+import pullrequestfactory.domain.PullRequest
 import pullrequestfactory.io.GithubHttpRepo
 import java.io.File
+
 
 class GithubHttpRepoTest {
 
@@ -21,6 +25,11 @@ class GithubHttpRepoTest {
 
     private val repoName = "repository-name"
 
+    @After
+    fun tearDown() {
+        WireMock.reset()
+    }
+
     @Test
     fun get_all_branches_for_given_repository_name() {
         val branch = Branch("first_name_iteration_1_claus")
@@ -31,6 +40,26 @@ class GithubHttpRepoTest {
         val branches = sut.get_all_branches()
 
         assertThat(branches).containsExactly(branch)
+    }
+
+    @Test
+    fun create_pull_request() {
+        val sut = createGithubHttpRepo()
+        val pr = PullRequest(
+                title = "Radek Leifer Iteration 1 / Session 1 Claus",
+                base = "master",
+                head = "radek_leifer_interation_1_claus")
+
+        sut.create_pull_request(pr)
+
+        verify(postRequestedFor(urlMatching("/repos/ClausPolanka/$repoName/pulls"))
+                .withRequestBody(matching(Regex.escape(Klaxon().toJsonString(pr))))
+                .withHeader("Accept", matching("application/json"))
+                .withHeader("Authorization", matching("Basic .*"))
+                .withHeader("Content-Type", matching("application/json")))
+
+        val unmatched = findUnmatchedRequests()
+        println(unmatched)
     }
 
     private fun createGithubHttpRepo() = GithubHttpRepo(baseUrl(), repoName, "basic-auth-token", NoopCache())
