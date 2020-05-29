@@ -1,7 +1,6 @@
 package it.pullrequestfactory
 
 import com.beust.klaxon.Klaxon
-import com.github.tomakehurst.wiremock.client.WireMock
 import com.github.tomakehurst.wiremock.client.WireMock.*
 import com.github.tomakehurst.wiremock.junit.WireMockRule
 import org.assertj.core.api.Assertions.assertThat
@@ -35,7 +34,7 @@ class MainKtTest {
 
     @After
     fun tearDown() {
-        WireMock.reset()
+        reset()
         System.setIn(systemIn)
         System.setOut(systemOut)
     }
@@ -74,8 +73,7 @@ class MainKtTest {
                                 // Only important for first request
                                 .withHeader("Link", "<https://api.github.com/repositories/157517927/branches?page=2>; rel=\"next\", <https://api.github.com/repositories/157517927/branches?page=9>; rel=\"last\"")
                                 .withHeader("Content-Type", "application/json; charset=utf-8")
-                                .withBody(File("json/branches-page-$pageNr.json").readText()))
-        )
+                                .withBody(File("json/branches-page-$pageNr.json").readText())))
     }
 
     private fun verifyPostRequestsToGithubToCreatePullRequests() {

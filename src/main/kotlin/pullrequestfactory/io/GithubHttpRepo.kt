@@ -21,7 +21,7 @@ class GithubHttpRepo(
     }
 
     private fun get_all_branches_for(response: Response): List<Branch> {
-        val lastPage = last_page_of_branches(response)
+        val lastPage = KHttpResponseLastPageParser().last_page_of_branches(response)
         val allBranches = mutableListOf<List<Branch>>()
         allBranches.add(Klaxon().parseArray(response.text)!!)
         (2..lastPage.toInt()).forEach {
@@ -43,15 +43,4 @@ class GithubHttpRepo(
                 data = Klaxon().toJsonString(pullRequest))
         println(response)
     }
-
-    private fun last_page_of_branches(response: Response): String {
-        return if (response.headers["link"] == null) {
-            "-1"
-        } else {
-            val pattern = "page=([0-9]+)".toRegex()
-            val matches = pattern.findAll(response.headers["link"] ?: "")
-            matches.last().groupValues[1]
-        }
-    }
-
 }
