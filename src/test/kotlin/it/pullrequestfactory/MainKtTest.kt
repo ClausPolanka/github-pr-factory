@@ -61,6 +61,24 @@ class MainKtTest {
         verifyPostRequestsToGithubToCreatePullRequests()
     }
 
+    private fun stubRequestsForGithubBranches() {
+        (1..9).forEach {
+            stubForGithubBranchesRequestPage(it)
+        }
+    }
+
+    private fun stubForGithubBranchesRequestPage(pageNr: Int) {
+        stubFor(get("/repos/ClausPolanka/wordcount/branches?page=$pageNr")
+                .willReturn(
+                        aResponse()
+                                .withStatus(200)
+                                // Only important for first request
+                                .withHeader("Link", "<https://api.github.com/repositories/157517927/branches?page=2>; rel=\"next\", <https://api.github.com/repositories/157517927/branches?page=9>; rel=\"last\"")
+                                .withHeader("Content-Type", "application/json; charset=utf-8")
+                                .withBody(File("json/branches-page-$pageNr.json").readText()))
+        )
+    }
+
     private fun verifyPostRequestsToGithubToCreatePullRequests() {
         verify(8, postRequestedFor(urlEqualTo("/repos/ClausPolanka/wordcount/pulls")))
 
@@ -106,24 +124,6 @@ class MainKtTest {
                 base = "radek_leifer_iteration_3_markus",
                 head = "radek_leifer_iteration_3_mihai"
         ))
-    }
-
-    private fun stubRequestsForGithubBranches() {
-        (1..9).forEach {
-            stubForGithubBranchesRequestPage(it)
-        }
-    }
-
-    private fun stubForGithubBranchesRequestPage(pageNr: Int) {
-        stubFor(get("/repos/ClausPolanka/wordcount/branches?page=$pageNr")
-                .willReturn(
-                        aResponse()
-                                .withStatus(200)
-                                // Only important for first request
-                                .withHeader("Link", "<https://api.github.com/repositories/157517927/branches?page=2>; rel=\"next\", <https://api.github.com/repositories/157517927/branches?page=9>; rel=\"last\"")
-                                .withHeader("Content-Type", "application/json; charset=utf-8")
-                                .withBody(File("json/branches-page-$pageNr.json").readText()))
-        )
     }
 
     private fun verifyPostRequestToGithubToCreatePullRequestFor(pr: PullRequest) {
