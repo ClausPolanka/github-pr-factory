@@ -31,9 +31,7 @@ class PullRequests(val branches: List<Branch>) {
 
             // current branch idx is higher than session number because previous session switched iterations but
             // stayed in same session
-            currentBrIdx != 0
-                    && (!branches[currentBrIdx.dec()].name.endsWith(pairingPartner)
-                    && currentBrIdx > sessionNumber) -> sessionNumber.inc()
+            currentBrIdx != 0 && currentBrIdx > sessionNumber -> sessionNumber.inc()
 
             else -> sessionNumber.inc()
         }
