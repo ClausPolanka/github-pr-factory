@@ -102,23 +102,4 @@ class PullRequestsTest {
                         "firstname_lastname_iteration_2_pairingpartner2"))
     }
 
-    @Test
-    fun create_pull_requests_where_one_iteration_is_finished_and_therefore_marked_with_PR() {
-        val sut = PullRequests(listOf(
-                Branch("firstname_lastname_iteration_1_pairingpartner"),
-                Branch("firstname_lastname_iteration_2_pairingpartner")))
-
-        val prs = sut.create_pull_requests_for(Candidate("Firstname", "Lastname"))
-
-        assertThat(prs)
-                .contains(PullRequest(
-                        "Firstname Lastname Iteration 1 / Session 1 Pairingpartner [PR]",
-                        "master",
-                        "firstname_lastname_iteration_1_pairingpartner"))
-                .contains(PullRequest(
-                        "Firstname Lastname Iteration 2 / Session 1 Pairingpartner",
-                        "firstname_lastname_iteration_1_pairingpartner",
-                        "firstname_lastname_iteration_2_pairingpartner"))
-    }
-
 }
