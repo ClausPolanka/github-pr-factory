@@ -3,6 +3,7 @@ package ut.pullrequestfactory.domain
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import pullrequestfactory.domain.*
+import pullrequestfactory.io.ConsoleUI
 
 
 class GithubPRFactoryTest {
@@ -13,7 +14,7 @@ class GithubPRFactoryTest {
         val githubReadRepo = githubReadRepo(listOf(
                 Branch("firstname_lastname_iteration_1_claus"),
                 Branch("firstname_lastname_iteration_2_berni")))
-        val sut = GithubPRFactory(githubReadRepo, githubWriteRepo(expectedPrs))
+        val sut = GithubPRFactory(githubReadRepo, githubWriteRepo(expectedPrs), ConsoleUI())
 
         sut.create_pull_requests(Candidate("Firstname", "Lastname"), listOf("Claus", "Berni"))
 
@@ -32,7 +33,7 @@ class GithubPRFactoryTest {
     fun creates_pull_request_and_ignores_if_candidates_first_name_is_capitalized() {
         val expectedPrs = mutableListOf<PullRequest>()
         val githubReadRepo = githubReadRepo(listOf(Branch("a_lastname_iteration_1_claus")))
-        val sut = GithubPRFactory(githubReadRepo, githubWriteRepo(expectedPrs))
+        val sut = GithubPRFactory(githubReadRepo, githubWriteRepo(expectedPrs), ConsoleUI())
 
         sut.create_pull_requests(Candidate("A", "lastname"), listOf("Claus"))
 
@@ -48,7 +49,7 @@ class GithubPRFactoryTest {
     fun creates_pull_request_and_ignores_if_candidates_last_name_is_capitalized() {
         val expectedPrs = mutableListOf<PullRequest>()
         val githubReadRepo = githubReadRepo(listOf(Branch("firstname_a_iteration_1_claus")))
-        val sut = GithubPRFactory(githubReadRepo, githubWriteRepo(expectedPrs))
+        val sut = GithubPRFactory(githubReadRepo, githubWriteRepo(expectedPrs), ConsoleUI())
 
         sut.create_pull_requests(Candidate("Firstname", "A"), listOf("Claus"))
 
@@ -63,7 +64,7 @@ class GithubPRFactoryTest {
     fun creates_no_pull_requests_for_candidate_when_no_branch_exists_containing_candidates_first_name() {
         val expectedPrs = mutableListOf<PullRequest>()
         val githubReadRepo = githubReadRepo(listOf(Branch("a_lastname_iteration_1_claus")))
-        val sut = GithubPRFactory(githubReadRepo, githubWriteRepo(expectedPrs))
+        val sut = GithubPRFactory(githubReadRepo, githubWriteRepo(expectedPrs), ConsoleUI())
 
         sut.create_pull_requests(Candidate("B", "Lastname"), listOf("Claus"))
 
@@ -74,7 +75,7 @@ class GithubPRFactoryTest {
     fun creates_no_pull_requests_for_candidate_when_no_branch_exists_containing_candidates_last_name() {
         val expectedPrs = mutableListOf<PullRequest>()
         val githubReadRepo = githubReadRepo(listOf(Branch("firstname_a_iteration_1_claus")))
-        val sut = GithubPRFactory(githubReadRepo, githubWriteRepo(expectedPrs))
+        val sut = GithubPRFactory(githubReadRepo, githubWriteRepo(expectedPrs), ConsoleUI())
 
         sut.create_pull_requests(Candidate("Firstname", "b"), listOf("Claus"))
 

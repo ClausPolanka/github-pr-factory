@@ -1,6 +1,11 @@
 package pullrequestfactory.domain
 
-class GithubPRFactory(private val githubReadRepo: GithubReadRepo, private val githubWriteRepo: GithubWriteRepo) {
+class GithubPRFactory(
+        private val githubReadRepo: GithubReadRepo,
+        private val githubWriteRepo: GithubWriteRepo,
+        ui: UI) {
+
+    private val branchSyntaxValidator = BranchSyntaxValidator(ui)
 
     /**
      * @param pairingPartner A list of George backend chapter team member names which must be in the order in
@@ -19,6 +24,10 @@ class GithubPRFactory(private val githubReadRepo: GithubReadRepo, private val gi
         return githubReadRepo.get_all_branches()
                 .filter { it.name.contains(candidate.firstName, ignoreCase = true) }
                 .filter { it.name.contains(candidate.lastName, ignoreCase = true) }
+                .map {
+                    branchSyntaxValidator.validate(it)
+                    it
+                }
     }
 
 }
