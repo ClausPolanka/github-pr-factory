@@ -1,6 +1,6 @@
 package ut.pullrequestfactory.domain
 
-import org.assertj.core.api.Assertions
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import pullrequestfactory.domain.*
 
@@ -8,7 +8,7 @@ import pullrequestfactory.domain.*
 class GithubPRFactoryTest {
 
     @Test
-    fun create_two_pull_requests_for_different_sessions_and_different_iterations() {
+    fun creates_two_pull_requests_for_different_sessions_and_different_iterations() {
         val expectedPrs = mutableListOf<PullRequest>()
         val githubReadRepo = githubReadRepo(listOf(
                 Branch("firstname_lastname_iteration_1_claus"),
@@ -17,7 +17,7 @@ class GithubPRFactoryTest {
 
         sut.create_pull_requests(Candidate("Firstname", "Lastname"), listOf("Claus", "Berni"))
 
-        Assertions.assertThat(expectedPrs).containsExactly(
+        assertThat(expectedPrs).containsExactly(
                 PullRequest(
                         title = "Firstname Lastname Iteration 1 / Session 1 Claus [PR]",
                         base = "master",
@@ -26,6 +26,59 @@ class GithubPRFactoryTest {
                         title = "Firstname Lastname Iteration 2 / Session 2 Berni",
                         base = "firstname_lastname_iteration_1_claus",
                         head = "firstname_lastname_iteration_2_berni"))
+    }
+
+    @Test
+    fun creates_pull_request_and_ignores_if_candidates_first_name_is_capitalized() {
+        val expectedPrs = mutableListOf<PullRequest>()
+        val githubReadRepo = githubReadRepo(listOf(Branch("a_lastname_iteration_1_claus")))
+        val sut = GithubPRFactory(githubReadRepo, githubWriteRepo(expectedPrs))
+
+        sut.create_pull_requests(Candidate("A", "lastname"), listOf("Claus"))
+
+        assertThat(expectedPrs).containsExactly(
+                PullRequest(
+                        title = "A Lastname Iteration 1 / Session 1 Claus",
+                        base = "master",
+                        head = "a_lastname_iteration_1_claus"))
+    }
+
+
+    @Test
+    fun creates_pull_request_and_ignores_if_candidates_last_name_is_capitalized() {
+        val expectedPrs = mutableListOf<PullRequest>()
+        val githubReadRepo = githubReadRepo(listOf(Branch("firstname_a_iteration_1_claus")))
+        val sut = GithubPRFactory(githubReadRepo, githubWriteRepo(expectedPrs))
+
+        sut.create_pull_requests(Candidate("Firstname", "A"), listOf("Claus"))
+
+        assertThat(expectedPrs).containsExactly(
+                PullRequest(
+                        title = "Firstname B Iteration 1 / Session 1 Claus",
+                        base = "master",
+                        head = "firstname_b_iteration_1_claus"))
+    }
+
+    @Test
+    fun creates_no_pull_requests_for_candidate_when_no_branch_exists_containing_candidates_first_name() {
+        val expectedPrs = mutableListOf<PullRequest>()
+        val githubReadRepo = githubReadRepo(listOf(Branch("a_lastname_iteration_1_claus")))
+        val sut = GithubPRFactory(githubReadRepo, githubWriteRepo(expectedPrs))
+
+        sut.create_pull_requests(Candidate("B", "Lastname"), listOf("Claus"))
+
+        assertThat(expectedPrs).isEmpty()
+    }
+
+    @Test
+    fun creates_no_pull_requests_for_candidate_when_no_branch_exists_containing_candidates_last_name() {
+        val expectedPrs = mutableListOf<PullRequest>()
+        val githubReadRepo = githubReadRepo(listOf(Branch("firstname_a_iteration_1_claus")))
+        val sut = GithubPRFactory(githubReadRepo, githubWriteRepo(expectedPrs))
+
+        sut.create_pull_requests(Candidate("Firstname", "b"), listOf("Claus"))
+
+        assertThat(expectedPrs).isEmpty()
     }
 
     private fun githubReadRepo(branches: List<Branch>): GithubReadRepo {
