@@ -13,9 +13,9 @@ class PullRequestsTest {
     fun create_pull_request_for_one_session_within_same_iteration_for_same_pairing_partner() {
         val sut = PullRequests(listOf(Branch("firstname_lastname_iteration_1_pairingpartner")))
 
-        val prTitles = sut.create_pull_requests_for(Candidate("Firstname", "Lastname"))
+        val prs = sut.create_pull_requests_for(Candidate("Firstname", "Lastname"))
 
-        assertThat(prTitles).containsExactly(PullRequest(
+        assertThat(prs).containsExactly(PullRequest(
                 "Firstname Lastname Iteration 1 / Session 1 Pairingpartner",
                 "master",
                 "firstname_lastname_iteration_1_pairingpartner"))
@@ -27,9 +27,9 @@ class PullRequestsTest {
                 Branch("firstname_lastname_iteration_1_pairingpartner"),
                 Branch("firstname_lastname_iteration_2_pairingpartner")))
 
-        val prTitles = sut.create_pull_requests_for(Candidate("Firstname", "Lastname"))
+        val prs = sut.create_pull_requests_for(Candidate("Firstname", "Lastname"))
 
-        assertThat(prTitles)
+        assertThat(prs)
                 .contains(PullRequest(
                         "Firstname Lastname Iteration 1 / Session 1 Pairingpartner [PR]",
                         "master",
@@ -46,9 +46,9 @@ class PullRequestsTest {
                 Branch("firstname_lastname_iteration_1_pairingpartner1"),
                 Branch("firstname_lastname_iteration_1_pairingpartner2")))
 
-        val prTitles = sut.create_pull_requests_for(Candidate("Firstname", "Lastname"))
+        val prs = sut.create_pull_requests_for(Candidate("Firstname", "Lastname"))
 
-        assertThat(prTitles)
+        assertThat(prs)
                 .contains(PullRequest(
                         "Firstname Lastname Iteration 1 / Session 1 Pairingpartner1",
                         "master",
@@ -65,9 +65,9 @@ class PullRequestsTest {
                 Branch("firstname_lastname_iteration_1_pairingpartner1"),
                 Branch("firstname_lastname_iteration_2_pairingpartner2")))
 
-        val prTitles = sut.create_pull_requests_for(Candidate("Firstname", "Lastname"))
+        val prs = sut.create_pull_requests_for(Candidate("Firstname", "Lastname"))
 
-        assertThat(prTitles)
+        assertThat(prs)
                 .contains(PullRequest(
                         "Firstname Lastname Iteration 1 / Session 1 Pairingpartner1 [PR]",
                         "master",
@@ -85,9 +85,9 @@ class PullRequestsTest {
                 Branch("firstname_lastname_iteration_2_pairingpartner1"),
                 Branch("firstname_lastname_iteration_2_pairingpartner2")))
 
-        val prTitles = sut.create_pull_requests_for(Candidate("Firstname", "Lastname"))
+        val prs = sut.create_pull_requests_for(Candidate("Firstname", "Lastname"))
 
-        assertThat(prTitles)
+        assertThat(prs)
                 .contains(PullRequest(
                         "Firstname Lastname Iteration 1 / Session 1 Pairingpartner1 [PR]",
                         "master",
@@ -108,9 +108,9 @@ class PullRequestsTest {
                 Branch("firstname_lastname_iteration_1_pairingpartner"),
                 Branch("firstname_lastname_iteration_2_pairingpartner")))
 
-        val prTitles = sut.create_pull_requests_for(Candidate("Firstname", "Lastname"))
+        val prs = sut.create_pull_requests_for(Candidate("Firstname", "Lastname"))
 
-        assertThat(prTitles)
+        assertThat(prs)
                 .contains(PullRequest(
                         "Firstname Lastname Iteration 1 / Session 1 Pairingpartner [PR]",
                         "master",
