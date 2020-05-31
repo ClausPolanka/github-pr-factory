@@ -13,11 +13,7 @@ class GithubPRFactoryTest {
         val githubReadRepo = githubReadRepo(listOf(
                 Branch("firstname_lastname_iteration_1_claus"),
                 Branch("firstname_lastname_iteration_2_berni")))
-        val sut = GithubPRFactory(githubReadRepo, object : GithubWriteRepo {
-            override fun create_pull_request(pullRequest: PullRequest) {
-                expectedPrs.add(pullRequest)
-            }
-        })
+        val sut = GithubPRFactory(githubReadRepo, githubWriteRepo(expectedPrs))
 
         sut.create_pull_requests(Candidate("Firstname", "Lastname"), listOf("Claus", "Berni"))
 
@@ -36,6 +32,14 @@ class GithubPRFactoryTest {
         return object : GithubReadRepo {
             override fun get_all_branches(): List<Branch> {
                 return branches
+            }
+        }
+    }
+
+    private fun githubWriteRepo(expectedPrs: MutableList<PullRequest>): GithubWriteRepo {
+        return object : GithubWriteRepo {
+            override fun create_pull_request(pullRequest: PullRequest) {
+                expectedPrs.add(pullRequest)
             }
         }
     }
