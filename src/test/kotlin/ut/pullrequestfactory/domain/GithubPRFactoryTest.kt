@@ -54,9 +54,9 @@ class GithubPRFactoryTest {
 
         assertThat(expectedPrs).containsExactly(
                 PullRequest(
-                        title = "Firstname B Iteration 1 / Session 1 Claus",
+                        title = "Firstname A Iteration 1 / Session 1 Claus",
                         base = "master",
-                        head = "firstname_b_iteration_1_claus"))
+                        head = "firstname_a_iteration_1_claus"))
     }
 
     @Test
