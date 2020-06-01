@@ -93,9 +93,6 @@ class GithubHttpRepoTest {
                 .withHeader("Accept", matching("application/json"))
                 .withHeader("Authorization", matching("Basic .*"))
                 .withHeader("Content-Type", matching("application/json")))
-
-        val unmatched = findUnmatchedRequests()
-        println(unmatched)
     }
 
     private fun createGithubHttpRepo() = GithubHttpRepo(
