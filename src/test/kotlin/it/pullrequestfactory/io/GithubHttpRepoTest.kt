@@ -10,6 +10,7 @@ import org.junit.Test
 import pullrequestfactory.domain.Branch
 import pullrequestfactory.domain.NoopCache
 import pullrequestfactory.domain.PullRequest
+import pullrequestfactory.domain.QuietUI
 import pullrequestfactory.io.GithubHttpRepo
 import java.io.File
 
@@ -100,7 +101,7 @@ class GithubHttpRepoTest {
             repoName,
             "basic-auth-token",
             NoopCache(),
-            pullrequestfactory.domain.QuietUI())
+            QuietUI())
 
     private fun baseUrl(): String {
         val resource = File("src/test/resources/app.properties")
