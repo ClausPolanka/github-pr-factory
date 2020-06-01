@@ -10,19 +10,17 @@ class BranchSyntaxValidatorTest {
 
     @Test
     fun ui_shows_message_for_invalid_branch_names() {
-        val branchNames = listOf(
-                "_lastname_iteration_1_claus",
+        var expectedMsg = ""
+        val sut = BranchSyntaxValidator(object : UI {
+            override fun show(msg: String) {
+                expectedMsg = msg
+            }
+        })
+        listOf("_lastname_iteration_1_claus",
                 "firstname_iteration_1_claus",
                 "firstname_lastname_iter_1_claus",
                 "firstname_lastname_iteration_x_claus",
-                "firstname_lastname_iteration_1_")
-        branchNames.forEach {
-            var expectedMsg = ""
-            val sut = BranchSyntaxValidator(object : UI {
-                override fun show(msg: String) {
-                    expectedMsg = msg
-                }
-            })
+                "firstname_lastname_iteration_1_").forEach {
 
             sut.validate(Branch(it))
 
