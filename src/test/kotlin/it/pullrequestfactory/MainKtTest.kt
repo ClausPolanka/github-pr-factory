@@ -67,13 +67,11 @@ class MainKtTest {
 
     private fun stubForGithubBranchesRequestPage(pageNr: Int) {
         stubFor(get("/repos/ClausPolanka/wordcount/branches?page=$pageNr")
-                .willReturn(
-                        aResponse()
-                                .withStatus(200)
-                                // Only important for first request
-                                .withHeader("Link", "<https://api.github.com/repositories/157517927/branches?page=2>; rel=\"next\", <https://api.github.com/repositories/157517927/branches?page=9>; rel=\"last\"")
-                                .withHeader("Content-Type", "application/json; charset=utf-8")
-                                .withBody(File("json/branches-page-$pageNr.json").readText())))
+                .willReturn(aResponse().withStatus(200)
+                        // Only important for first request
+                        .withHeader("Link", "<https://api.github.com/repositories/157517927/branches?page=2>; rel=\"next\", <https://api.github.com/repositories/157517927/branches?page=9>; rel=\"last\"")
+                        .withHeader("Content-Type", "application/json; charset=utf-8")
+                        .withBody(File("json/branches-page-$pageNr.json").readText())))
     }
 
     private fun verifyPostRequestsToGithubToCreatePullRequests() {
