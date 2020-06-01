@@ -14,7 +14,7 @@ class GithubHttpRepo(
     override fun get_all_branches(): List<Branch> {
         val response = khttp.get("$baseUrli/repos/ClausPolanka/$repoName/branches?page=1")
         if (response.statusCode == 403) {
-            println("Too many requests to Github within time limit")
+            ui.show("Too many requests to Github within time limit")
             return emptyList()
         }
         cacheRepo.cache(response.text, pageNr = 1)
@@ -34,7 +34,7 @@ class GithubHttpRepo(
     }
 
     override fun create_pull_request(pullRequest: PullRequest) {
-        println("Create pull request on Github: $pullRequest")
+        ui.show("Create pull request on Github: $pullRequest")
         val response = khttp.post(
                 url = "$baseUrli/repos/ClausPolanka/$repoName/pulls",
                 headers = mapOf(
@@ -42,6 +42,6 @@ class GithubHttpRepo(
                         "Authorization" to "Basic $basicAuthToken",
                         "Content-Type" to "application/json"),
                 data = Klaxon().toJsonString(pullRequest))
-        println(response)
+        ui.show(response.toString())
     }
 }
