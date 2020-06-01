@@ -31,7 +31,7 @@ class GithubHttpRepoTest {
     }
 
     @Test
-    fun get_all_branches_for_given_repository_name() {
+    fun get_all_branches_for_github_repository_which_contains_only_one_branch() {
         val branch = Branch("first_name_iteration_1_claus")
         val sut = createGithubHttpRepo()
 
@@ -43,25 +43,13 @@ class GithubHttpRepoTest {
     }
 
     @Test
-    fun get_all_branches_for_given_repository_name_which_contains_two_pages_of_branches() {
+    fun get_all_branches_for_github_repository_which_contains_two_pages_of_branches() {
         val branch1 = Branch("first_name_iteration_1_claus")
         val branch2 = Branch("first_name_iteration_2_claus")
         val sut = createGithubHttpRepo()
 
-        stubFor(get("/repos/ClausPolanka/$repoName/branches?page=1").willReturn(aResponse()
-                .withStatus(200)
-                .withHeader("Content-Type", "application/json; charset=utf-8")
-                .withHeader("Link",
-                        "<https://api.github.com/repositories/157517927/branches?page=2>; rel=\"next\", " +
-                                "<https://api.github.com/repositories/157517927/branches?page=2>; rel=\"last\"")
-                .withBody(Klaxon().toJsonString((arrayOf(
-                        githubResponseFor(branch1)))))))
-
-        stubFor(get("/repos/ClausPolanka/$repoName/branches?page=2").willReturn(aResponse()
-                .withStatus(200)
-                .withHeader("Content-Type", "application/json; charset=utf-8")
-                .withBody(Klaxon().toJsonString((arrayOf(
-                        githubResponseFor(branch2)))))))
+        stubGithubGetRequstForPageOneToReturn(branch1)
+        stubGithubRequestForPageTwoContaining(branch2)
 
         val branches = sut.get_all_branches()
 
@@ -123,6 +111,25 @@ class GithubHttpRepoTest {
                         sha = "4861382d8bd73481b98f72706cb57dc493de592b",
                         url = "https://api.github.com/repos/ClausPolanka/wordcount/commits/4861382d8bd73481b98f72706cb57dc493de592b"),
                 protected = false)
+    }
+
+    private fun stubGithubGetRequstForPageOneToReturn(branch1: Branch) {
+        stubFor(get("/repos/ClausPolanka/$repoName/branches?page=1").willReturn(aResponse()
+                .withStatus(200)
+                .withHeader("Content-Type", "application/json; charset=utf-8")
+                .withHeader("Link",
+                        "<https://api.github.com/repositories/157517927/branches?page=2>; rel=\"next\", " +
+                                "<https://api.github.com/repositories/157517927/branches?page=2>; rel=\"last\"")
+                .withBody(Klaxon().toJsonString((arrayOf(
+                        githubResponseFor(branch1)))))))
+    }
+
+    private fun stubGithubRequestForPageTwoContaining(branch2: Branch) {
+        stubFor(get("/repos/ClausPolanka/$repoName/branches?page=2").willReturn(aResponse()
+                .withStatus(200)
+                .withHeader("Content-Type", "application/json; charset=utf-8")
+                .withBody(Klaxon().toJsonString((arrayOf(
+                        githubResponseFor(branch2)))))))
     }
 
 }
