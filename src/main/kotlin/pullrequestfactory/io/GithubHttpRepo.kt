@@ -9,7 +9,7 @@ class GithubHttpRepo(
         private val repoName: String,
         private val basicAuthToken: String,
         private val cacheRepo: CacheRepo,
-        val ui: UI) : GithubReadRepo, GithubWriteRepo {
+        private val ui: UI) : GithubReadRepo, GithubWriteRepo {
 
     override fun get_all_branches(): List<Branch> {
         val response = khttp.get("$baseUrli/repos/ClausPolanka/$repoName/branches?page=1")
