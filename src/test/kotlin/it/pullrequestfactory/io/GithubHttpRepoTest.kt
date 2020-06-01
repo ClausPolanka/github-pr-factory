@@ -35,7 +35,7 @@ class GithubHttpRepoTest {
         val branch = Branch("first_name_iteration_1_claus")
         val sut = createGithubHttpRepo()
 
-        stubGithubRequestToReturn(branch)
+        stubGithubGetRequestToReturn(branch)
 
         val branches = sut.get_all_branches()
 
@@ -97,7 +97,7 @@ class GithubHttpRepoTest {
         return properties.split("=")[1]
     }
 
-    private fun stubGithubRequestToReturn(branch: Branch) {
+    private fun stubGithubGetRequestToReturn(branch: Branch) {
         stubFor(get("/repos/ClausPolanka/$repoName/branches?page=1").willReturn(aResponse()
                 .withStatus(200)
                 .withHeader("Content-Type", "application/json; charset=utf-8")
