@@ -1,6 +1,6 @@
 package pullrequestfactory.domain
 
-class PullRequests(val branches: List<Branch>) {
+class PullRequests(private val branches: List<Branch>) {
 
     fun create_pull_requests_for(candidate: Candidate): List<PullRequest> {
         var sessionNr = 0
