@@ -12,7 +12,7 @@ import pullrequestfactory.domain.NoopCache
 import pullrequestfactory.domain.PullRequest
 import pullrequestfactory.domain.QuietUI
 import pullrequestfactory.io.GithubHttpRepo
-import java.io.File
+import pullrequestfactory.io.Properties
 
 
 class GithubHttpRepoTest {
@@ -85,17 +85,11 @@ class GithubHttpRepoTest {
     }
 
     private fun createGithubHttpRepo() = GithubHttpRepo(
-            baseUrl(),
+            Properties("app.properties").getBaseUrl(),
             repoName,
             "basic-auth-token",
             NoopCache(),
             QuietUI())
-
-    private fun baseUrl(): String {
-        val resource = File("src/test/resources/app.properties")
-        val properties = resource.readText()
-        return properties.split("=")[1]
-    }
 
     private fun stubGithubGetRequestToReturn(branch: Branch) {
         stubFor(get("/repos/ClausPolanka/$repoName/branches?page=1").willReturn(aResponse()
