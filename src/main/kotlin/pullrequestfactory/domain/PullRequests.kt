@@ -9,19 +9,11 @@ class PullRequests(private val branches: List<Branch>) {
             val newSessionNr = create_session_number(currentBrIdx, pairingPartner, sessionNr)
             sessionNr = newSessionNr
             PullRequest(
-                    title = "${candidate.firstName.capitalize()} ${candidate.lastName.capitalize()} " +
-                            "Iteration $iterationNr / Session $newSessionNr ${pairingPartner.capitalize()}",
+                    title = title_for(candidate, iterationNr, newSessionNr, pairingPartner),
                     base = base_branch(currentBrIdx),
                     head = currentBranch.name)
         }
         return mark_pull_requests_with_pr(pullRequests.toMutableList())
-    }
-
-    private fun base_branch(currentBrIdx: Int): String {
-        return when (currentBrIdx) {
-            0 -> "master"
-            else -> branches[currentBrIdx.dec()].name
-        }
     }
 
     private fun create_session_number(currentBrIdx: Int, pairingPartner: String, sessionNumber: Int): Int {
@@ -34,6 +26,22 @@ class PullRequests(private val branches: List<Branch>) {
             currentBrIdx != 0 && currentBrIdx > sessionNumber -> sessionNumber.inc()
 
             else -> sessionNumber.inc()
+        }
+    }
+
+    private fun title_for(
+            candidate: Candidate,
+            iterationNr: String,
+            newSessionNr: Int,
+            pairingPartner: String): String {
+        return "${candidate.firstName.capitalize()} ${candidate.lastName.capitalize()} " +
+                "Iteration $iterationNr / Session $newSessionNr ${pairingPartner.capitalize()}"
+    }
+
+    private fun base_branch(currentBrIdx: Int): String {
+        return when (currentBrIdx) {
+            0 -> "master"
+            else -> branches[currentBrIdx.dec()].name
         }
     }
 
