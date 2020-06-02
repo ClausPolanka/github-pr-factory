@@ -14,6 +14,11 @@
         <junit.version>4.13</junit.version>
         <assertj.version>3.16.1</assertj.version>
         <wiremock.version>2.26.3</wiremock.version>
+        <khttp.version>1.0.0</khttp.version>
+        <klaxon.version>5.0.1</klaxon.version>
+        <maven-surefire-plugin.version>3.0.0-M4</maven-surefire-plugin.version>
+        <maven-jar-plugin.version>3.2.0</maven-jar-plugin.version>
+        <maven-assembly-plugin.version>3.3.0</maven-assembly-plugin.version>
     </properties>
 
     <dependencies>
@@ -35,12 +40,12 @@
         <dependency>
             <groupId>com.beust</groupId>
             <artifactId>klaxon</artifactId>
-            <version>5.0.1</version>
+            <version>${klaxon.version}</version>
         </dependency>
         <dependency>
             <groupId>khttp</groupId>
             <artifactId>khttp</artifactId>
-            <version>1.0.0</version>
+            <version>${khttp.version}</version>
         </dependency>
         <dependency>
             <groupId>org.assertj</groupId>
@@ -69,7 +74,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.0.0-M4</version>
+                <version>${maven-surefire-plugin.version}</version>
             </plugin>
             <plugin>
                 <groupId>org.jetbrains.kotlin</groupId>
@@ -96,7 +101,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
-                <version>3.2.0</version>
+                <version>${maven-jar-plugin.version}</version>
                 <configuration>
                     <archive>
                         <manifest>
@@ -109,7 +114,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
-                <version>3.3.0</version>
+                <version>${maven-assembly-plugin.version}</version>
                 <executions>
                     <execution>
                         <id>make-assembly</id>
