@@ -7,14 +7,15 @@ import pullrequestfactory.domain.Program
 class ValidProgram(private val programArgs: ProgramArgs) : Program {
 
     override fun execute() {
-        val baseUrl = Properties("app.properties", ConsoleUI()).getBaseUrl()
+        val ui = ConsoleUI()
+        val baseUrl = Properties("app.properties", ui).getBaseUrl()
         val githubRepo = GithubHttpRepo(
                 baseUrl,
                 "wordcount",
                 programArgs.basicAuthToken,
                 NoopCache(),
-                ConsoleUI())
-        val f = GithubPRFactory(githubRepo, githubRepo, ConsoleUI())
+                ui)
+        val f = GithubPRFactory(githubRepo, githubRepo, ui)
         f.create_pull_requests(programArgs.candidate, programArgs.pairingPartner)
     }
 
