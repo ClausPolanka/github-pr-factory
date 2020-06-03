@@ -101,8 +101,17 @@ class ProgramArgsTest {
     }
 
     @Test
-    fun candidate_has_a_wrong_default_name_when_args_are_empty() {
+    fun candidate_gets_default_name_when_args_are_empty() {
         val sut = ProgramArgs(emptyArray(), TestUI())
+
+        val c = sut.candidate
+
+        assertThat(c).isEqualTo(Candidate("Wrong", "Candidate"))
+    }
+    
+    @Test
+    fun candidate_gets_default_name_when_args_contain_name_without_hyphen_separator() {
+        val sut = ProgramArgs(arrayOf("firstnamelastname"), TestUI())
 
         val c = sut.candidate
 

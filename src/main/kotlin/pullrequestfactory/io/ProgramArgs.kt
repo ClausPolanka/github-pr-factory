@@ -38,7 +38,10 @@ class ProgramArgs(private val args: Array<String>, private val ui: UI) {
     val candidate: Candidate
         get() {
             val candidateFullName = if (args.size >= indexOfCandidate + 1) args[indexOfCandidate] else "Wrong-Candidate"
-            return Candidate(candidateFullName.split("-")[indexOfCandidate], candidateFullName.split("-")[1])
+            val parts = candidateFullName.split("-")
+            return if (parts.size == 2) {
+                Candidate(parts[indexOfCandidate], parts[1])
+            } else Candidate("Wrong", "Candidate")
         }
 
     val basicAuthToken: String
