@@ -136,6 +136,41 @@ class ProgramArgsTest {
         assertThat(basicAuthToken).isEmpty()
     }
 
+    @Test
+    fun pairing_partner_is_set_when_args_contain_names_separated_by_hyphen_as_third_value() {
+        val sut = ProgramArgs(arrayOf("firstname-lastname", "any-basic-auth-token", "claus-berni"), TestUI())
+
+        val pairingPartner = sut.pairingPartner
+
+        assertThat(pairingPartner).containsExactly("claus", "berni")
+    }
+
+    @Test
+    fun pairing_partner_is_set_when_args_contain_one_name_as_third_value() {
+        val sut = ProgramArgs(arrayOf("firstname-lastname", "any-basic-auth-token", "claus"), TestUI())
+
+        val pairingPartner = sut.pairingPartner
+
+        assertThat(pairingPartner).containsExactly("claus")
+    }
+
+    @Test
+    fun pairing_partner_is_set_when_args_contain_token_as_second_value() {
+        val sut = ProgramArgs(arrayOf("firstname-lastname", "any-basic-auth-token"), TestUI())
+
+        val pairingPartner = sut.pairingPartner
+
+        assertThat(pairingPartner).isEmpty()
+    }
+
+    @Test
+    fun pairing_partner_is_set_when_args_contain_token_as_second_value2() {
+        val sut = ProgramArgs(arrayOf("firstname-lastname", "any-basic-auth-token"), TestUI())
+
+        val pairingPartner = sut.pairingPartner
+
+        assertThat(pairingPartner).isEmpty()
+    }
 }
 
 class TestUI : UI {
