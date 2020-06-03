@@ -118,6 +118,24 @@ class ProgramArgsTest {
         assertThat(c).isEqualTo(Candidate("Wrong", "Candidate"))
     }
 
+    @Test
+    fun basic_auth_token_is_set_when_args_contain_token_as_second_value() {
+        val sut = ProgramArgs(arrayOf("firstname-lastname", "any-basic-auth-token"), TestUI())
+
+        val basicAuthToken = sut.basicAuthToken
+
+        assertThat(basicAuthToken).isEqualTo("any-basic-auth-token")
+    }
+
+    @Test
+    fun basic_auth_token_is_empty_when_args_does_not_contain_token_as_second_value() {
+        val sut = ProgramArgs(arrayOf("firstname-lastname"), TestUI())
+
+        val basicAuthToken = sut.basicAuthToken
+
+        assertThat(basicAuthToken).isEmpty()
+    }
+
 }
 
 class TestUI : UI {
