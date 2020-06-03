@@ -108,7 +108,7 @@ class ProgramArgsTest {
 
         assertThat(c).isEqualTo(Candidate("Wrong", "Candidate"))
     }
-    
+
     @Test
     fun candidate_gets_default_name_when_args_contain_name_without_hyphen_separator() {
         val sut = ProgramArgs(arrayOf("firstnamelastname"), TestUI())
@@ -120,7 +120,7 @@ class ProgramArgsTest {
 
 }
 
-class TestUI() : UI {
+class TestUI : UI {
     var shownMessage: String = ""
 
     override fun show(msg: String) {
