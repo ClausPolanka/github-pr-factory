@@ -7,7 +7,7 @@ import pullrequestfactory.domain.Program
 class ValidProgram(private val programArgs: ProgramArgs) : Program {
 
     override fun execute() {
-        val baseUrl = Properties("app.properties").getBaseUrl()
+        val baseUrl = Properties("app.properties", ConsoleUI()).getBaseUrl()
         val githubRepo = GithubHttpRepo(
                 baseUrl,
                 "wordcount",
