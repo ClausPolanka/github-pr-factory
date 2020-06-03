@@ -2,6 +2,7 @@ package it.pullrequestfactory.io
 
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
+import pullrequestfactory.domain.Candidate
 import pullrequestfactory.domain.UI
 import pullrequestfactory.io.ProgramArgs
 
@@ -88,6 +89,24 @@ class ProgramArgsTest {
         val areValid = sut.areValid()
 
         assertThat(areValid).isTrue()
+    }
+
+    @Test
+    fun candidate_is_correct_when_args_contains_candidate_and_name_has_correct_syntax() {
+        val sut = ProgramArgs(arrayOf("firstname-lastname"), TestUI())
+
+        val c = sut.candidate
+
+        assertThat(c).isEqualTo(Candidate("firstname", "lastname"))
+    }
+
+    @Test
+    fun candidate_has_a_wrong_default_name_when_args_are_empty() {
+        val sut = ProgramArgs(emptyArray(), TestUI())
+
+        val c = sut.candidate
+
+        assertThat(c).isEqualTo(Candidate("Wrong", "Candidate"))
     }
 
 }
