@@ -15,4 +15,13 @@ class PropertiesTest {
         assertThat(baseUrl).isEqualTo("http://localhost:8080")
     }
 
+    @Test
+    fun get_default_base_url_in_case_file_does_not_exist() {
+        val sut = Properties("invalid.txt")
+
+        val baseUrl = sut.getBaseUrl()
+
+        assertThat(baseUrl).isEqualTo("http://localhost")
+    }
+
 }
