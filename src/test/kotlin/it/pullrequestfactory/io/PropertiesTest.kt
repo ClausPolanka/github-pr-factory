@@ -27,7 +27,7 @@ class PropertiesTest {
 
     @Test
     fun get_default_base_url_in_case_base_url_property_does_not_exist() {
-        val sut = Properties("app_missing_base_url.properties.txt", ConsoleUI())
+        val sut = Properties("app_missing_base_url.properties", ConsoleUI())
 
         val baseUrl = sut.getBaseUrl()
 
