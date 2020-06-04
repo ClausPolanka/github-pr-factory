@@ -11,7 +11,6 @@ import pullrequestfactory.domain.Branch
 import pullrequestfactory.domain.NoopCache
 import pullrequestfactory.domain.PullRequest
 import pullrequestfactory.domain.QuietUI
-import pullrequestfactory.io.ConsoleUI
 import pullrequestfactory.io.GithubHttpRepo
 import pullrequestfactory.io.Properties
 
@@ -86,7 +85,7 @@ class GithubHttpRepoTest {
     }
 
     private fun createGithubHttpRepo() = GithubHttpRepo(
-            Properties("app.properties", ConsoleUI()).getBaseUrl(),
+            Properties("app.properties").getBaseUrl(),
             repoName,
             "basic-auth-token",
             NoopCache(),

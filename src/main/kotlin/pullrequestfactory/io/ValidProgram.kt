@@ -8,7 +8,7 @@ class ValidProgram(private val programArgs: ProgramArgs) : Program {
 
     override fun execute() {
         val ui = ConsoleUI()
-        val baseUrl = Properties("app.properties", ui).getBaseUrl()
+        val baseUrl = Properties("app.properties").getBaseUrl()
         val githubRepo = GithubHttpRepo(
                 baseUrl,
                 "wordcount",

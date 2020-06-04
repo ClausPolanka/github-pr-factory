@@ -1,12 +1,10 @@
 package pullrequestfactory.io
 
-import pullrequestfactory.domain.UI
 import java.io.FileInputStream
 import java.nio.file.Paths
 
-class Properties(private val fileName: String, private val ui: UI) {
+class Properties(private val fileName: String) {
 
-    private val indexOfValue = 1
     private val defaultUrl = "http://localhost"
 
     fun getBaseUrl(): String {
