@@ -44,43 +44,45 @@ class KHttpResponseLastPageParserTest {
     private fun responseWithHeaders(hdrs: Map<String, String>): Response {
         return object : Response {
             override val connection: HttpURLConnection
-                get() = TODO("not implemented")
+                get() = IGNORE("not needed for tests")
             override val content: ByteArray
-                get() = TODO("not implemented")
+                get() = IGNORE("not needed for tests")
             override val cookies: CookieJar
-                get() = TODO("not implemented")
+                get() = IGNORE("not needed for tests")
             override var encoding: Charset
-                get() = TODO("not implemented")
+                get() = IGNORE("not needed for tests")
                 set(value) {
-                    TODO("not implemented $value")
+                    IGNORE("not implemented $value")
                 }
             override val headers: Map<String, String>
                 get() = hdrs
             override val history: List<Response>
-                get() = TODO("not implemented")
+                get() = IGNORE("not needed for tests")
             override val jsonArray: JSONArray
-                get() = TODO("not implemented")
+                get() = IGNORE("not needed for tests")
             override val jsonObject: JSONObject
-                get() = TODO("not implemented")
+                get() = IGNORE("not needed for tests")
             override val raw: InputStream
-                get() = TODO("not implemented")
+                get() = IGNORE("not needed for tests")
             override val request: Request
-                get() = TODO("not implemented")
+                get() = IGNORE("not needed for tests")
             override val statusCode: Int
-                get() = TODO("not implemented")
+                get() = IGNORE("not needed for tests")
             override val text: String
-                get() = TODO("not implemented")
+                get() = IGNORE("not needed for tests")
             override val url: String
-                get() = TODO("not implemented")
+                get() = IGNORE("not needed for tests")
 
             override fun contentIterator(chunkSize: Int): Iterator<ByteArray> {
-                TODO("not implemented")
+                IGNORE("not needed for tests")
             }
 
             override fun lineIterator(chunkSize: Int, delimiter: ByteArray?): Iterator<ByteArray> {
-                TODO("not implemented")
+                IGNORE("not needed for tests")
             }
         }
     }
+
+    private fun IGNORE(reason: String): Nothing = throw NotImplementedError("An operation is not implemented: $reason")
 
 }
