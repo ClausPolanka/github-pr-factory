@@ -13,6 +13,8 @@ import pullrequestfactory.main
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.PrintStream
+import java.nio.file.Files
+import java.nio.file.Paths
 
 
 class MainKtTest {
@@ -20,6 +22,8 @@ class MainKtTest {
     private val systemIn = System.`in`
     private val systemOut = System.out
     private val userOutput = ByteArrayOutputStream()
+    private val propsFileName = "app.properties"
+    private val wireMockDefaultUrl = "http://localhost:8080"
 
     companion object {
         @ClassRule
@@ -29,6 +33,7 @@ class MainKtTest {
 
     @Before
     fun setUp() {
+        createPropsWith("baseUrl=$wireMockDefaultUrl")
         System.setOut(PrintStream(userOutput))
     }
 
@@ -37,6 +42,7 @@ class MainKtTest {
         reset()
         System.setIn(systemIn)
         System.setOut(systemOut)
+        Files.deleteIfExists(Paths.get("target/test-classes/$propsFileName"))
     }
 
     @Test
@@ -129,5 +135,9 @@ class MainKtTest {
                 .withHeader("Content-Type", matching("application/json")))
     }
 
+    private fun createPropsWith(prop: String): String {
+        Files.write(Paths.get("target/test-classes/$propsFileName"), prop.toByteArray())
+        return propsFileName
+    }
 
 }

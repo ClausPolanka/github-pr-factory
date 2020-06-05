@@ -12,7 +12,6 @@ import pullrequestfactory.domain.NoopCache
 import pullrequestfactory.domain.PullRequest
 import pullrequestfactory.domain.QuietUI
 import pullrequestfactory.io.GithubHttpRepo
-import pullrequestfactory.io.Properties
 
 
 class GithubHttpRepoTest {
@@ -24,6 +23,7 @@ class GithubHttpRepoTest {
     }
 
     private val repoName = "repository-name"
+    private val wireMockDefaultUrl = "http://localhost:8080"
 
     @After
     fun tearDown() {
@@ -84,8 +84,8 @@ class GithubHttpRepoTest {
                 .withHeader("Content-Type", matching("application/json")))
     }
 
-    private fun createGithubHttpRepo() = GithubHttpRepo(
-            Properties("app.properties").getBaseUrl(),
+    private fun createGithubHttpRepo(): GithubHttpRepo = GithubHttpRepo(
+            wireMockDefaultUrl,
             repoName,
             "basic-auth-token",
             NoopCache(),

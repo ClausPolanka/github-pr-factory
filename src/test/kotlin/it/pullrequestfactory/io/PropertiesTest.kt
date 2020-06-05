@@ -9,11 +9,11 @@ import java.nio.file.Paths
 
 class PropertiesTest {
 
-    private val fileName = "tmp.properties"
+    private val propsFileName = "tmp.properties"
 
     @After
     fun tearDown() {
-        Files.deleteIfExists(Paths.get("target/test-classes/$fileName"))
+        Files.deleteIfExists(Paths.get("target/test-classes/$propsFileName"))
     }
 
     @Test
@@ -37,8 +37,8 @@ class PropertiesTest {
     }
 
     private fun createPropsWith(prop: String): String {
-        Files.write(Paths.get("target/test-classes/$fileName"), prop.toByteArray())
-        return fileName
+        Files.write(Paths.get("target/test-classes/$propsFileName"), prop.toByteArray())
+        return propsFileName
     }
 
 }
