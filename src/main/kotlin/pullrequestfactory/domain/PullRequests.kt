@@ -14,19 +14,6 @@ class PullRequests(private val branches: List<Branch>) {
         return mark_pull_requests_with_pr(pullRequests.toMutableList())
     }
 
-    private fun create_session_number(currentBrIdx: Int, pairingPartner: String, sessionNumber: Int): Int {
-        return when {
-            // same session because previous branch is from same pairing partner
-            currentBrIdx != 0 && branches[currentBrIdx.dec()].name.endsWith(pairingPartner) -> sessionNumber
-
-            // current branch idx is higher than session number because previous session switched iterations but
-            // stayed in same session
-            currentBrIdx != 0 && currentBrIdx > sessionNumber -> sessionNumber.inc()
-
-            else -> sessionNumber.inc()
-        }
-    }
-
     private fun title_for(
             candidate: Candidate,
             iterationNr: String,
