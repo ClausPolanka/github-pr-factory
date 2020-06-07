@@ -62,6 +62,7 @@ class PullRequests(private val branches: List<Branch>) {
         }
         return pullRequests
     }
+
 }
 
 
