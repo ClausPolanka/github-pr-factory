@@ -3,13 +3,11 @@ package pullrequestfactory.domain
 class PullRequests(private val branches: List<Branch>) {
 
     fun create_pull_requests_for(candidate: Candidate): List<PullRequest> {
-        var sessionNr = 0
+        val sessions = Sessions(branches).create()
         val pullRequests = branches.mapIndexed { currentBrIdx, currentBranch ->
             val (_, _, _, iterationNr, pairingPartner) = currentBranch.name.split("_")
-            val newSessionNr = create_session_number(currentBrIdx, pairingPartner, sessionNr)
-            sessionNr = newSessionNr
             PullRequest(
-                    title = title_for(candidate, iterationNr, newSessionNr, pairingPartner),
+                    title = title_for(candidate, iterationNr, sessions[currentBrIdx].toInt(), pairingPartner),
                     base = base_branch(currentBrIdx),
                     head = currentBranch.name)
         }
