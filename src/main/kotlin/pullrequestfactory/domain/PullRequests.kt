@@ -11,10 +11,10 @@ class PullRequests {
                     base = baseBranches[idx],
                     head = branch)
         }
-        return mark_pull_requests_with_pr(pullRequests.toMutableList())
+        return mark_pull_request_titles_with_pr(pullRequests.toMutableList())
     }
 
-    private fun mark_pull_requests_with_pr(pullRequests: MutableList<PullRequest>): List<PullRequest> {
+    private fun mark_pull_request_titles_with_pr(pullRequests: MutableList<PullRequest>): List<PullRequest> {
         for (i in pullRequests.indices) {
             if (pullRequests[i].base.name == "master") {
                 continue
