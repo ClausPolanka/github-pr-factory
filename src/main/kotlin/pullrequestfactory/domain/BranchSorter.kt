@@ -16,7 +16,7 @@ class BranchSorter {
     private fun sort_by_iteration_number(branches: List<Branch>): List<Branch> {
         return branches
                 .map { branch ->
-                    val branchNameParts = branch.name.split("_")
+                    val branchNameParts = branch.parts()
                     val iteration = branchNameParts.dropLast(1).last()
                     Pair(branch.name, iteration)
                 }

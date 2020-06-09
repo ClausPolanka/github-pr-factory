@@ -5,7 +5,7 @@ class PullRequests(private val branches: List<Branch>) {
     fun create_pull_requests_for(candidate: Candidate): List<PullRequest> {
         val sessions = Sessions(branches).create()
         val pullRequests = branches.mapIndexed { currentBrIdx, currentBranch ->
-            val (_, _, _, iterationNr, pairingPartner) = currentBranch.name.split("_")
+            val (_, _, _, iterationNr, pairingPartner) = currentBranch.parts()
             PullRequest(
                     title = title_for(candidate, iterationNr, sessions[currentBrIdx].toInt(), pairingPartner),
                     base = base_branch(currentBrIdx),
