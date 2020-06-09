@@ -19,8 +19,8 @@ class PullRequests(private val branches: List<Branch>) {
             if (pullRequests[i].base.name == "master") {
                 continue
             }
-            val currBaseIterNr = pullRequests[i].base.iteration_nr()
-            val currHeadIterNr = pullRequests[i].head.iteration_nr()
+            val currBaseIterNr = pullRequests[i].base_iteration_nr()
+            val currHeadIterNr = pullRequests[i].head_iteration_nr()
 
             when {
                 currBaseIterNr < currHeadIterNr -> pullRequests[i - 1] = PullRequest(
