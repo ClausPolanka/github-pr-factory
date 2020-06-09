@@ -3,33 +3,16 @@ package pullrequestfactory.domain
 class PullRequests(private val branches: List<Branch>) {
 
     fun create_pull_requests_for(candidate: Candidate): List<PullRequest> {
-        val sessions = Sessions(branches).create()
+        val titles = BranchTitles(branches).create()
         val baseBranches = BaseBranches(branches).create()
         val headBranches = HeadBranches(branches).create()
-        val pullRequests = branches.mapIndexed { currentBrIdx, currentBranch ->
-            val (_, _, _, iterationNr, pairingPartner) = currentBranch.parts()
+        val pullRequests = branches.mapIndexed { idx, _ ->
             PullRequest(
-                    title = title_for(candidate, iterationNr, sessions[currentBrIdx].toInt(), pairingPartner),
-                    base = baseBranches[currentBrIdx],
-                    head = headBranches[currentBrIdx])
+                    title = titles[idx],
+                    base = baseBranches[idx],
+                    head = headBranches[idx])
         }
         return mark_pull_requests_with_pr(pullRequests.toMutableList())
-    }
-
-    private fun title_for(
-            candidate: Candidate,
-            iterationNr: String,
-            newSessionNr: Int,
-            pairingPartner: String): String {
-        return "${candidate.firstName.capitalize()} ${candidate.lastName.capitalize()} " +
-                "Iteration $iterationNr / Session $newSessionNr ${pairingPartner.capitalize()}"
-    }
-
-    private fun base_branch(currentBrIdx: Int): String {
-        return when (currentBrIdx) {
-            0 -> "master"
-            else -> branches[currentBrIdx.dec()].name
-        }
     }
 
     private fun mark_pull_requests_with_pr(pullRequests: MutableList<PullRequest>): List<PullRequest> {
