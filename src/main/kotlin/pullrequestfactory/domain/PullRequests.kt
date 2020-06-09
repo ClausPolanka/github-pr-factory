@@ -16,14 +16,11 @@ class PullRequests {
 
     private fun mark_pull_request_titles_with_pr(pullRequests: MutableList<PullRequest>): List<PullRequest> {
         for (i in pullRequests.indices) {
-            if (pullRequests[i].base.name == "master") {
+            if (pullRequests[i].is_base_master()) {
                 continue
             }
-            val currBaseIterNr = pullRequests[i].base_iteration_nr()
-            val currHeadIterNr = pullRequests[i].head_iteration_nr()
-
             when {
-                currBaseIterNr < currHeadIterNr -> pullRequests[i - 1] = PullRequest(
+                pullRequests[i].is_pull_request() -> pullRequests[i - 1] = PullRequest(
                         pullRequests[i - 1].title + " [PR]",
                         pullRequests[i - 1].base,
                         pullRequests[i - 1].head)
@@ -33,8 +30,3 @@ class PullRequests {
     }
 
 }
-
-
-
-
-
