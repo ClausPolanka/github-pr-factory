@@ -8,8 +8,8 @@ class Sessions(private val branches: List<Branch>) {
             when (idx) {
                 0 -> prevSession.toString()
                 else -> {
-                    val (_, _, _, _, currPP) = branch.name.split("_")
-                    val (_, _, _, _, prevPP) = branches[idx - 1].name.split("_")
+                    val (_, _, _, _, currPP) = branch.parts()
+                    val (_, _, _, _, prevPP) = branches[idx - 1].parts()
                     if (prevPP == currPP) {
                         "$prevSession"
                     } else {
@@ -22,3 +22,4 @@ class Sessions(private val branches: List<Branch>) {
     }
 
 }
+

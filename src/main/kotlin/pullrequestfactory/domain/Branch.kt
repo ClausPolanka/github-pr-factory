@@ -1,3 +1,6 @@
 package pullrequestfactory.domain
 
-data class Branch(val name: String)
+data class Branch(val name: String) {
+    fun parts() = name.split("_")
+}
+
