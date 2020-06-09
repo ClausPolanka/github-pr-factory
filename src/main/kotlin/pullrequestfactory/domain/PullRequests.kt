@@ -1,6 +1,6 @@
 package pullrequestfactory.domain
 
-class PullRequests() {
+class PullRequests {
 
     fun create_pull_requests_for(branches: List<Branch>, candidate: Candidate): List<PullRequest> {
         val titles = BranchTitles(branches).create()
