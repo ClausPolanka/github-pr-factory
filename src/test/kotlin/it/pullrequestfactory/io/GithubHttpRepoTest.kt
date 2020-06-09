@@ -72,8 +72,8 @@ class GithubHttpRepoTest {
         val sut = createGithubHttpRepo()
         val pr = PullRequest(
                 title = "Radek Leifer Iteration 1 / Session 1 Claus",
-                base = "master",
-                head = "radek_leifer_interation_1_claus")
+                base = Branch("master"),
+                head = Branch("radek_leifer_interation_1_claus"))
 
         sut.create_pull_request(pr)
 
