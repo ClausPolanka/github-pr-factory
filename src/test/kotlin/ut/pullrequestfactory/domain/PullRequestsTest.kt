@@ -3,7 +3,6 @@ package ut.pullrequestfactory.domain
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import pullrequestfactory.domain.Branch
-import pullrequestfactory.domain.Candidate
 import pullrequestfactory.domain.PullRequest
 import pullrequestfactory.domain.PullRequests
 
@@ -14,8 +13,8 @@ class PullRequestsTest {
         val sut = PullRequests()
 
         val prs = sut.create_pull_requests_for(
-                listOf(Branch("firstname_lastname_iteration_1_pairingpartner")),
-                Candidate("Firstname", "Lastname"))
+                listOf(Branch("firstname_lastname_iteration_1_pairingpartner"))
+        )
 
         assertThat(prs).containsExactly(PullRequest(
                 "Firstname Lastname Iteration 1 / Session 1 Pairingpartner",
@@ -29,8 +28,8 @@ class PullRequestsTest {
 
         val prs = sut.create_pull_requests_for(listOf(
                 Branch("firstname_lastname_iteration_1_pairingpartner"),
-                Branch("firstname_lastname_iteration_2_pairingpartner")),
-                Candidate("Firstname", "Lastname"))
+                Branch("firstname_lastname_iteration_2_pairingpartner"))
+        )
 
         assertThat(prs)
                 .contains(PullRequest(
@@ -49,8 +48,8 @@ class PullRequestsTest {
 
         val prs = sut.create_pull_requests_for(listOf(
                 Branch("firstname_lastname_iteration_1_pairingpartner1"),
-                Branch("firstname_lastname_iteration_1_pairingpartner2")),
-                Candidate("Firstname", "Lastname"))
+                Branch("firstname_lastname_iteration_1_pairingpartner2"))
+        )
 
         assertThat(prs)
                 .contains(PullRequest(
@@ -69,8 +68,8 @@ class PullRequestsTest {
 
         val prs = sut.create_pull_requests_for(listOf(
                 Branch("firstname_lastname_iteration_1_pairingpartner1"),
-                Branch("firstname_lastname_iteration_2_pairingpartner2")),
-                Candidate("Firstname", "Lastname"))
+                Branch("firstname_lastname_iteration_2_pairingpartner2"))
+        )
 
         assertThat(prs)
                 .contains(PullRequest(
@@ -90,8 +89,8 @@ class PullRequestsTest {
         val prs = sut.create_pull_requests_for(listOf(
                 Branch("firstname_lastname_iteration_1_pairingpartner1"),
                 Branch("firstname_lastname_iteration_2_pairingpartner1"),
-                Branch("firstname_lastname_iteration_2_pairingpartner2")),
-                Candidate("Firstname", "Lastname"))
+                Branch("firstname_lastname_iteration_2_pairingpartner2"))
+        )
 
         assertThat(prs)
                 .contains(PullRequest(

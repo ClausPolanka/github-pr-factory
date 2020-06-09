@@ -2,7 +2,7 @@ package pullrequestfactory.domain
 
 class PullRequests {
 
-    fun create_pull_requests_for(branches: List<Branch>, candidate: Candidate): List<PullRequest> {
+    fun create_pull_requests_for(branches: List<Branch>): List<PullRequest> {
         val titles = BranchTitles(branches).create()
         val baseBranches = BaseBranches(branches).create()
         val pullRequests = branches.mapIndexed { idx, branch ->
