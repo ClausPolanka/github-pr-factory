@@ -83,42 +83,42 @@ class MainKtTest {
         verify(8, postRequestedFor(urlEqualTo("/repos/ClausPolanka/wordcount/pulls")))
 
         verifyPostRequestToGithubToCreatePullRequestFor(PullRequest(
-                title = "Radek Leifer Iteration 1 / Session 1 Claus",
+                _title = "Radek Leifer Iteration 1 / Session 1 Claus",
                 base = "master",
                 head = "radek_leifer_interation_1_claus"))
 
         verifyPostRequestToGithubToCreatePullRequestFor(PullRequest(
-                title = "Radek Leifer Iteration 1 / Session 2 Berni",
+                _title = "Radek Leifer Iteration 1 / Session 2 Berni",
                 base = "radek_leifer_interation_1_claus",
                 head = "radek_leifer_interation_1_berni"))
 
         verifyPostRequestToGithubToCreatePullRequestFor(PullRequest(
-                title = "Radek Leifer Iteration 1 / Session 3 Dominik [PR]",
+                _title = "Radek Leifer Iteration 1 / Session 3 Dominik [PR]",
                 base = "radek_leifer_interation_1_berni",
                 head = "radek_leifer_iteration_1_dominik"))
 
         verifyPostRequestToGithubToCreatePullRequestFor(PullRequest(
-                title = "Radek Leifer Iteration 2 / Session 3 Dominik",
+                _title = "Radek Leifer Iteration 2 / Session 3 Dominik",
                 base = "radek_leifer_iteration_1_dominik",
                 head = "radek_leifer_iteration_2_dominik"))
 
         verifyPostRequestToGithubToCreatePullRequestFor(PullRequest(
-                title = "Radek Leifer Iteration 2 / Session 4 Christian [PR]",
+                _title = "Radek Leifer Iteration 2 / Session 4 Christian [PR]",
                 base = "radek_leifer_iteration_2_dominik",
                 head = "radek_leifer_iteration_2_christian"))
 
         verifyPostRequestToGithubToCreatePullRequestFor(PullRequest(
-                title = "Radek Leifer Iteration 3 / Session 5 Shubi",
+                _title = "Radek Leifer Iteration 3 / Session 5 Shubi",
                 base = "radek_leifer_iteration_2_christian",
                 head = "radek_leifer_iteration_3_shubi"))
 
         verifyPostRequestToGithubToCreatePullRequestFor(PullRequest(
-                title = "Radek Leifer Iteration 3 / Session 6 Markus",
+                _title = "Radek Leifer Iteration 3 / Session 6 Markus",
                 base = "radek_leifer_iteration_3_shubi",
                 head = "radek_leifer_iteration_3_markus"))
 
         verifyPostRequestToGithubToCreatePullRequestFor(PullRequest(
-                title = "Radek Leifer Iteration 3 / Session 7 Mihai",
+                _title = "Radek Leifer Iteration 3 / Session 7 Mihai",
                 base = "radek_leifer_iteration_3_markus",
                 head = "radek_leifer_iteration_3_mihai"))
     }

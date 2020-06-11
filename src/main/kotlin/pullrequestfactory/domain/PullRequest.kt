@@ -1,9 +1,11 @@
 package pullrequestfactory.domain
 
-data class PullRequest(var title: String, val base: String, val head: String) {
+data class PullRequest(private var _title: String, val base: String, val head: String) {
+
+    val title: String get() = _title
 
     fun add_pr_mark_to_title(nextPr: PullRequest) {
-        title = if (nextPr.is_pull_request()) "$title [PR]" else title
+        _title = if (nextPr.is_pull_request()) "$_title [PR]" else _title
     }
 
     private fun is_pull_request(): Boolean = !is_base_master() && Branch(base).iteration_nr() < Branch(head).iteration_nr()

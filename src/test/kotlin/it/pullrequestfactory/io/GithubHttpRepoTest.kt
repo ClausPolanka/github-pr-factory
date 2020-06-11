@@ -70,7 +70,7 @@ class GithubHttpRepoTest {
     fun create_pull_request() {
         val sut = createGithubHttpRepo()
         val pr = PullRequest(
-                title = "Radek Leifer Iteration 1 / Session 1 Claus",
+                _title = "Radek Leifer Iteration 1 / Session 1 Claus",
                 base = "master",
                 head = "radek_leifer_interation_1_claus")
 
