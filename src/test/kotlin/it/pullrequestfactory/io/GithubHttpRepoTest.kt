@@ -114,16 +114,14 @@ class GithubHttpRepoTest {
                 .withStatus(200)
                 .withHeader("Content-Type", "application/json; charset=utf-8")
                 .withHeader("Link", linkHeader)
-                .withBody(Klaxon().toJsonString((arrayOf(
-                        githubResponseFor(branch)))))))
+                .withBody(Klaxon().toJsonString((arrayOf(githubResponseFor(branch)))))))
     }
 
     private fun stubGithubRequestForPageTwoContaining(branch: Branch) {
         stubFor(get("/repos/ClausPolanka/$repoName/branches?page=2").willReturn(aResponse()
                 .withStatus(200)
                 .withHeader("Content-Type", "application/json; charset=utf-8")
-                .withBody(Klaxon().toJsonString((arrayOf(
-                        githubResponseFor(branch)))))))
+                .withBody(Klaxon().toJsonString((arrayOf(githubResponseFor(branch)))))))
     }
 
 }
