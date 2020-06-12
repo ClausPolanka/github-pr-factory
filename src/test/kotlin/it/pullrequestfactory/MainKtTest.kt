@@ -24,6 +24,7 @@ class MainKtTest {
     private val userOutput = ByteArrayOutputStream()
     private val propsFileName = "app.properties"
     private val wireMockDefaultUrl = "http://localhost:8080"
+    private val linkHeader = "<https://api.github.com/repositories/157517927/branches?page=2>; rel=\"next\", <https://api.github.com/repositories/157517927/branches?page=9>; rel=\"last\""
 
     companion object {
         @ClassRule
@@ -75,7 +76,7 @@ class MainKtTest {
         stubFor(get("/repos/ClausPolanka/wordcount/branches?page=$pageNr")
                 .willReturn(aResponse().withStatus(200)
                         // Only important for first request
-                        .withHeader("Link", "<https://api.github.com/repositories/157517927/branches?page=2>; rel=\"next\", <https://api.github.com/repositories/157517927/branches?page=9>; rel=\"last\"")
+                        .withHeader("Link", linkHeader)
                         .withHeader("Content-Type", "application/json; charset=utf-8")
                         .withBody(File("json/branches-page-$pageNr.json").readText())))
     }
