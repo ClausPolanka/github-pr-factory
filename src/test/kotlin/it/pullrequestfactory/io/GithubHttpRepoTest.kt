@@ -59,7 +59,8 @@ class GithubHttpRepoTest {
     fun branches_are_empty_when_Github_returs_403_forbidden_status_code() {
         val sut = createGithubHttpRepo()
 
-        stubFor(get("/repos/ClausPolanka/$repoName/branches?page=1").willReturn(aResponse().withStatus(403)))
+        stubFor(get("/repos/ClausPolanka/$repoName/branches?page=1")
+                .willReturn(aResponse().withStatus(403)))
 
         val branches = sut.get_all_branches()
 
@@ -77,7 +78,12 @@ class GithubHttpRepoTest {
         sut.create_pull_request(pr)
 
         verify(postRequestedFor(urlMatching("/repos/ClausPolanka/$repoName/pulls"))
-                .withRequestBody(matching(Regex.escape("""{"base" : "master", "head" : "radek_leifer_interation_1_claus", "title" : "Radek Leifer Iteration 1 / Session 1 Claus"}""")))
+                .withRequestBody(matching(Regex.escape(
+                        """{
+                            "base" : "master",
+                            "head" : "radek_leifer_interation_1_claus",
+                            "title" : "Radek Leifer Iteration 1 / Session 1 Claus"
+                           }""".trimMargin())))
                 .withHeader("Accept", matching("application/json"))
                 .withHeader("Authorization", matching("Basic .*"))
                 .withHeader("Content-Type", matching("application/json")))
