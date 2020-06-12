@@ -21,6 +21,8 @@ class GithubHttpRepoTest {
         val wireMockRule = WireMockRule()
     }
 
+    private val linkHeader = "<https://api.github.com/repositories/157517927/branches?page=2>; rel=\"next\", " +
+            "<https://api.github.com/repositories/157517927/branches?page=2>; rel=\"last\""
     private val repoName = "repository-name"
     private val wireMockDefaultUrl = "http://localhost:8080"
 
@@ -111,9 +113,7 @@ class GithubHttpRepoTest {
         stubFor(get("/repos/ClausPolanka/$repoName/branches?page=1").willReturn(aResponse()
                 .withStatus(200)
                 .withHeader("Content-Type", "application/json; charset=utf-8")
-                .withHeader("Link",
-                        "<https://api.github.com/repositories/157517927/branches?page=2>; rel=\"next\", " +
-                                "<https://api.github.com/repositories/157517927/branches?page=2>; rel=\"last\"")
+                .withHeader("Link", linkHeader)
                 .withBody(Klaxon().toJsonString((arrayOf(
                         githubResponseFor(branch)))))))
     }
