@@ -107,7 +107,7 @@ class GithubHttpRepoTest {
                 protected = false)
     }
 
-    private fun stubGithubGetRequstForPageOneToReturn(branch1: Branch) {
+    private fun stubGithubGetRequstForPageOneToReturn(branch: Branch) {
         stubFor(get("/repos/ClausPolanka/$repoName/branches?page=1").willReturn(aResponse()
                 .withStatus(200)
                 .withHeader("Content-Type", "application/json; charset=utf-8")
@@ -115,15 +115,15 @@ class GithubHttpRepoTest {
                         "<https://api.github.com/repositories/157517927/branches?page=2>; rel=\"next\", " +
                                 "<https://api.github.com/repositories/157517927/branches?page=2>; rel=\"last\"")
                 .withBody(Klaxon().toJsonString((arrayOf(
-                        githubResponseFor(branch1)))))))
+                        githubResponseFor(branch)))))))
     }
 
-    private fun stubGithubRequestForPageTwoContaining(branch2: Branch) {
+    private fun stubGithubRequestForPageTwoContaining(branch: Branch) {
         stubFor(get("/repos/ClausPolanka/$repoName/branches?page=2").willReturn(aResponse()
                 .withStatus(200)
                 .withHeader("Content-Type", "application/json; charset=utf-8")
                 .withBody(Klaxon().toJsonString((arrayOf(
-                        githubResponseFor(branch2)))))))
+                        githubResponseFor(branch)))))))
     }
 
 }
