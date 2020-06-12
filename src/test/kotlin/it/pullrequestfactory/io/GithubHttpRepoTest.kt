@@ -71,13 +71,13 @@ class GithubHttpRepoTest {
         val sut = createGithubHttpRepo()
         val pr = PullRequest(
                 _title = "Radek Leifer Iteration 1 / Session 1 Claus",
-                base = "master",
-                head = "radek_leifer_interation_1_claus")
+                _base = Branch("master"),
+                _head = Branch("radek_leifer_interation_1_claus"))
 
         sut.create_pull_request(pr)
 
         verify(postRequestedFor(urlMatching("/repos/ClausPolanka/$repoName/pulls"))
-                .withRequestBody(matching(Regex.escape(Klaxon().toJsonString(pr))))
+                .withRequestBody(matching(Regex.escape("""{"base" : "master", "head" : "radek_leifer_interation_1_claus", "title" : "Radek Leifer Iteration 1 / Session 1 Claus"}""")))
                 .withHeader("Accept", matching("application/json"))
                 .withHeader("Authorization", matching("Basic .*"))
                 .withHeader("Content-Type", matching("application/json")))

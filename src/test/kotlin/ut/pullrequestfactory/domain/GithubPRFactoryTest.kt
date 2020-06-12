@@ -21,12 +21,12 @@ class GithubPRFactoryTest {
         assertThat(expectedPrs).containsExactly(
                 PullRequest(
                         _title = "Firstname Lastname Iteration 1 / Session 1 Claus [PR]",
-                        base = "master",
-                        head = "firstname_lastname_iteration_1_claus"),
+                        _base = Branch("master"),
+                        _head = Branch("firstname_lastname_iteration_1_claus")),
                 PullRequest(
                         _title = "Firstname Lastname Iteration 2 / Session 2 Berni",
-                        base = "firstname_lastname_iteration_1_claus",
-                        head = "firstname_lastname_iteration_2_berni"))
+                        _base = Branch("firstname_lastname_iteration_1_claus"),
+                        _head = Branch("firstname_lastname_iteration_2_berni")))
     }
 
     @Test
@@ -40,8 +40,8 @@ class GithubPRFactoryTest {
         assertThat(expectedPrs).containsExactly(
                 PullRequest(
                         _title = "A Lastname Iteration 1 / Session 1 Claus",
-                        base = "master",
-                        head = "a_lastname_iteration_1_claus"))
+                        _base = Branch("master"),
+                        _head = Branch("a_lastname_iteration_1_claus")))
     }
 
 
@@ -56,8 +56,8 @@ class GithubPRFactoryTest {
         assertThat(expectedPrs).containsExactly(
                 PullRequest(
                         _title = "Firstname A Iteration 1 / Session 1 Claus",
-                        base = "master",
-                        head = "firstname_a_iteration_1_claus"))
+                        _base = Branch("master"),
+                        _head = Branch("firstname_a_iteration_1_claus")))
     }
 
     @Test

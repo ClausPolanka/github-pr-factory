@@ -18,8 +18,8 @@ class PullRequestsTest {
 
         assertThat(prs).containsExactly(PullRequest(
                 "Firstname Lastname Iteration 1 / Session 1 Pairingpartner",
-                "master",
-                "firstname_lastname_iteration_1_pairingpartner"))
+                Branch("master"),
+                Branch("firstname_lastname_iteration_1_pairingpartner")))
     }
 
     @Test
@@ -34,12 +34,12 @@ class PullRequestsTest {
         assertThat(prs)
                 .contains(PullRequest(
                         "Firstname Lastname Iteration 1 / Session 1 Pairingpartner [PR]",
-                        "master",
-                        "firstname_lastname_iteration_1_pairingpartner"))
+                        Branch("master"),
+                        Branch("firstname_lastname_iteration_1_pairingpartner")))
                 .contains(PullRequest(
                         "Firstname Lastname Iteration 2 / Session 1 Pairingpartner",
-                        "firstname_lastname_iteration_1_pairingpartner",
-                        "firstname_lastname_iteration_2_pairingpartner"))
+                        Branch("firstname_lastname_iteration_1_pairingpartner"),
+                        Branch("firstname_lastname_iteration_2_pairingpartner")))
     }
 
     @Test
@@ -54,12 +54,12 @@ class PullRequestsTest {
         assertThat(prs)
                 .contains(PullRequest(
                         "Firstname Lastname Iteration 1 / Session 1 Pairingpartner1",
-                        "master",
-                        "firstname_lastname_iteration_1_pairingpartner1"))
+                        Branch("master"),
+                        Branch("firstname_lastname_iteration_1_pairingpartner1")))
                 .contains(PullRequest(
                         "Firstname Lastname Iteration 1 / Session 2 Pairingpartner2",
-                        "firstname_lastname_iteration_1_pairingpartner1",
-                        "firstname_lastname_iteration_1_pairingpartner2"))
+                        Branch("firstname_lastname_iteration_1_pairingpartner1"),
+                        Branch("firstname_lastname_iteration_1_pairingpartner2")))
     }
 
     @Test
@@ -74,12 +74,12 @@ class PullRequestsTest {
         assertThat(prs)
                 .contains(PullRequest(
                         "Firstname Lastname Iteration 1 / Session 1 Pairingpartner1 [PR]",
-                        "master",
-                        "firstname_lastname_iteration_1_pairingpartner1"))
+                        Branch("master"),
+                        Branch("firstname_lastname_iteration_1_pairingpartner1")))
                 .contains(PullRequest(
                         "Firstname Lastname Iteration 2 / Session 2 Pairingpartner2",
-                        "firstname_lastname_iteration_1_pairingpartner1",
-                        "firstname_lastname_iteration_2_pairingpartner2"))
+                        Branch("firstname_lastname_iteration_1_pairingpartner1"),
+                        Branch("firstname_lastname_iteration_2_pairingpartner2")))
     }
 
     @Test
@@ -95,16 +95,16 @@ class PullRequestsTest {
         assertThat(prs)
                 .contains(PullRequest(
                         "Firstname Lastname Iteration 1 / Session 1 Pairingpartner1 [PR]",
-                        "master",
-                        "firstname_lastname_iteration_1_pairingpartner1"))
+                        Branch("master"),
+                        Branch("firstname_lastname_iteration_1_pairingpartner1")))
                 .contains(PullRequest(
                         "Firstname Lastname Iteration 2 / Session 1 Pairingpartner1",
-                        "firstname_lastname_iteration_1_pairingpartner1",
-                        "firstname_lastname_iteration_2_pairingpartner1"))
+                        Branch("firstname_lastname_iteration_1_pairingpartner1"),
+                        Branch("firstname_lastname_iteration_2_pairingpartner1")))
                 .contains(PullRequest(
                         "Firstname Lastname Iteration 2 / Session 2 Pairingpartner2",
-                        "firstname_lastname_iteration_2_pairingpartner1",
-                        "firstname_lastname_iteration_2_pairingpartner2"))
+                        Branch("firstname_lastname_iteration_2_pairingpartner1"),
+                        Branch("firstname_lastname_iteration_2_pairingpartner2")))
     }
 
 }

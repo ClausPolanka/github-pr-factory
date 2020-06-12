@@ -8,8 +8,8 @@ class PullRequests {
         val pullRequests = branches.mapIndexed { idx, branch ->
             PullRequest(
                     _title = titles[idx],
-                    base = baseBranches[idx].name,
-                    head = branch.name)
+                    _base = baseBranches[idx],
+                    _head = branch)
         }
         return mark_pull_request_titles_with_pr(pullRequests)
     }
