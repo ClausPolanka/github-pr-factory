@@ -28,7 +28,7 @@ class HeaderLinkLastPageParserTest {
     fun last_page_of_branches_will_be_negative_if_link_header_is_not_in_expected_format() {
         val sut = HeaderLinkLastPageParser()
 
-        val lastPage = sut.last_page_of_branches("foo")
+        val lastPage = sut.last_page_of_branches(linkHeader = "foo")
 
         assertThat(lastPage).isEqualTo("-1")
     }
