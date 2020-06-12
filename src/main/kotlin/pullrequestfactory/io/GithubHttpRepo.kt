@@ -22,7 +22,7 @@ class GithubHttpRepo(
     }
 
     private fun get_all_branches_for(response: Response): List<Branch> {
-        val lastPage = KHttpResponseLastPageParser().last_page_of_branches(response)
+        val lastPage = HeaderLinkLastPageParser().last_page_of_branches(response.headers["link"])
         val allBranches = mutableListOf<List<Branch>>()
         allBranches.add(Klaxon().parseArray(response.text)!!)
         (2..lastPage.toInt()).forEach {

@@ -1,13 +1,10 @@
 package pullrequestfactory.io
 
-import khttp.responses.Response
-
-class KHttpResponseLastPageParser {
+class HeaderLinkLastPageParser {
 
     private val idxOfMatchedVal = 1
-    
-    fun last_page_of_branches(response: Response): String {
-        val linkHeader = response.headers["link"]
+
+    fun last_page_of_branches(linkHeader: String?): String {
         return if (linkHeader == null) {
             "-1"
         } else {

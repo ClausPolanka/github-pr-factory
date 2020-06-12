@@ -78,12 +78,7 @@ class GithubHttpRepoTest {
         sut.create_pull_request(pr)
 
         verify(postRequestedFor(urlMatching("/repos/ClausPolanka/$repoName/pulls"))
-                .withRequestBody(matching(Regex.escape(
-                        """{
-                            "base" : "master",
-                            "head" : "radek_leifer_interation_1_claus",
-                            "title" : "Radek Leifer Iteration 1 / Session 1 Claus"
-                           }""".trimMargin())))
+                .withRequestBody(matching(Regex.escape("""{"base" : "master", "head" : "radek_leifer_interation_1_claus", "title" : "Radek Leifer Iteration 1 / Session 1 Claus"}""")))
                 .withHeader("Accept", matching("application/json"))
                 .withHeader("Authorization", matching("Basic .*"))
                 .withHeader("Content-Type", matching("application/json")))
