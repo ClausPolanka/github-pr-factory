@@ -13,8 +13,7 @@ class PullRequestsTest {
         val sut = PullRequests()
 
         val prs = sut.create_pull_requests_for(
-                listOf(Branch("firstname_lastname_iteration_1_pairingpartner"))
-        )
+                listOf(Branch("firstname_lastname_iteration_1_pairingpartner")))
 
         assertThat(prs).containsExactly(PullRequest(
                 "Firstname Lastname Iteration 1 / Session 1 Pairingpartner",
@@ -28,8 +27,7 @@ class PullRequestsTest {
 
         val prs = sut.create_pull_requests_for(listOf(
                 Branch("firstname_lastname_iteration_1_pairingpartner"),
-                Branch("firstname_lastname_iteration_2_pairingpartner"))
-        )
+                Branch("firstname_lastname_iteration_2_pairingpartner")))
 
         assertThat(prs)
                 .contains(PullRequest(
@@ -48,8 +46,7 @@ class PullRequestsTest {
 
         val prs = sut.create_pull_requests_for(listOf(
                 Branch("firstname_lastname_iteration_1_pairingpartner1"),
-                Branch("firstname_lastname_iteration_1_pairingpartner2"))
-        )
+                Branch("firstname_lastname_iteration_1_pairingpartner2")))
 
         assertThat(prs)
                 .contains(PullRequest(
@@ -68,8 +65,7 @@ class PullRequestsTest {
 
         val prs = sut.create_pull_requests_for(listOf(
                 Branch("firstname_lastname_iteration_1_pairingpartner1"),
-                Branch("firstname_lastname_iteration_2_pairingpartner2"))
-        )
+                Branch("firstname_lastname_iteration_2_pairingpartner2")))
 
         assertThat(prs)
                 .contains(PullRequest(
@@ -89,8 +85,7 @@ class PullRequestsTest {
         val prs = sut.create_pull_requests_for(listOf(
                 Branch("firstname_lastname_iteration_1_pairingpartner1"),
                 Branch("firstname_lastname_iteration_2_pairingpartner1"),
-                Branch("firstname_lastname_iteration_2_pairingpartner2"))
-        )
+                Branch("firstname_lastname_iteration_2_pairingpartner2")))
 
         assertThat(prs)
                 .contains(PullRequest(
