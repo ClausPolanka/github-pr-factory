@@ -17,7 +17,6 @@ class BranchSyntaxValidatorTest {
             }
         })
         listOf("_lastname_iteration_1_claus",
-                "firstname_iteration_1_claus",
                 "firstname_lastname_iter_1_claus",
                 "firstname_lastname_iteration_x_claus",
                 "firstname_lastname_iteration_1_").forEach {

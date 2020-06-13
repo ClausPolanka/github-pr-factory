@@ -1,6 +1,7 @@
 package ut.pullrequestfactory.domain
 
 import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.Test
 import pullrequestfactory.domain.*
 import pullrequestfactory.io.ConsoleUI
@@ -44,7 +45,6 @@ class GithubPRFactoryTest {
                         _head = Branch("a_lastname_iteration_1_claus")))
     }
 
-
     @Test
     fun creates_pull_request_and_ignores_if_candidates_last_name_is_capitalized() {
         val expectedPrs = mutableListOf<PullRequest>()
@@ -59,6 +59,7 @@ class GithubPRFactoryTest {
                         _base = Branch("master"),
                         _head = Branch("firstname_a_iteration_1_claus")))
     }
+
 
     @Test
     fun creates_no_pull_requests_for_candidate_when_no_branch_exists_containing_candidates_first_name() {
@@ -80,6 +81,21 @@ class GithubPRFactoryTest {
         sut.create_pull_requests(Candidate("Firstname", "b"), listOf("Claus"))
 
         assertThat(expectedPrs).isEmpty()
+    }
+
+    @Test
+    fun branch_can_not_be_processed_if_branch_name_has_invalid_name() {
+        val githubReadRepo = githubReadRepo(listOf(Branch("firstname_lastname_claus")))
+        val sut = GithubPRFactory(githubReadRepo, object : GithubWriteRepo {
+            override fun create_pull_request(pullRequest: PullRequest) {
+                // can be ignored in this test
+            }
+        }, ConsoleUI())
+
+        assertThatThrownBy {
+            sut.create_pull_requests(Candidate("Firstname", "Lastname"), listOf("Claus"))
+        }.hasMessageContaining("invalid name")
+                .hasMessageContaining("firstname_lastname_claus")
     }
 
     private fun githubReadRepo(branches: List<Branch>): GithubReadRepo {
