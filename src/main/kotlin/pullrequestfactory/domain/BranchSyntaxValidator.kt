@@ -2,10 +2,12 @@ package pullrequestfactory.domain
 
 class BranchSyntaxValidator(private val ui: UI) {
 
+    private val branchSyntaxRegex = Regex("[a-z]+_[a-z]+_iteration_[0-9]+_[a-z]+")
+
     fun validate(branch: Branch) {
         when {
             branch.parts().size != 5 -> throw InvalidBranchSyntax(errorMessageFor(branch))
-            !Regex("[a-z]+_[a-z]+_iteration_[0-9]+_[a-z]+").matches(branch.name) -> {
+            !branchSyntaxRegex.matches(branch.name) -> {
                 ui.show("[WARNING] Branch has incorrect syntax: $branch")
             }
         }
