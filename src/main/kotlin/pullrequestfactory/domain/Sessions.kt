@@ -8,9 +8,9 @@ class Sessions(private val branches: List<Branch>) {
             when (idx) {
                 0 -> prevSession.toString()
                 else -> {
-                    val (_, _, _, _, currPP) = branch.parts()
-                    val (_, _, _, _, prevPP) = branches[idx - 1].parts()
-                    if (prevPP == currPP) {
+                    val (_, _, _, _, currentPairingPartner) = branch.parts()
+                    val (_, _, _, _, previousPairingPartner) = branches[idx - 1].parts()
+                    if (previousPairingPartner == currentPairingPartner) {
                         "$prevSession"
                     } else {
                         prevSession = prevSession.inc()
