@@ -15,9 +15,7 @@ class BranchSorter {
 
     private fun sort_by_iteration_number(branches: List<Branch>): List<Branch> {
         return branches
-                .map { branch ->
-                    Pair(branch.name, branch.iteration_nr())
-                }
+                .map { Pair(it.name, it.iteration_nr()) }
                 .sortedBy { it.second }
                 .map { Branch(it.first) }
     }
