@@ -45,4 +45,31 @@ class GithubHttpRepo(
         ui.show(response.toString())
     }
 
+    override fun get_all_pull_requests(): List<GetPullRequest> {
+//        val response = khttp.get("$baseUrl/repos/ClausPolanka/$repoName/branches?page=1")
+//        if (response.statusCode == 403) {
+//            ui.show("Too many requests to Github within time limit")
+//            return emptyList()
+//        }
+//        cacheRepo.cache(response.text, pageNr = 1)
+//        return get_all_branches_for(response)
+        TODO("not implemented")
+    }
+
+//    private fun get_all_branches_for(response: Response): List<Branch> {
+//        val lastPage = HeaderLinkLastPageParser().last_page_of_branches(response.headers["link"])
+//        val allBranches = mutableListOf<List<Branch>>()
+//        allBranches.add(Klaxon().parseArray(response.text)!!)
+//        (2..lastPage.toInt()).forEach {
+//            val json = khttp.get("$baseUrl/repos/ClausPolanka/$repoName/branches?page=$it").text
+//            cacheRepo.cache(response.text, pageNr = it)
+//            allBranches.add(Klaxon().parseArray(json)!!)
+//        }
+//        return allBranches.flatten()
+//    }
+
+    override fun close_pull_request(number: Int) {
+        TODO("not implemented")
+    }
+
 }

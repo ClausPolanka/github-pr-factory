@@ -90,6 +90,10 @@ class GithubPRFactoryTest {
             override fun create_pull_request(pullRequest: PullRequest) {
                 // can be ignored in this test
             }
+
+            override fun close_pull_request(number: Int) {
+                TODO("not implemented")
+            }
         }, ConsoleUI())
 
         assertThatThrownBy {
@@ -103,6 +107,10 @@ class GithubPRFactoryTest {
             override fun get_all_branches(): List<Branch> {
                 return branches
             }
+
+            override fun get_all_pull_requests(): List<GetPullRequest> {
+                TODO("not implemented")
+            }
         }
     }
 
@@ -110,6 +118,10 @@ class GithubPRFactoryTest {
         return object : GithubWriteRepo {
             override fun create_pull_request(pullRequest: PullRequest) {
                 expectedPrs.add(pullRequest)
+            }
+
+            override fun close_pull_request(number: Int) {
+                TODO("not implemented")
             }
         }
     }
