@@ -3,7 +3,7 @@ package pullrequestfactory.domain
 class GithubPRFactory(
         private val githubReadRepo: GithubReadRepo,
         private val githubWriteRepo: GithubWriteRepo,
-        ui: UI) {
+        private val ui: UI) {
 
     private val branchSyntaxValidator = BranchSyntaxValidator(ui)
 
@@ -28,6 +28,14 @@ class GithubPRFactory(
                     branchSyntaxValidator.validate(it)
                     it
                 }
+    }
+
+    fun close_pull_requests_for(candidate: Candidate) {
+        val prs = githubReadRepo.get_all_pull_requests()
+                .filter { it.title.contains(candidate.firstName, ignoreCase = true) }
+                .filter { it.title.contains(candidate.lastName, ignoreCase = true) }
+
+        prs.forEach { githubWriteRepo.close_pull_request(it.number) }
     }
 
 }

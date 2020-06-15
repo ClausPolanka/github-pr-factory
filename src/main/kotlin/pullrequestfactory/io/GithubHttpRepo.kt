@@ -67,7 +67,7 @@ class GithubHttpRepo(
         return allPullRequests.flatten()
     }
 
-    override fun close_pull_request(number: Int) {
+    override fun close_pull_request(number: String) {
         TODO("not implemented")
     }
 

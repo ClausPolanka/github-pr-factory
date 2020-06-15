@@ -14,8 +14,8 @@ class GithubPRFactoryTest {
         val expectedPrs = mutableListOf<PullRequest>()
         val githubReadRepo = githubReadRepo(listOf(
                 Branch("firstname_lastname_iteration_1_claus"),
-                Branch("firstname_lastname_iteration_2_berni")))
-        val sut = GithubPRFactory(githubReadRepo, githubWriteRepo(expectedPrs), ConsoleUI())
+                Branch("firstname_lastname_iteration_2_berni")), emptyList())
+        val sut = GithubPRFactory(githubReadRepo, githubWriteRepo(expectedPrs, mutableListOf<String>()), ConsoleUI())
 
         sut.create_pull_requests(Candidate("Firstname", "Lastname"), listOf("Claus", "Berni"))
 
@@ -33,8 +33,8 @@ class GithubPRFactoryTest {
     @Test
     fun creates_pull_request_and_ignores_if_candidates_first_name_is_capitalized() {
         val expectedPrs = mutableListOf<PullRequest>()
-        val githubReadRepo = githubReadRepo(listOf(Branch("a_lastname_iteration_1_claus")))
-        val sut = GithubPRFactory(githubReadRepo, githubWriteRepo(expectedPrs), ConsoleUI())
+        val githubReadRepo = githubReadRepo(listOf(Branch("a_lastname_iteration_1_claus")), emptyList())
+        val sut = GithubPRFactory(githubReadRepo, githubWriteRepo(expectedPrs, mutableListOf<String>()), ConsoleUI())
 
         sut.create_pull_requests(Candidate("A", "lastname"), listOf("Claus"))
 
@@ -48,8 +48,8 @@ class GithubPRFactoryTest {
     @Test
     fun creates_pull_request_and_ignores_if_candidates_last_name_is_capitalized() {
         val expectedPrs = mutableListOf<PullRequest>()
-        val githubReadRepo = githubReadRepo(listOf(Branch("firstname_a_iteration_1_claus")))
-        val sut = GithubPRFactory(githubReadRepo, githubWriteRepo(expectedPrs), ConsoleUI())
+        val githubReadRepo = githubReadRepo(listOf(Branch("firstname_a_iteration_1_claus")), emptyList())
+        val sut = GithubPRFactory(githubReadRepo, githubWriteRepo(expectedPrs, mutableListOf<String>()), ConsoleUI())
 
         sut.create_pull_requests(Candidate("Firstname", "A"), listOf("Claus"))
 
@@ -64,8 +64,8 @@ class GithubPRFactoryTest {
     @Test
     fun creates_no_pull_requests_for_candidate_when_no_branch_exists_containing_candidates_first_name() {
         val expectedPrs = mutableListOf<PullRequest>()
-        val githubReadRepo = githubReadRepo(listOf(Branch("a_lastname_iteration_1_claus")))
-        val sut = GithubPRFactory(githubReadRepo, githubWriteRepo(expectedPrs), ConsoleUI())
+        val githubReadRepo = githubReadRepo(listOf(Branch("a_lastname_iteration_1_claus")), emptyList())
+        val sut = GithubPRFactory(githubReadRepo, githubWriteRepo(expectedPrs, mutableListOf<String>()), ConsoleUI())
 
         sut.create_pull_requests(Candidate("B", "Lastname"), listOf("Claus"))
 
@@ -75,8 +75,8 @@ class GithubPRFactoryTest {
     @Test
     fun creates_no_pull_requests_for_candidate_when_no_branch_exists_containing_candidates_last_name() {
         val expectedPrs = mutableListOf<PullRequest>()
-        val githubReadRepo = githubReadRepo(listOf(Branch("firstname_a_iteration_1_claus")))
-        val sut = GithubPRFactory(githubReadRepo, githubWriteRepo(expectedPrs), ConsoleUI())
+        val githubReadRepo = githubReadRepo(listOf(Branch("firstname_a_iteration_1_claus")), emptyList())
+        val sut = GithubPRFactory(githubReadRepo, githubWriteRepo(expectedPrs, mutableListOf<String>()), ConsoleUI())
 
         sut.create_pull_requests(Candidate("Firstname", "b"), listOf("Claus"))
 
@@ -85,14 +85,14 @@ class GithubPRFactoryTest {
 
     @Test
     fun branch_can_not_be_processed_if_branch_name_has_invalid_name() {
-        val githubReadRepo = githubReadRepo(listOf(Branch("firstname_lastname_claus")))
+        val githubReadRepo = githubReadRepo(listOf(Branch("firstname_lastname_claus")), emptyList())
         val sut = GithubPRFactory(githubReadRepo, object : GithubWriteRepo {
             override fun create_pull_request(pullRequest: PullRequest) {
                 // can be ignored in this test
             }
 
-            override fun close_pull_request(number: Int) {
-                TODO("not implemented")
+            override fun close_pull_request(number: String) {
+                // can be ignored in this test
             }
         }, ConsoleUI())
 
@@ -102,26 +102,77 @@ class GithubPRFactoryTest {
                 .hasMessageContaining("firstname_lastname_claus")
     }
 
-    private fun githubReadRepo(branches: List<Branch>): GithubReadRepo {
+    @Test
+    fun close_pull_requests_for_two_candidates_with_same_first_name() {
+        val expectedPullRequestNumbersToBeClosed = mutableListOf<String>()
+        val sut = GithubPRFactory(
+                githubReadRepo(emptyList(), listOf(
+                        GetPullRequest("1", "Firstname1 Lastname1 Iteration 1 / Session 1 pairingpartner"),
+                        GetPullRequest("2", "Firstname1 Lastname2 Iteration 1 / Session 1 pairingpartner"))),
+                githubWriteRepo(mutableListOf(), expectedPullRequestNumbersToBeClosed),
+                ConsoleUI())
+
+        sut.close_pull_requests_for(Candidate("firstname1", "lastname1"))
+
+        assertThat(expectedPullRequestNumbersToBeClosed)
+                .describedAs("Expected pull request numbers to be closed")
+                .containsExactly("1")
+    }
+
+    @Test
+    fun close_pull_requests_for_two_candidates_with_same_last_name() {
+        val expectedPullRequestNumbersToBeClosed = mutableListOf<String>()
+        val sut = GithubPRFactory(
+                githubReadRepo(emptyList(), listOf(
+                        GetPullRequest("1", "Firstname1 Lastname1 Iteration 1 / Session 1 pairingpartner"),
+                        GetPullRequest("2", "Firstname2 Lastname1 Iteration 1 / Session 1 pairingpartner"))),
+                githubWriteRepo(mutableListOf(), expectedPullRequestNumbersToBeClosed),
+                ConsoleUI())
+
+        sut.close_pull_requests_for(Candidate("firstname1", "lastname1"))
+
+        assertThat(expectedPullRequestNumbersToBeClosed)
+                .describedAs("Expected pull request numbers to be closed")
+                .containsExactly("1")
+    }
+
+    @Test
+    fun close_pull_requests_for_one_candidate() {
+        val expectedPullRequestNumbersToBeClosed = mutableListOf<String>()
+        val sut = GithubPRFactory(
+                githubReadRepo(emptyList(), listOf(
+                        GetPullRequest("1", "Firstname1 Lastname1 Iteration 1 / Session 1 pairingpartner1"),
+                        GetPullRequest("2", "Firstname1 Lastname1 Iteration 1 / Session 2 pairingpartner2"))),
+                githubWriteRepo(mutableListOf(), expectedPullRequestNumbersToBeClosed),
+                ConsoleUI())
+
+        sut.close_pull_requests_for(Candidate("firstname1", "lastname1"))
+
+        assertThat(expectedPullRequestNumbersToBeClosed)
+                .describedAs("Expected pull request numbers to be closed")
+                .containsExactly("1", "2")
+    }
+
+    private fun githubReadRepo(branches: List<Branch>, pullRequests: List<GetPullRequest>): GithubReadRepo {
         return object : GithubReadRepo {
             override fun get_all_branches(): List<Branch> {
                 return branches
             }
 
             override fun get_all_pull_requests(): List<GetPullRequest> {
-                TODO("not implemented")
+                return pullRequests
             }
         }
     }
 
-    private fun githubWriteRepo(expectedPrs: MutableList<PullRequest>): GithubWriteRepo {
+    private fun githubWriteRepo(expectedPrs: MutableList<PullRequest>, expectedPullRequestNumbersToBeClosed: MutableList<String>): GithubWriteRepo {
         return object : GithubWriteRepo {
             override fun create_pull_request(pullRequest: PullRequest) {
                 expectedPrs.add(pullRequest)
             }
 
-            override fun close_pull_request(number: Int) {
-                TODO("not implemented")
+            override fun close_pull_request(number: String) {
+                expectedPullRequestNumbersToBeClosed.add(number)
             }
         }
     }
