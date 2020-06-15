@@ -86,6 +86,19 @@ class GithubHttpRepoTest {
                 .withHeader("Content-Type", matching("application/json")))
     }
 
+    @Test
+    fun close_pull_request_for_given_pull_request_number() {
+        val sut = createGithubHttpRepo()
+
+        sut.close_pull_request(number = "1")
+
+        verify(patchRequestedFor(urlMatching("/repos/ClausPolanka/$repoName/pulls/1"))
+                .withRequestBody(matching(Regex.escape("""{"state" : "closed"}""")))
+                .withHeader("Accept", matching("application/json"))
+                .withHeader("Authorization", matching("Basic .*"))
+                .withHeader("Content-Type", matching("application/json")))
+    }
+
     private fun createGithubHttpRepo(): GithubHttpRepo = GithubHttpRepo(
             wireMockDefaultUrl,
             repoName,

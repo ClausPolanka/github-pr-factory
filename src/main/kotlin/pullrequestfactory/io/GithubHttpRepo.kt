@@ -68,7 +68,15 @@ class GithubHttpRepo(
     }
 
     override fun close_pull_request(number: String) {
-        TODO("not implemented")
+        ui.show("Close pull request with number: '$number'")
+        val response = khttp.patch(
+                url = "$baseUrl/repos/ClausPolanka/$repoName/pulls/$number",
+                headers = mapOf(
+                        "Accept" to "application/json",
+                        "Authorization" to "Basic $basicAuthToken",
+                        "Content-Type" to "application/json"),
+                data = Klaxon().toJsonString(PatchPullRequest(state = "closed")))
+        ui.show("$response")
     }
 
 }
