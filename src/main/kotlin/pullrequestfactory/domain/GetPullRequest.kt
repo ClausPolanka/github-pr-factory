@@ -1,3 +1,3 @@
 package pullrequestfactory.domain
 
-data class GetPullRequest(val number: String, val title: String)
+data class GetPullRequest(val number: Int, val title: String)

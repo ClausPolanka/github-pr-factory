@@ -46,6 +46,7 @@ class GithubHttpRepo(
     }
 
     override fun get_all_pull_requests(): List<GetPullRequest> {
+        ui.show("Get all open pull requests...")
         val response = khttp.get("$baseUrl/repos/ClausPolanka/$repoName/pulls?page=1")
         if (response.statusCode == 403) {
             ui.show("Too many requests to Github within time limit")
@@ -58,7 +59,10 @@ class GithubHttpRepo(
     private fun get_all_pull_requests_for(response: Response): List<GetPullRequest> {
         val lastPage = HeaderLinkLastPageParser().last_page_of_branches(response.headers["link"])
         val allPullRequests = mutableListOf<List<GetPullRequest>>()
+        ui.show("\tNumber of open pull request pages: '$lastPage'")
+        ui.show("\tResponse json: '${response.text}")
         allPullRequests.add(Klaxon().parseArray(response.text)!!)
+        ui.show("\tPage 1 open pull requests: '$allPullRequests'")
         (2..lastPage.toInt()).forEach {
             val json = khttp.get("$baseUrl/repos/ClausPolanka/$repoName/pulls?page=$it").text
 //            cacheRepo.cache(response.text, pageNr = it)
@@ -67,7 +71,7 @@ class GithubHttpRepo(
         return allPullRequests.flatten()
     }
 
-    override fun close_pull_request(number: String) {
+    override fun close_pull_request(number: Int) {
         ui.show("Close pull request with number: '$number'")
         val response = khttp.patch(
                 url = "$baseUrl/repos/ClausPolanka/$repoName/pulls/$number",

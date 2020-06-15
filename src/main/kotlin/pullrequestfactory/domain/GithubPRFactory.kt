@@ -35,7 +35,7 @@ class GithubPRFactory(
                 .filter { it.title.contains(candidate.firstName, ignoreCase = true) }
                 .filter { it.title.contains(candidate.lastName, ignoreCase = true) }
 
-        prs.forEach { githubWriteRepo.close_pull_request(it.number) }
+        prs.forEach { githubWriteRepo.close_pull_request(it.number.toInt()) }
     }
 
 }

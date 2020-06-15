@@ -90,7 +90,7 @@ class GithubHttpRepoTest {
     fun close_pull_request_for_given_pull_request_number() {
         val sut = createGithubHttpRepo()
 
-        sut.close_pull_request(number = "1")
+        sut.close_pull_request(number = 1)
 
         verify(patchRequestedFor(urlMatching("/repos/ClausPolanka/$repoName/pulls/1"))
                 .withRequestBody(matching(Regex.escape("""{"state" : "closed"}""")))
