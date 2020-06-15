@@ -9,6 +9,7 @@ import org.junit.Before
 import org.junit.ClassRule
 import org.junit.Test
 import pullrequestfactory.domain.Branch
+import pullrequestfactory.domain.GetPullRequest
 import pullrequestfactory.domain.PullRequest
 import pullrequestfactory.main
 import java.io.ByteArrayOutputStream
@@ -64,6 +65,31 @@ class MainKtTest {
         main(args = arrayOf(candidate, basicAuthToken, pairingPartner))
 
         verifyPostRequestsToGithubToCreatePullRequests()
+    }
+
+    @Test
+    fun close_pull_requests_for_given_candidate() {
+        val candidate = "Radek-Leifer"
+        val basicAuthToken = "any-valid-token"
+        val closePullRequestOption = "-close"
+
+        stubFor(get("/repos/ClausPolanka/wordcount/pulls?page=1").willReturn(aResponse()
+                .withStatus(200)
+                .withHeader("Content-Type", "application/json; charset=utf-8")
+                .withBody(Klaxon().toJsonString((arrayOf(
+                        githubResponseFor(GetPullRequest(1, "Radek Leifer Iteration1 / Session 1 Claus"))))))))
+
+        main(args = arrayOf(candidate, basicAuthToken, closePullRequestOption))
+
+        verify(patchRequestedFor(urlMatching("/repos/ClausPolanka/wordcount/pulls/1"))
+                .withRequestBody(matching(Regex.escape("""{"state" : "closed"}""")))
+                .withHeader("Accept", matching("application/json"))
+                .withHeader("Authorization", matching("Basic .*"))
+                .withHeader("Content-Type", matching("application/json")))
+    }
+
+    private fun githubResponseFor(getPullRequest: GetPullRequest): GetPullRequestResponse {
+        return GetPullRequestResponse(getPullRequest.number, getPullRequest.title)
     }
 
     private fun stubRequestsForGithubBranches() {
@@ -139,3 +165,5 @@ class MainKtTest {
     }
 
 }
+
+data class GetPullRequestResponse(val number: Int, val title: String)
