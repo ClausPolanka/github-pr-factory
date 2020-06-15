@@ -45,14 +45,14 @@ class GithubHttpRepo(
         ui.show(response.toString())
     }
 
-    override fun get_all_pull_requests(): List<GetPullRequest> {
+    override fun get_all_open_pull_requests(): List<GetPullRequest> {
         ui.show("Get all open pull requests...")
         val response = khttp.get("$baseUrl/repos/ClausPolanka/$repoName/pulls?page=1")
         if (response.statusCode == 403) {
             ui.show("Too many requests to Github within time limit")
             return emptyList()
         }
-//        cacheRepo.cache(response.text, pageNr = 1)
+        cacheRepo.cache(response.text, pageNr = 1)
         return get_all_pull_requests_for(response)
     }
 
@@ -65,7 +65,7 @@ class GithubHttpRepo(
         ui.show("\tPage 1 open pull requests: '$allPullRequests'")
         (2..lastPage.toInt()).forEach {
             val json = khttp.get("$baseUrl/repos/ClausPolanka/$repoName/pulls?page=$it").text
-//            cacheRepo.cache(response.text, pageNr = it)
+            cacheRepo.cache(response.text, pageNr = it)
             allPullRequests.add(Klaxon().parseArray(json)!!)
         }
         return allPullRequests.flatten()

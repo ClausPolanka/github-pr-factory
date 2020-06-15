@@ -159,7 +159,7 @@ class GithubPRFactoryTest {
                 return branches
             }
 
-            override fun get_all_pull_requests(): List<GetPullRequest> {
+            override fun get_all_open_pull_requests(): List<GetPullRequest> {
                 return pullRequests
             }
         }

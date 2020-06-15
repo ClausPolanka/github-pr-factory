@@ -18,8 +18,14 @@ class GithubFileReadRepo : GithubReadRepo {
         return allBranches.flatten()
     }
 
-    override fun get_all_pull_requests(): List<GetPullRequest> {
-        TODO("not implemented")
+    override fun get_all_open_pull_requests(): List<GetPullRequest> {
+        val pullRequests = mutableListOf<List<GetPullRequest>>()
+        (1..9).forEach {
+            val json = File("json/prs-page-$it.json").readText()
+            val prs = Klaxon().parseArray<GetPullRequest>(json)
+            pullRequests.add(prs!!)
+        }
+        return pullRequests.flatten()
     }
 
 }

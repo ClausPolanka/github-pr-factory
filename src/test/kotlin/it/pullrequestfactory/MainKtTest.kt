@@ -73,23 +73,25 @@ class MainKtTest {
         val basicAuthToken = "any-valid-token"
         val closePullRequestOption = "-close"
 
-        stubFor(get("/repos/ClausPolanka/wordcount/pulls?page=1").willReturn(aResponse()
-                .withStatus(200)
-                .withHeader("Content-Type", "application/json; charset=utf-8")
-                .withBody(Klaxon().toJsonString((arrayOf(
-                        githubResponseFor(GetPullRequest(1, "Radek Leifer Iteration1 / Session 1 Claus"))))))))
+        stubGetRequestForPullRequests()
 
         main(args = arrayOf(candidate, basicAuthToken, closePullRequestOption))
 
+        verifyPatchRequestToCloseOpenPullRequestsForCandidate()
+    }
+
+    private fun verifyPatchRequestToCloseOpenPullRequestsForCandidate() {
         verify(patchRequestedFor(urlMatching("/repos/ClausPolanka/wordcount/pulls/1"))
                 .withRequestBody(matching(Regex.escape("""{"state" : "closed"}""")))
                 .withHeader("Accept", matching("application/json"))
                 .withHeader("Authorization", matching("Basic .*"))
                 .withHeader("Content-Type", matching("application/json")))
-    }
 
-    private fun githubResponseFor(getPullRequest: GetPullRequest): GetPullRequestResponse {
-        return GetPullRequestResponse(getPullRequest.number, getPullRequest.title)
+        verify(patchRequestedFor(urlMatching("/repos/ClausPolanka/wordcount/pulls/2"))
+                .withRequestBody(matching(Regex.escape("""{"state" : "closed"}""")))
+                .withHeader("Accept", matching("application/json"))
+                .withHeader("Authorization", matching("Basic .*"))
+                .withHeader("Content-Type", matching("application/json")))
     }
 
     private fun stubRequestsForGithubBranches() {
@@ -162,6 +164,26 @@ class MainKtTest {
     private fun createPropsWith(prop: String): String {
         Files.write(Paths.get("target/test-classes/$propsFileName"), prop.toByteArray())
         return propsFileName
+    }
+
+    private fun stubGetRequestForPullRequests() {
+        stubFor(get("/repos/ClausPolanka/wordcount/pulls?page=1").willReturn(aResponse()
+                .withStatus(200)
+                .withHeader("Link", "<https://api.github.com/repositories/157517927/pulls?page=2>; rel=\"next\", <https://api.github.com/repositories/157517927/pulls?page=2>; rel=\"last\"")
+                .withHeader("Content-Type", "application/json; charset=utf-8")
+                .withBody(Klaxon().toJsonString((arrayOf(
+                        githubResponseFor(GetPullRequest(1, "Radek Leifer Iteration 1 / Session 1 Claus [PR]"))))))))
+
+        stubFor(get("/repos/ClausPolanka/wordcount/pulls?page=2").willReturn(aResponse()
+                .withStatus(200)
+                .withHeader("Link", "<https://api.github.com/repositories/157517927/pulls?page=1>; rel=\"prev\", <https://api.github.com/repositories/157517927/pulls?page=1>; rel=\"first\"")
+                .withHeader("Content-Type", "application/json; charset=utf-8")
+                .withBody(Klaxon().toJsonString((arrayOf(
+                        githubResponseFor(GetPullRequest(2, "Radek Leifer Iteration 2 / Session 1 Claus"))))))))
+    }
+
+    private fun githubResponseFor(getPullRequest: GetPullRequest): GetPullRequestResponse {
+        return GetPullRequestResponse(getPullRequest.number, getPullRequest.title)
     }
 
 }

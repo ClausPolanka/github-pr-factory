@@ -3,14 +3,12 @@ package it.pullrequestfactory.io
 import com.beust.klaxon.Klaxon
 import com.github.tomakehurst.wiremock.client.WireMock.*
 import com.github.tomakehurst.wiremock.junit.WireMockRule
+import it.pullrequestfactory.GetPullRequestResponse
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.After
 import org.junit.ClassRule
 import org.junit.Test
-import pullrequestfactory.domain.Branch
-import pullrequestfactory.domain.NoopCache
-import pullrequestfactory.domain.PullRequest
-import pullrequestfactory.domain.QuietUI
+import pullrequestfactory.domain.*
 import pullrequestfactory.io.GithubHttpRepo
 
 class GithubHttpRepoTest {
@@ -49,7 +47,7 @@ class GithubHttpRepoTest {
         val branch2 = Branch("first_name_iteration_2_claus")
         val sut = createGithubHttpRepo()
 
-        stubGithubGetRequstForPageOneToReturn(branch1)
+        stubGithubGetRequestForPageOneToReturn(branch1)
         stubGithubRequestForPageTwoContaining(branch2)
 
         val branches = sut.get_all_branches()
@@ -71,11 +69,11 @@ class GithubHttpRepoTest {
 
     @Test
     fun create_pull_request() {
-        val sut = createGithubHttpRepo()
         val pr = PullRequest(
                 _title = "Radek Leifer Iteration 1 / Session 1 Claus",
                 _base = Branch("master"),
                 _head = Branch("radek_leifer_interation_1_claus"))
+        val sut = createGithubHttpRepo()
 
         sut.create_pull_request(pr)
 
@@ -84,6 +82,44 @@ class GithubHttpRepoTest {
                 .withHeader("Accept", matching("application/json"))
                 .withHeader("Authorization", matching("Basic .*"))
                 .withHeader("Content-Type", matching("application/json")))
+    }
+
+    @Test
+    fun get_all_open_pull_requests_for_github_repository_which_contains_one_page_of_pull_requests() {
+        val expectedGetPullRequest = GetPullRequest(1, "firstname lastname Iteration 1 / Session 1 pairingpartner")
+        val sut = createGithubHttpRepo()
+
+        stubGithubGetRequestToReturn(expectedGetPullRequest)
+
+        val prs = sut.get_all_open_pull_requests()
+
+        assertThat(prs).containsExactly(expectedGetPullRequest)
+    }
+
+    @Test
+    fun get_all_open_pull_requests_for_github_repository_which_contains_two_pages_of_pull_requests() {
+        val expectedGetPullRequest1 = GetPullRequest(1, "firstname lastname Iteration 1 / Session 1 pairingpartner1 [PR]")
+        val expectedGetPullRequest2 = GetPullRequest(1, "firstname lastname Iteration 2 / Session 1 pairingpartner1")
+        val sut = createGithubHttpRepo()
+
+        stubGithubGetRequestForPageOneToReturn(expectedGetPullRequest1)
+        stubGithubGetRequestForPageTwoToReturn(expectedGetPullRequest2)
+
+        val prs = sut.get_all_open_pull_requests()
+
+        assertThat(prs).containsExactly(expectedGetPullRequest1, expectedGetPullRequest2)
+    }
+
+    @Test
+    fun pull_requests_are_empty_when_Github_returs_403_forbidden_status_code() {
+        val sut = createGithubHttpRepo()
+
+        stubFor(get("/repos/ClausPolanka/$repoName/pulls?page=1")
+                .willReturn(aResponse().withStatus(403)))
+
+        val prs = sut.get_all_open_pull_requests()
+
+        assertThat(prs).isEmpty()
     }
 
     @Test
@@ -122,7 +158,7 @@ class GithubHttpRepoTest {
                 protected = false)
     }
 
-    private fun stubGithubGetRequstForPageOneToReturn(branch: Branch) {
+    private fun stubGithubGetRequestForPageOneToReturn(branch: Branch) {
         stubFor(get("/repos/ClausPolanka/$repoName/branches?page=1").willReturn(aResponse()
                 .withStatus(200)
                 .withHeader("Content-Type", "application/json; charset=utf-8")
@@ -137,7 +173,38 @@ class GithubHttpRepoTest {
                 .withBody(Klaxon().toJsonString((arrayOf(githubResponseFor(branch)))))))
     }
 
+    private fun githubResponseFor(getPullRequest: GetPullRequest): GetPullRequestResponse {
+        return GetPullRequestResponse(getPullRequest.number, getPullRequest.title)
+    }
+
+    private fun stubGithubGetRequestToReturn(expectedGetPullRequest: GetPullRequest) {
+        stubFor(get("/repos/ClausPolanka/$repoName/pulls?page=1").willReturn(aResponse()
+                .withStatus(200)
+                .withHeader("Content-Type", "application/json; charset=utf-8")
+                .withBody(Klaxon().toJsonString((arrayOf(
+                        githubResponseFor(expectedGetPullRequest)))))))
+    }
+
+    private fun stubGithubGetRequestForPageOneToReturn(expectedGetPullRequest: GetPullRequest) {
+        stubFor(get("/repos/ClausPolanka/$repoName/pulls?page=1").willReturn(aResponse()
+                .withStatus(200)
+                .withHeader("Link", "<https://api.github.com/repositories/157517927/pulls?page=2>; rel=\"next\", <https://api.github.com/repositories/157517927/pulls?page=2>; rel=\"last\"")
+                .withHeader("Content-Type", "application/json; charset=utf-8")
+                .withBody(Klaxon().toJsonString((arrayOf(
+                        githubResponseFor(expectedGetPullRequest)))))))
+    }
+
+    private fun stubGithubGetRequestForPageTwoToReturn(expectedGetPullRequest: GetPullRequest) {
+        stubFor(get("/repos/ClausPolanka/$repoName/pulls?page=2").willReturn(aResponse()
+                .withStatus(200)
+                .withHeader("Link", "<https://api.github.com/repositories/157517927/pulls?page=1>; rel=\"prev\", <https://api.github.com/repositories/157517927/pulls?page=1>; rel=\"first\"")
+                .withHeader("Content-Type", "application/json; charset=utf-8")
+                .withBody(Klaxon().toJsonString((arrayOf(
+                        githubResponseFor(expectedGetPullRequest)))))))
+    }
+
 }
 
 data class GithubResponse(val name: String, val commit: GithubCommit, val protected: Boolean)
 data class GithubCommit(val sha: String, val url: String)
+data class GetPullRequestResponse(val number: Int, val title: String)
