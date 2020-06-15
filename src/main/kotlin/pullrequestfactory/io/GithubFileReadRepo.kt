@@ -20,7 +20,7 @@ class GithubFileReadRepo : GithubReadRepo {
 
     override fun get_all_open_pull_requests(): List<GetPullRequest> {
         val pullRequests = mutableListOf<List<GetPullRequest>>()
-        (1..9).forEach {
+        (1..2).forEach {
             val json = File("json/prs-page-$it.json").readText()
             val prs = Klaxon().parseArray<GetPullRequest>(json)
             pullRequests.add(prs!!)

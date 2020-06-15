@@ -15,4 +15,13 @@ class GithubFileReadRepoTest {
         assertThat(branches).hasSize(242)
     }
 
+    @Test
+    fun get_all_open_pull_requests_from_files() {
+        val sut = GithubFileReadRepo()
+
+        val prs = sut.get_all_open_pull_requests()
+
+        assertThat(prs).hasSize(60)
+    }
+
 }
