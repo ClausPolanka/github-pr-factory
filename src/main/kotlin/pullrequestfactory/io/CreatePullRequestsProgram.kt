@@ -4,7 +4,7 @@ import pullrequestfactory.domain.GithubPRFactory
 import pullrequestfactory.domain.NoopCache
 import pullrequestfactory.domain.Program
 
-class ValidProgram(private val programArgs: ProgramArgs) : Program {
+class CreatePullRequestsProgram(private val programArgs: ProgramArgs) : Program {
 
     override fun execute() {
         val ui = ConsoleUI()

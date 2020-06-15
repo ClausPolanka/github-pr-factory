@@ -63,6 +63,7 @@ class ProgramArgs(private val args: Array<String>, private val ui: UI) {
         return when {
             nrOfArgsIsWrong() -> programUsageMsg
             candidateSyntaxIsWrong() -> candidateSyntaxMsg
+            args[indexOfPairingPartner] == "-close" -> ""
             nrOfPairingPartnerIsWrong() -> nrOfRequiredPairingPartnerMsg
             atLeastOnePairingPartnerIsUnknown() -> unknownPairingPartnerMsg
             else -> ""
@@ -86,5 +87,7 @@ class ProgramArgs(private val args: Array<String>, private val ui: UI) {
     fun printErrorMessage() {
         ui.show(errorMessage())
     }
+
+    fun isClosePullRequests(): Boolean = args[2] == "-close"
 
 }
