@@ -23,6 +23,8 @@ private const val propsFilePath = "target/test-classes/$propsFileName"
 private const val wireMockDefaultUrl = "http://localhost:8080"
 private const val linkHeader = "<https://api.github.com/repositories/157517927/branches?page=2>; rel=\"next\", <https://api.github.com/repositories/157517927/branches?page=9>; rel=\"last\""
 private const val pullRequestPath = "/repos/ClausPolanka/wordcount/pulls"
+private const val pullRequestLinkHeaderPage1 = "<https://api.github.com/repositories/157517927/pulls?page=2>; rel=\"next\", <https://api.github.com/repositories/157517927/pulls?page=2>; rel=\"last\""
+private const val pullRequestLinkHeaderPage2 = "<https://api.github.com/repositories/157517927/pulls?page=1>; rel=\"prev\", <https://api.github.com/repositories/157517927/pulls?page=1>; rel=\"first\""
 
 class MainKtTest {
 
@@ -76,7 +78,7 @@ class MainKtTest {
         val basicAuthToken = "any-valid-token"
         val closePullRequestOption = "-close"
 
-        stubGetRequestForPullRequests()
+        stubGetRequestForPullRequests(candidate)
 
         main(args = arrayOf(candidate, basicAuthToken, closePullRequestOption))
 
@@ -172,20 +174,23 @@ class MainKtTest {
         return propsFileName
     }
 
-    private fun stubGetRequestForPullRequests() {
+    private fun stubGetRequestForPullRequests(candidate: String) {
+        val candidateFirstName = candidate.split("-")[0]
+        val candidateLastName = candidate.split("-")[1]
+        val pr1 = GetPullRequest(1, "$candidateFirstName $candidateLastName Iteration 1 / Session 1 Claus [PR]")
+        val pr2 = GetPullRequest(2, "$candidateFirstName $candidateLastName Iteration 2 / Session 1 Claus")
+
         stubFor(get("$pullRequestPath?page=1").willReturn(aResponse()
                 .withStatus(200)
-                .withHeader("Link", "<https://api.github.com/repositories/157517927/pulls?page=2>; rel=\"next\", <https://api.github.com/repositories/157517927/pulls?page=2>; rel=\"last\"")
+                .withHeader("Link", pullRequestLinkHeaderPage1)
                 .withHeader("Content-Type", "application/json; charset=utf-8")
-                .withBody(Klaxon().toJsonString((arrayOf(
-                        githubResponseFor(GetPullRequest(1, "Radek Leifer Iteration 1 / Session 1 Claus [PR]"))))))))
+                .withBody(Klaxon().toJsonString((arrayOf(githubResponseFor(pr1)))))))
 
         stubFor(get("$pullRequestPath?page=2").willReturn(aResponse()
                 .withStatus(200)
-                .withHeader("Link", "<https://api.github.com/repositories/157517927/pulls?page=1>; rel=\"prev\", <https://api.github.com/repositories/157517927/pulls?page=1>; rel=\"first\"")
+                .withHeader("Link", pullRequestLinkHeaderPage2)
                 .withHeader("Content-Type", "application/json; charset=utf-8")
-                .withBody(Klaxon().toJsonString((arrayOf(
-                        githubResponseFor(GetPullRequest(2, "Radek Leifer Iteration 2 / Session 1 Claus"))))))))
+                .withBody(Klaxon().toJsonString((arrayOf(githubResponseFor(pr2)))))))
     }
 
     private fun githubResponseFor(getPullRequest: GetPullRequest): GetPullRequestResponse {
