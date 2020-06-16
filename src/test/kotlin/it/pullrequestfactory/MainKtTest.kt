@@ -175,20 +175,17 @@ class MainKtTest {
         val candidateLastName = candidate.split("-")[1]
         val pr1 = GetPullRequest(1, "$candidateFirstName $candidateLastName Iteration 1 / Session 1 Claus [PR]")
         val pr2 = GetPullRequest(2, "$candidateFirstName $candidateLastName Iteration 2 / Session 1 Claus")
+        stubGetRequestForPullRequests(pr1, pullRequestLinkHeaderPage1, 1)
+        stubGetRequestForPullRequests(pr2, pullRequestLinkHeaderPage2, 2)
+        return listOf(pr1, pr2)
+    }
 
-        stubFor(get("$pullRequestPath?page=1").willReturn(aResponse()
+    private fun stubGetRequestForPullRequests(pr1: GetPullRequest, linkHeader: String, pageNumber: Int) {
+        stubFor(get("$pullRequestPath?page=$pageNumber").willReturn(aResponse()
                 .withStatus(200)
-                .withHeader("Link", pullRequestLinkHeaderPage1)
+                .withHeader("Link", linkHeader)
                 .withHeader("Content-Type", "application/json; charset=utf-8")
                 .withBody(Klaxon().toJsonString((arrayOf(githubResponseFor(pr1)))))))
-
-        stubFor(get("$pullRequestPath?page=2").willReturn(aResponse()
-                .withStatus(200)
-                .withHeader("Link", pullRequestLinkHeaderPage2)
-                .withHeader("Content-Type", "application/json; charset=utf-8")
-                .withBody(Klaxon().toJsonString((arrayOf(githubResponseFor(pr2)))))))
-
-        return listOf(pr1, pr2)
     }
 
     private fun githubResponseFor(getPullRequest: GetPullRequest): GetPullRequestResponse {
