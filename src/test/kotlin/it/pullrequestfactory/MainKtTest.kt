@@ -3,6 +3,7 @@ package it.pullrequestfactory
 import com.beust.klaxon.Klaxon
 import com.github.tomakehurst.wiremock.client.WireMock.*
 import com.github.tomakehurst.wiremock.junit.WireMockRule
+import com.github.tomakehurst.wiremock.matching.RequestPatternBuilder
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.After
 import org.junit.Before
@@ -93,9 +94,7 @@ class MainKtTest {
     private fun verifyPatchRequestToCloseOpenPullRequestsFor(prNumber: Int) {
         verify(patchRequestedFor(urlMatching("$pullRequestPath/$prNumber"))
                 .withRequestBody(matching(Regex.escape("""{"state" : "closed"}""")))
-                .withHeader("Accept", matching("application/json"))
-                .withHeader("Authorization", matching("Basic .*"))
-                .withHeader("Content-Type", matching("application/json")))
+                .addCommonHeaders())
     }
 
     private fun stubGetRequestsForGithubBranchesFromFiles() {
@@ -163,9 +162,7 @@ class MainKtTest {
     private fun verifyPostRequestToGithubToCreatePullRequestFor(pr: PullRequest) {
         verify(postRequestedFor(urlMatching(pullRequestPath))
                 .withRequestBody(matching(Regex.escape(Klaxon().toJsonString(pr))))
-                .withHeader("Accept", matching("application/json"))
-                .withHeader("Authorization", matching("Basic .*"))
-                .withHeader("Content-Type", matching("application/json")))
+                .addCommonHeaders())
     }
 
     private fun createPropertyFileWith(prop: String): String {
@@ -198,6 +195,12 @@ class MainKtTest {
         return GetPullRequestResponse(getPullRequest.number, getPullRequest.title)
     }
 
+}
+
+private fun RequestPatternBuilder.addCommonHeaders(): RequestPatternBuilder? {
+    return this.withHeader("Accept", matching("application/json"))
+            .withHeader("Authorization", matching("Basic .*"))
+            .withHeader("Content-Type", matching("application/json"))
 }
 
 data class GetPullRequestResponse(val number: Int, val title: String)
