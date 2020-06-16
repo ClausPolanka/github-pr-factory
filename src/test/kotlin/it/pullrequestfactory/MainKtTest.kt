@@ -85,8 +85,9 @@ class MainKtTest {
     }
 
     private fun verifyPatchRequestToCloseOpenPullRequests(prs: List<GetPullRequest>) {
-        verifyPatchRequestToCloseOpenPullRequestsFor(prNumber = prs[0].number)
-        verifyPatchRequestToCloseOpenPullRequestsFor(prNumber = prs[1].number)
+        prs.forEach {
+            verifyPatchRequestToCloseOpenPullRequestsFor(prNumber = it.number)
+        }
     }
 
     private fun verifyPatchRequestToCloseOpenPullRequestsFor(prNumber: Int) {
