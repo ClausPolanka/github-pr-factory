@@ -22,6 +22,7 @@ private const val propsFileName = "app.properties"
 private const val propsFilePath = "target/test-classes/$propsFileName"
 private const val wireMockDefaultUrl = "http://localhost:8080"
 private const val linkHeader = "<https://api.github.com/repositories/157517927/branches?page=2>; rel=\"next\", <https://api.github.com/repositories/157517927/branches?page=9>; rel=\"last\""
+private const val pullRequestPath = "/repos/ClausPolanka/wordcount/pulls"
 
 class MainKtTest {
 
@@ -66,7 +67,7 @@ class MainKtTest {
 
         main(args = arrayOf(candidate, basicAuthToken, pairingPartner))
 
-        verifyPostRequestsToGithubToCreatePullRequests()
+        verifyPostRequestsToGithubToCreatePullRequests(candidate)
     }
 
     @Test
@@ -83,13 +84,13 @@ class MainKtTest {
     }
 
     private fun verifyPatchRequestToCloseOpenPullRequestsForCandidate() {
-        verify(patchRequestedFor(urlMatching("/repos/ClausPolanka/wordcount/pulls/1"))
+        verify(patchRequestedFor(urlMatching("$pullRequestPath/1"))
                 .withRequestBody(matching(Regex.escape("""{"state" : "closed"}""")))
                 .withHeader("Accept", matching("application/json"))
                 .withHeader("Authorization", matching("Basic .*"))
                 .withHeader("Content-Type", matching("application/json")))
 
-        verify(patchRequestedFor(urlMatching("/repos/ClausPolanka/wordcount/pulls/2"))
+        verify(patchRequestedFor(urlMatching("$pullRequestPath/2"))
                 .withRequestBody(matching(Regex.escape("""{"state" : "closed"}""")))
                 .withHeader("Accept", matching("application/json"))
                 .withHeader("Authorization", matching("Basic .*"))
@@ -111,52 +112,55 @@ class MainKtTest {
                         .withBody(File("json/branches-page-$pageNr.json").readText())))
     }
 
-    private fun verifyPostRequestsToGithubToCreatePullRequests() {
-        verify(8, postRequestedFor(urlEqualTo("/repos/ClausPolanka/wordcount/pulls")))
+    private fun verifyPostRequestsToGithubToCreatePullRequests(candidate: String) {
+        verify(8, postRequestedFor(urlEqualTo(pullRequestPath)))
+
+        val candidateFirstName = candidate.split("-")[0]
+        val candidateLastName = candidate.split("-")[1]
 
         verifyPostRequestToGithubToCreatePullRequestFor(PullRequest(
-                _title = "Radek Leifer Iteration 1 / Session 1 Claus",
+                _title = "$candidateFirstName $candidateLastName Iteration 1 / Session 1 Claus",
                 _base = Branch("master"),
                 _head = Branch("radek_leifer_interation_1_claus")))
 
         verifyPostRequestToGithubToCreatePullRequestFor(PullRequest(
-                _title = "Radek Leifer Iteration 1 / Session 2 Berni",
+                _title = "$candidateFirstName $candidateLastName Iteration 1 / Session 2 Berni",
                 _base = Branch("radek_leifer_interation_1_claus"),
                 _head = Branch("radek_leifer_interation_1_berni")))
 
         verifyPostRequestToGithubToCreatePullRequestFor(PullRequest(
-                _title = "Radek Leifer Iteration 1 / Session 3 Dominik [PR]",
+                _title = "$candidateFirstName $candidateLastName Iteration 1 / Session 3 Dominik [PR]",
                 _base = Branch("radek_leifer_interation_1_berni"),
                 _head = Branch("radek_leifer_iteration_1_dominik")))
 
         verifyPostRequestToGithubToCreatePullRequestFor(PullRequest(
-                _title = "Radek Leifer Iteration 2 / Session 3 Dominik",
+                _title = "$candidateFirstName $candidateLastName Iteration 2 / Session 3 Dominik",
                 _base = Branch("radek_leifer_iteration_1_dominik"),
                 _head = Branch("radek_leifer_iteration_2_dominik")))
 
         verifyPostRequestToGithubToCreatePullRequestFor(PullRequest(
-                _title = "Radek Leifer Iteration 2 / Session 4 Christian [PR]",
+                _title = "$candidateFirstName $candidateLastName Iteration 2 / Session 4 Christian [PR]",
                 _base = Branch("radek_leifer_iteration_2_dominik"),
                 _head = Branch("radek_leifer_iteration_2_christian")))
 
         verifyPostRequestToGithubToCreatePullRequestFor(PullRequest(
-                _title = "Radek Leifer Iteration 3 / Session 5 Shubi",
+                _title = "$candidateFirstName $candidateLastName Iteration 3 / Session 5 Shubi",
                 _base = Branch("radek_leifer_iteration_2_christian"),
                 _head = Branch("radek_leifer_iteration_3_shubi")))
 
         verifyPostRequestToGithubToCreatePullRequestFor(PullRequest(
-                _title = "Radek Leifer Iteration 3 / Session 6 Markus",
+                _title = "$candidateFirstName $candidateLastName Iteration 3 / Session 6 Markus",
                 _base = Branch("radek_leifer_iteration_3_shubi"),
                 _head = Branch("radek_leifer_iteration_3_markus")))
 
         verifyPostRequestToGithubToCreatePullRequestFor(PullRequest(
-                _title = "Radek Leifer Iteration 3 / Session 7 Mihai",
+                _title = "$candidateFirstName $candidateLastName Iteration 3 / Session 7 Mihai",
                 _base = Branch("radek_leifer_iteration_3_markus"),
                 _head = Branch("radek_leifer_iteration_3_mihai")))
     }
 
     private fun verifyPostRequestToGithubToCreatePullRequestFor(pr: PullRequest) {
-        verify(postRequestedFor(urlMatching("/repos/ClausPolanka/wordcount/pulls"))
+        verify(postRequestedFor(urlMatching(pullRequestPath))
                 .withRequestBody(matching(Regex.escape(Klaxon().toJsonString(pr))))
                 .withHeader("Accept", matching("application/json"))
                 .withHeader("Authorization", matching("Basic .*"))
@@ -169,14 +173,14 @@ class MainKtTest {
     }
 
     private fun stubGetRequestForPullRequests() {
-        stubFor(get("/repos/ClausPolanka/wordcount/pulls?page=1").willReturn(aResponse()
+        stubFor(get("$pullRequestPath?page=1").willReturn(aResponse()
                 .withStatus(200)
                 .withHeader("Link", "<https://api.github.com/repositories/157517927/pulls?page=2>; rel=\"next\", <https://api.github.com/repositories/157517927/pulls?page=2>; rel=\"last\"")
                 .withHeader("Content-Type", "application/json; charset=utf-8")
                 .withBody(Klaxon().toJsonString((arrayOf(
                         githubResponseFor(GetPullRequest(1, "Radek Leifer Iteration 1 / Session 1 Claus [PR]"))))))))
 
-        stubFor(get("/repos/ClausPolanka/wordcount/pulls?page=2").willReturn(aResponse()
+        stubFor(get("$pullRequestPath?page=2").willReturn(aResponse()
                 .withStatus(200)
                 .withHeader("Link", "<https://api.github.com/repositories/157517927/pulls?page=1>; rel=\"prev\", <https://api.github.com/repositories/157517927/pulls?page=1>; rel=\"first\"")
                 .withHeader("Content-Type", "application/json; charset=utf-8")
