@@ -18,6 +18,9 @@ import java.io.PrintStream
 import java.nio.file.Files
 import java.nio.file.Paths
 
+private const val candidate = "Radek-Leifer"
+private const val basicAuthToken = "any-valid-token"
+private const val pairingPartner = "claus-berni-dominik-christian-shubi-markus-mihai"
 private const val propsFileName = "app.properties"
 private const val propsFilePath = "target/test-classes/$propsFileName"
 private const val wireMockDefaultUrl = "http://localhost:8080"
@@ -63,10 +66,6 @@ class MainKtTest {
 
     @Test
     fun create_pull_requests_for_the_given_candidate() {
-        val candidate = "Radek-Leifer"
-        val basicAuthToken = "any-valid-token"
-        val pairingPartner = "claus-berni-dominik-christian-shubi-markus-mihai"
-
         stubGetRequestsForGithubBranchesFromFiles()
 
         main(args = arrayOf(candidate, basicAuthToken, pairingPartner))
@@ -76,8 +75,6 @@ class MainKtTest {
 
     @Test
     fun close_pull_requests_for_given_candidate() {
-        val candidate = "Radek-Leifer"
-        val basicAuthToken = "any-valid-token"
         val closePullRequestOption = "-close"
 
         val prs = stubGetRequestForPullRequests(candidate)
