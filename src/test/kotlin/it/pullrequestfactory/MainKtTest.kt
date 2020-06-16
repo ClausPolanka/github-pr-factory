@@ -36,7 +36,7 @@ class MainKtTest {
 
     @Before
     fun setUp() {
-        createPropsWith("baseUrl=$wireMockDefaultUrl")
+        createPropertyFileWith(prop = "baseUrl=$wireMockDefaultUrl")
         System.setOut(PrintStream(userOutput))
     }
 
@@ -162,7 +162,7 @@ class MainKtTest {
                 .withHeader("Content-Type", matching("application/json")))
     }
 
-    private fun createPropsWith(prop: String): String {
+    private fun createPropertyFileWith(prop: String): String {
         Files.write(Paths.get("target/test-classes/$propsFileName"), prop.toByteArray())
         return propsFileName
     }
