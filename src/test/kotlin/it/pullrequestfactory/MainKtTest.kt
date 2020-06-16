@@ -62,7 +62,7 @@ class MainKtTest {
         val basicAuthToken = "any-valid-token"
         val pairingPartner = "claus-berni-dominik-christian-shubi-markus-mihai"
 
-        stubRequestsForGithubBranches()
+        stubGetRequestsForGithubBranchesFromFiles()
 
         main(args = arrayOf(candidate, basicAuthToken, pairingPartner))
 
@@ -96,7 +96,7 @@ class MainKtTest {
                 .withHeader("Content-Type", matching("application/json")))
     }
 
-    private fun stubRequestsForGithubBranches() {
+    private fun stubGetRequestsForGithubBranchesFromFiles() {
         (1..9).forEach {
             stubForGithubBranchesRequestPage(it)
         }
