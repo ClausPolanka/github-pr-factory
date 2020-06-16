@@ -18,14 +18,15 @@ import java.io.PrintStream
 import java.nio.file.Files
 import java.nio.file.Paths
 
+private const val propsFileName = "app.properties"
+private const val wireMockDefaultUrl = "http://localhost:8080"
+private const val linkHeader = "<https://api.github.com/repositories/157517927/branches?page=2>; rel=\"next\", <https://api.github.com/repositories/157517927/branches?page=9>; rel=\"last\""
+
 class MainKtTest {
 
     private val systemIn = System.`in`
     private val systemOut = System.out
     private val userOutput = ByteArrayOutputStream()
-    private val propsFileName = "app.properties"
-    private val wireMockDefaultUrl = "http://localhost:8080"
-    private val linkHeader = "<https://api.github.com/repositories/157517927/branches?page=2>; rel=\"next\", <https://api.github.com/repositories/157517927/branches?page=9>; rel=\"last\""
 
     companion object {
         @ClassRule
