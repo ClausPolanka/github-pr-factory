@@ -78,21 +78,20 @@ class MainKtTest {
         val basicAuthToken = "any-valid-token"
         val closePullRequestOption = "-close"
 
-        stubGetRequestForPullRequests(candidate)
+        val prs = stubGetRequestForPullRequests(candidate)
 
         main(args = arrayOf(candidate, basicAuthToken, closePullRequestOption))
 
-        verifyPatchRequestToCloseOpenPullRequestsForCandidate()
+        verifyPatchRequestToCloseOpenPullRequests(prs)
     }
 
-    private fun verifyPatchRequestToCloseOpenPullRequestsForCandidate() {
-        verify(patchRequestedFor(urlMatching("$pullRequestPath/1"))
-                .withRequestBody(matching(Regex.escape("""{"state" : "closed"}""")))
-                .withHeader("Accept", matching("application/json"))
-                .withHeader("Authorization", matching("Basic .*"))
-                .withHeader("Content-Type", matching("application/json")))
+    private fun verifyPatchRequestToCloseOpenPullRequests(prs: List<GetPullRequest>) {
+        verifyPatchRequestToCloseOpenPullRequestsFor(prNumber = prs[0].number)
+        verifyPatchRequestToCloseOpenPullRequestsFor(prNumber = prs[1].number)
+    }
 
-        verify(patchRequestedFor(urlMatching("$pullRequestPath/2"))
+    private fun verifyPatchRequestToCloseOpenPullRequestsFor(prNumber: Int) {
+        verify(patchRequestedFor(urlMatching("$pullRequestPath/$prNumber"))
                 .withRequestBody(matching(Regex.escape("""{"state" : "closed"}""")))
                 .withHeader("Accept", matching("application/json"))
                 .withHeader("Authorization", matching("Basic .*"))
@@ -174,7 +173,7 @@ class MainKtTest {
         return propsFileName
     }
 
-    private fun stubGetRequestForPullRequests(candidate: String) {
+    private fun stubGetRequestForPullRequests(candidate: String): List<GetPullRequest> {
         val candidateFirstName = candidate.split("-")[0]
         val candidateLastName = candidate.split("-")[1]
         val pr1 = GetPullRequest(1, "$candidateFirstName $candidateLastName Iteration 1 / Session 1 Claus [PR]")
@@ -191,6 +190,8 @@ class MainKtTest {
                 .withHeader("Link", pullRequestLinkHeaderPage2)
                 .withHeader("Content-Type", "application/json; charset=utf-8")
                 .withBody(Klaxon().toJsonString((arrayOf(githubResponseFor(pr2)))))))
+
+        return listOf(pr1, pr2)
     }
 
     private fun githubResponseFor(getPullRequest: GetPullRequest): GetPullRequestResponse {
