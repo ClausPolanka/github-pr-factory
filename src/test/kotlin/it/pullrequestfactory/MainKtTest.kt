@@ -55,7 +55,9 @@ class MainKtTest {
     @Test
     fun no_pull_requets_created_for_wrong_number_of_arguments() {
         val args = emptyArray<String>()
+
         main(args)
+
         assertThat(userOutput.toString()).contains("Wrong number of arguments")
     }
 
