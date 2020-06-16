@@ -19,6 +19,7 @@ import java.nio.file.Files
 import java.nio.file.Paths
 
 private const val propsFileName = "app.properties"
+private const val propsFilePath = "target/test-classes/$propsFileName"
 private const val wireMockDefaultUrl = "http://localhost:8080"
 private const val linkHeader = "<https://api.github.com/repositories/157517927/branches?page=2>; rel=\"next\", <https://api.github.com/repositories/157517927/branches?page=9>; rel=\"last\""
 
@@ -45,7 +46,7 @@ class MainKtTest {
         reset()
         System.setIn(systemIn)
         System.setOut(systemOut)
-        Files.deleteIfExists(Paths.get("target/test-classes/$propsFileName"))
+        Files.deleteIfExists(Paths.get(propsFilePath))
     }
 
     @Test
