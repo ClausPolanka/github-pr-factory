@@ -68,8 +68,7 @@ class GithubHttpRepoTest {
     fun branches_are_empty_when_Github_returs_403_forbidden_status_code() {
         val sut = createGithubHttpRepo()
 
-        stubFor(get(branchRequestPathPage1)
-                .willReturn(aResponse().withStatus(403)))
+        stubFor(get(branchRequestPathPage1).willReturn(aResponse().withStatus(403)))
 
         val branches = sut.get_all_branches()
 
