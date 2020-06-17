@@ -165,9 +165,8 @@ class MainKtTest {
                 .addCommonHeaders())
     }
 
-    private fun createPropertyFileWith(prop: String): String {
-        Files.write(Paths.get("target/test-classes/$propsFileName"), prop.toByteArray())
-        return propsFileName
+    private fun createPropertyFileWith(prop: String) {
+        Files.write(Paths.get(propsFilePath), prop.toByteArray())
     }
 
     private fun stubGetRequestForPullRequests(candidate: String): List<GetPullRequest> {
