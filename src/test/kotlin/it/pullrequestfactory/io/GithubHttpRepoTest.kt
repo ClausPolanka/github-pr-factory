@@ -31,9 +31,9 @@ private val pullRequest = PullRequest(
         _title = "Radek Leifer Iteration 1 / Session 1 Claus",
         _base = Branch("master"),
         _head = Branch("radek_leifer_interation_1_claus"))
-private val expectedGetPullRequest = GetPullRequest(1, "firstname lastname Iteration 1 / Session 1 pairingpartner")
-private val expectedGetPullRequest1 = GetPullRequest(1, "firstname lastname Iteration 1 / Session 1 pairingpartner1 [PR]")
-private val expectedGetPullRequest2 = GetPullRequest(1, "firstname lastname Iteration 2 / Session 1 pairingpartner1")
+private val getPullRequest = GetPullRequest(1, "firstname lastname Iteration 1 / Session 1 pairingpartner")
+private val getPullRequest1 = GetPullRequest(1, "firstname lastname Iteration 1 / Session 1 pairingpartner1 [PR]")
+private val getPullRequest2 = GetPullRequest(1, "firstname lastname Iteration 2 / Session 1 pairingpartner1")
 
 class GithubHttpRepoTest {
 
@@ -97,23 +97,23 @@ class GithubHttpRepoTest {
     fun get_all_open_pull_requests_for_github_repository_which_contains_one_page_of_pull_requests() {
         val sut = createGithubHttpRepo()
 
-        stubGithubGetRequestToReturn(expectedGetPullRequest)
+        stubGithubGetRequestToReturn(getPullRequest)
 
         val prs = sut.get_all_open_pull_requests()
 
-        assertThat(prs).containsExactly(expectedGetPullRequest)
+        assertThat(prs).containsExactly(getPullRequest)
     }
 
     @Test
     fun get_all_open_pull_requests_for_github_repository_which_contains_two_pages_of_pull_requests() {
         val sut = createGithubHttpRepo()
 
-        stubGithubGetRequestForPageOneToReturn(expectedGetPullRequest1)
-        stubGithubGetRequestForPageTwoToReturn(expectedGetPullRequest2)
+        stubGithubGetRequestForPageOneToReturn(getPullRequest1)
+        stubGithubGetRequestForPageTwoToReturn(getPullRequest2)
 
         val prs = sut.get_all_open_pull_requests()
 
-        assertThat(prs).containsExactly(expectedGetPullRequest1, expectedGetPullRequest2)
+        assertThat(prs).containsExactly(getPullRequest1, getPullRequest2)
     }
 
     @Test
