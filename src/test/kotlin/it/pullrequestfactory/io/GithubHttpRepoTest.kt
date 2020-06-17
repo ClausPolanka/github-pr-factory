@@ -87,7 +87,7 @@ class GithubHttpRepoTest {
         sut.create_pull_request(pr)
 
         verify(postRequestedFor(urlMatching(pullRequestPath))
-                .withRequestBody(matching(Regex.escape("""{"base" : "master", "head" : "radek_leifer_interation_1_claus", "title" : "Radek Leifer Iteration 1 / Session 1 Claus"}""")))
+                .withRequestBody(matching(jsonFor(pr)))
                 .addCommonHeaders())
     }
 
@@ -204,6 +204,9 @@ class GithubHttpRepoTest {
                 .withBody(Klaxon().toJsonString((arrayOf(
                         githubResponseFor(expectedGetPullRequest)))))))
     }
+
+    private fun jsonFor(pr: PullRequest) =
+            Regex.escape("""{"base" : "${pr.base}", "head" : "${pr.head}", "title" : "${pr.title}"}""")
 
 }
 
