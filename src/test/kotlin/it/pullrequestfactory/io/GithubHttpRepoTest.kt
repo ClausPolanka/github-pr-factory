@@ -24,6 +24,16 @@ private const val branchRequestPathPage1 = "/repos/ClausPolanka/$repoName/branch
 private const val branchRequestPathPage2 = "/repos/ClausPolanka/$repoName/branches?page=2"
 private const val anySha = "4861382d8bd73481b98f72706cb57dc493de592b"
 private const val anyUrl = "https://api.github.com/repos/ClausPolanka/wordcount/commits/4861382d8bd73481b98f72706cb57dc493de592b"
+private val branch = Branch("first_name_iteration_1_claus")
+private val branch1 = Branch("first_name_iteration_1_claus")
+private val branch2 = Branch("first_name_iteration_2_claus")
+private val pullRequest = PullRequest(
+        _title = "Radek Leifer Iteration 1 / Session 1 Claus",
+        _base = Branch("master"),
+        _head = Branch("radek_leifer_interation_1_claus"))
+private val expectedGetPullRequest = GetPullRequest(1, "firstname lastname Iteration 1 / Session 1 pairingpartner")
+private val expectedGetPullRequest1 = GetPullRequest(1, "firstname lastname Iteration 1 / Session 1 pairingpartner1 [PR]")
+private val expectedGetPullRequest2 = GetPullRequest(1, "firstname lastname Iteration 2 / Session 1 pairingpartner1")
 
 class GithubHttpRepoTest {
 
@@ -40,7 +50,6 @@ class GithubHttpRepoTest {
 
     @Test
     fun get_all_branches_for_github_repository_which_contains_only_one_branch() {
-        val branch = Branch("first_name_iteration_1_claus")
         val sut = createGithubHttpRepo()
 
         stubGithubGetRequestToReturn(branch)
@@ -52,8 +61,6 @@ class GithubHttpRepoTest {
 
     @Test
     fun get_all_branches_for_github_repository_which_contains_two_pages_of_branches() {
-        val branch1 = Branch("first_name_iteration_1_claus")
-        val branch2 = Branch("first_name_iteration_2_claus")
         val sut = createGithubHttpRepo()
 
         stubGithubGetRequestForPageOneToReturn(branch1)
@@ -77,22 +84,17 @@ class GithubHttpRepoTest {
 
     @Test
     fun create_pull_request() {
-        val pr = PullRequest(
-                _title = "Radek Leifer Iteration 1 / Session 1 Claus",
-                _base = Branch("master"),
-                _head = Branch("radek_leifer_interation_1_claus"))
         val sut = createGithubHttpRepo()
 
-        sut.create_pull_request(pr)
+        sut.create_pull_request(pullRequest)
 
         verify(postRequestedFor(urlMatching(pullRequestPath))
-                .withRequestBody(matching(jsonFor(pr)))
+                .withRequestBody(matching(jsonFor(pullRequest)))
                 .addCommonHeaders())
     }
 
     @Test
     fun get_all_open_pull_requests_for_github_repository_which_contains_one_page_of_pull_requests() {
-        val expectedGetPullRequest = GetPullRequest(1, "firstname lastname Iteration 1 / Session 1 pairingpartner")
         val sut = createGithubHttpRepo()
 
         stubGithubGetRequestToReturn(expectedGetPullRequest)
@@ -104,8 +106,6 @@ class GithubHttpRepoTest {
 
     @Test
     fun get_all_open_pull_requests_for_github_repository_which_contains_two_pages_of_pull_requests() {
-        val expectedGetPullRequest1 = GetPullRequest(1, "firstname lastname Iteration 1 / Session 1 pairingpartner1 [PR]")
-        val expectedGetPullRequest2 = GetPullRequest(1, "firstname lastname Iteration 2 / Session 1 pairingpartner1")
         val sut = createGithubHttpRepo()
 
         stubGithubGetRequestForPageOneToReturn(expectedGetPullRequest1)
