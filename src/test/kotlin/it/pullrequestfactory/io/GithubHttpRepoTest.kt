@@ -11,6 +11,11 @@ import org.junit.Test
 import pullrequestfactory.domain.*
 import pullrequestfactory.io.GithubHttpRepo
 
+private const val repoName = "repository-name"
+private const val wireMockDefaultUrl = "http://localhost:8080"
+private const val linkHeaderForPage1 = "<https://api.github.com/repositories/157517927/branches?page=2>; rel=\"next\", <https://api.github.com/repositories/157517927/branches?page=2>; rel=\"last\""
+private const val linkHeaderForPage2 = "<https://api.github.com/repositories/157517927/pulls?page=1>; rel=\"prev\", <https://api.github.com/repositories/157517927/pulls?page=1>; rel=\"first\""
+
 class GithubHttpRepoTest {
 
     companion object {
@@ -18,11 +23,6 @@ class GithubHttpRepoTest {
         @JvmField
         val wireMockRule = WireMockRule()
     }
-
-    private val linkHeader = "<https://api.github.com/repositories/157517927/branches?page=2>; rel=\"next\", " +
-            "<https://api.github.com/repositories/157517927/branches?page=2>; rel=\"last\""
-    private val repoName = "repository-name"
-    private val wireMockDefaultUrl = "http://localhost:8080"
 
     @After
     fun tearDown() {
@@ -162,7 +162,7 @@ class GithubHttpRepoTest {
         stubFor(get("/repos/ClausPolanka/$repoName/branches?page=1").willReturn(aResponse()
                 .withStatus(200)
                 .withHeader("Content-Type", "application/json; charset=utf-8")
-                .withHeader("Link", linkHeader)
+                .withHeader("Link", linkHeaderForPage1)
                 .withBody(Klaxon().toJsonString((arrayOf(githubResponseFor(branch)))))))
     }
 
@@ -197,7 +197,7 @@ class GithubHttpRepoTest {
     private fun stubGithubGetRequestForPageTwoToReturn(expectedGetPullRequest: GetPullRequest) {
         stubFor(get("/repos/ClausPolanka/$repoName/pulls?page=2").willReturn(aResponse()
                 .withStatus(200)
-                .withHeader("Link", "<https://api.github.com/repositories/157517927/pulls?page=1>; rel=\"prev\", <https://api.github.com/repositories/157517927/pulls?page=1>; rel=\"first\"")
+                .withHeader("Link", linkHeaderForPage2)
                 .withHeader("Content-Type", "application/json; charset=utf-8")
                 .withBody(Klaxon().toJsonString((arrayOf(
                         githubResponseFor(expectedGetPullRequest)))))))
@@ -207,4 +207,3 @@ class GithubHttpRepoTest {
 
 data class GithubResponse(val name: String, val commit: GithubCommit, val protected: Boolean)
 data class GithubCommit(val sha: String, val url: String)
-data class GetPullRequestResponse(val number: Int, val title: String)
