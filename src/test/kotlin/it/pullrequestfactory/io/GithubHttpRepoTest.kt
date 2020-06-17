@@ -3,6 +3,7 @@ package it.pullrequestfactory.io
 import com.beust.klaxon.Klaxon
 import com.github.tomakehurst.wiremock.client.WireMock.*
 import com.github.tomakehurst.wiremock.junit.WireMockRule
+import com.github.tomakehurst.wiremock.matching.RequestPatternBuilder
 import it.pullrequestfactory.GetPullRequestResponse
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.After
@@ -87,9 +88,7 @@ class GithubHttpRepoTest {
 
         verify(postRequestedFor(urlMatching(pullRequestPath))
                 .withRequestBody(matching(Regex.escape("""{"base" : "master", "head" : "radek_leifer_interation_1_claus", "title" : "Radek Leifer Iteration 1 / Session 1 Claus"}""")))
-                .withHeader("Accept", matching("application/json"))
-                .withHeader("Authorization", matching("Basic .*"))
-                .withHeader("Content-Type", matching("application/json")))
+                .addCommonHeaders())
     }
 
     @Test
@@ -137,9 +136,7 @@ class GithubHttpRepoTest {
 
         verify(patchRequestedFor(urlMatching("$pullRequestPath/1"))
                 .withRequestBody(matching(Regex.escape("""{"state" : "closed"}""")))
-                .withHeader("Accept", matching("application/json"))
-                .withHeader("Authorization", matching("Basic .*"))
-                .withHeader("Content-Type", matching("application/json")))
+                .addCommonHeaders())
     }
 
     private fun createGithubHttpRepo(): GithubHttpRepo = GithubHttpRepo(
@@ -208,6 +205,13 @@ class GithubHttpRepoTest {
                         githubResponseFor(expectedGetPullRequest)))))))
     }
 
+}
+
+private fun RequestPatternBuilder.addCommonHeaders(): RequestPatternBuilder? {
+    return this
+            .withHeader("Accept", matching("application/json"))
+            .withHeader("Authorization", matching("Basic .*"))
+            .withHeader("Content-Type", matching("application/json"))
 }
 
 data class GithubResponse(val name: String, val commit: GithubCommit, val protected: Boolean)
