@@ -28,4 +28,6 @@ In root project-directory: <pre>java -jar target/github-pr-factory-<version>-jar
 
 For example: <pre>java -jar target/github-pr-factory-1.0-SNAPSHOT-jar-with-dependencies.jar Firstname-Lastname asdif8970702als name1-name2-name3`</pre>
 
+### Continuous Integration with circleci
+
 [![ClausPolanka](https://circleci.com/gh/ClausPolanka/github-pr-factory.svg?style=svg)](https://app.circleci.com/pipelines/github/ClausPolanka/github-pr-factory)
