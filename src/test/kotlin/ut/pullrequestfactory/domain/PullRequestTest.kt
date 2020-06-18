@@ -10,7 +10,7 @@ private const val prTitle = "Firstname Lastname Iteration 1 / Session 1 pairingp
 class PullRequestTest {
 
     @Test
-    fun mark_title_of_current_pull_request_when_next_pull_request_has_new_iteration_and_current_base_is_master() {
+    fun mark_title_of_current_pull_request_when_next_pull_request_has_new_iteration() {
         val sut = create_pull_request_with(prTitle)
 
         sut.add_pr_mark_to_title(nextPr = PullRequest(
@@ -22,37 +22,15 @@ class PullRequestTest {
     }
 
     @Test
-    fun mark_title_of_current_pull_request_when_next_pull_request_has_new_iteration_and_base_is_not_master() {
-        val sut = PullRequest(
-                _title = "Firstname Lastname Iteration 2 / Session 1 pairingpartner",
-                _base = Branch("firstname_lastname_iteration_1_pairingpartner"),
-                _head = Branch("firstname_lastname_iteration_2_pairingpartner"))
-
-        val nextPr = PullRequest(
-                _title = "Firstname Lastname Iteration 3 / Session 1 pairingpartner",
-                _base = Branch("firstname_lastname_iteration_2_pairingpartner"),
-                _head = Branch("firstname_lastname_iteration_3_pairingpartner"))
-
-        sut.add_pr_mark_to_title(nextPr = nextPr)
-
-        assertThat(sut.title).isEqualTo("Firstname Lastname Iteration 2 / Session 1 pairingpartner")
-    }
-
-    @Test
     fun keep_title_of_current_pull_request_when_next_pull_request_has_same_iteration() {
-        val sut = PullRequest(
-                _title = "Firstname Lastname Iteration 1 / Session 1 pairingpartner1",
-                _base = Branch("master"),
-                _head = Branch("firstname_lastname_iteration_1_pairingpartner1"))
+        val sut = create_pull_request_with(prTitle)
 
-        val nextPr = PullRequest(
-                _title = "Firstname Lastname Iteration 1 / Session 2 pairingpartner2",
-                _base = Branch("firstname_lastname_iteration_1_pairingpartner1"),
-                _head = Branch("firstname_lastname_iteration_1_pairingpartner2"))
+        sut.add_pr_mark_to_title(nextPr = PullRequest(
+                _title = "any",
+                _base = create_branch_for(iterationNr = 1),
+                _head = create_branch_for(iterationNr = 1)))
 
-        sut.add_pr_mark_to_title(nextPr = nextPr)
-
-        assertThat(sut.title).isEqualTo("Firstname Lastname Iteration 1 / Session 1 pairingpartner1")
+        assertThat(sut.title).isEqualTo(prTitle)
     }
 
     private fun create_pull_request_with(title: String): PullRequest {

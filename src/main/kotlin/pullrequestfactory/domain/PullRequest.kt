@@ -13,7 +13,6 @@ data class PullRequest(
         _title = if (nextPr.has_new_iteration()) "$_title [PR]" else _title
     }
 
-    private fun has_new_iteration(): Boolean =
-            _base.is_not_master() && _base.iteration_nr() < _head.iteration_nr()
+    private fun has_new_iteration(): Boolean = _base.iteration_nr() < _head.iteration_nr()
 
 }
