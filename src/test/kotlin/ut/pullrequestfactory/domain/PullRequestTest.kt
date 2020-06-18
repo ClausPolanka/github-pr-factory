@@ -34,10 +34,7 @@ class PullRequestTest {
     }
 
     private fun create_pull_request_with(title: String): PullRequest {
-        return PullRequest(
-                _title = title,
-                _base = Branch("any"),
-                _head = Branch("any"))
+        return PullRequest(_title = title, _base = Branch("any"), _head = Branch("any"))
     }
 
     private fun create_branch_for(iterationNr: Int) =
