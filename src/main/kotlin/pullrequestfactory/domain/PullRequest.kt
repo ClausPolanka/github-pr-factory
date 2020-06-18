@@ -9,7 +9,7 @@ data class PullRequest(
     val base: String get() = _base.name
     val head: String get() = _head.name
 
-    fun add_pr_mark_to_title(nextPr: PullRequest) {
+    fun mark_title(nextPr: PullRequest) {
         _title = if (nextPr.has_new_iteration()) "$_title [PR]" else _title
     }
 

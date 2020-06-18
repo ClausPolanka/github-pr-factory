@@ -11,13 +11,13 @@ class PullRequests {
                     _base = baseBranches[idx],
                     _head = branch)
         }
-        return mark_pull_request_titles_with_pr(pullRequests)
+        return mark_pull_request_titles(pullRequests)
     }
 
-    private fun mark_pull_request_titles_with_pr(pullRequests: List<PullRequest>): List<PullRequest> {
+    private fun mark_pull_request_titles(pullRequests: List<PullRequest>): List<PullRequest> {
         pullRequests.forEachIndexed { idx, pr ->
             if (idx > 0)
-                pullRequests[idx - 1].add_pr_mark_to_title(pr)
+                pullRequests[idx - 1].mark_title(pr)
         }
         return pullRequests
     }

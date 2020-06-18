@@ -13,7 +13,7 @@ class PullRequestTest {
     fun mark_title_of_current_pull_request_when_next_pull_request_has_new_iteration() {
         val sut = create_pull_request_with(prTitle)
 
-        sut.add_pr_mark_to_title(nextPr = PullRequest(
+        sut.mark_title(nextPr = PullRequest(
                 _title = "any",
                 _base = create_branch_for(iterationNr = 1),
                 _head = create_branch_for(iterationNr = 2)))
@@ -25,7 +25,7 @@ class PullRequestTest {
     fun keep_title_of_current_pull_request_when_next_pull_request_has_same_iteration() {
         val sut = create_pull_request_with(prTitle)
 
-        sut.add_pr_mark_to_title(nextPr = PullRequest(
+        sut.mark_title(nextPr = PullRequest(
                 _title = "any",
                 _base = create_branch_for(iterationNr = 1),
                 _head = create_branch_for(iterationNr = 1)))
