@@ -12,8 +12,8 @@ class Sessions(private val branches: List<Branch>) {
             when (idx) {
                 0 -> prevSession.toString()
                 else -> {
-                    val currPairingPartner = branch.pairing_partner()
                     val prevPairingPartner = branches[idx - 1].pairing_partner()
+                    val currPairingPartner = branch.pairing_partner()
                     if (prevPairingPartner == currPairingPartner) {
                         "$prevSession"
                     } else {
