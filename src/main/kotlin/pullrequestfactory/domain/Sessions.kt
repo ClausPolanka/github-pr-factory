@@ -2,7 +2,8 @@ package pullrequestfactory.domain
 
 /**
  * A session represents the unit of an hour of pair-programming between
- * the candidate and and an existing team-member.
+ * the candidate and and an existing team-member. A new pairing-partner always
+ * results in a new session.
  */
 class Sessions(private val branches: List<Branch>) {
 
