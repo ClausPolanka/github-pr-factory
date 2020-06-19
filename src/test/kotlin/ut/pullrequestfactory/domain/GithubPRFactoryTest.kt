@@ -6,6 +6,9 @@ import org.junit.Test
 import pullrequestfactory.domain.*
 import pullrequestfactory.io.ConsoleUI
 
+private const val invalidBranchName = "firstname_lastname_claus"
+private val candidate = Candidate("Firstname", "Lastname")
+private val pairingpartner = listOf("Pairingpartner")
 
 class GithubPRFactoryTest {
 
@@ -13,61 +16,61 @@ class GithubPRFactoryTest {
     fun creates_two_pull_requests_for_different_sessions_and_different_iterations() {
         val expectedPrs = mutableListOf<PullRequest>()
         val githubReadRepo = githubReadRepo(listOf(
-                Branch("firstname_lastname_iteration_1_claus"),
-                Branch("firstname_lastname_iteration_2_berni")), emptyList())
+                Branch("firstname_lastname_iteration_1_pairingpartner1"),
+                Branch("firstname_lastname_iteration_2_pairingpartner2")), emptyList())
         val sut = GithubPRFactory(githubReadRepo, githubWriteRepo(expectedPrs, mutableListOf()), ConsoleUI())
 
-        sut.create_pull_requests(Candidate("Firstname", "Lastname"), listOf("Claus", "Berni"))
+        sut.create_pull_requests(Candidate("Firstname", "Lastname"), listOf("Pairingpartner1", "Pairingpartner2"))
 
         assertThat(expectedPrs).containsExactly(
                 PullRequest(
-                        _title = "Firstname Lastname Iteration 1 / Session 1 Claus [PR]",
+                        _title = "Firstname Lastname Iteration 1 / Session 1 Pairingpartner1 [PR]",
                         _base = Branch("master"),
-                        _head = Branch("firstname_lastname_iteration_1_claus")),
+                        _head = Branch("firstname_lastname_iteration_1_pairingpartner1")),
                 PullRequest(
-                        _title = "Firstname Lastname Iteration 2 / Session 2 Berni",
-                        _base = Branch("firstname_lastname_iteration_1_claus"),
-                        _head = Branch("firstname_lastname_iteration_2_berni")))
+                        _title = "Firstname Lastname Iteration 2 / Session 2 Pairingpartner2",
+                        _base = Branch("firstname_lastname_iteration_1_pairingpartner1"),
+                        _head = Branch("firstname_lastname_iteration_2_pairingpartner2")))
     }
 
     @Test
     fun creates_pull_request_and_ignores_if_candidates_first_name_is_capitalized() {
         val expectedPrs = mutableListOf<PullRequest>()
-        val githubReadRepo = githubReadRepo(listOf(Branch("a_lastname_iteration_1_claus")), emptyList())
+        val githubReadRepo = githubReadRepo(listOf(Branch("firstname_lastname_iteration_1_pairingpartner")), emptyList())
         val sut = GithubPRFactory(githubReadRepo, githubWriteRepo(expectedPrs, mutableListOf()), ConsoleUI())
 
-        sut.create_pull_requests(Candidate("A", "lastname"), listOf("Claus"))
+        sut.create_pull_requests(Candidate(firstName = "Firstname", lastName = "lastname"), listOf("Pairingpartner"))
 
         assertThat(expectedPrs).containsExactly(
                 PullRequest(
-                        _title = "A Lastname Iteration 1 / Session 1 Claus",
+                        _title = "Firstname Lastname Iteration 1 / Session 1 Pairingpartner",
                         _base = Branch("master"),
-                        _head = Branch("a_lastname_iteration_1_claus")))
+                        _head = Branch("firstname_lastname_iteration_1_pairingpartner")))
     }
 
     @Test
     fun creates_pull_request_and_ignores_if_candidates_last_name_is_capitalized() {
         val expectedPrs = mutableListOf<PullRequest>()
-        val githubReadRepo = githubReadRepo(listOf(Branch("firstname_a_iteration_1_claus")), emptyList())
+        val githubReadRepo = githubReadRepo(listOf(Branch("firstname_lastname_iteration_1_pairingpartner")), emptyList())
         val sut = GithubPRFactory(githubReadRepo, githubWriteRepo(expectedPrs, mutableListOf()), ConsoleUI())
 
-        sut.create_pull_requests(Candidate("Firstname", "A"), listOf("Claus"))
+        sut.create_pull_requests(Candidate("firstname", "Lastname"), listOf("Pairingpartner"))
 
         assertThat(expectedPrs).containsExactly(
                 PullRequest(
-                        _title = "Firstname A Iteration 1 / Session 1 Claus",
+                        _title = "Firstname Lastname Iteration 1 / Session 1 Pairingpartner",
                         _base = Branch("master"),
-                        _head = Branch("firstname_a_iteration_1_claus")))
+                        _head = Branch("firstname_lastname_iteration_1_pairingpartner")))
     }
 
 
     @Test
     fun creates_no_pull_requests_for_candidate_when_no_branch_exists_containing_candidates_first_name() {
         val expectedPrs = mutableListOf<PullRequest>()
-        val githubReadRepo = githubReadRepo(listOf(Branch("a_lastname_iteration_1_claus")), emptyList())
+        val githubReadRepo = githubReadRepo(listOf(Branch("firstname1_lastname_iteration_1_pairingpartner")), emptyList())
         val sut = GithubPRFactory(githubReadRepo, githubWriteRepo(expectedPrs, mutableListOf()), ConsoleUI())
 
-        sut.create_pull_requests(Candidate("B", "Lastname"), listOf("Claus"))
+        sut.create_pull_requests(Candidate("firstname2", "Lastname"), listOf("Pairingpartner"))
 
         assertThat(expectedPrs).isEmpty()
     }
@@ -75,80 +78,70 @@ class GithubPRFactoryTest {
     @Test
     fun creates_no_pull_requests_for_candidate_when_no_branch_exists_containing_candidates_last_name() {
         val expectedPrs = mutableListOf<PullRequest>()
-        val githubReadRepo = githubReadRepo(listOf(Branch("firstname_a_iteration_1_claus")), emptyList())
+        val githubReadRepo = githubReadRepo(listOf(Branch("firstname_lastname1_iteration_1_pairingpartner")), emptyList())
         val sut = GithubPRFactory(githubReadRepo, githubWriteRepo(expectedPrs, mutableListOf()), ConsoleUI())
 
-        sut.create_pull_requests(Candidate("Firstname", "b"), listOf("Claus"))
+        sut.create_pull_requests(Candidate("Firstname", "lastname2"), listOf("Pairingpartner"))
 
         assertThat(expectedPrs).isEmpty()
     }
 
     @Test
     fun branch_can_not_be_processed_if_branch_name_has_invalid_name() {
-        val githubReadRepo = githubReadRepo(listOf(Branch("firstname_lastname_claus")), emptyList())
-        val sut = GithubPRFactory(githubReadRepo, object : GithubWriteRepo {
-            override fun create_pull_request(pullRequest: PullRequest) {
-                // can be ignored in this test
-            }
+        val sut = createGithubPRFactoryFor(invalidBranchName)
 
-            override fun close_pull_request(number: Int) {
-                // can be ignored in this test
-            }
-        }, ConsoleUI())
-
-        assertThatThrownBy {
-            sut.create_pull_requests(Candidate("Firstname", "Lastname"), listOf("Claus"))
-        }.hasMessageContaining("invalid name")
-                .hasMessageContaining("firstname_lastname_claus")
+        assertThatThrownBy { sut.create_pull_requests(candidate, pairingpartner) }
+                .hasMessageContaining("invalid name")
+                .hasMessageContaining(invalidBranchName)
     }
 
     @Test
     fun close_pull_requests_for_two_candidates_with_same_first_name() {
-        val expectedPullRequestNumbersToBeClosed = mutableListOf<Int>()
+        val pullRequestNumbersToBeClosed = mutableListOf<Int>()
         val sut = GithubPRFactory(
                 githubReadRepo(emptyList(), listOf(
                         GetPullRequest(1, "Firstname1 Lastname1 Iteration 1 / Session 1 pairingpartner"),
                         GetPullRequest(2, "Firstname1 Lastname2 Iteration 1 / Session 1 pairingpartner"))),
-                githubWriteRepo(mutableListOf(), expectedPullRequestNumbersToBeClosed),
+                githubWriteRepo(mutableListOf(), pullRequestNumbersToBeClosed),
                 ConsoleUI())
 
         sut.close_pull_requests_for(Candidate("firstname1", "lastname1"))
 
-        assertThat(expectedPullRequestNumbersToBeClosed)
+        assertThat(pullRequestNumbersToBeClosed)
                 .describedAs("Expected pull request numbers to be closed")
                 .containsExactly(1)
     }
 
     @Test
     fun close_pull_requests_for_two_candidates_with_same_last_name() {
-        val expectedPullRequestNumbersToBeClosed = mutableListOf<Int>()
+        val pullRequestNumbersToBeClosed = mutableListOf<Int>()
         val sut = GithubPRFactory(
                 githubReadRepo(emptyList(), listOf(
                         GetPullRequest(1, "Firstname1 Lastname1 Iteration 1 / Session 1 pairingpartner"),
                         GetPullRequest(2, "Firstname2 Lastname1 Iteration 1 / Session 1 pairingpartner"))),
-                githubWriteRepo(mutableListOf(), expectedPullRequestNumbersToBeClosed),
+                githubWriteRepo(mutableListOf(), pullRequestNumbersToBeClosed),
                 ConsoleUI())
 
         sut.close_pull_requests_for(Candidate("firstname1", "lastname1"))
 
-        assertThat(expectedPullRequestNumbersToBeClosed)
+        assertThat(pullRequestNumbersToBeClosed)
                 .describedAs("Expected pull request numbers to be closed")
                 .containsExactly(1)
     }
 
     @Test
     fun close_pull_requests_for_one_candidate() {
-        val expectedPullRequestNumbersToBeClosed = mutableListOf<Int>()
+        val pullRequestNumbersToBeClosed = mutableListOf<Int>()
         val sut = GithubPRFactory(
                 githubReadRepo(emptyList(), listOf(
                         GetPullRequest(1, "Firstname1 Lastname1 Iteration 1 / Session 1 pairingpartner1"),
                         GetPullRequest(2, "Firstname1 Lastname1 Iteration 1 / Session 2 pairingpartner2"))),
-                githubWriteRepo(mutableListOf(), expectedPullRequestNumbersToBeClosed),
+                githubWriteRepo(mutableListOf(), pullRequestNumbersToBeClosed),
                 ConsoleUI())
 
         sut.close_pull_requests_for(Candidate("firstname1", "lastname1"))
 
-        assertThat(expectedPullRequestNumbersToBeClosed)
+        assertThat(pullRequestNumbersToBeClosed)
                 .describedAs("Expected pull request numbers to be closed")
                 .containsExactly(1, 2)
     }
@@ -176,4 +169,18 @@ class GithubPRFactoryTest {
             }
         }
     }
+
+    private fun noopGithubWriteRepo() = object : GithubWriteRepo {
+        override fun create_pull_request(pullRequest: PullRequest) {
+            // can be ignored in this test
+        }
+
+        override fun close_pull_request(number: Int) {
+            // can be ignored in this test
+        }
+    }
+
+    private fun createGithubPRFactoryFor(branchName: String) =
+            GithubPRFactory(githubReadRepo(listOf(Branch(branchName)), emptyList()), noopGithubWriteRepo(), ConsoleUI())
+
 }
