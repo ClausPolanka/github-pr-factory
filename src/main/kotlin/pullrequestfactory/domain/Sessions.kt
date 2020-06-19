@@ -1,5 +1,9 @@
 package pullrequestfactory.domain
 
+/**
+ * A session represents the unit of an hour of pair-programming between
+ * the candidate and and an existing team-member.
+ */
 class Sessions(private val branches: List<Branch>) {
 
     fun create(): List<String> {
