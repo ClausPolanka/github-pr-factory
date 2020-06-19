@@ -14,7 +14,7 @@ class GithubPRFactoryTest {
 
     @Test
     fun creates_two_pull_requests_for_different_sessions_and_different_iterations() {
-        val (pullRequests, sut) = createGithubPRFactory(listOf(
+        val (pullRequests, sut) = create_github_pr_factory(listOf(
                 Branch("firstname_lastname_iteration_1_pairingpartner1"),
                 Branch("firstname_lastname_iteration_2_pairingpartner2")))
 
@@ -33,7 +33,7 @@ class GithubPRFactoryTest {
 
     @Test
     fun creates_pull_request_and_ignores_if_candidates_first_name_is_capitalized() {
-        val (pullRequests, sut) = createGithubPRFactory(listOf(
+        val (pullRequests, sut) = create_github_pr_factory(listOf(
                 Branch("firstname_lastname_iteration_1_pairingpartner")))
 
         sut.create_pull_requests(Candidate(firstName = "Firstname", lastName = "lastname"), listOf("Pairingpartner"))
@@ -46,7 +46,7 @@ class GithubPRFactoryTest {
 
     @Test
     fun creates_pull_request_and_ignores_if_candidates_last_name_is_capitalized() {
-        val (pullRequests, sut) = createGithubPRFactory(listOf(
+        val (pullRequests, sut) = create_github_pr_factory(listOf(
                 Branch("firstname_lastname_iteration_1_pairingpartner")))
 
         sut.create_pull_requests(Candidate("firstname", "Lastname"), listOf("Pairingpartner"))
@@ -59,7 +59,7 @@ class GithubPRFactoryTest {
 
     @Test
     fun creates_no_pull_requests_for_candidate_when_no_branch_exists_containing_candidates_first_name() {
-        val (pullRequests, sut) = createGithubPRFactory(listOf(
+        val (pullRequests, sut) = create_github_pr_factory(listOf(
                 Branch("firstname1_lastname_iteration_1_pairingpartner")))
 
         sut.create_pull_requests(Candidate("firstname2", "Lastname"), listOf("Pairingpartner"))
@@ -70,7 +70,7 @@ class GithubPRFactoryTest {
 
     @Test
     fun creates_no_pull_requests_for_candidate_when_no_branch_exists_containing_candidates_last_name() {
-        val (pullRequests, sut) = createGithubPRFactory(listOf(
+        val (pullRequests, sut) = create_github_pr_factory(listOf(
                 Branch("firstname_lastname1_iteration_1_pairingpartner")))
 
         sut.create_pull_requests(Candidate("Firstname", "lastname2"), listOf("Pairingpartner"))
@@ -80,7 +80,7 @@ class GithubPRFactoryTest {
 
     @Test
     fun branch_can_not_be_processed_if_branch_name_has_invalid_name() {
-        val sut = createGithubPRFactoryFor(invalidBranchName)
+        val sut = create_github_pr_factory_for(invalidBranchName)
 
         assertThatThrownBy { sut.create_pull_requests(candidate, pairingpartner) }
                 .hasMessageContaining("invalid name")
@@ -89,7 +89,7 @@ class GithubPRFactoryTest {
 
     @Test
     fun close_pull_requests_for_two_candidates_with_same_first_name() {
-        val (pullRequestNumbersToBeClosed, sut) = createGithubPRFactoryFor(listOf(
+        val (pullRequestNumbersToBeClosed, sut) = create_github_pr_factory_for(listOf(
                 GetPullRequest(1, "Firstname1 Lastname1 Iteration 1 / Session 1 pairingpartner"),
                 GetPullRequest(2, "Firstname1 Lastname2 Iteration 1 / Session 1 pairingpartner")))
 
@@ -102,7 +102,7 @@ class GithubPRFactoryTest {
 
     @Test
     fun close_pull_requests_for_two_candidates_with_same_last_name() {
-        val (pullRequestNumbersToBeClosed, sut) = createGithubPRFactoryFor(listOf(
+        val (pullRequestNumbersToBeClosed, sut) = create_github_pr_factory_for(listOf(
                 GetPullRequest(1, "Firstname1 Lastname1 Iteration 1 / Session 1 pairingpartner"),
                 GetPullRequest(2, "Firstname2 Lastname1 Iteration 1 / Session 1 pairingpartner")))
 
@@ -115,7 +115,7 @@ class GithubPRFactoryTest {
 
     @Test
     fun close_pull_requests_for_one_candidate() {
-        val (pullRequestNumbersToBeClosed, sut) = createGithubPRFactoryFor(listOf(
+        val (pullRequestNumbersToBeClosed, sut) = create_github_pr_factory_for(listOf(
                 GetPullRequest(1, "Firstname1 Lastname1 Iteration 1 / Session 1 pairingpartner1"),
                 GetPullRequest(2, "Firstname1 Lastname1 Iteration 1 / Session 2 pairingpartner2")))
 
@@ -126,7 +126,26 @@ class GithubPRFactoryTest {
                 .containsExactly(1, 2)
     }
 
-    private fun githubReadRepo(branches: List<Branch>, pullRequests: List<GetPullRequest>): GithubReadRepo {
+    private fun create_github_pr_factory(branches: List<Branch>): Pair<MutableList<PullRequest>, GithubPRFactory> {
+        val pullRequests = mutableListOf<PullRequest>()
+        val githubReadRepo = github_read_repo(branches, emptyList())
+        val sut = GithubPRFactory(githubReadRepo, github_write_repo(pullRequests, mutableListOf()), ConsoleUI())
+        return Pair(pullRequests, sut)
+    }
+
+    private fun create_github_pr_factory_for(pullRequests: List<GetPullRequest>): Pair<MutableList<Int>, GithubPRFactory> {
+        val pullRequestNumbersToBeClosed = mutableListOf<Int>()
+        val sut = GithubPRFactory(
+                github_read_repo(emptyList(), pullRequests),
+                github_write_repo(mutableListOf(), pullRequestNumbersToBeClosed),
+                ConsoleUI())
+        return Pair(pullRequestNumbersToBeClosed, sut)
+    }
+
+    private fun create_github_pr_factory_for(branchName: String) =
+            GithubPRFactory(github_read_repo(listOf(Branch(branchName)), emptyList()), noop_github_write_repo(), ConsoleUI())
+
+    private fun github_read_repo(branches: List<Branch>, pullRequests: List<GetPullRequest>): GithubReadRepo {
         return object : GithubReadRepo {
             override fun get_all_branches(): List<Branch> {
                 return branches
@@ -138,7 +157,7 @@ class GithubPRFactoryTest {
         }
     }
 
-    private fun githubWriteRepo(expectedPrs: MutableList<PullRequest>, expectedPullRequestNumbersToBeClosed: MutableList<Int>): GithubWriteRepo {
+    private fun github_write_repo(expectedPrs: MutableList<PullRequest>, expectedPullRequestNumbersToBeClosed: MutableList<Int>): GithubWriteRepo {
         return object : GithubWriteRepo {
             override fun create_pull_request(pullRequest: PullRequest) {
                 expectedPrs.add(pullRequest)
@@ -150,7 +169,7 @@ class GithubPRFactoryTest {
         }
     }
 
-    private fun noopGithubWriteRepo() = object : GithubWriteRepo {
+    private fun noop_github_write_repo() = object : GithubWriteRepo {
         override fun create_pull_request(pullRequest: PullRequest) {
             // can be ignored in this test
         }
@@ -158,25 +177,6 @@ class GithubPRFactoryTest {
         override fun close_pull_request(number: Int) {
             // can be ignored in this test
         }
-    }
-
-    private fun createGithubPRFactoryFor(branchName: String) =
-            GithubPRFactory(githubReadRepo(listOf(Branch(branchName)), emptyList()), noopGithubWriteRepo(), ConsoleUI())
-
-    private fun createGithubPRFactory(branches: List<Branch>): Pair<MutableList<PullRequest>, GithubPRFactory> {
-        val pullRequests = mutableListOf<PullRequest>()
-        val githubReadRepo = githubReadRepo(branches, emptyList())
-        val sut = GithubPRFactory(githubReadRepo, githubWriteRepo(pullRequests, mutableListOf()), ConsoleUI())
-        return Pair(pullRequests, sut)
-    }
-
-    private fun createGithubPRFactoryFor(pullRequests: List<GetPullRequest>): Pair<MutableList<Int>, GithubPRFactory> {
-        val pullRequestNumbersToBeClosed = mutableListOf<Int>()
-        val sut = GithubPRFactory(
-                githubReadRepo(emptyList(), pullRequests),
-                githubWriteRepo(mutableListOf(), pullRequestNumbersToBeClosed),
-                ConsoleUI())
-        return Pair(pullRequestNumbersToBeClosed, sut)
     }
 
 }
