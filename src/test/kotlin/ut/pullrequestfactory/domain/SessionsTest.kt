@@ -8,7 +8,7 @@ import pullrequestfactory.domain.Sessions
 class SessionsTest {
 
     @Test
-    fun create_sessions_for_two_branches_for_same_iterations_but_different_pairing_partner() {
+    fun for_branches_of_the_same_iteration_with_different_pairing_partner_the_session_number_gets_incremented() {
         val sut = Sessions(listOf(
                 Branch("fn_ln_iteration_1_pp1"),
                 Branch("fn_ln_iteration_1_pp2")))
@@ -19,7 +19,7 @@ class SessionsTest {
     }
 
     @Test
-    fun create_sessions_for_two_branches_for_different_iterations_for_same_pairing_partner() {
+    fun for_branches_of_two_iterations_with_the_same_pairing_partner_the_session_number_stays_the_same() {
         val sut = Sessions(listOf(
                 Branch("fn_ln_iteration_1_pp1"),
                 Branch("fn_ln_iteration_2_pp1")))
@@ -28,4 +28,5 @@ class SessionsTest {
 
         assertThat(sessions).isEqualTo(listOf("1", "1"))
     }
+
 }
