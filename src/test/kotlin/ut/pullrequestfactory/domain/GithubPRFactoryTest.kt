@@ -14,11 +14,9 @@ class GithubPRFactoryTest {
 
     @Test
     fun creates_two_pull_requests_for_different_sessions_and_different_iterations() {
-        val pullRequests = mutableListOf<PullRequest>()
-        val githubReadRepo = githubReadRepo(listOf(
+        val (pullRequests, sut) = createGithubPRFactory(listOf(
                 Branch("firstname_lastname_iteration_1_pairingpartner1"),
-                Branch("firstname_lastname_iteration_2_pairingpartner2")), emptyList())
-        val sut = GithubPRFactory(githubReadRepo, githubWriteRepo(pullRequests, mutableListOf()), ConsoleUI())
+                Branch("firstname_lastname_iteration_2_pairingpartner2")))
 
         sut.create_pull_requests(Candidate("Firstname", "Lastname"), listOf("Pairingpartner1", "Pairingpartner2"))
 
@@ -35,51 +33,45 @@ class GithubPRFactoryTest {
 
     @Test
     fun creates_pull_request_and_ignores_if_candidates_first_name_is_capitalized() {
-        val pullRequests = mutableListOf<PullRequest>()
-        val githubReadRepo = githubReadRepo(listOf(Branch("firstname_lastname_iteration_1_pairingpartner")), emptyList())
-        val sut = GithubPRFactory(githubReadRepo, githubWriteRepo(pullRequests, mutableListOf()), ConsoleUI())
+        val (pullRequests, sut) = createGithubPRFactory(listOf(
+                Branch("firstname_lastname_iteration_1_pairingpartner")))
 
         sut.create_pull_requests(Candidate(firstName = "Firstname", lastName = "lastname"), listOf("Pairingpartner"))
 
-        assertThat(pullRequests).containsExactly(
-                PullRequest(
-                        _title = "Firstname Lastname Iteration 1 / Session 1 Pairingpartner",
-                        _base = Branch("master"),
-                        _head = Branch("firstname_lastname_iteration_1_pairingpartner")))
+        assertThat(pullRequests).containsExactly(PullRequest(
+                _title = "Firstname Lastname Iteration 1 / Session 1 Pairingpartner",
+                _base = Branch("master"),
+                _head = Branch("firstname_lastname_iteration_1_pairingpartner")))
     }
 
     @Test
     fun creates_pull_request_and_ignores_if_candidates_last_name_is_capitalized() {
-        val pullRequests = mutableListOf<PullRequest>()
-        val githubReadRepo = githubReadRepo(listOf(Branch("firstname_lastname_iteration_1_pairingpartner")), emptyList())
-        val sut = GithubPRFactory(githubReadRepo, githubWriteRepo(pullRequests, mutableListOf()), ConsoleUI())
+        val (pullRequests, sut) = createGithubPRFactory(listOf(
+                Branch("firstname_lastname_iteration_1_pairingpartner")))
 
         sut.create_pull_requests(Candidate("firstname", "Lastname"), listOf("Pairingpartner"))
 
-        assertThat(pullRequests).containsExactly(
-                PullRequest(
-                        _title = "Firstname Lastname Iteration 1 / Session 1 Pairingpartner",
-                        _base = Branch("master"),
-                        _head = Branch("firstname_lastname_iteration_1_pairingpartner")))
+        assertThat(pullRequests).containsExactly(PullRequest(
+                _title = "Firstname Lastname Iteration 1 / Session 1 Pairingpartner",
+                _base = Branch("master"),
+                _head = Branch("firstname_lastname_iteration_1_pairingpartner")))
     }
-
 
     @Test
     fun creates_no_pull_requests_for_candidate_when_no_branch_exists_containing_candidates_first_name() {
-        val pullRequests = mutableListOf<PullRequest>()
-        val githubReadRepo = githubReadRepo(listOf(Branch("firstname1_lastname_iteration_1_pairingpartner")), emptyList())
-        val sut = GithubPRFactory(githubReadRepo, githubWriteRepo(pullRequests, mutableListOf()), ConsoleUI())
+        val (pullRequests, sut) = createGithubPRFactory(listOf(
+                Branch("firstname1_lastname_iteration_1_pairingpartner")))
 
         sut.create_pull_requests(Candidate("firstname2", "Lastname"), listOf("Pairingpartner"))
 
         assertThat(pullRequests).isEmpty()
     }
 
+
     @Test
     fun creates_no_pull_requests_for_candidate_when_no_branch_exists_containing_candidates_last_name() {
-        val pullRequests = mutableListOf<PullRequest>()
-        val githubReadRepo = githubReadRepo(listOf(Branch("firstname_lastname1_iteration_1_pairingpartner")), emptyList())
-        val sut = GithubPRFactory(githubReadRepo, githubWriteRepo(pullRequests, mutableListOf()), ConsoleUI())
+        val (pullRequests, sut) = createGithubPRFactory(listOf(
+                Branch("firstname_lastname1_iteration_1_pairingpartner")))
 
         sut.create_pull_requests(Candidate("Firstname", "lastname2"), listOf("Pairingpartner"))
 
@@ -97,13 +89,9 @@ class GithubPRFactoryTest {
 
     @Test
     fun close_pull_requests_for_two_candidates_with_same_first_name() {
-        val pullRequestNumbersToBeClosed = mutableListOf<Int>()
-        val sut = GithubPRFactory(
-                githubReadRepo(emptyList(), listOf(
-                        GetPullRequest(1, "Firstname1 Lastname1 Iteration 1 / Session 1 pairingpartner"),
-                        GetPullRequest(2, "Firstname1 Lastname2 Iteration 1 / Session 1 pairingpartner"))),
-                githubWriteRepo(mutableListOf(), pullRequestNumbersToBeClosed),
-                ConsoleUI())
+        val (pullRequestNumbersToBeClosed, sut) = createGithubPRFactoryFor(listOf(
+                GetPullRequest(1, "Firstname1 Lastname1 Iteration 1 / Session 1 pairingpartner"),
+                GetPullRequest(2, "Firstname1 Lastname2 Iteration 1 / Session 1 pairingpartner")))
 
         sut.close_pull_requests_for(Candidate("firstname1", "lastname1"))
 
@@ -114,13 +102,9 @@ class GithubPRFactoryTest {
 
     @Test
     fun close_pull_requests_for_two_candidates_with_same_last_name() {
-        val pullRequestNumbersToBeClosed = mutableListOf<Int>()
-        val sut = GithubPRFactory(
-                githubReadRepo(emptyList(), listOf(
-                        GetPullRequest(1, "Firstname1 Lastname1 Iteration 1 / Session 1 pairingpartner"),
-                        GetPullRequest(2, "Firstname2 Lastname1 Iteration 1 / Session 1 pairingpartner"))),
-                githubWriteRepo(mutableListOf(), pullRequestNumbersToBeClosed),
-                ConsoleUI())
+        val (pullRequestNumbersToBeClosed, sut) = createGithubPRFactoryFor(listOf(
+                GetPullRequest(1, "Firstname1 Lastname1 Iteration 1 / Session 1 pairingpartner"),
+                GetPullRequest(2, "Firstname2 Lastname1 Iteration 1 / Session 1 pairingpartner")))
 
         sut.close_pull_requests_for(Candidate("firstname1", "lastname1"))
 
@@ -131,13 +115,9 @@ class GithubPRFactoryTest {
 
     @Test
     fun close_pull_requests_for_one_candidate() {
-        val pullRequestNumbersToBeClosed = mutableListOf<Int>()
-        val sut = GithubPRFactory(
-                githubReadRepo(emptyList(), listOf(
-                        GetPullRequest(1, "Firstname1 Lastname1 Iteration 1 / Session 1 pairingpartner1"),
-                        GetPullRequest(2, "Firstname1 Lastname1 Iteration 1 / Session 2 pairingpartner2"))),
-                githubWriteRepo(mutableListOf(), pullRequestNumbersToBeClosed),
-                ConsoleUI())
+        val (pullRequestNumbersToBeClosed, sut) = createGithubPRFactoryFor(listOf(
+                GetPullRequest(1, "Firstname1 Lastname1 Iteration 1 / Session 1 pairingpartner1"),
+                GetPullRequest(2, "Firstname1 Lastname1 Iteration 1 / Session 2 pairingpartner2")))
 
         sut.close_pull_requests_for(Candidate("firstname1", "lastname1"))
 
@@ -182,5 +162,21 @@ class GithubPRFactoryTest {
 
     private fun createGithubPRFactoryFor(branchName: String) =
             GithubPRFactory(githubReadRepo(listOf(Branch(branchName)), emptyList()), noopGithubWriteRepo(), ConsoleUI())
+
+    private fun createGithubPRFactory(branches: List<Branch>): Pair<MutableList<PullRequest>, GithubPRFactory> {
+        val pullRequests = mutableListOf<PullRequest>()
+        val githubReadRepo = githubReadRepo(branches, emptyList())
+        val sut = GithubPRFactory(githubReadRepo, githubWriteRepo(pullRequests, mutableListOf()), ConsoleUI())
+        return Pair(pullRequests, sut)
+    }
+
+    private fun createGithubPRFactoryFor(pullRequests: List<GetPullRequest>): Pair<MutableList<Int>, GithubPRFactory> {
+        val pullRequestNumbersToBeClosed = mutableListOf<Int>()
+        val sut = GithubPRFactory(
+                githubReadRepo(emptyList(), pullRequests),
+                githubWriteRepo(mutableListOf(), pullRequestNumbersToBeClosed),
+                ConsoleUI())
+        return Pair(pullRequestNumbersToBeClosed, sut)
+    }
 
 }
