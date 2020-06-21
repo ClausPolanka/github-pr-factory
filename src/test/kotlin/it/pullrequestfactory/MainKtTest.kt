@@ -57,12 +57,12 @@ class MainKtTest {
     }
 
     @Test
-    fun no_pull_requets_created_for_wrong_number_of_arguments() {
+    fun empty_args_shows_program_help_statement() {
         val args = emptyArray<String>()
 
         main(args)
 
-        assertThat(userOutput.toString()).contains("Wrong number of arguments")
+        assertThat(userOutput.toString()).contains("Usage: github-pr-factory [OPTION] COMMAND")
     }
 
     @Test
