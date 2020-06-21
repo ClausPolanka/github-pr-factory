@@ -2,7 +2,7 @@ package pullrequestfactory.io
 
 import pullrequestfactory.domain.Program
 
-class EmptyProgram : Program {
+class ShowHelpOutputProgram : Program {
 
     override fun execute() {
         println("Usage: github-pr-factory [OPTION] COMMAND")
