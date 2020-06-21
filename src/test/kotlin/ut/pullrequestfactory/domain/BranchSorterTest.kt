@@ -6,6 +6,8 @@ import org.junit.Test
 import pullrequestfactory.domain.Branch
 import pullrequestfactory.domain.BranchSorter
 
+private const val pairingPartner = "pairingpartner"
+
 class BranchSorterTest {
 
     @Test
@@ -13,13 +15,13 @@ class BranchSorterTest {
         val sut = BranchSorter()
 
         val sortedBranches = sut.sort_branches_by_pairing_partner(listOf(
-                Branch("firstname_lastname_iteration_2_claus"),
-                Branch("firstname_lastname_iteration_1_claus")),
-                pairingPartner = listOf("claus"))
+                branch_for(pairingPartner, iterationNr = 2),
+                branch_for(pairingPartner, iterationNr = 1)),
+                pairingPartner = listOf(pairingPartner))
 
         assertThat(sortedBranches).containsExactly(
-                Branch("firstname_lastname_iteration_1_claus"),
-                Branch("firstname_lastname_iteration_2_claus"))
+                branch_for(pairingPartner, iterationNr = 1),
+                branch_for(pairingPartner, iterationNr = 2))
     }
 
     @Test
@@ -27,13 +29,13 @@ class BranchSorterTest {
         val sut = BranchSorter()
 
         val sortedBranches = sut.sort_branches_by_pairing_partner(listOf(
-                Branch("firstname_lastname_iteration_1_claus"),
-                Branch("firstname_lastname_iteration_1_berni")),
-                pairingPartner = listOf("berni", "claus"))
+                branch_for(pairingPartner + 2, iterationNr = 1),
+                branch_for(pairingPartner + 1, iterationNr = 1)),
+                pairingPartner = listOf(pairingPartner + 1, pairingPartner + 2))
 
         assertThat(sortedBranches).containsExactly(
-                Branch("firstname_lastname_iteration_1_berni"),
-                Branch("firstname_lastname_iteration_1_claus"))
+                branch_for(pairingPartner + 1, iterationNr = 1),
+                branch_for(pairingPartner + 2, iterationNr = 1))
     }
 
     @Test
@@ -41,13 +43,16 @@ class BranchSorterTest {
         val sut = BranchSorter()
 
         val sortedBranches = sut.sort_branches_by_pairing_partner(listOf(
-                Branch("firstname_lastname_iteration_2_claus"),
-                Branch("firstname_lastname_iteration_1_claus")),
-                pairingPartner = listOf("Claus"))
+                branch_for(pairingPartner, iterationNr = 2),
+                branch_for(pairingPartner, iterationNr = 1)),
+                pairingPartner = listOf(pairingPartner.capitalize()))
 
         assertThat(sortedBranches).containsExactly(
-                Branch("firstname_lastname_iteration_1_claus"),
-                Branch("firstname_lastname_iteration_2_claus"))
+                branch_for(pairingPartner, iterationNr = 1),
+                branch_for(pairingPartner, iterationNr = 2))
     }
+
+    private fun branch_for(pairingPartner: String, iterationNr: Int) =
+            Branch("firstname_lastname_iteration_${iterationNr}_$pairingPartner")
 
 }
