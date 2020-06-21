@@ -10,10 +10,10 @@ class BranchSyntaxValidatorTest {
 
     @Test
     fun ui_shows_message_for_invalid_branch_names() {
-        var expectedMsg = ""
+        var message = ""
         val sut = BranchSyntaxValidator(object : UI {
             override fun show(msg: String) {
-                expectedMsg = msg
+                message = msg
             }
         })
         listOf("_lastname_iteration_1_claus",
@@ -23,22 +23,22 @@ class BranchSyntaxValidatorTest {
 
             sut.validate(Branch(it))
 
-            assertThat(expectedMsg).withFailMessage("'$it' has correct syntax").contains("WARNING")
+            assertThat(message).withFailMessage("'$it' has correct syntax").contains("WARNING")
         }
     }
 
     @Test
     fun ui_shows_no_message_for_valid_branch_names() {
-        var expectedMsg = ""
+        var message = ""
         val sut = BranchSyntaxValidator(object : UI {
             override fun show(msg: String) {
-                expectedMsg = msg
+                message = msg
             }
         })
 
         sut.validate(Branch("firstname_lastname_iteration_1_claus"))
 
-        assertThat(expectedMsg).isEmpty()
+        assertThat(message).isEmpty()
     }
 
 }
