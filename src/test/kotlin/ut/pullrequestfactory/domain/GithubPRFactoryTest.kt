@@ -13,7 +13,7 @@ private val pairingpartner = listOf("Pairingpartner")
 class GithubPRFactoryTest {
 
     @Test
-    fun creates_two_pull_requests_for_different_sessions_and_different_iterations() {
+    fun creates_two_pull_requests_for_different_iterations_and_pairing_partner() {
         val (pullRequests, sut) = create_github_pr_factory(listOf(
                 Branch("firstname_lastname_iteration_1_pairingpartner1"),
                 Branch("firstname_lastname_iteration_2_pairingpartner2")))
