@@ -16,9 +16,9 @@ class BranchSyntaxValidatorTest {
                 message = msg
             }
         })
-        listOf("_lastname_iteration_1_claus",
-                "firstname_lastname_iter_1_claus",
-                "firstname_lastname_iteration_x_claus",
+        listOf("_lastname_iteration_1_pairingpartner",
+                "firstname_lastname_iter_1_pairingpartner",
+                "firstname_lastname_iteration_x_pairingpartner",
                 "firstname_lastname_iteration_1_").forEach {
 
             sut.validate(Branch(it))
