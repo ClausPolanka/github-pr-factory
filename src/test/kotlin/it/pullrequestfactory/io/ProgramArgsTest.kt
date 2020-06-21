@@ -71,7 +71,7 @@ class ProgramArgsTest {
     fun prints_error_message_for_pairing_partner_argument_containing_at_least_one_unknown_member() {
         val ui = TestUI()
         val candidate = "firstname-lastname"
-        val pairingPartner = "pp1-pp2-pp3-pp4-pp5-pp6-pp7"
+        val pairingPartner = "unknown-berni-mihai-nandor-lampe-christian-shubi"
         val sut = ProgramArgs(arrayOf(candidate, "arg2", pairingPartner), ui)
 
         sut.areValid()
