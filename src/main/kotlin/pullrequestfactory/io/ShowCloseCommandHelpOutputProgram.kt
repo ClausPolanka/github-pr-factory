@@ -2,7 +2,7 @@ package pullrequestfactory.io
 
 import pullrequestfactory.domain.Program
 
-class ShowCloseHelpOutputProgram : Program {
+class ShowCloseCommandHelpOutputProgram : Program {
 
     override fun execute() {
         println("Usage: github-pr-factory close [OPTION]")

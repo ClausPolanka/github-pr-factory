@@ -10,13 +10,19 @@ class Programs {
             return ShowHelpOutputProgram()
         }
         if (pa.hasOpenCommandHelpOption()) {
-            return ShowOpenHelpOutputProgram()
+            return ShowOpenCommandHelpOutputProgram()
+        }
+        if (pa.hasInvalidOpenCommand()) {
+            return ShowInvalidOpenCommandOutputProgram()
         }
         if (pa.hasOpenCommand()) {
             return CreatePullRequestsProgramV2(args)
         }
         if (pa.hasCloseCommandHelpOption()) {
-            return ShowCloseHelpOutputProgram()
+            return ShowCloseCommandHelpOutputProgram()
+        }
+        if (pa.hasInvalidCloseCommand()) {
+            return ShowInvalidCloseCommandOutputProgram()
         }
         if (pa.hasCloseCommand()) {
             return ClosePullRequestsProgramV2(args)
