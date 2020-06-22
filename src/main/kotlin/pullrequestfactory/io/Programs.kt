@@ -5,19 +5,20 @@ import pullrequestfactory.domain.Program
 class Programs {
 
     fun create_program(args: Array<String>): Program {
-        if (args.isEmpty() || args[0] == "-?" || args[0] == "--help") {
+        val pa = ProgramArgsV2(args)
+        if (pa.hasHelpOption()) {
             return ShowHelpOutputProgram()
         }
-        if (args[0] == "open" && args[1] == "--help") {
+        if (pa.hasOpenCommandHelpOption()) {
             return ShowOpenHelpOutputProgram()
         }
-        if (args[0] == "open") {
+        if (pa.hasOpenCommand()) {
             return CreatePullRequestsProgramV2(args)
         }
-        if (args[0] == "close" && args[1] == "--help") {
+        if (pa.hasCloseCommandHelpOption()) {
             return ShowCloseHelpOutputProgram()
         }
-        if (args[0] == "close") {
+        if (pa.hasCloseCommand()) {
             return ClosePullRequestsProgramV2(args)
         }
         val programArgs = ProgramArgs(args, ConsoleUI())
