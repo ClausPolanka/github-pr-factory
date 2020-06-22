@@ -11,8 +11,14 @@ class Programs {
         if (args[0] == "open" && args[1] == "--help") {
             return ShowOpenHelpOutputProgram()
         }
+        if (args[0] == "open") {
+            return CreatePullRequestsProgramV2(args)
+        }
         if (args[0] == "close" && args[1] == "--help") {
             return ShowCloseHelpOutputProgram()
+        }
+        if (args[0] == "close") {
+            return ClosePullRequestsProgramV2(args)
         }
         val programArgs = ProgramArgs(args, ConsoleUI())
         return if (programArgs.areValid() && programArgs.isClosePullRequests()) {
