@@ -26,7 +26,7 @@ class ProgramArgs(private val args: Array<String>, private val ui: UI) {
             "At least one provided pairing partner is unknown. Please check the list of provided pairing partner.")
             .joinToString(" ")
 
-    private val backendChapterTeamMembers = listOf("claus", "berni", "nandor", "dominik", "mihai", "lampe", "shubi",
+    private val backendChapterTeamMembers = listOf("claus", "berni", "bernhard", "nandor", "dominik", "mihai", "lampe", "shubi",
             "markus", "tibor", "christian", "michal", "tomas", "peter", "martin", "john", "andrej")
 
     private val indexOfCandidate = 0
