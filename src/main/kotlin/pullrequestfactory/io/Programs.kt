@@ -27,14 +27,7 @@ class Programs {
         if (pa.hasCloseCommand()) {
             return ClosePullRequestsProgramV2(args)
         }
-        val programArgs = ProgramArgs(args, ConsoleUI())
-        return if (programArgs.areValid() && programArgs.isClosePullRequests()) {
-            ClosePullRequestsProgram(programArgs)
-        } else if (programArgs.areValid()) {
-            CreatePullRequestsProgram(programArgs)
-        } else {
-            InvalidProgram(programArgs)
-        }
+        return InvalidProgram(ProgramArgs(args, ConsoleUI()))
     }
 
 }

@@ -69,18 +69,16 @@ class MainKtTest {
     fun create_pull_requests_for_the_given_candidate() {
         stubGetRequestsForGithubBranchesFromFiles()
 
-        main(args = arrayOf(candidate, basicAuthToken, pairingPartner))
+        main(args = arrayOf("open", "-c", candidate, "-g", basicAuthToken, "-p", pairingPartner))
 
         verifyPostRequestsToGithubToCreatePullRequests(candidate)
     }
 
     @Test
     fun close_pull_requests_for_given_candidate() {
-        val closePullRequestOption = "-close"
-
         val prs = stubGetRequestForPullRequests(candidate)
 
-        main(args = arrayOf(candidate, basicAuthToken, closePullRequestOption))
+        main(args = arrayOf("close", "-c", candidate, "-g", basicAuthToken))
 
         verifyPatchRequestToCloseOpenPullRequests(prs)
     }
