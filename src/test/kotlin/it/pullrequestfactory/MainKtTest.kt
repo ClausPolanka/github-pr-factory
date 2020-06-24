@@ -181,6 +181,20 @@ class MainKtTest {
         assertThat(userOutput.toString()).contains("Usage: github-pr-factory close [OPTION]")
     }
 
+    @Test
+    fun close_pull_requests_for_given_candidate_with_invalid_candidate_option() {
+        main(args = arrayOf("close", "-x", candidate, "-g", basicAuthToken))
+
+        assertThat(userOutput.toString()).contains("Usage: github-pr-factory close [OPTION]")
+    }
+
+    @Test
+    fun close_pull_requests_for_given_candidate_with_invalid_github_basic_auth_token_option() {
+        main(args = arrayOf("close", "-c", candidate, "-x", basicAuthToken))
+
+        assertThat(userOutput.toString()).contains("Usage: github-pr-factory close [OPTION]")
+    }
+
     private fun verifyPatchRequestToCloseOpenPullRequests(prs: List<GetPullRequest>) {
         prs.forEach {
             verifyPatchRequestToCloseOpenPullRequestsFor(prNumber = it.number)
