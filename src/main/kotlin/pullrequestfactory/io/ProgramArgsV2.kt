@@ -2,21 +2,31 @@ package pullrequestfactory.io
 
 class ProgramArgsV2(private val args: Array<String>) {
 
-    fun hasHelpOption(): Boolean =
+    fun has_help_option(): Boolean =
             args.isEmpty() || args.size == 1 && args[0] == "-?" || args[0] == "--help"
 
-    fun hasOpenCommandHelpOption(): Boolean =
+    fun has_open_command_help_option(): Boolean =
             args[0] == "open" && args.size == 2 && args[1] == "--help"
 
-    fun hasInvalidOpenCommand(): Boolean = hasOpenCommand() && args.size != 7
+    fun has_invalid_open_command(): Boolean = has_open_command() && !has_open_command_required_options()
 
-    fun hasOpenCommand(): Boolean = args[0] == "open"
+    fun has_open_command(): Boolean = args[0] == "open"
 
-    fun hasCloseCommandHelpOption(): Boolean =
-            args[0] == "close" && args.size == 2 && args[1] == "--help"
+    private fun has_open_command_required_options() = args.size == 7
+            && args.contains("-c")
+            && args.contains("-g")
+            && args.contains("-p")
 
-    fun hasInvalidCloseCommand(): Boolean = hasCloseCommand() && args.size != 5
+    fun has_close_command_help_option(): Boolean = args[0] == "close"
+            && args.size == 2
+            && args[1] == "--help"
 
-    fun hasCloseCommand(): Boolean = args[0] == "close"
+    fun has_invalid_close_command(): Boolean = has_close_command() && !has_close_command_required_options()
+
+    fun has_close_command(): Boolean = args[0] == "close"
+
+    private fun has_close_command_required_options() = args.size == 5
+            && args.contains("-c")
+            && args.contains("-g")
 
 }

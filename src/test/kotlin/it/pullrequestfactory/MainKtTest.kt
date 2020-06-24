@@ -117,6 +117,27 @@ class MainKtTest {
     }
 
     @Test
+    fun create_pull_requests_for_the_given_candidate_with_invalid_candidate_option() {
+        main(args = arrayOf("open", "-x", candidate, "-g", basicAuthToken, "-p", pairingPartner))
+
+        assertThat(userOutput.toString()).contains("Usage: github-pr-factory open [OPTION]")
+    }
+
+    @Test
+    fun create_pull_requests_for_the_given_candidate_with_invalid_github_basic_auth_token_option() {
+        main(args = arrayOf("open", "-c", candidate, "-x", basicAuthToken, "-p", pairingPartner))
+
+        assertThat(userOutput.toString()).contains("Usage: github-pr-factory open [OPTION]")
+    }
+
+    @Test
+    fun create_pull_requests_for_the_given_candidate_with_invalid_pairing_partner_option() {
+        main(args = arrayOf("open", "-c", candidate, "-g", basicAuthToken, "-x", pairingPartner))
+
+        assertThat(userOutput.toString()).contains("Usage: github-pr-factory open [OPTION]")
+    }
+
+    @Test
     fun close_pull_requests_for_given_candidate() {
         val prs = stubGetRequestForPullRequests(candidate)
 
