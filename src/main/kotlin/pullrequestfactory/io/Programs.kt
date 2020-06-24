@@ -27,7 +27,7 @@ class Programs {
         if (pa.hasCloseCommand()) {
             return ClosePullRequestsProgramV2(args)
         }
-        return InvalidProgram(ProgramArgs(args, ConsoleUI()))
+        return ShowHelpOutputProgram()
     }
 
 }

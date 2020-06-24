@@ -83,6 +83,41 @@ class MainKtTest {
         verifyPatchRequestToCloseOpenPullRequests(prs)
     }
 
+    @Test
+    fun close_pull_requests_for_given_candidate_with_missing_close_command() {
+        main(args = arrayOf("-c", candidate, "-g", basicAuthToken))
+
+        assertThat(userOutput.toString()).contains("Usage: github-pr-factory [OPTION] COMMAND")
+    }
+
+    @Test
+    fun close_pull_requests_for_given_candidate_with_missing_candidate_option() {
+        main(args = arrayOf("close", candidate, "-g", basicAuthToken))
+
+        assertThat(userOutput.toString()).contains("Usage: github-pr-factory close [OPTION]")
+    }
+
+    @Test
+    fun close_pull_requests_for_given_candidate_with_missing_candidate() {
+        main(args = arrayOf("close", "-c", "-g", basicAuthToken))
+
+        assertThat(userOutput.toString()).contains("Usage: github-pr-factory close [OPTION]")
+    }
+
+    @Test
+    fun close_pull_requests_for_given_candidate_with_missing_github_basic_auth_token_option() {
+        main(args = arrayOf("close", "-c", candidate, basicAuthToken))
+
+        assertThat(userOutput.toString()).contains("Usage: github-pr-factory close [OPTION]")
+    }
+
+    @Test
+    fun close_pull_requests_for_given_candidate_with_missing_github_basic_auth_token() {
+        main(args = arrayOf("close", "-c", candidate, "-g"))
+
+        assertThat(userOutput.toString()).contains("Usage: github-pr-factory close [OPTION]")
+    }
+
     private fun verifyPatchRequestToCloseOpenPullRequests(prs: List<GetPullRequest>) {
         prs.forEach {
             verifyPatchRequestToCloseOpenPullRequestsFor(prNumber = it.number)
