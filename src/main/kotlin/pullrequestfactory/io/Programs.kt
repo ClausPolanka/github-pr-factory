@@ -5,7 +5,7 @@ import pullrequestfactory.domain.Program
 class Programs {
 
     fun create_program(args: Array<String>): Program {
-        val pa = ProgramArgsV2(args)
+        val pa = ProgramArgs(args)
         if (pa.has_help_option()) {
             return ShowHelpOutputProgram()
         }
@@ -16,7 +16,7 @@ class Programs {
             return ShowInvalidOpenCommandOutputProgram()
         }
         if (pa.has_open_command()) {
-            return CreatePullRequestsProgramV2(args)
+            return CreatePullRequestsProgram(args)
         }
         if (pa.has_close_command_help_option()) {
             return ShowCloseCommandHelpOutputProgram()
@@ -25,7 +25,7 @@ class Programs {
             return ShowInvalidCloseCommandOutputProgram()
         }
         if (pa.has_close_command()) {
-            return ClosePullRequestsProgramV2(args)
+            return ClosePullRequestsProgram(args)
         }
         return ShowHelpOutputProgram()
     }

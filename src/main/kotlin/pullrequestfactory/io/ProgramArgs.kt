@@ -1,6 +1,6 @@
 package pullrequestfactory.io
 
-class ProgramArgsV2(private val args: Array<String>) {
+class ProgramArgs(private val args: Array<String>) {
 
     fun has_help_option(): Boolean =
             args.isEmpty() || args.size == 1 && args[0] == "-?" || args[0] == "--help"
