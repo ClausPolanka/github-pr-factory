@@ -15,6 +15,14 @@ mainClassName = 'pullrequestfactory.MainKt'
 
 defaultTasks 'run'
 
+jar {
+    manifest {
+        attributes 'Main-Class': 'pullrequestfactory.MainKt'
+    }
+
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+}
+
 repositories {
     mavenCentral()
     maven {
