@@ -7,13 +7,15 @@ import pullrequestfactory.io.Properties
 import java.nio.file.Files
 import java.nio.file.Paths
 
+private const val tmpFileBasePath = "build/resources/test"
+
 class PropertiesTest {
 
     private val propsFileName = "tmp.properties"
 
     @After
     fun tearDown() {
-        Files.deleteIfExists(Paths.get("target/test-classes/$propsFileName"))
+        Files.deleteIfExists(Paths.get("$tmpFileBasePath/$propsFileName"))
     }
 
     @Test
@@ -37,7 +39,7 @@ class PropertiesTest {
     }
 
     private fun createPropsWith(prop: String): String {
-        Files.write(Paths.get("target/test-classes/$propsFileName"), prop.toByteArray())
+        Files.write(Paths.get("$tmpFileBasePath/$propsFileName"), prop.toByteArray())
         return propsFileName
     }
 
