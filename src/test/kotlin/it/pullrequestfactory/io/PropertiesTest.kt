@@ -7,7 +7,7 @@ import pullrequestfactory.io.Properties
 import java.nio.file.Files
 import java.nio.file.Paths
 
-private const val tmpFileBasePath = "build/resources/test"
+private const val tmpFileBasePath = "build/resources/main"
 
 class PropertiesTest {
 
@@ -39,6 +39,7 @@ class PropertiesTest {
     }
 
     private fun createPropsWith(prop: String): String {
+        Files.createDirectories(Paths.get(tmpFileBasePath))
         Files.write(Paths.get("$tmpFileBasePath/$propsFileName"), prop.toByteArray())
         return propsFileName
     }
