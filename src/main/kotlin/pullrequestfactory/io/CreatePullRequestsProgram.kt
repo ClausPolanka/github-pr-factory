@@ -13,7 +13,7 @@ class CreatePullRequestsProgram(private val args: Array<String>) : Program {
         val githubBasicAuthToken = args[args.indexOf("-g") + 1]
         val pairingPartner = args[args.indexOf("-p") + 1].split("-")
         val ui = ConsoleUI()
-        val baseUrl = Properties("app.properties").getBaseUrl()
+        val baseUrl = Properties("app.properties").get_base_url()
         val githubRepo = GithubHttpRepo(
                 baseUrl,
                 "wordcount",

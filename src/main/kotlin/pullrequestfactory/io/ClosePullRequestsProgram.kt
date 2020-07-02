@@ -12,7 +12,7 @@ class ClosePullRequestsProgram(private val args: Array<String>) : Program {
         val candidateLastName = args[args.indexOf("-c") + 1].split("-")[1]
         val githubBasicAuthToken = args[args.indexOf("-g") + 1]
         val ui = ConsoleUI()
-        val baseUrl = Properties("app.properties").getBaseUrl()
+        val baseUrl = Properties("app.properties").get_base_url()
         val githubRepo = GithubHttpRepo(
                 baseUrl,
                 "wordcount",

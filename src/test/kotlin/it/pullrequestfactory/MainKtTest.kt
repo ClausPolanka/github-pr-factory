@@ -16,6 +16,7 @@ import pullrequestfactory.main
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.PrintStream
+import java.lang.System.lineSeparator
 import java.nio.file.Files
 import java.nio.file.Paths
 
@@ -44,7 +45,9 @@ class MainKtTest {
 
     @Before
     fun setUp() {
-        createPropertyFileWith(prop = "baseUrl=$wireMockDefaultUrl")
+        createPropertyFileWith(props = listOf(
+                "baseUrl=$wireMockDefaultUrl",
+                "projectVersion=1.0-SNAPSHOT"))
         System.setOut(PrintStream(userOutput))
     }
 
@@ -284,8 +287,8 @@ class MainKtTest {
                 .addCommonHeaders())
     }
 
-    private fun createPropertyFileWith(prop: String) {
-        Files.write(Paths.get(propsFilePath), prop.toByteArray())
+    private fun createPropertyFileWith(props: List<String>) {
+        Files.write(Paths.get(propsFilePath), props.joinToString(lineSeparator()).toByteArray())
     }
 
     private fun stubGetRequestForPullRequests(candidate: String): List<GetPullRequest> {
