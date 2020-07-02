@@ -21,9 +21,19 @@ class PropertiesTest {
         val fileName = createPropsWith("baseUrl=http://localhost:8080")
         val sut = Properties(fileName)
 
-        val baseUrl = sut.getBaseUrl()
+        val baseUrl = sut.get_base_url()
 
         assertThat(baseUrl).isEqualTo("http://localhost:8080")
+    }
+
+    @Test
+    fun get_project_version_from_given_file() {
+        val fileName = createPropsWith("projectVersion=1.0-SNAPSHOT")
+        val sut = Properties(fileName)
+
+        val baseUrl = sut.get_project_version()
+
+        assertThat(baseUrl).isEqualTo("1.0-SNAPSHOT")
     }
 
     @Test
@@ -31,7 +41,7 @@ class PropertiesTest {
         val fileName = createPropsWith("x=y")
         val sut = Properties(fileName)
 
-        val baseUrl = sut.getBaseUrl()
+        val baseUrl = sut.get_base_url()
 
         assertThat(baseUrl).isEqualTo("http://localhost")
     }

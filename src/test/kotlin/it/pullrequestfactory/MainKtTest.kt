@@ -16,6 +16,7 @@ import pullrequestfactory.main
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.PrintStream
+import java.lang.System.lineSeparator
 import java.nio.file.Files
 import java.nio.file.Paths
 
@@ -44,7 +45,9 @@ class MainKtTest {
 
     @Before
     fun setUp() {
-        createPropertyFileWith(prop = "baseUrl=$wireMockDefaultUrl")
+        createPropertyFileWith(props = listOf(
+                "baseUrl=$wireMockDefaultUrl",
+                "projectVersion=1.0-SNAPSHOT"))
         System.setOut(PrintStream(userOutput))
     }
 
@@ -57,32 +60,151 @@ class MainKtTest {
     }
 
     @Test
-    fun no_pull_requets_created_for_wrong_number_of_arguments() {
+    fun empty_args_shows_program_help_statement() {
         val args = emptyArray<String>()
 
         main(args)
 
-        assertThat(userOutput.toString()).contains("Wrong number of arguments")
+        assertThat(userOutput.toString()).contains("Usage: github-pr-factory [OPTION] COMMAND")
+    }
+
+    @Test
+    fun program_shows_version_information_for_given_args() {
+        val args = arrayOf("-v")
+
+        main(args)
+
+        assertThat(userOutput.toString()).contains("github-pr-factory version 1.0-SNAPSHOT")
     }
 
     @Test
     fun create_pull_requests_for_the_given_candidate() {
         stubGetRequestsForGithubBranchesFromFiles()
 
-        main(args = arrayOf(candidate, basicAuthToken, pairingPartner))
+        main(args = arrayOf("open", "-c", candidate, "-g", basicAuthToken, "-p", pairingPartner))
 
         verifyPostRequestsToGithubToCreatePullRequests(candidate)
     }
 
     @Test
-    fun close_pull_requests_for_given_candidate() {
-        val closePullRequestOption = "-close"
+    fun create_pull_requests_for_the_given_candidate_with_missing_candidate_option() {
+        main(args = arrayOf("open", candidate, "-g", basicAuthToken, "-p", pairingPartner))
 
+        assertThat(userOutput.toString()).contains("Usage: github-pr-factory open [OPTION]")
+    }
+
+    @Test
+    fun create_pull_requests_for_the_given_candidate_with_missing_candidate() {
+        main(args = arrayOf("open", "-c", "-g", basicAuthToken, "-p", pairingPartner))
+
+        assertThat(userOutput.toString()).contains("Usage: github-pr-factory open [OPTION]")
+    }
+
+    @Test
+    fun create_pull_requests_for_the_given_candidate_with_missing_github_basic_auth_token_option() {
+        main(args = arrayOf("open", "-c", candidate, basicAuthToken, "-p", pairingPartner))
+
+        assertThat(userOutput.toString()).contains("Usage: github-pr-factory open [OPTION]")
+    }
+
+    @Test
+    fun create_pull_requests_for_the_given_candidate_with_missing_github_basic_auth_token() {
+        main(args = arrayOf("open", "-c", candidate, "-g", "-p", pairingPartner))
+
+        assertThat(userOutput.toString()).contains("Usage: github-pr-factory open [OPTION]")
+    }
+
+    @Test
+    fun create_pull_requests_for_the_given_candidate_with_missing_pairing_partner_option() {
+        main(args = arrayOf("open", "-c", candidate, "-g", basicAuthToken, pairingPartner))
+
+        assertThat(userOutput.toString()).contains("Usage: github-pr-factory open [OPTION]")
+    }
+
+    @Test
+    fun create_pull_requests_for_the_given_candidate_with_missing_pairing_partner() {
+        main(args = arrayOf("open", "-c", candidate, "-g", basicAuthToken, "-p"))
+
+        assertThat(userOutput.toString()).contains("Usage: github-pr-factory open [OPTION]")
+    }
+
+    @Test
+    fun create_pull_requests_for_the_given_candidate_with_invalid_candidate_option() {
+        main(args = arrayOf("open", "-x", candidate, "-g", basicAuthToken, "-p", pairingPartner))
+
+        assertThat(userOutput.toString()).contains("Usage: github-pr-factory open [OPTION]")
+    }
+
+    @Test
+    fun create_pull_requests_for_the_given_candidate_with_invalid_github_basic_auth_token_option() {
+        main(args = arrayOf("open", "-c", candidate, "-x", basicAuthToken, "-p", pairingPartner))
+
+        assertThat(userOutput.toString()).contains("Usage: github-pr-factory open [OPTION]")
+    }
+
+    @Test
+    fun create_pull_requests_for_the_given_candidate_with_invalid_pairing_partner_option() {
+        main(args = arrayOf("open", "-c", candidate, "-g", basicAuthToken, "-x", pairingPartner))
+
+        assertThat(userOutput.toString()).contains("Usage: github-pr-factory open [OPTION]")
+    }
+
+    @Test
+    fun close_pull_requests_for_given_candidate() {
         val prs = stubGetRequestForPullRequests(candidate)
 
-        main(args = arrayOf(candidate, basicAuthToken, closePullRequestOption))
+        main(args = arrayOf("close", "-c", candidate, "-g", basicAuthToken))
 
         verifyPatchRequestToCloseOpenPullRequests(prs)
+    }
+
+    @Test
+    fun close_pull_requests_for_given_candidate_with_missing_close_command() {
+        main(args = arrayOf("-c", candidate, "-g", basicAuthToken))
+
+        assertThat(userOutput.toString()).contains("Usage: github-pr-factory [OPTION] COMMAND")
+    }
+
+    @Test
+    fun close_pull_requests_for_given_candidate_with_missing_candidate_option() {
+        main(args = arrayOf("close", candidate, "-g", basicAuthToken))
+
+        assertThat(userOutput.toString()).contains("Usage: github-pr-factory close [OPTION]")
+    }
+
+    @Test
+    fun close_pull_requests_for_given_candidate_with_missing_candidate() {
+        main(args = arrayOf("close", "-c", "-g", basicAuthToken))
+
+        assertThat(userOutput.toString()).contains("Usage: github-pr-factory close [OPTION]")
+    }
+
+    @Test
+    fun close_pull_requests_for_given_candidate_with_missing_github_basic_auth_token_option() {
+        main(args = arrayOf("close", "-c", candidate, basicAuthToken))
+
+        assertThat(userOutput.toString()).contains("Usage: github-pr-factory close [OPTION]")
+    }
+
+    @Test
+    fun close_pull_requests_for_given_candidate_with_missing_github_basic_auth_token() {
+        main(args = arrayOf("close", "-c", candidate, "-g"))
+
+        assertThat(userOutput.toString()).contains("Usage: github-pr-factory close [OPTION]")
+    }
+
+    @Test
+    fun close_pull_requests_for_given_candidate_with_invalid_candidate_option() {
+        main(args = arrayOf("close", "-x", candidate, "-g", basicAuthToken))
+
+        assertThat(userOutput.toString()).contains("Usage: github-pr-factory close [OPTION]")
+    }
+
+    @Test
+    fun close_pull_requests_for_given_candidate_with_invalid_github_basic_auth_token_option() {
+        main(args = arrayOf("close", "-c", candidate, "-x", basicAuthToken))
+
+        assertThat(userOutput.toString()).contains("Usage: github-pr-factory close [OPTION]")
     }
 
     private fun verifyPatchRequestToCloseOpenPullRequests(prs: List<GetPullRequest>) {
@@ -165,8 +287,8 @@ class MainKtTest {
                 .addCommonHeaders())
     }
 
-    private fun createPropertyFileWith(prop: String) {
-        Files.write(Paths.get(propsFilePath), prop.toByteArray())
+    private fun createPropertyFileWith(props: List<String>) {
+        Files.write(Paths.get(propsFilePath), props.joinToString(lineSeparator()).toByteArray())
     }
 
     private fun stubGetRequestForPullRequests(candidate: String): List<GetPullRequest> {

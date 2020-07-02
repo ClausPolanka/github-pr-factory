@@ -1,22 +1,26 @@
 package pullrequestfactory.io
 
+import pullrequestfactory.domain.Candidate
 import pullrequestfactory.domain.GithubPRFactory
 import pullrequestfactory.domain.NoopCache
 import pullrequestfactory.domain.Program
 
-class ClosePullRequestsProgram(private val programArgs: ProgramArgs) : Program {
+class ClosePullRequestsProgram(private val args: Array<String>) : Program {
 
     override fun execute() {
+        val candidateFirstName = args[args.indexOf("-c") + 1].split("-")[0]
+        val candidateLastName = args[args.indexOf("-c") + 1].split("-")[1]
+        val githubBasicAuthToken = args[args.indexOf("-g") + 1]
         val ui = ConsoleUI()
-        val baseUrl = Properties("app.properties").getBaseUrl()
+        val baseUrl = Properties("app.properties").get_base_url()
         val githubRepo = GithubHttpRepo(
                 baseUrl,
                 "wordcount",
-                programArgs.basicAuthToken,
+                githubBasicAuthToken,
                 NoopCache(),
                 ui)
         val f = GithubPRFactory(githubRepo, githubRepo, ui)
-        f.close_pull_requests_for(programArgs.candidate)
+        f.close_pull_requests_for(Candidate(candidateFirstName, candidateLastName))
     }
 
 }

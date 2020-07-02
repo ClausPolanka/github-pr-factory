@@ -1,93 +1,35 @@
 package pullrequestfactory.io
 
-import pullrequestfactory.domain.Candidate
-import pullrequestfactory.domain.UI
+class ProgramArgs(private val args: Array<String>) {
 
-class ProgramArgs(private val args: Array<String>, private val ui: UI) {
+    fun has_help_option(): Boolean =
+            args.isEmpty() || args.size == 1 && args[0] == "-?" || args[0] == "--help"
 
-    val programUsageMsg =
-            listOf("[Error]", "Wrong number of arguments", "\n").joinToString(" ") +
-                    listOf("[Usage]", "java -jar <EXEC_JAR>.jar",
-                            "<CANDIDATE_FIRST_NAME>-<CANDIDATE_LAST_NAME>",
-                            "<BASIC_AUTH_TOKEN>",
-                            "<[PAIRING_PARTNER]>").joinToString(" ")
+    fun has_version_option(): Boolean =
+            args.size == 1 && args[0] == "-v" || args[0] == "--version"
 
-    val candidateSyntaxMsg = listOf(
-            "[Error]",
-            "Candidate first name and last name must be separated by hypen:",
-            "<CANDIDATE_FIRST_NAME>-<CANDIDATE_LAST_NAME>").joinToString(" ")
+    fun has_open_command_help_option(): Boolean =
+            args[0] == "open" && args.size == 2 && args[1] == "--help"
 
-    val nrOfRequiredPairingPartnerMsg = listOf(
-            "[Error]",
-            "Exactly 7 pairing partner must be provided separated by hyphen").joinToString(" ")
+    fun has_invalid_open_command(): Boolean = has_open_command() && !has_open_command_required_options()
 
-    val unknownPairingPartnerMsg = listOf(
-            "[Error]",
-            "At least one provided pairing partner is unknown. Please check the list of provided pairing partner.")
-            .joinToString(" ")
+    fun has_open_command(): Boolean = args[0] == "open"
 
-    private val backendChapterTeamMembers = listOf("claus", "berni", "bernhard", "nandor", "dominik", "mihai", "lampe", "shubi",
-            "markus", "tibor", "christian", "michal", "tomas", "peter", "martin", "john", "andrej")
+    private fun has_open_command_required_options() = args.size == 7
+            && args.contains("-c")
+            && args.contains("-g")
+            && args.contains("-p")
 
-    private val indexOfCandidate = 0
-    private val indexOfBasicAuthToken = 1
-    private val indexOfPairingPartner = 2
-    private val nrOfRequiredArgs = 3
-    private val nrOfRequiredPairingPartner = 7
+    fun has_close_command_help_option(): Boolean = args[0] == "close"
+            && args.size == 2
+            && args[1] == "--help"
 
-    val candidate: Candidate
-        get() {
-            val candidateFullName = if (args.size >= indexOfCandidate + 1) args[indexOfCandidate] else "Wrong-Candidate"
-            val parts = candidateFullName.split("-")
-            return if (parts.size == 2) {
-                Candidate(parts[indexOfCandidate], parts[1])
-            } else Candidate("Wrong", "Candidate")
-        }
+    fun has_invalid_close_command(): Boolean = has_close_command() && !has_close_command_required_options()
 
-    val basicAuthToken: String
-        get() {
-            return if (args.size >= indexOfBasicAuthToken + 1) args[indexOfBasicAuthToken] else ""
-        }
+    fun has_close_command(): Boolean = args[0] == "close"
 
-    val pairingPartner: List<String>
-        get() {
-            return if (args.size >= indexOfPairingPartner + 1) pairingPartner() else emptyList()
-        }
-
-    fun areValid(): Boolean {
-        return errorMessage().isEmpty()
-    }
-
-
-    private fun errorMessage(): String {
-        return when {
-            nrOfArgsIsWrong() -> programUsageMsg
-            candidateSyntaxIsWrong() -> candidateSyntaxMsg
-            args[indexOfPairingPartner] == "-close" -> ""
-            nrOfPairingPartnerIsWrong() -> nrOfRequiredPairingPartnerMsg
-            atLeastOnePairingPartnerIsUnknown() -> unknownPairingPartnerMsg
-            else -> ""
-        }
-    }
-
-    private fun nrOfArgsIsWrong() = args.size != nrOfRequiredArgs
-
-    private fun candidateSyntaxIsWrong() = !args[indexOfCandidate].contains("-")
-
-    private fun nrOfPairingPartnerIsWrong() = pairingPartner().size != nrOfRequiredPairingPartner
-
-    private fun atLeastOnePairingPartnerIsUnknown(): Boolean {
-        return pairingPartner().filter {
-            backendChapterTeamMembers.contains(it.toLowerCase())
-        }.size != nrOfRequiredPairingPartner
-    }
-
-    private fun pairingPartner() = args[indexOfPairingPartner].split("-")
-
-    fun printErrorMessage() {
-        ui.show(errorMessage())
-    }
-
-    fun isClosePullRequests(): Boolean = args[2] == "-close"
+    private fun has_close_command_required_options() = args.size == 5
+            && args.contains("-c")
+            && args.contains("-g")
 
 }
