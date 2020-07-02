@@ -9,6 +9,9 @@ class Programs {
         if (pa.has_help_option()) {
             return ShowHelpOutputProgram()
         }
+        if (pa.has_version_option()) {
+            return ShowVersionOutputProgram()
+        }
         if (pa.has_open_command_help_option()) {
             return ShowOpenCommandHelpOutputProgram()
         }
