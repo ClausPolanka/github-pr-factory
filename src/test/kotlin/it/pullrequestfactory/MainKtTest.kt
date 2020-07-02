@@ -66,6 +66,15 @@ class MainKtTest {
     }
 
     @Test
+    fun program_shows_version_information_for_given_args() {
+        val args = arrayOf("-v")
+
+        main(args)
+
+        assertThat(userOutput.toString()).contains("github-pr-factory version 1.0-SNAPSHOT")
+    }
+
+    @Test
     fun create_pull_requests_for_the_given_candidate() {
         stubGetRequestsForGithubBranchesFromFiles()
 
