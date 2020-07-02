@@ -21,14 +21,68 @@ For example: a new pairing partner joins:<br />
 
 Note: New branches always must branch of the previous branch.
 
-### How to run github-pr-factory to open pull requests
+### github-pr-factory usage
+
+<pre>
+Usage: github-pr-factory [OPTION] COMMAND
+
+A tool which helps opening and closing Github pull requests
+for the George backend chapter 2nd round hirings.
+
+Options:
+  -?, --help			Print this help statement
+  -v, --version			Print version information and quit
+
+Commands:
+  open		Open Github pull requests
+  close		Open Github pull requests
+
+Run 'github-pr-factory COMMAND --help' for more information on a command.
+</pre>
+
+### github-pr-factory open usage
+
+<pre>
+Usage: github-pr-factory open [OPTION]
+
+Open new Github pull requests for a 2nd round hiring candidate
+
+Options:
+  -c		The candidate's first name and last-name separated by hyphen
+  -g		Your Github basic authorization token
+  -p		Seven pairing-partner names separated by hyphen
+    		  Currently supported names:
+    		  claus, berni, bernhard, nandor, dominik, mihai, lampe, shubi
+    		  markus, tibor, christian, michal, tomas, peter, martin, john, andrej
+
+Example:
+  github-pr-factory open -c firstname-lastname \
+    -g 10238sadf08klasjdf098 \
+    -p claus-berni-nandor-dominik-mihai-lampe-shubi
+</pre>
+
 In root project-directory: <pre>mvn clean package</pre>
 
 In root project-directory: <pre>java -jar target/github-pr-factory-<version>-jar-with-dependencies.jar open -c <first_name>-<last_name> -g <github_basic_auth_token> -p <[pairing_partner]></pre> 
 
 For example: <pre>java -jar target/github-pr-factory-1.0-SNAPSHOT-jar-with-dependencies.jar open -c Firstname-Lastname -g asdif8970702als -p name1-name2-name3</pre>
 
-### How to run github-pr-factory to close pull requests
+### github-pr-factory close usage
+
+<pre>
+Usage: github-pr-factory close [OPTION]
+
+Close Github pull requests for a 2nd round hiring candidate
+
+Options:
+  -c		The candidate's first name and last-name separated by hyphen
+  -g		Your Github basic authorization token
+
+Example:
+  github-pr-factory close -c firstname-lastname \
+    -g 10238sadf08klasjdf098 \
+</pre>
+
 In root project-directory: <pre>mvn clean package</pre>
 In root project-directory: <pre>java -jar target/github-pr-factory-<version>-jar-with-dependencies.jar close -c <first_name>-<last_name> -g <github_basic_auth_token></pre>
 For example: <pre>java -jar target/github-pr-factory-1.0-SNAPSHOT-jar-with-dependencies.jar close -c Firstname-Lastname -g asdif8970702als</pre>
