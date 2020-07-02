@@ -27,6 +27,16 @@ class PropertiesTest {
     }
 
     @Test
+    fun get_project_version_from_given_file() {
+        val fileName = createPropsWith("projectVersion=1.0-SNAPSHOT")
+        val sut = Properties(fileName)
+
+        val baseUrl = sut.get_project_version()
+
+        assertThat(baseUrl).isEqualTo("1.0-SNAPSHOT")
+    }
+
+    @Test
     fun get_default_base_url_in_case_file_does_not_exist() {
         val fileName = createPropsWith("x=y")
         val sut = Properties(fileName)
