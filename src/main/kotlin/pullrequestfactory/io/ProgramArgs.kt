@@ -41,11 +41,18 @@ class ProgramArgs(private val args: Array<String>) {
             && args.contains(githubBasicAuthTokenOption)
 
     fun get_candidate(): Candidate {
+        if (!is_candidate_syntax_valid()) {
+            throw WrongCandidateArgumentSyntax("Either option -c or candidate missing or candidate has wrong format")
+        }
         val candidateArg = args[args.indexOf(candidateOption) + 1]
         val firstName = candidateArg.split("-")[0]
         val lastName = candidateArg.split("-")[1]
         return Candidate(firstName, lastName)
     }
+
+    private fun is_candidate_syntax_valid() = args.size <= 2
+            && args.contains(candidateOption)
+            && args[args.indexOf(candidateOption) + 1].contains("-")
 
     fun get_github_basic_auth_token(): String {
         val indexOfGithubToken = args.indexOf(githubBasicAuthTokenOption) + 1
@@ -58,3 +65,5 @@ class ProgramArgs(private val args: Array<String>) {
     }
 
 }
+
+class WrongCandidateArgumentSyntax(msg: String) : RuntimeException(msg)
