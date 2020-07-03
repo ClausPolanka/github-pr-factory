@@ -146,28 +146,28 @@ class MainKtTest {
     }
 
     @Test
-    fun shows_close_usage_when_missing_the_candidate_option() {
+    fun shows_close_command_usage_when_missing_the_candidate_option() {
         main(args = arrayOf("close", candidate, "-g", basicAuthToken))
 
         assertThat(uiOutput.toString()).contains("Usage: github-pr-factory close [OPTION]")
     }
 
     @Test
-    fun shows_close_usage_when_missing_the_candidate() {
+    fun shows_close_command_usage_when_missing_the_candidate() {
         main(args = arrayOf("close", "-c", "-g", basicAuthToken))
 
         assertThat(uiOutput.toString()).contains("Usage: github-pr-factory close [OPTION]")
     }
 
     @Test
-    fun shows_close_usage_when_missing_the_github_basic_auth_token_option() {
+    fun shows_close_command_usage_when_missing_the_github_basic_auth_token_option() {
         main(args = arrayOf("close", "-c", candidate, basicAuthToken))
 
         assertThat(uiOutput.toString()).contains("Usage: github-pr-factory close [OPTION]")
     }
 
     @Test
-    fun shows_close_usage_when_missing_the_github_basic_auth_token() {
+    fun shows_close_command_usage_when_missing_the_github_basic_auth_token() {
         main(args = arrayOf("close", "-c", candidate, "-g"))
 
         assertThat(uiOutput.toString()).contains("Usage: github-pr-factory close [OPTION]")
