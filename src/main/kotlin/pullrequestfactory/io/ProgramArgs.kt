@@ -66,11 +66,20 @@ class ProgramArgs(private val args: Array<String>) {
             && args.contains(githubBasicAuthTokenOption)
 
     fun get_pairing_partner(): List<String> {
+        if (!is_pairing_partner_syntax_valid()) {
+            throw WrongPairingPartnerArgumentSyntax("Either option -p or pairing partner are missing or pairing partner have wrong format")
+        }
         val indexOfPairingPartner = args.indexOf(pairingPartnerOption) + 1
         return args[indexOfPairingPartner].split("-")
     }
+
+    private fun is_pairing_partner_syntax_valid(): Boolean = args.size >= 2
+            && args.contains(pairingPartnerOption)
+            && args[args.indexOf(pairingPartnerOption) + 1].contains("-")
+            && args[args.indexOf(pairingPartnerOption) + 1].split("-").size == 7
 
 }
 
 class WrongCandidateArgumentSyntax(msg: String) : RuntimeException(msg)
 class WrongGithubBasicAuthTokenArgumentSyntax(msg: String) : RuntimeException(msg)
+class WrongPairingPartnerArgumentSyntax(msg: String) : RuntimeException(msg)

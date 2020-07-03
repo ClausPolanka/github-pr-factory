@@ -7,6 +7,7 @@ import pullrequestfactory.domain.Candidate
 import pullrequestfactory.io.ProgramArgs
 
 private const val githubBasicAuthToken = "asdfkk3282kas8ölash8"
+private const val pairingPartner = "claus-berni-dominik-andrej-shubi-tibor-nandor"
 
 class ProgramArgsTest {
 
@@ -74,6 +75,57 @@ class ProgramArgsTest {
         val sut = ProgramArgs(arrayOf(githubBasicAuthToken, "-g"))
 
         assertThatThrownBy { sut.get_github_basic_auth_token() }
+    }
+
+    @Test
+    fun gets_pairing_partner_for_correct_pairing_partner_arguments() {
+        val sut = ProgramArgs(arrayOf("-p", "claus-berni-dominik-andrej-shubi-tibor-nandor"))
+
+        val pairingPartner = sut.get_pairing_partner()
+
+        assertThat(pairingPartner).isEqualTo(listOf("claus", "berni", "dominik", "andrej", "shubi", "tibor", "nandor"))
+    }
+
+    @Test
+    fun throws_when_pairing_partner_arguments_are_missing_the_pairing_partner_option() {
+        val sut = ProgramArgs(arrayOf("-x", pairingPartner))
+
+        assertThatThrownBy { sut.get_pairing_partner() }
+    }
+
+    @Test
+    fun throws_when_pairing_partner_arguments_are_missing_the_pairing_partner() {
+        val sut = ProgramArgs(arrayOf("-p"))
+
+        assertThatThrownBy { sut.get_pairing_partner() }
+    }
+
+    @Test
+    fun throws_when_pairing_partner_arguments_are_wrong_order() {
+        val sut = ProgramArgs(arrayOf(pairingPartner, "-p"))
+
+        assertThatThrownBy { sut.get_pairing_partner() }
+    }
+
+    @Test
+    fun throws_when_pairing_partner_have_the_wrong_format() {
+        val sut = ProgramArgs(arrayOf("-p", "clausbern"))
+
+        assertThatThrownBy { sut.get_pairing_partner() }
+    }
+
+    @Test
+    fun throws_when_number_of_pairing_partneris_too_little() {
+        val sut = ProgramArgs(arrayOf("-p", "claus-berni-dominik-andrej-shubi-tibor"))
+
+        assertThatThrownBy { sut.get_pairing_partner() }
+    }
+
+    @Test
+    fun throws_when_number_of_pairing_partneris_too_high() {
+        val sut = ProgramArgs(arrayOf("-p", "$pairingPartner-mihai"))
+
+        assertThatThrownBy { sut.get_pairing_partner() }
     }
 
 }
