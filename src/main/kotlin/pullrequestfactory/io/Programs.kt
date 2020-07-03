@@ -19,7 +19,7 @@ class Programs {
             return ShowInvalidOpenCommandOutputProgram()
         }
         if (pa.has_open_command()) {
-            return CreatePullRequestsProgram(args)
+            return CreatePullRequestsProgram(pa)
         }
         if (pa.has_close_command_help_option()) {
             return ShowCloseCommandHelpOutputProgram()
@@ -28,7 +28,7 @@ class Programs {
             return ShowInvalidCloseCommandOutputProgram()
         }
         if (pa.has_close_command()) {
-            return ClosePullRequestsProgram(args)
+            return ClosePullRequestsProgram(pa)
         }
         return ShowHelpOutputProgram()
     }

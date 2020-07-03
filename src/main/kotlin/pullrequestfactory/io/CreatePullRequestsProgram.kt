@@ -4,10 +4,9 @@ import pullrequestfactory.domain.GithubPRFactory
 import pullrequestfactory.domain.NoopCache
 import pullrequestfactory.domain.Program
 
-class CreatePullRequestsProgram(private val args: Array<String>) : Program {
+class CreatePullRequestsProgram(private val programArgs: ProgramArgs) : Program {
 
     override fun execute() {
-        val programArgs = ProgramArgs(args)
         val candidate = programArgs.get_candidate()
         val githubBasicAuthToken = programArgs.get_github_basic_auth_token()
         val pairingPartner = programArgs.get_pairing_partner()
