@@ -50,14 +50,20 @@ class ProgramArgs(private val args: Array<String>) {
         return Candidate(firstName, lastName)
     }
 
-    private fun is_candidate_syntax_valid() = args.size <= 2
+    private fun is_candidate_syntax_valid() = args.size >= 2
             && args.contains(candidateOption)
             && args[args.indexOf(candidateOption) + 1].contains("-")
 
     fun get_github_basic_auth_token(): String {
+        if (!is_github_basic_auth_token_syntax_valid()) {
+            throw WrongGithubBasicAuthTokenArgumentSyntax("Either option -g or github basic auth token missing")
+        }
         val indexOfGithubToken = args.indexOf(githubBasicAuthTokenOption) + 1
         return args[indexOfGithubToken]
     }
+
+    private fun is_github_basic_auth_token_syntax_valid(): Boolean = args.size >= 2
+            && args.contains(githubBasicAuthTokenOption)
 
     fun get_pairing_partner(): List<String> {
         val indexOfPairingPartner = args.indexOf(pairingPartnerOption) + 1
@@ -67,3 +73,4 @@ class ProgramArgs(private val args: Array<String>) {
 }
 
 class WrongCandidateArgumentSyntax(msg: String) : RuntimeException(msg)
+class WrongGithubBasicAuthTokenArgumentSyntax(msg: String) : RuntimeException(msg)
