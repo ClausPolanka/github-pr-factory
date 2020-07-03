@@ -24,9 +24,9 @@ class ProgramArgs(private val args: Array<String>) {
     fun has_open_command(): Boolean = args[0] == openCommand
 
     private fun has_open_command_required_options() = args.size == 7
-            && args.contains(candidateOption)
-            && args.contains(githubBasicAuthTokenOption)
-            && args.contains(pairingPartnerOption)
+            && is_candidate_syntax_valid()
+            && is_github_basic_auth_token_syntax_valid()
+            && is_pairing_partner_syntax_valid()
 
     fun has_close_command_help_option(): Boolean = args[0] == closeCommand
             && args.size == 2
@@ -37,8 +37,8 @@ class ProgramArgs(private val args: Array<String>) {
     fun has_close_command(): Boolean = args[0] == closeCommand
 
     private fun has_close_command_required_options() = args.size == 5
-            && args.contains(candidateOption)
-            && args.contains(githubBasicAuthTokenOption)
+            && is_candidate_syntax_valid()
+            && is_github_basic_auth_token_syntax_valid()
 
     fun get_candidate(): Candidate {
         if (!is_candidate_syntax_valid()) {
