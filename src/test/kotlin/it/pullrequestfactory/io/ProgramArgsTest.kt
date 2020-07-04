@@ -48,6 +48,51 @@ class ProgramArgsTest {
     }
 
     @Test
+    fun has_version_option_for_version_option() {
+        val sut = ProgramArgs(arrayOf("-v"))
+
+        val hastVersionOption = sut.has_version_option()
+
+        assertThat(hastVersionOption).isTrue()
+    }
+
+    @Test
+    fun has_version_option_for_long_version_option() {
+        val sut = ProgramArgs(arrayOf("--version"))
+
+        val hastVersionOption = sut.has_version_option()
+
+        assertThat(hastVersionOption).isTrue()
+    }
+
+    @Test
+    fun has_no_version_option_for_wrong_number_of_arguments() {
+        val sut = ProgramArgs(arrayOf("-v", "x"))
+
+        val hastVersionOption = sut.has_version_option()
+
+        assertThat(hastVersionOption).isFalse()
+    }
+
+    @Test
+    fun has_no_version_option_for_wrong_number_of_arguments_with_long_version_option() {
+        val sut = ProgramArgs(arrayOf("--version", "x"))
+
+        val hastVersionOption = sut.has_version_option()
+
+        assertThat(hastVersionOption).isFalse()
+    }
+
+    @Test
+    fun has_no_version_option_for_mssing_correct_option() {
+        val sut = ProgramArgs(arrayOf("x"))
+
+        val hastVersionOption = sut.has_version_option()
+
+        assertThat(hastVersionOption).isFalse()
+    }
+
+    @Test
     fun has_no_help_option_for_wrong_number_of_argumenbts_with_long_help_option() {
         val sut = ProgramArgs(arrayOf("--help", "x"))
 
