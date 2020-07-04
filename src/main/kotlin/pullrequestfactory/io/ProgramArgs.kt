@@ -10,31 +10,32 @@ private const val openCommand = "open"
 
 class ProgramArgs(private val args: Array<String>) {
 
-    fun has_help_option(): Boolean =
+    fun has_help_option() =
             args.isEmpty() || args.size == 1 && (args[0] == "-?" || args[0] == "--help")
 
 
-    fun has_version_option(): Boolean =
+    fun has_version_option() =
             args.size == 1 && (args[0] == "-v" || args[0] == "--version")
 
-    fun has_open_command_help_option(): Boolean =
+    fun has_open_command_help_option() =
             args[0] == openCommand && args.size == 2 && args[1] == "--help"
 
-    fun has_invalid_open_command(): Boolean = !has_open_command() && !has_open_command_required_options()
+    fun has_invalid_open_command() =
+            has_open_command() && !has_open_command_required_options()
 
-    fun has_open_command(): Boolean = args[0] == openCommand
+    fun has_open_command() = args[0] == openCommand
 
     private fun has_open_command_required_options() = args.size == 7
             && is_candidate_syntax_valid()
             && is_github_basic_auth_token_syntax_valid()
             && is_pairing_partner_syntax_valid()
 
-    fun has_close_command_help_option(): Boolean =
+    fun has_close_command_help_option() =
             args[0] == closeCommand && args.size == 2 && args[1] == "--help"
 
-    fun has_invalid_close_command(): Boolean = has_close_command() && !has_close_command_required_options()
+    fun has_invalid_close_command() = has_close_command() && !has_close_command_required_options()
 
-    fun has_close_command(): Boolean = args[0] == closeCommand
+    fun has_close_command() = args[0] == closeCommand
 
     private fun has_close_command_required_options() = args.size == 5
             && is_candidate_syntax_valid()
@@ -62,8 +63,8 @@ class ProgramArgs(private val args: Array<String>) {
         return args[indexOfGithubToken]
     }
 
-    private fun is_github_basic_auth_token_syntax_valid(): Boolean = args.size >= 2
-            && args.contains(githubBasicAuthTokenOption)
+    private fun is_github_basic_auth_token_syntax_valid() =
+            args.size >= 2 && args.contains(githubBasicAuthTokenOption)
 
     fun get_pairing_partner(): List<String> {
         if (!is_pairing_partner_syntax_valid()) {
@@ -73,7 +74,7 @@ class ProgramArgs(private val args: Array<String>) {
         return args[indexOfPairingPartner].split("-")
     }
 
-    private fun is_pairing_partner_syntax_valid(): Boolean = args.size >= 2
+    private fun is_pairing_partner_syntax_valid() = args.size >= 2
             && args.contains(pairingPartnerOption)
             && args[args.indexOf(pairingPartnerOption) + 1].contains("-")
             && args[args.indexOf(pairingPartnerOption) + 1].split("-").size == 7

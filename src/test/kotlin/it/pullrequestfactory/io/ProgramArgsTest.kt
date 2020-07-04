@@ -172,14 +172,46 @@ class ProgramArgsTest {
     }
 
     @Test
-    fun has_invalid_open_command_for_missing_open_command() {
+    fun has_invalid_open_command_for_invalid_candidate_syntax() {
         val sut = ProgramArgs(arrayOf(
-                "close",
+                "open",
+                "-c",
+                "firstnamelastname",
+                "-g",
+                githubBasicAuthToken,
+                "-p",
+                pairingPartner))
+
+        val hasInvalidOpenCommand = sut.has_invalid_open_command()
+
+        assertThat(hasInvalidOpenCommand).isTrue()
+    }
+
+    @Test
+    fun has_invalid_open_command_for_invalid_github_basic_auth_token_syntax() {
+        val sut = ProgramArgs(arrayOf(
+                "open",
+                "-c",
+                "firstname-lastname",
+                "-x",
+                githubBasicAuthToken,
+                "-p",
+                pairingPartner))
+
+        val hasInvalidOpenCommand = sut.has_invalid_open_command()
+
+        assertThat(hasInvalidOpenCommand).isTrue()
+    }
+
+    @Test
+    fun has_invalid_open_command_for_invalid_pairing_partner_syntax() {
+        val sut = ProgramArgs(arrayOf(
+                "open",
                 "-c",
                 "firstname-lastname",
                 "-g",
                 githubBasicAuthToken,
-                "-p",
+                "-x",
                 pairingPartner))
 
         val hasInvalidOpenCommand = sut.has_invalid_open_command()
