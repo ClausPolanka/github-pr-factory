@@ -172,7 +172,7 @@ class ProgramArgsTest {
     }
 
     @Test
-    fun has_invalid_open_command_for_invalid_candidate_syntax() {
+    fun has_invalid_open_command_because_of_invalid_candidate_syntax() {
         val sut = ProgramArgs(arrayOf(
                 "open",
                 "-c",
@@ -188,7 +188,7 @@ class ProgramArgsTest {
     }
 
     @Test
-    fun has_invalid_open_command_for_invalid_github_basic_auth_token_syntax() {
+    fun has_invalid_open_command_because_of_invalid_github_basic_auth_token_syntax() {
         val sut = ProgramArgs(arrayOf(
                 "open",
                 "-c",
@@ -204,7 +204,7 @@ class ProgramArgsTest {
     }
 
     @Test
-    fun has_invalid_open_command_for_invalid_pairing_partner_syntax() {
+    fun has_invalid_open_command_because_of_invalid_pairing_partner_syntax() {
         val sut = ProgramArgs(arrayOf(
                 "open",
                 "-c",
@@ -217,6 +217,63 @@ class ProgramArgsTest {
         val hasInvalidOpenCommand = sut.has_invalid_open_command()
 
         assertThat(hasInvalidOpenCommand).isTrue()
+    }
+
+    @Test
+    fun has_valid_close_command_for_given_arguments() {
+        val sut = ProgramArgs(arrayOf(
+                "close",
+                "-c",
+                "firstname-lastname",
+                "-g",
+                githubBasicAuthToken))
+
+        val hasInvalidCloseCommand = sut.has_invalid_close_command()
+
+        assertThat(hasInvalidCloseCommand).isFalse()
+    }
+
+    @Test
+    fun has_invalid_close_command_because_of_too_many_arguments() {
+        val sut = ProgramArgs(arrayOf(
+                "close",
+                "-c",
+                "firstname-lastname",
+                "-g",
+                githubBasicAuthToken,
+                "-x"))
+
+        val hasInvalidCloseCommand = sut.has_invalid_close_command()
+
+        assertThat(hasInvalidCloseCommand).isTrue()
+    }
+
+    @Test
+    fun has_invalid_close_command_because_of_invalid_canddiate_syntax() {
+        val sut = ProgramArgs(arrayOf(
+                "close",
+                "-c",
+                "firstnamelastname",
+                "-g",
+                githubBasicAuthToken))
+
+        val hasInvalidCloseCommand = sut.has_invalid_close_command()
+
+        assertThat(hasInvalidCloseCommand).isTrue()
+    }
+
+    @Test
+    fun has_invalid_close_command_because_of_invalid_github_basic_auth_token_syntax() {
+        val sut = ProgramArgs(arrayOf(
+                "close",
+                "-c",
+                "firstname-lastname",
+                "-x",
+                githubBasicAuthToken))
+
+        val hasInvalidCloseCommand = sut.has_invalid_close_command()
+
+        assertThat(hasInvalidCloseCommand).isTrue()
     }
 
     @Test
