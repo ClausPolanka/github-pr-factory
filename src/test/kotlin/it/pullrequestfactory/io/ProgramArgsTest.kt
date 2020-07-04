@@ -48,6 +48,15 @@ class ProgramArgsTest {
     }
 
     @Test
+    fun has_no_help_option_for_wrong_number_of_argumenbts_with_long_help_option() {
+        val sut = ProgramArgs(arrayOf("--help", "x"))
+
+        val hasHelpOption = sut.has_help_option()
+
+        assertThat(hasHelpOption).isFalse()
+    }
+
+    @Test
     fun has_version_option_for_version_option() {
         val sut = ProgramArgs(arrayOf("-v"))
 
@@ -117,15 +126,6 @@ class ProgramArgsTest {
         val hasOpenCommandHelpOption = sut.has_open_command_help_option()
 
         assertThat(hasOpenCommandHelpOption).isFalse()
-    }
-
-    @Test
-    fun has_no_help_option_for_wrong_number_of_argumenbts_with_long_help_option() {
-        val sut = ProgramArgs(arrayOf("--help", "x"))
-
-        val hasHelpOption = sut.has_help_option()
-
-        assertThat(hasHelpOption).isFalse()
     }
 
     @Test

@@ -29,9 +29,8 @@ class ProgramArgs(private val args: Array<String>) {
             && is_github_basic_auth_token_syntax_valid()
             && is_pairing_partner_syntax_valid()
 
-    fun has_close_command_help_option(): Boolean = args[0] == closeCommand
-            && args.size == 2
-            && args[1] == "--help"
+    fun has_close_command_help_option(): Boolean =
+            args[0] == closeCommand && args.size == 2 && args[1] == "--help"
 
     fun has_invalid_close_command(): Boolean = has_close_command() && !has_close_command_required_options()
 
