@@ -12,6 +12,51 @@ private const val pairingPartner = "claus-berni-dominik-andrej-shubi-tibor-nando
 class ProgramArgsTest {
 
     @Test
+    fun has_help_option_for_empty_args() {
+        val sut = ProgramArgs(emptyArray())
+
+        val hasHelpOption = sut.has_help_option()
+
+        assertThat(hasHelpOption).isTrue()
+    }
+
+    @Test
+    fun has_help_option_for_help_option() {
+        val sut = ProgramArgs(arrayOf("-?"))
+
+        val hasHelpOption = sut.has_help_option()
+
+        assertThat(hasHelpOption).isTrue()
+    }
+
+    @Test
+    fun has_help_option_for_long_help_option() {
+        val sut = ProgramArgs(arrayOf("--help"))
+
+        val hasHelpOption = sut.has_help_option()
+
+        assertThat(hasHelpOption).isTrue()
+    }
+
+    @Test
+    fun has_no_help_option_for_wrong_number_of_argumenbts() {
+        val sut = ProgramArgs(arrayOf("-?", "x"))
+
+        val hasHelpOption = sut.has_help_option()
+
+        assertThat(hasHelpOption).isFalse()
+    }
+
+    @Test
+    fun has_no_help_option_for_wrong_number_of_argumenbts_with_long_help_option() {
+        val sut = ProgramArgs(arrayOf("--help", "x"))
+
+        val hasHelpOption = sut.has_help_option()
+
+        assertThat(hasHelpOption).isFalse()
+    }
+
+    @Test
     fun gets_candidate_for_correct_candidate_arguments() {
         val sut = ProgramArgs(arrayOf("-c", "firstname-lastname"))
 
@@ -19,6 +64,7 @@ class ProgramArgsTest {
 
         assertThat(candidate).isEqualTo(Candidate("firstname", "lastname"))
     }
+
     @Test
     fun throws_when_candidate_arguments_are_missing_the_candiate_option() {
         val sut = ProgramArgs(arrayOf("-x", "firstname-lastname"))
