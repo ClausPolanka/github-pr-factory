@@ -93,6 +93,33 @@ class ProgramArgsTest {
     }
 
     @Test
+    fun has_open_command_help_option_for_correct_arguments() {
+        val sut = ProgramArgs(arrayOf("open", "--help"))
+
+        val hasOpenCommandHelpOption = sut.has_open_command_help_option()
+
+        assertThat(hasOpenCommandHelpOption).isTrue()
+    }
+
+    @Test
+    fun has_no_open_command_help_option_for_missing_long_help_option() {
+        val sut = ProgramArgs(arrayOf("open", "-?"))
+
+        val hasOpenCommandHelpOption = sut.has_open_command_help_option()
+
+        assertThat(hasOpenCommandHelpOption).isFalse()
+    }
+
+    @Test
+    fun has_no_open_command_help_option_wrong_number_of_arguments() {
+        val sut = ProgramArgs(arrayOf("close"))
+
+        val hasOpenCommandHelpOption = sut.has_open_command_help_option()
+
+        assertThat(hasOpenCommandHelpOption).isFalse()
+    }
+
+    @Test
     fun has_no_help_option_for_wrong_number_of_argumenbts_with_long_help_option() {
         val sut = ProgramArgs(arrayOf("--help", "x"))
 
