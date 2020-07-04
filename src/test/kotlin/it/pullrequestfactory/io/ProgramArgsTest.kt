@@ -129,6 +129,33 @@ class ProgramArgsTest {
     }
 
     @Test
+    fun has_close_command_help_option_for_correct_arguments() {
+        val sut = ProgramArgs(arrayOf("close", "--help"))
+
+        val hasCloseCommandHelpOption = sut.has_close_command_help_option()
+
+        assertThat(hasCloseCommandHelpOption).isTrue()
+    }
+
+    @Test
+    fun has_no_close_command_help_option_for_missing_long_help_option() {
+        val sut = ProgramArgs(arrayOf("close", "-?"))
+
+        val hasCloseCommandHelpOption = sut.has_close_command_help_option()
+
+        assertThat(hasCloseCommandHelpOption).isFalse()
+    }
+
+    @Test
+    fun has_no_close_command_help_option_for_missing_command() {
+        val sut = ProgramArgs(arrayOf("open", "--help"))
+
+        val hasCloseCommandHelpOption = sut.has_close_command_help_option()
+
+        assertThat(hasCloseCommandHelpOption).isFalse()
+    }
+
+    @Test
     fun gets_candidate_for_correct_candidate_arguments() {
         val sut = ProgramArgs(arrayOf("-c", "firstname-lastname"))
 
