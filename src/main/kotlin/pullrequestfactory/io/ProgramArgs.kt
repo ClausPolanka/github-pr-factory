@@ -15,7 +15,7 @@ class ProgramArgs(private val args: Array<String>) {
 
 
     fun has_version_option(): Boolean =
-            args.size == 1 && args[0] == "-v" || args[0] == "--version"
+            args.size == 1 && (args[0] == "-v" || args[0] == "--version")
 
     fun has_open_command_help_option(): Boolean =
             args[0] == openCommand && args.size == 2 && args[1] == "--help"
