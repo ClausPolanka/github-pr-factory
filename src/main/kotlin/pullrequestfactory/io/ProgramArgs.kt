@@ -20,7 +20,7 @@ class ProgramArgs(private val args: Array<String>) {
     fun has_open_command_help_option(): Boolean =
             args[0] == openCommand && args.size == 2 && args[1] == "--help"
 
-    fun has_invalid_open_command(): Boolean = has_open_command() && !has_open_command_required_options()
+    fun has_invalid_open_command(): Boolean = !has_open_command() && !has_open_command_required_options()
 
     fun has_open_command(): Boolean = args[0] == openCommand
 
