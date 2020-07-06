@@ -61,24 +61,6 @@ class MainKtTest {
     }
 
     @Test
-    fun shows_program_usage_when_no_args_are_set() {
-        val args = emptyArray<String>()
-
-        main(args)
-
-        assertThat(uiOutput.toString()).contains("Usage: github-pr-factory [OPTION] COMMAND")
-    }
-
-    @Test
-    fun shows_version_information_for_version_option() {
-        val args = arrayOf("-v")
-
-        main(args)
-
-        assertThat(uiOutput.toString()).contains("github-pr-factory version $projectVersion")
-    }
-
-    @Test
     fun creates_pull_requests_for_the_given_program_arguments() {
         stubGetRequestsForGithubBranchesFromFiles()
 
@@ -88,43 +70,8 @@ class MainKtTest {
     }
 
     @Test
-    fun shows_open_command_usage_when_missing_the_candidate_option() {
-        main(args = arrayOf("open", candidate, "-g", basicAuthToken, "-p", pairingPartner))
-
-        assertThat(uiOutput.toString()).contains("Usage: github-pr-factory open [OPTION]")
-    }
-
-    @Test
-    fun shows_open_command_usage_when_the_missing_candidate() {
-        main(args = arrayOf("open", "-c", "-g", basicAuthToken, "-p", pairingPartner))
-
-        assertThat(uiOutput.toString()).contains("Usage: github-pr-factory open [OPTION]")
-    }
-
-    @Test
-    fun shows_open_command_usage_when_missing_the_github_basic_auth_token_option() {
-        main(args = arrayOf("open", "-c", candidate, basicAuthToken, "-p", pairingPartner))
-
-        assertThat(uiOutput.toString()).contains("Usage: github-pr-factory open [OPTION]")
-    }
-
-    @Test
-    fun shows_open_command_usage_when_missing_the_github_basic_auth_token() {
-        main(args = arrayOf("open", "-c", candidate, "-g", "-p", pairingPartner))
-
-        assertThat(uiOutput.toString()).contains("Usage: github-pr-factory open [OPTION]")
-    }
-
-    @Test
-    fun shows_open_command_usage_when_missing_the_pairing_partner_option() {
+    fun shows_open_command_usage_when_arguments_are_not_correct() {
         main(args = arrayOf("open", "-c", candidate, "-g", basicAuthToken, pairingPartner))
-
-        assertThat(uiOutput.toString()).contains("Usage: github-pr-factory open [OPTION]")
-    }
-
-    @Test
-    fun shows_open_command_usage_when_missing_the_pairing_partner() {
-        main(args = arrayOf("open", "-c", candidate, "-g", basicAuthToken, "-p"))
 
         assertThat(uiOutput.toString()).contains("Usage: github-pr-factory open [OPTION]")
     }
@@ -139,35 +86,7 @@ class MainKtTest {
     }
 
     @Test
-    fun shows_program_usage_when_command_is_missing() {
-        main(args = arrayOf("-c", candidate, "-g", basicAuthToken))
-
-        assertThat(uiOutput.toString()).contains("Usage: github-pr-factory [OPTION] COMMAND")
-    }
-
-    @Test
-    fun shows_close_command_usage_when_missing_the_candidate_option() {
-        main(args = arrayOf("close", candidate, "-g", basicAuthToken))
-
-        assertThat(uiOutput.toString()).contains("Usage: github-pr-factory close [OPTION]")
-    }
-
-    @Test
-    fun shows_close_command_usage_when_missing_the_candidate() {
-        main(args = arrayOf("close", "-c", "-g", basicAuthToken))
-
-        assertThat(uiOutput.toString()).contains("Usage: github-pr-factory close [OPTION]")
-    }
-
-    @Test
-    fun shows_close_command_usage_when_missing_the_github_basic_auth_token_option() {
-        main(args = arrayOf("close", "-c", candidate, basicAuthToken))
-
-        assertThat(uiOutput.toString()).contains("Usage: github-pr-factory close [OPTION]")
-    }
-
-    @Test
-    fun shows_close_command_usage_when_missing_the_github_basic_auth_token() {
+    fun shows_close_command_usage_when_arguments_are_not_correct() {
         main(args = arrayOf("close", "-c", candidate, "-g"))
 
         assertThat(uiOutput.toString()).contains("Usage: github-pr-factory close [OPTION]")
