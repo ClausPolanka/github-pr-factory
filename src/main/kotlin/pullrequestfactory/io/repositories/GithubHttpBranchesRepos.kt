@@ -4,7 +4,6 @@ import pullrequestfactory.domain.branches.Branch
 import pullrequestfactory.domain.branches.EmptyGithubBranchesReadRepo
 import pullrequestfactory.domain.branches.GithubBranchesReadRepo
 import pullrequestfactory.domain.branches.GithubBranchesRepo
-import pullrequestfactory.domain.caches.NoopCache
 import pullrequestfactory.domain.uis.UI
 
 class GithubHttpBranchesRepos(private val repoUrl: String, private val ui: UI) : GithubBranchesRepo {
@@ -19,7 +18,7 @@ class GithubHttpBranchesRepos(private val repoUrl: String, private val ui: UI) :
             ui.show("Too many requests to Github within time limit")
             return EmptyGithubBranchesReadRepo()
         }
-        return GithubHttpBranchesReadRepo(repoUrl, response, NoopCache())
+        return GithubHttpBranchesReadRepo(repoUrl, response)
     }
 
 }

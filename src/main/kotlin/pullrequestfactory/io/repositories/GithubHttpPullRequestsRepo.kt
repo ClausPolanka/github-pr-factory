@@ -1,7 +1,6 @@
 package pullrequestfactory.io.repositories
 
 import com.beust.klaxon.Klaxon
-import pullrequestfactory.domain.caches.NoopCache
 import pullrequestfactory.domain.pullrequests.*
 import pullrequestfactory.domain.uis.UI
 
@@ -20,7 +19,7 @@ class GithubHttpPullRequestsRepo(
             ui.show("Too many requests to Github within time limit")
             return EmptyPullRequestsReadRepo()
         }
-        return GithubHttpPullRequestsReadRepo(repoPath, response, ui, NoopCache())
+        return GithubHttpPullRequestsReadRepo(repoPath, response, ui)
     }
 
     override fun open_pull_request(pullRequest: PullRequest) {
