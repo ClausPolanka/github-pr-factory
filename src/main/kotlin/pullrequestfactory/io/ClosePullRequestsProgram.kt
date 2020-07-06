@@ -1,6 +1,10 @@
 package pullrequestfactory.io
 
-import pullrequestfactory.domain.*
+import pullrequestfactory.domain.BranchSyntaxValidator
+import pullrequestfactory.domain.GithubPRFactory
+import pullrequestfactory.domain.Program
+import pullrequestfactory.domain.QuietUI
+import pullrequestfactory.io.factories.GithubRepos
 
 class ClosePullRequestsProgram(private val programArgs: ProgramArgs) : Program {
 
@@ -11,13 +15,13 @@ class ClosePullRequestsProgram(private val programArgs: ProgramArgs) : Program {
         val githubBasicAuthToken = programArgs.get_github_basic_auth_token()
         val baseUrl = properties.get_github_base_url()
         val repoPath = properties.get_github_repository_path()
-        val githubRepo = GithubHttpRepo(
+        val githubWriteRepo = GithubHttpWriteRepo(
                 baseUrl,
                 repoPath,
                 githubBasicAuthToken,
-                NoopCache(),
                 QuietUI())
-        val f = GithubPRFactory(githubRepo, githubRepo, BranchSyntaxValidator(ConsoleUI()))
+        val githubReadRepo = GithubRepos(baseUrl + repoPath, QuietUI())
+        val f = GithubPRFactory(githubReadRepo, githubWriteRepo, BranchSyntaxValidator(ConsoleUI()))
         f.close_pull_requests_for(candidate)
     }
 

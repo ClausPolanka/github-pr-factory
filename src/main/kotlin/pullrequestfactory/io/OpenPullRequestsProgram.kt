@@ -1,6 +1,10 @@
 package pullrequestfactory.io
 
-import pullrequestfactory.domain.*
+import pullrequestfactory.domain.BranchSyntaxValidator
+import pullrequestfactory.domain.GithubPRFactory
+import pullrequestfactory.domain.Program
+import pullrequestfactory.domain.QuietUI
+import pullrequestfactory.io.factories.GithubRepos
 
 class OpenPullRequestsProgram(private val programArgs: ProgramArgs) : Program {
 
@@ -12,13 +16,13 @@ class OpenPullRequestsProgram(private val programArgs: ProgramArgs) : Program {
         val pairingPartner = programArgs.get_pairing_partner()
         val baseUrl = properties.get_github_base_url()
         val repoPath = properties.get_github_repository_path()
-        val githubRepo = GithubHttpRepo(
+        val githubWriteRepo = GithubHttpWriteRepo(
                 baseUrl,
                 repoPath,
                 githubBasicAuthToken,
-                NoopCache(),
                 QuietUI())
-        val f = GithubPRFactory(githubRepo, githubRepo, BranchSyntaxValidator(ConsoleUI()))
+        val githubReadRepo = GithubRepos(baseUrl + repoPath, QuietUI())
+        val f = GithubPRFactory(githubReadRepo, githubWriteRepo, BranchSyntaxValidator(ConsoleUI()))
         f.create_pull_requests(candidate, pairingPartner)
     }
 
