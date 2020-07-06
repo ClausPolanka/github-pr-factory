@@ -13,7 +13,6 @@ class ProgramArgs(private val args: Array<String>) {
     fun has_help_option() =
             args.isEmpty() || args.size == 1 && (args[0] == "-?" || args[0] == "--help")
 
-
     fun has_version_option() =
             args.size == 1 && (args[0] == "-v" || args[0] == "--version")
 

@@ -277,6 +277,19 @@ class ProgramArgsTest {
     }
 
     @Test
+    fun has_invalid_close_command_because_of_missing_close_command() {
+        val sut = ProgramArgs(arrayOf(
+                "-c",
+                "firstname-lastname",
+                "-g",
+                githubBasicAuthToken))
+
+        val hasInvalidCloseCommand = sut.has_invalid_close_command()
+
+        assertThat(hasInvalidCloseCommand).isFalse()
+    }
+
+    @Test
     fun gets_candidate_for_correct_candidate_arguments() {
         val sut = ProgramArgs(arrayOf("-c", "firstname-lastname"))
 
