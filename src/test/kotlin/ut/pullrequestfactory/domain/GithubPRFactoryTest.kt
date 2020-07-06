@@ -171,8 +171,8 @@ class GithubPRFactoryTest {
                 return expectedPrs
             }
 
-            override fun create_pull_request(pullRequest: PullRequest) {
-                writeRepo.create_pull_request(pullRequest)
+            override fun open_pull_request(pullRequest: PullRequest) {
+                writeRepo.open_pull_request(pullRequest)
             }
 
             override fun close_pull_request(number: Int) {
@@ -191,7 +191,7 @@ class GithubPRFactoryTest {
 
     private fun github_write_repo(expectedPrs: MutableList<PullRequest>, expectedPullRequestNumbersToBeClosed: MutableList<Int> = mutableListOf()): GithubPullRequestsWriteRepo {
         return object : GithubPullRequestsWriteRepo {
-            override fun create_pull_request(pullRequest: PullRequest) {
+            override fun open_pull_request(pullRequest: PullRequest) {
                 expectedPrs.add(pullRequest)
             }
 
@@ -202,7 +202,7 @@ class GithubPRFactoryTest {
     }
 
     private fun noop_github_write_repo() = object : GithubPullRequestsWriteRepo {
-        override fun create_pull_request(pullRequest: PullRequest) {
+        override fun open_pull_request(pullRequest: PullRequest) {
             // can be ignored in this test
         }
 

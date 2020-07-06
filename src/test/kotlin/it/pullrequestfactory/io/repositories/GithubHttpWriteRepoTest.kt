@@ -36,7 +36,7 @@ class GithubHttpWriteRepoTest {
     fun create_pull_request() {
         val sut = createGithubHttpRepo()
 
-        sut.create_pull_request(pullRequest)
+        sut.open_pull_request(pullRequest)
 
         WireMock.verify(WireMock.postRequestedFor(WireMock.urlMatching(PULL_REQUEST_PATH))
                 .withRequestBody(WireMock.matching(jsonFor(pullRequest)))

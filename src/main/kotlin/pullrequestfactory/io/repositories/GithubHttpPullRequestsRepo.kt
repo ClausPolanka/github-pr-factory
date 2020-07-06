@@ -23,7 +23,7 @@ class GithubHttpPullRequestsRepo(
         return GithubHttpPullRequestsReadRepo(repoPath, response, ui, NoopCache())
     }
 
-    override fun create_pull_request(pullRequest: PullRequest) {
+    override fun open_pull_request(pullRequest: PullRequest) {
         ui.show("Create pull request on Github: $pullRequest")
         val response = khttp.post(
                 url = "$repoPath/pulls",
