@@ -78,8 +78,8 @@ class ProgramArgs(private val args: Array<String>) {
             && args[args.indexOf(pairingPartnerOption) + 1].contains("-")
             && args[args.indexOf(pairingPartnerOption) + 1].split("-").size == 7
 
-}
+    private class WrongCandidateArgumentSyntax(msg: String) : RuntimeException(msg)
+    private class WrongGithubBasicAuthTokenArgumentSyntax(msg: String) : RuntimeException(msg)
+    private class WrongPairingPartnerArgumentSyntax(msg: String) : RuntimeException(msg)
 
-class WrongCandidateArgumentSyntax(msg: String) : RuntimeException(msg)
-class WrongGithubBasicAuthTokenArgumentSyntax(msg: String) : RuntimeException(msg)
-class WrongPairingPartnerArgumentSyntax(msg: String) : RuntimeException(msg)
+}
