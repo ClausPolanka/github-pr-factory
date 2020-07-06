@@ -2,8 +2,8 @@ package it.pullrequestfactory.io.factories
 
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
-import pullrequestfactory.io.factories.Programs
-import pullrequestfactory.io.programs.*
+import pullrequestfactory.io.programs.Programs
+import pullrequestfactory.io.programs.impl.*
 
 class ProgramsTest {
 

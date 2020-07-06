@@ -1,8 +1,15 @@
 package pullrequestfactory.domain
 
+import pullrequestfactory.domain.branches.Branch
+import pullrequestfactory.domain.branches.BranchSorter
+import pullrequestfactory.domain.branches.BranchSyntaxValidator
+import pullrequestfactory.domain.branches.GithubBranchesRepo
+import pullrequestfactory.domain.pullrequests.GithubPullRequestsRepo
+import pullrequestfactory.domain.pullrequests.PullRequests
+
 class GithubPRFactory(
-        private val githubReadRepo: GithubReadRepo,
-        private val githubWriteRepo: GithubWriteRepo,
+        private val githubBranchesRepo: GithubBranchesRepo,
+        private val githubPullRequestsRepo: GithubPullRequestsRepo,
         private val branchSyntaxValidator: BranchSyntaxValidator) {
 
     /**
@@ -15,11 +22,11 @@ class GithubPRFactory(
         val branches = get_branches_for(candidate)
         val sortedBranches = BranchSorter().sort_branches_by_pairing_partner(branches, pairingPartner)
         val pullRequests = PullRequests().create_pull_requests_for(sortedBranches)
-        pullRequests.forEach { githubWriteRepo.create_pull_request(it) }
+        pullRequests.forEach { githubPullRequestsRepo.create_pull_request(it) }
     }
 
     private fun get_branches_for(candidate: Candidate): List<Branch> {
-        return githubReadRepo.get_all_branches()
+        return githubBranchesRepo.get_all_branches()
                 .filter { it.name.contains(candidate.firstName, ignoreCase = true) }
                 .filter { it.name.contains(candidate.lastName, ignoreCase = true) }
                 .map {
@@ -29,11 +36,11 @@ class GithubPRFactory(
     }
 
     fun close_pull_requests_for(candidate: Candidate) {
-        val prs = githubReadRepo.get_all_open_pull_requests()
+        val prs = githubPullRequestsRepo.get_all_open_pull_requests()
                 .filter { it.title.contains(candidate.firstName, ignoreCase = true) }
                 .filter { it.title.contains(candidate.lastName, ignoreCase = true) }
 
-        prs.forEach { githubWriteRepo.close_pull_request(it.number) }
+        prs.forEach { githubPullRequestsRepo.close_pull_request(it.number) }
     }
 
 }

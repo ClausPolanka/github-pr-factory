@@ -6,10 +6,10 @@ import com.github.tomakehurst.wiremock.matching.RequestPatternBuilder
 import org.junit.After
 import org.junit.ClassRule
 import org.junit.Test
-import pullrequestfactory.domain.Branch
-import pullrequestfactory.domain.PullRequest
-import pullrequestfactory.domain.QuietUI
-import pullrequestfactory.io.repositories.GithubHttpWriteRepo
+import pullrequestfactory.domain.branches.Branch
+import pullrequestfactory.domain.pullrequests.PullRequest
+import pullrequestfactory.domain.uis.QuietUI
+import pullrequestfactory.io.repositories.GithubHttpPullRequestsRepo
 
 class GithubHttpWriteRepoTest {
 
@@ -54,7 +54,7 @@ class GithubHttpWriteRepoTest {
                 .addCommonHeaders())
     }
 
-    private fun createGithubHttpRepo(): GithubHttpWriteRepo = GithubHttpWriteRepo(
+    private fun createGithubHttpRepo(): GithubHttpPullRequestsRepo = GithubHttpPullRequestsRepo(
             WIRE_MOCK_DEFAULT_URL + REPO_PATH,
             "basic-auth-token",
             QuietUI())

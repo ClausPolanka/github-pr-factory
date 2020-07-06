@@ -3,7 +3,7 @@ package it.pullrequestfactory.io
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.After
 import org.junit.Test
-import pullrequestfactory.io.FileProperties
+import pullrequestfactory.io.programs.impl.FileProperties
 import java.nio.file.Files
 import java.nio.file.Paths
 

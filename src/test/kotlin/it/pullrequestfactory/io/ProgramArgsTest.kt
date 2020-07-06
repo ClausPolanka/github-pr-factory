@@ -4,7 +4,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.Test
 import pullrequestfactory.domain.Candidate
-import pullrequestfactory.io.ProgramArgs
+import pullrequestfactory.io.programs.ProgramArgs
 
 
 class ProgramArgsTest {

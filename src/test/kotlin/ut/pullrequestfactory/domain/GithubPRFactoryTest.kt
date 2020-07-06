@@ -3,7 +3,13 @@ package ut.pullrequestfactory.domain
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.Test
-import pullrequestfactory.domain.*
+import pullrequestfactory.domain.Candidate
+import pullrequestfactory.domain.GithubPRFactory
+import pullrequestfactory.domain.branches.Branch
+import pullrequestfactory.domain.branches.BranchSyntaxValidator
+import pullrequestfactory.domain.branches.GithubBranchesRepo
+import pullrequestfactory.domain.pullrequests.*
+import pullrequestfactory.domain.uis.QuietUI
 
 class GithubPRFactoryTest {
 
@@ -126,40 +132,65 @@ class GithubPRFactoryTest {
 
     private fun create_github_pr_factory(branches: List<Branch>): Pair<MutableList<PullRequest>, GithubPRFactory> {
         val pullRequests = mutableListOf<PullRequest>()
-        val githubReadRepo = github_read_repo(branches, emptyList())
-        val sut = GithubPRFactory(githubReadRepo, github_write_repo(pullRequests, mutableListOf()), BranchSyntaxValidator(QuietUI()))
+        val githubBranchesRepo = github_branches_repo(branches)
+        val sut = GithubPRFactory(
+                githubBranchesRepo,
+                github_pull_requests_repo(github_write_repo(pullRequests)),
+                BranchSyntaxValidator(QuietUI()))
         return Pair(pullRequests, sut)
     }
 
     private fun create_github_pr_factory_for(pullRequests: List<GetPullRequest>): Pair<MutableList<Int>, GithubPRFactory> {
         val pullRequestNumbersToBeClosed = mutableListOf<Int>()
         val sut = GithubPRFactory(
-                github_read_repo(emptyList(), pullRequests),
-                github_write_repo(mutableListOf(), pullRequestNumbersToBeClosed),
+                github_branches_repo(emptyList()),
+                github_pull_requests_repo(
+                        github_write_repo(mutableListOf(), pullRequestNumbersToBeClosed),
+                        pullRequests.toMutableList()),
                 BranchSyntaxValidator(QuietUI()))
         return Pair(pullRequestNumbersToBeClosed, sut)
     }
 
     private fun create_github_pr_factory_for(branchName: String) =
             GithubPRFactory(
-                    github_read_repo(listOf(Branch(branchName)), emptyList()),
-                    noop_github_write_repo(),
+                    github_branches_repo(listOf(Branch(branchName))),
+                    github_pull_requests_repo(noop_github_write_repo()),
                     BranchSyntaxValidator(QuietUI()))
 
-    private fun github_read_repo(branches: List<Branch>, pullRequests: List<GetPullRequest>): GithubReadRepo {
-        return object : GithubReadRepo {
+    private fun github_branches_repo(branches: List<Branch>): GithubBranchesRepo {
+        return object : GithubBranchesRepo {
             override fun get_all_branches(): List<Branch> {
                 return branches
             }
+        }
+    }
 
+    private fun github_pull_requests_repo(writeRepo: GithubPullRequestsWriteRepo, expectedPrs: MutableList<GetPullRequest> = mutableListOf()): GithubPullRequestsRepo {
+        return object : GithubPullRequestsRepo {
+            override fun get_all_open_pull_requests(): List<GetPullRequest> {
+                return expectedPrs
+            }
+
+            override fun create_pull_request(pullRequest: PullRequest) {
+                writeRepo.create_pull_request(pullRequest)
+            }
+
+            override fun close_pull_request(number: Int) {
+                writeRepo.close_pull_request(number)
+            }
+        }
+    }
+
+    private fun github_pull_requests_read_repo(pullRequests: List<GetPullRequest>): GithubPullRequestsReadRepo {
+        return object : GithubPullRequestsReadRepo {
             override fun get_all_open_pull_requests(): List<GetPullRequest> {
                 return pullRequests
             }
         }
     }
 
-    private fun github_write_repo(expectedPrs: MutableList<PullRequest>, expectedPullRequestNumbersToBeClosed: MutableList<Int>): GithubWriteRepo {
-        return object : GithubWriteRepo {
+    private fun github_write_repo(expectedPrs: MutableList<PullRequest>, expectedPullRequestNumbersToBeClosed: MutableList<Int> = mutableListOf()): GithubPullRequestsWriteRepo {
+        return object : GithubPullRequestsWriteRepo {
             override fun create_pull_request(pullRequest: PullRequest) {
                 expectedPrs.add(pullRequest)
             }
@@ -170,7 +201,7 @@ class GithubPRFactoryTest {
         }
     }
 
-    private fun noop_github_write_repo() = object : GithubWriteRepo {
+    private fun noop_github_write_repo() = object : GithubPullRequestsWriteRepo {
         override fun create_pull_request(pullRequest: PullRequest) {
             // can be ignored in this test
         }

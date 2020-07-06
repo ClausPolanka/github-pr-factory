@@ -9,9 +9,9 @@ import org.junit.After
 import org.junit.Before
 import org.junit.ClassRule
 import org.junit.Test
-import pullrequestfactory.domain.Branch
-import pullrequestfactory.domain.GetPullRequest
-import pullrequestfactory.domain.PullRequest
+import pullrequestfactory.domain.branches.Branch
+import pullrequestfactory.domain.pullrequests.GetPullRequest
+import pullrequestfactory.domain.pullrequests.PullRequest
 import pullrequestfactory.main
 import java.io.ByteArrayOutputStream
 import java.io.File
