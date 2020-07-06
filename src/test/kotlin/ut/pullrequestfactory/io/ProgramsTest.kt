@@ -54,7 +54,14 @@ class ProgramsTest {
     fun creates_program_which_opens_pull_requests() {
         val sut = Programs()
 
-        val program = sut.create_program_for(arrayOf("open", "-c", "firstname-lastname", "-g", "askdasaeu129", "-p", "claus-dominik-mihai-christian-berni-markus-shubi"))
+        val program = sut.create_program_for(arrayOf(
+                "open",
+                "-c",
+                "firstname-lastname",
+                "-g",
+                "askdasaeu129",
+                "-p",
+                "claus-dominik-mihai-christian-berni-markus-shubi"))
 
         assertThat(program is CreatePullRequestsProgram)
                 .describedAs("program opens pull requests")
@@ -87,7 +94,12 @@ class ProgramsTest {
     fun creates_program_which_closes_pull_requests() {
         val sut = Programs()
 
-        val program = sut.create_program_for(arrayOf("close", "-c", "firstname-lastname", "-g", "askdasaeu129"))
+        val program = sut.create_program_for(arrayOf(
+                "close",
+                "-c",
+                "firstname-lastname",
+                "-g",
+                "askdasaeu129"))
 
         assertThat(program is ClosePullRequestsProgram)
                 .describedAs("program closes pull requests")
