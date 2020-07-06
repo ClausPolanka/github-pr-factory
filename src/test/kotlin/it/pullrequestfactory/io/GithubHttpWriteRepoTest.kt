@@ -3,12 +3,10 @@ package it.pullrequestfactory.io
 import com.github.tomakehurst.wiremock.client.WireMock.*
 import com.github.tomakehurst.wiremock.junit.WireMockRule
 import com.github.tomakehurst.wiremock.matching.RequestPatternBuilder
-import it.pullrequestfactory.GetPullRequestResponse
 import org.junit.After
 import org.junit.ClassRule
 import org.junit.Test
 import pullrequestfactory.domain.Branch
-import pullrequestfactory.domain.GetPullRequest
 import pullrequestfactory.domain.PullRequest
 import pullrequestfactory.domain.QuietUI
 import pullrequestfactory.io.GithubHttpWriteRepo
@@ -59,21 +57,9 @@ class GithubHttpWriteRepoTest {
     }
 
     private fun createGithubHttpRepo(): GithubHttpWriteRepo = GithubHttpWriteRepo(
-            WIRE_MOCK_DEFAULT_URL,
-            REPO_PATH,
+            WIRE_MOCK_DEFAULT_URL + REPO_PATH,
             "basic-auth-token",
             QuietUI())
-
-    private fun githubResponseFor(branch: Branch): GithubResponse {
-        return GithubResponse(
-                name = branch.name,
-                commit = GithubCommit(ANY_SHA, ANY_URL),
-                protected = false)
-    }
-
-    private fun githubResponseFor(getPullRequest: GetPullRequest): GetPullRequestResponse {
-        return GetPullRequestResponse(getPullRequest.number, getPullRequest.title)
-    }
 
     private fun jsonFor(pr: PullRequest) =
             Regex.escape("""{"base" : "${pr.base}", "head" : "${pr.head}", "title" : "${pr.title}"}""")
@@ -86,6 +72,3 @@ private fun RequestPatternBuilder.addCommonHeaders(): RequestPatternBuilder? {
             .withHeader("Authorization", matching("Basic .*"))
             .withHeader("Content-Type", matching("application/json"))
 }
-
-data class GithubResponse(val name: String, val commit: GithubCommit, val protected: Boolean)
-data class GithubCommit(val sha: String, val url: String)

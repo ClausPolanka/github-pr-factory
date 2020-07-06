@@ -16,11 +16,7 @@ class OpenPullRequestsProgram(private val programArgs: ProgramArgs) : Program {
         val pairingPartner = programArgs.get_pairing_partner()
         val baseUrl = properties.get_github_base_url()
         val repoPath = properties.get_github_repository_path()
-        val githubWriteRepo = GithubHttpWriteRepo(
-                baseUrl,
-                repoPath,
-                githubBasicAuthToken,
-                QuietUI())
+        val githubWriteRepo = GithubHttpWriteRepo(baseUrl + repoPath, githubBasicAuthToken, QuietUI())
         val githubReadRepo = GithubRepos(baseUrl + repoPath, QuietUI())
         val f = GithubPRFactory(githubReadRepo, githubWriteRepo, BranchSyntaxValidator(ConsoleUI()))
         f.create_pull_requests(candidate, pairingPartner)
