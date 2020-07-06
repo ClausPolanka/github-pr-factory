@@ -4,7 +4,6 @@ import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.Test
 import pullrequestfactory.domain.*
-import pullrequestfactory.io.ConsoleUI
 
 private const val invalidBranchName = "firstname_lastname_claus"
 private val candidate = Candidate("Firstname", "Lastname")
@@ -129,7 +128,7 @@ class GithubPRFactoryTest {
     private fun create_github_pr_factory(branches: List<Branch>): Pair<MutableList<PullRequest>, GithubPRFactory> {
         val pullRequests = mutableListOf<PullRequest>()
         val githubReadRepo = github_read_repo(branches, emptyList())
-        val sut = GithubPRFactory(githubReadRepo, github_write_repo(pullRequests, mutableListOf()), ConsoleUI())
+        val sut = GithubPRFactory(githubReadRepo, github_write_repo(pullRequests, mutableListOf()), BranchSyntaxValidator(QuietUI()))
         return Pair(pullRequests, sut)
     }
 
@@ -138,12 +137,15 @@ class GithubPRFactoryTest {
         val sut = GithubPRFactory(
                 github_read_repo(emptyList(), pullRequests),
                 github_write_repo(mutableListOf(), pullRequestNumbersToBeClosed),
-                ConsoleUI())
+                BranchSyntaxValidator(QuietUI()))
         return Pair(pullRequestNumbersToBeClosed, sut)
     }
 
     private fun create_github_pr_factory_for(branchName: String) =
-            GithubPRFactory(github_read_repo(listOf(Branch(branchName)), emptyList()), noop_github_write_repo(), ConsoleUI())
+            GithubPRFactory(
+                    github_read_repo(listOf(Branch(branchName)), emptyList()),
+                    noop_github_write_repo(),
+                    BranchSyntaxValidator(QuietUI()))
 
     private fun github_read_repo(branches: List<Branch>, pullRequests: List<GetPullRequest>): GithubReadRepo {
         return object : GithubReadRepo {

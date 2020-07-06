@@ -3,9 +3,7 @@ package pullrequestfactory.domain
 class GithubPRFactory(
         private val githubReadRepo: GithubReadRepo,
         private val githubWriteRepo: GithubWriteRepo,
-        ui: UI) {
-
-    private val branchSyntaxValidator = BranchSyntaxValidator(ui)
+        private val branchSyntaxValidator: BranchSyntaxValidator) {
 
     /**
      * @param pairingPartner A list of George backend chapter team member names which must be in the order in
