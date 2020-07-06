@@ -18,6 +18,17 @@ class ProgramsTest {
     }
 
     @Test
+    fun creates_program_which_shows_help_for_invalid_arguments() {
+        val sut = Programs()
+
+        val program = sut.create_program_for(arrayOf("foo", "bar", "baz"))
+
+        assertThat(program is ShowHelpOutputProgram)
+                .describedAs("program shows help output")
+                .isTrue()
+    }
+
+    @Test
     fun creates_program_which_shows_version() {
         val sut = Programs()
 

@@ -61,6 +61,18 @@ class MainKtTest {
     }
 
     @Test
+    fun shows_version_output() {
+        main(args = arrayOf("--version"))
+        assertThat(uiOutput.toString()).contains("github-pr-factory version $projectVersion")
+    }
+
+    @Test
+    fun shows_help_output() {
+        main(args = arrayOf("--help"))
+        assertThat(uiOutput.toString()).contains("Usage: github-pr-factory [OPTION] COMMAND")
+    }
+
+    @Test
     fun creates_pull_requests_for_the_given_program_arguments() {
         stubGetRequestsForGithubBranchesFromFiles()
 
