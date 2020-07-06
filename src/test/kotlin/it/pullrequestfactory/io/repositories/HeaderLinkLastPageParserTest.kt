@@ -1,8 +1,8 @@
-package it.pullrequestfactory.io
+package it.pullrequestfactory.io.repositories
 
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
-import pullrequestfactory.io.HeaderLinkLastPageParser
+import pullrequestfactory.io.repositories.HeaderLinkLastPageParser
 
 class HeaderLinkLastPageParserTest {
 

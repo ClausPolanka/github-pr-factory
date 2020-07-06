@@ -1,4 +1,4 @@
-package pullrequestfactory.io
+package pullrequestfactory.io.repositories
 
 import com.beust.klaxon.Klaxon
 import pullrequestfactory.domain.GithubWriteRepo

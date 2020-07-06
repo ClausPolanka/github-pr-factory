@@ -1,6 +1,6 @@
-package it.pullrequestfactory.io
+package it.pullrequestfactory.io.repositories
 
-import com.github.tomakehurst.wiremock.client.WireMock.*
+import com.github.tomakehurst.wiremock.client.WireMock
 import com.github.tomakehurst.wiremock.junit.WireMockRule
 import com.github.tomakehurst.wiremock.matching.RequestPatternBuilder
 import org.junit.After
@@ -9,7 +9,7 @@ import org.junit.Test
 import pullrequestfactory.domain.Branch
 import pullrequestfactory.domain.PullRequest
 import pullrequestfactory.domain.QuietUI
-import pullrequestfactory.io.GithubHttpWriteRepo
+import pullrequestfactory.io.repositories.GithubHttpWriteRepo
 
 class GithubHttpWriteRepoTest {
 
@@ -29,7 +29,7 @@ class GithubHttpWriteRepoTest {
 
     @After
     fun tearDown() {
-        reset()
+        WireMock.reset()
     }
 
     @Test
@@ -38,8 +38,8 @@ class GithubHttpWriteRepoTest {
 
         sut.create_pull_request(pullRequest)
 
-        verify(postRequestedFor(urlMatching(PULL_REQUEST_PATH))
-                .withRequestBody(matching(jsonFor(pullRequest)))
+        WireMock.verify(WireMock.postRequestedFor(WireMock.urlMatching(PULL_REQUEST_PATH))
+                .withRequestBody(WireMock.matching(jsonFor(pullRequest)))
                 .addCommonHeaders())
     }
 
@@ -49,8 +49,8 @@ class GithubHttpWriteRepoTest {
 
         sut.close_pull_request(number = 1)
 
-        verify(patchRequestedFor(urlMatching("$PULL_REQUEST_PATH/1"))
-                .withRequestBody(matching(Regex.escape("""{"state" : "closed"}""")))
+        WireMock.verify(WireMock.patchRequestedFor(WireMock.urlMatching("$PULL_REQUEST_PATH/1"))
+                .withRequestBody(WireMock.matching(Regex.escape("""{"state" : "closed"}""")))
                 .addCommonHeaders())
     }
 
@@ -62,11 +62,10 @@ class GithubHttpWriteRepoTest {
     private fun jsonFor(pr: PullRequest) =
             Regex.escape("""{"base" : "${pr.base}", "head" : "${pr.head}", "title" : "${pr.title}"}""")
 
-}
-
-private fun RequestPatternBuilder.addCommonHeaders(): RequestPatternBuilder? {
-    return this
-            .withHeader("Accept", matching("application/json"))
-            .withHeader("Authorization", matching("Basic .*"))
-            .withHeader("Content-Type", matching("application/json"))
+    private fun RequestPatternBuilder.addCommonHeaders(): RequestPatternBuilder? {
+        return this
+                .withHeader("Accept", WireMock.matching("application/json"))
+                .withHeader("Authorization", WireMock.matching("Basic .*"))
+                .withHeader("Content-Type", WireMock.matching("application/json"))
+    }
 }

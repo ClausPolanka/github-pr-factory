@@ -1,6 +1,7 @@
-package pullrequestfactory.io
+package pullrequestfactory.io.programs
 
 import pullrequestfactory.domain.Program
+import pullrequestfactory.io.Properties
 
 class ShowVersionOutputProgram : Program {
 

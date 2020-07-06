@@ -1,8 +1,8 @@
 package pullrequestfactory.io.factories
 
 import pullrequestfactory.domain.*
-import pullrequestfactory.io.GithubHttpBranchesRepo
-import pullrequestfactory.io.GithubHttpPullRequestsRepo
+import pullrequestfactory.io.repositories.GithubHttpBranchesRepo
+import pullrequestfactory.io.repositories.GithubHttpPullRequestsRepo
 
 class GithubRepos(private val repoUrl: String, private val ui: UI) : GithubReadRepo {
 

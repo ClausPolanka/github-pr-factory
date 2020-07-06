@@ -1,8 +1,9 @@
-package ut.pullrequestfactory.io
+package it.pullrequestfactory.io.factories
 
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
-import pullrequestfactory.io.*
+import pullrequestfactory.io.factories.Programs
+import pullrequestfactory.io.programs.*
 
 class ProgramsTest {
 

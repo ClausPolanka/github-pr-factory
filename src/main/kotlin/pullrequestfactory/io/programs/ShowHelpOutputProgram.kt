@@ -1,4 +1,4 @@
-package pullrequestfactory.io
+package pullrequestfactory.io.programs
 
 import pullrequestfactory.domain.Program
 

@@ -1,6 +1,8 @@
-package pullrequestfactory.io
+package pullrequestfactory.io.factories
 
 import pullrequestfactory.domain.Program
+import pullrequestfactory.io.ProgramArgs
+import pullrequestfactory.io.programs.*
 
 class Programs {
 
