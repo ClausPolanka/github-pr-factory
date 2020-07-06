@@ -26,6 +26,7 @@ private const val pairingPartner = "claus-berni-dominik-christian-shubi-markus-m
 private const val propsFileName = "app.properties"
 private const val propsFilePath = "target/test-classes/$propsFileName"
 private const val wireMockDefaultUrl = "http://localhost:8080"
+private const val repoPath = "/repos/ClausPolanka/wordcount"
 private const val linkHeader = "<https://api.github.com/repositories/157517927/branches?page=2>; rel=\"next\", <https://api.github.com/repositories/157517927/branches?page=9>; rel=\"last\""
 private const val pullRequestPath = "/repos/ClausPolanka/wordcount/pulls"
 private const val pullRequestLinkHeaderPage1 = "<https://api.github.com/repositories/157517927/pulls?page=2>; rel=\"next\", <https://api.github.com/repositories/157517927/pulls?page=2>; rel=\"last\""
@@ -48,6 +49,7 @@ class MainKtTest {
     fun setUp() {
         createPropertyFileWith(props = listOf(
                 "baseUrl=$wireMockDefaultUrl",
+                "repoPath=$repoPath",
                 "projectVersion=$projectVersion"))
         System.setOut(PrintStream(uiOutput))
     }
