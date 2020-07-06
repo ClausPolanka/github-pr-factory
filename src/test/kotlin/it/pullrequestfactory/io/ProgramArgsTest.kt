@@ -6,10 +6,11 @@ import org.junit.Test
 import pullrequestfactory.domain.Candidate
 import pullrequestfactory.io.ProgramArgs
 
-private const val githubBasicAuthToken = "asdfkk3282kas8ölash8"
-private const val pairingPartner = "claus-berni-dominik-andrej-shubi-tibor-nandor"
 
 class ProgramArgsTest {
+
+    private val GITHUB_BASIC_AUTH_TOKEN = "asdfkk3282kas8ölash8"
+    private val PAIRING_PARTNER = "claus-berni-dominik-andrej-shubi-tibor-nandor"
 
     @Test
     fun has_help_option_for_empty_args() {
@@ -162,9 +163,9 @@ class ProgramArgsTest {
                 "-c",
                 "firstname-lastname",
                 "-g",
-                githubBasicAuthToken,
+                GITHUB_BASIC_AUTH_TOKEN,
                 "-p",
-                pairingPartner))
+                PAIRING_PARTNER))
 
         val hasInvalidOpenCommand = sut.has_invalid_open_command()
 
@@ -178,9 +179,9 @@ class ProgramArgsTest {
                 "-c",
                 "firstnamelastname",
                 "-g",
-                githubBasicAuthToken,
+                GITHUB_BASIC_AUTH_TOKEN,
                 "-p",
-                pairingPartner))
+                PAIRING_PARTNER))
 
         val hasInvalidOpenCommand = sut.has_invalid_open_command()
 
@@ -194,9 +195,9 @@ class ProgramArgsTest {
                 "-c",
                 "firstname-lastname",
                 "-x",
-                githubBasicAuthToken,
+                GITHUB_BASIC_AUTH_TOKEN,
                 "-p",
-                pairingPartner))
+                PAIRING_PARTNER))
 
         val hasInvalidOpenCommand = sut.has_invalid_open_command()
 
@@ -210,9 +211,9 @@ class ProgramArgsTest {
                 "-c",
                 "firstname-lastname",
                 "-g",
-                githubBasicAuthToken,
+                GITHUB_BASIC_AUTH_TOKEN,
                 "-x",
-                pairingPartner))
+                PAIRING_PARTNER))
 
         val hasInvalidOpenCommand = sut.has_invalid_open_command()
 
@@ -226,7 +227,7 @@ class ProgramArgsTest {
                 "-c",
                 "firstname-lastname",
                 "-g",
-                githubBasicAuthToken))
+                GITHUB_BASIC_AUTH_TOKEN))
 
         val hasInvalidCloseCommand = sut.has_invalid_close_command()
 
@@ -240,7 +241,7 @@ class ProgramArgsTest {
                 "-c",
                 "firstname-lastname",
                 "-g",
-                githubBasicAuthToken,
+                GITHUB_BASIC_AUTH_TOKEN,
                 "-x"))
 
         val hasInvalidCloseCommand = sut.has_invalid_close_command()
@@ -255,7 +256,7 @@ class ProgramArgsTest {
                 "-c",
                 "firstnamelastname",
                 "-g",
-                githubBasicAuthToken))
+                GITHUB_BASIC_AUTH_TOKEN))
 
         val hasInvalidCloseCommand = sut.has_invalid_close_command()
 
@@ -269,7 +270,7 @@ class ProgramArgsTest {
                 "-c",
                 "firstname-lastname",
                 "-x",
-                githubBasicAuthToken))
+                GITHUB_BASIC_AUTH_TOKEN))
 
         val hasInvalidCloseCommand = sut.has_invalid_close_command()
 
@@ -282,7 +283,7 @@ class ProgramArgsTest {
                 "-c",
                 "firstname-lastname",
                 "-g",
-                githubBasicAuthToken))
+                GITHUB_BASIC_AUTH_TOKEN))
 
         val hasInvalidCloseCommand = sut.has_invalid_close_command()
 
@@ -328,16 +329,16 @@ class ProgramArgsTest {
 
     @Test
     fun gets_github_basic_auth_token_for_correct_github_basic_auth_arguments() {
-        val sut = ProgramArgs(arrayOf("-g", githubBasicAuthToken))
+        val sut = ProgramArgs(arrayOf("-g", GITHUB_BASIC_AUTH_TOKEN))
 
         val token = sut.get_github_basic_auth_token()
 
-        assertThat(token).isEqualTo(githubBasicAuthToken)
+        assertThat(token).isEqualTo(GITHUB_BASIC_AUTH_TOKEN)
     }
 
     @Test
     fun throws_when_github_basic_auth_token_arguments_are_missing_the_github_basic_auth_token_option() {
-        val sut = ProgramArgs(arrayOf("-x", githubBasicAuthToken))
+        val sut = ProgramArgs(arrayOf("-x", GITHUB_BASIC_AUTH_TOKEN))
 
         assertThatThrownBy { sut.get_github_basic_auth_token() }
     }
@@ -351,7 +352,7 @@ class ProgramArgsTest {
 
     @Test
     fun throws_when_github_basic_auth_token_arguments_are_in_wrong_order() {
-        val sut = ProgramArgs(arrayOf(githubBasicAuthToken, "-g"))
+        val sut = ProgramArgs(arrayOf(GITHUB_BASIC_AUTH_TOKEN, "-g"))
 
         assertThatThrownBy { sut.get_github_basic_auth_token() }
     }
@@ -367,7 +368,7 @@ class ProgramArgsTest {
 
     @Test
     fun throws_when_pairing_partner_arguments_are_missing_the_pairing_partner_option() {
-        val sut = ProgramArgs(arrayOf("-x", pairingPartner))
+        val sut = ProgramArgs(arrayOf("-x", PAIRING_PARTNER))
 
         assertThatThrownBy { sut.get_pairing_partner() }
     }
@@ -381,7 +382,7 @@ class ProgramArgsTest {
 
     @Test
     fun throws_when_pairing_partner_arguments_are_wrong_order() {
-        val sut = ProgramArgs(arrayOf(pairingPartner, "-p"))
+        val sut = ProgramArgs(arrayOf(PAIRING_PARTNER, "-p"))
 
         assertThatThrownBy { sut.get_pairing_partner() }
     }
@@ -402,7 +403,7 @@ class ProgramArgsTest {
 
     @Test
     fun throws_when_number_of_pairing_partneris_too_high() {
-        val sut = ProgramArgs(arrayOf("-p", "$pairingPartner-mihai"))
+        val sut = ProgramArgs(arrayOf("-p", "$PAIRING_PARTNER-mihai"))
 
         assertThatThrownBy { sut.get_pairing_partner() }
     }

@@ -5,11 +5,11 @@ import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.Test
 import pullrequestfactory.domain.*
 
-private const val invalidBranchName = "firstname_lastname_claus"
-private val candidate = Candidate("Firstname", "Lastname")
-private val pairingpartner = listOf("Pairingpartner")
-
 class GithubPRFactoryTest {
+
+    private val INVALID_BRANCH_NAME = "firstname_lastname_claus"
+    private val candidate = Candidate("Firstname", "Lastname")
+    private val pairingpartner = listOf("Pairingpartner")
 
     @Test
     fun creates_two_pull_requests_for_different_iterations_and_pairing_partner() {
@@ -79,11 +79,11 @@ class GithubPRFactoryTest {
 
     @Test
     fun branch_can_not_be_processed_if_branch_name_has_invalid_name() {
-        val sut = create_github_pr_factory_for(invalidBranchName)
+        val sut = create_github_pr_factory_for(INVALID_BRANCH_NAME)
 
         assertThatThrownBy { sut.create_pull_requests(candidate, pairingpartner) }
                 .hasMessageContaining("invalid name")
-                .hasMessageContaining(invalidBranchName)
+                .hasMessageContaining(INVALID_BRANCH_NAME)
     }
 
     @Test
