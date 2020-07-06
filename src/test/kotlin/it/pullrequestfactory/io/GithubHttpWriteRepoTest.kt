@@ -16,8 +16,6 @@ class GithubHttpWriteRepoTest {
     private val REPO_PATH = "/repos/ClausPolanka/repository-name"
     private val WIRE_MOCK_DEFAULT_URL = "http://localhost:8080"
     private val PULL_REQUEST_PATH = "$REPO_PATH/pulls"
-    private val ANY_SHA = "4861382d8bd73481b98f72706cb57dc493de592b"
-    private val ANY_URL = "https://api.github.com/repos/ClausPolanka/wordcount/commits/4861382d8bd73481b98f72706cb57dc493de592b"
     private val pullRequest = PullRequest(
             _title = "Radek Leifer Iteration 1 / Session 1 Claus",
             _base = Branch("master"),
