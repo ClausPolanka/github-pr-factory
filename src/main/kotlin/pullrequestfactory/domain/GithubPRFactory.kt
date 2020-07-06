@@ -11,7 +11,7 @@ class GithubPRFactory(
      * branches unsorted. The names in the list must be the same (case insensitve) as the ones which are at the end of
      * each branch.
      */
-    fun create_pull_requests(candidate: Candidate, pairingPartner: List<String>) {
+    fun open_pull_requests(candidate: Candidate, pairingPartner: List<String>) {
         val branches = get_branches_for(candidate)
         val sortedBranches = BranchSorter().sort_branches_by_pairing_partner(branches, pairingPartner)
         val pullRequests = PullRequests().create_pull_requests_for(sortedBranches)

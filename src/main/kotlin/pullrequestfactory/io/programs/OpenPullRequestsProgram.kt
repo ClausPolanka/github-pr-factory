@@ -23,7 +23,7 @@ class OpenPullRequestsProgram(private val programArgs: ProgramArgs) : Program {
         val githubWriteRepo = GithubHttpWriteRepo(baseUrl + repoPath, githubBasicAuthToken, QuietUI())
         val githubReadRepo = GithubRepos(baseUrl + repoPath, QuietUI())
         val f = GithubPRFactory(githubReadRepo, githubWriteRepo, BranchSyntaxValidator(ConsoleUI()))
-        f.create_pull_requests(candidate, pairingPartner)
+        f.open_pull_requests(candidate, pairingPartner)
     }
 
 }

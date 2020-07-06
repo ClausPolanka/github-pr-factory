@@ -12,12 +12,12 @@ class GithubPRFactoryTest {
     private val pairingpartner = listOf("Pairingpartner")
 
     @Test
-    fun creates_two_pull_requests_for_different_iterations_and_pairing_partner() {
+    fun opens_two_pull_requests_for_different_iterations_and_pairing_partner() {
         val (pullRequests, sut) = create_github_pr_factory(listOf(
                 Branch("firstname_lastname_iteration_1_pairingpartner1"),
                 Branch("firstname_lastname_iteration_2_pairingpartner2")))
 
-        sut.create_pull_requests(Candidate("Firstname", "Lastname"), listOf("Pairingpartner1", "Pairingpartner2"))
+        sut.open_pull_requests(Candidate("Firstname", "Lastname"), listOf("Pairingpartner1", "Pairingpartner2"))
 
         assertThat(pullRequests).containsExactly(
                 PullRequest(
@@ -31,11 +31,11 @@ class GithubPRFactoryTest {
     }
 
     @Test
-    fun creates_pull_request_and_ignores_if_candidates_first_name_is_capitalized() {
+    fun opens_pull_request_and_ignores_if_candidates_first_name_is_capitalized() {
         val (pullRequests, sut) = create_github_pr_factory(listOf(
                 Branch("firstname_lastname_iteration_1_pairingpartner")))
 
-        sut.create_pull_requests(Candidate(firstName = "Firstname", lastName = "lastname"), listOf("Pairingpartner"))
+        sut.open_pull_requests(Candidate(firstName = "Firstname", lastName = "lastname"), listOf("Pairingpartner"))
 
         assertThat(pullRequests).containsExactly(PullRequest(
                 _title = "Firstname Lastname Iteration 1 / Session 1 Pairingpartner",
@@ -44,11 +44,11 @@ class GithubPRFactoryTest {
     }
 
     @Test
-    fun creates_pull_request_and_ignores_if_candidates_last_name_is_capitalized() {
+    fun opens_pull_request_and_ignores_if_candidates_last_name_is_capitalized() {
         val (pullRequests, sut) = create_github_pr_factory(listOf(
                 Branch("firstname_lastname_iteration_1_pairingpartner")))
 
-        sut.create_pull_requests(Candidate("firstname", "Lastname"), listOf("Pairingpartner"))
+        sut.open_pull_requests(Candidate("firstname", "Lastname"), listOf("Pairingpartner"))
 
         assertThat(pullRequests).containsExactly(PullRequest(
                 _title = "Firstname Lastname Iteration 1 / Session 1 Pairingpartner",
@@ -57,22 +57,21 @@ class GithubPRFactoryTest {
     }
 
     @Test
-    fun creates_no_pull_requests_for_candidate_when_no_branch_exists_containing_candidates_first_name() {
+    fun opens_no_pull_requests_for_candidate_when_no_branch_exists_containing_candidates_first_name() {
         val (pullRequests, sut) = create_github_pr_factory(listOf(
                 Branch("firstname1_lastname_iteration_1_pairingpartner")))
 
-        sut.create_pull_requests(Candidate("firstname2", "Lastname"), listOf("Pairingpartner"))
+        sut.open_pull_requests(Candidate("firstname2", "Lastname"), listOf("Pairingpartner"))
 
         assertThat(pullRequests).isEmpty()
     }
 
-
     @Test
-    fun creates_no_pull_requests_for_candidate_when_no_branch_exists_containing_candidates_last_name() {
+    fun opens_no_pull_requests_for_candidate_when_no_branch_exists_containing_candidates_last_name() {
         val (pullRequests, sut) = create_github_pr_factory(listOf(
                 Branch("firstname_lastname1_iteration_1_pairingpartner")))
 
-        sut.create_pull_requests(Candidate("Firstname", "lastname2"), listOf("Pairingpartner"))
+        sut.open_pull_requests(Candidate("Firstname", "lastname2"), listOf("Pairingpartner"))
 
         assertThat(pullRequests).isEmpty()
     }
@@ -81,7 +80,7 @@ class GithubPRFactoryTest {
     fun branch_can_not_be_processed_if_branch_name_has_invalid_name() {
         val sut = create_github_pr_factory_for(INVALID_BRANCH_NAME)
 
-        assertThatThrownBy { sut.create_pull_requests(candidate, pairingpartner) }
+        assertThatThrownBy { sut.open_pull_requests(candidate, pairingpartner) }
                 .hasMessageContaining("invalid name")
                 .hasMessageContaining(INVALID_BRANCH_NAME)
     }
