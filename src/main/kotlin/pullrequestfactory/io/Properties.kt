@@ -9,7 +9,7 @@ class Properties(fileName: String) {
         props.load(this::class.java.classLoader.getResourceAsStream(fileName))
     }
 
-    fun get_base_url() = props.getProperty("baseUrl", defaultUrl)
+    fun get_github_base_url() = props.getProperty("baseUrl", defaultUrl)
 
     fun get_project_version() = props.getProperty("projectVersion", defaultUrl)
 

@@ -21,7 +21,7 @@ class PropertiesTest {
         val fileName = createPropsWith("baseUrl=http://localhost:8080")
         val sut = Properties(fileName)
 
-        val baseUrl = sut.get_base_url()
+        val baseUrl = sut.get_github_base_url()
 
         assertThat(baseUrl).isEqualTo("http://localhost:8080")
     }
@@ -41,7 +41,7 @@ class PropertiesTest {
         val fileName = createPropsWith("x=y")
         val sut = Properties(fileName)
 
-        val baseUrl = sut.get_base_url()
+        val baseUrl = sut.get_github_base_url()
 
         assertThat(baseUrl).isEqualTo("http://localhost")
     }
