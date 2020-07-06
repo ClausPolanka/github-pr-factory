@@ -2,7 +2,6 @@ package pullrequestfactory.io.programs.impl
 
 import pullrequestfactory.domain.GithubPRFactory
 import pullrequestfactory.domain.branches.BranchSyntaxValidator
-import pullrequestfactory.domain.uis.QuietUI
 import pullrequestfactory.io.programs.Program
 import pullrequestfactory.io.programs.ProgramArgs
 import pullrequestfactory.io.repositories.GithubHttpBranchesRepos
@@ -18,9 +17,10 @@ class ClosePullRequestsProgram(private val programArgs: ProgramArgs) : Program {
         val githubBasicAuthToken = programArgs.get_github_basic_auth_token()
         val baseUrl = properties.get_github_base_url()
         val repoPath = properties.get_github_repository_path()
-        val githubBranchesRepo = GithubHttpBranchesRepos(baseUrl + repoPath, QuietUI())
-        val githubPullRequestsRepo = GithubHttpPullRequestsRepo(baseUrl + repoPath, githubBasicAuthToken, QuietUI())
-        val f = GithubPRFactory(githubBranchesRepo, githubPullRequestsRepo, BranchSyntaxValidator(ConsoleUI()))
+        val ui = ConsoleUI()
+        val githubBranchesRepo = GithubHttpBranchesRepos(baseUrl + repoPath, ui)
+        val githubPullRequestsRepo = GithubHttpPullRequestsRepo(baseUrl + repoPath, githubBasicAuthToken, ui)
+        val f = GithubPRFactory(githubBranchesRepo, githubPullRequestsRepo, BranchSyntaxValidator(ui))
         f.close_pull_requests_for(candidate)
     }
 
