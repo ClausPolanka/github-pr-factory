@@ -4,7 +4,7 @@ import pullrequestfactory.domain.Program
 
 class Programs {
 
-    fun create_program(args: Array<String>): Program {
+    fun create_program_for(args: Array<String>): Program {
         val pa = ProgramArgs(args)
         if (pa.has_help_option()) {
             return ShowHelpOutputProgram()
