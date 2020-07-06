@@ -1,12 +1,12 @@
 package pullrequestfactory.io.programs
 
 import pullrequestfactory.domain.Program
-import pullrequestfactory.io.Properties
+import pullrequestfactory.io.FileProperties
 
 class ShowVersionOutputProgram : Program {
 
     override fun execute() {
-        val projectVersion = Properties("app.properties").get_project_version()
+        val projectVersion = FileProperties("app.properties").get_project_version()
         println("github-pr-factory version $projectVersion")
     }
 

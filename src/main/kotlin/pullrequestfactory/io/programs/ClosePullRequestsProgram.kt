@@ -5,14 +5,14 @@ import pullrequestfactory.domain.GithubPRFactory
 import pullrequestfactory.domain.Program
 import pullrequestfactory.domain.QuietUI
 import pullrequestfactory.io.ConsoleUI
+import pullrequestfactory.io.FileProperties
 import pullrequestfactory.io.ProgramArgs
-import pullrequestfactory.io.Properties
 import pullrequestfactory.io.factories.GithubRepos
 import pullrequestfactory.io.repositories.GithubHttpWriteRepo
 
 class ClosePullRequestsProgram(private val programArgs: ProgramArgs) : Program {
 
-    private val properties = Properties("app.properties")
+    private val properties = FileProperties("app.properties")
 
     override fun execute() {
         val candidate = programArgs.get_candidate()
