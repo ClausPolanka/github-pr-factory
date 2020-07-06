@@ -11,8 +11,10 @@ class GithubHttpRepo(
         private val cacheRepo: CacheRepo,
         private val ui: UI) : GithubReadRepo, GithubWriteRepo {
 
+    private val repoUrl = "$baseUrl$repoName"
+
     override fun get_all_branches(): List<Branch> {
-        val response = khttp.get("$baseUrl/repos/ClausPolanka/$repoName/branches?page=1")
+        val response = khttp.get("$repoUrl/branches?page=1")
         if (response.statusCode == 403) {
             ui.show("Too many requests to Github within time limit")
             return emptyList()
@@ -26,7 +28,7 @@ class GithubHttpRepo(
         val allBranches = mutableListOf<List<Branch>>()
         allBranches.add(Klaxon().parseArray(response.text)!!)
         (2..lastPage.toInt()).forEach {
-            val json = khttp.get("$baseUrl/repos/ClausPolanka/$repoName/branches?page=$it").text
+            val json = khttp.get("$baseUrl$repoName/branches?page=$it").text
             cacheRepo.cache(response.text, pageNr = it)
             allBranches.add(Klaxon().parseArray(json)!!)
         }
@@ -36,7 +38,7 @@ class GithubHttpRepo(
     override fun create_pull_request(pullRequest: PullRequest) {
         ui.show("Create pull request on Github: $pullRequest")
         val response = khttp.post(
-                url = "$baseUrl/repos/ClausPolanka/$repoName/pulls",
+                url = "$baseUrl$repoName/pulls",
                 headers = mapOf(
                         "Accept" to "application/json",
                         "Authorization" to "Basic $basicAuthToken",
@@ -47,7 +49,7 @@ class GithubHttpRepo(
 
     override fun get_all_open_pull_requests(): List<GetPullRequest> {
         ui.show("Get all open pull requests...")
-        val response = khttp.get("$baseUrl/repos/ClausPolanka/$repoName/pulls?page=1")
+        val response = khttp.get("$baseUrl$repoName/pulls?page=1")
         if (response.statusCode == 403) {
             ui.show("Too many requests to Github within time limit")
             return emptyList()
@@ -64,7 +66,7 @@ class GithubHttpRepo(
         allPullRequests.add(Klaxon().parseArray(response.text)!!)
         ui.show("\tPage 1 open pull requests: '$allPullRequests'")
         (2..lastPage.toInt()).forEach {
-            val json = khttp.get("$baseUrl/repos/ClausPolanka/$repoName/pulls?page=$it").text
+            val json = khttp.get("$baseUrl$repoName/pulls?page=$it").text
             cacheRepo.cache(response.text, pageNr = it)
             allPullRequests.add(Klaxon().parseArray(json)!!)
         }
@@ -74,7 +76,7 @@ class GithubHttpRepo(
     override fun close_pull_request(number: Int) {
         ui.show("Close pull request with number: '$number'")
         val response = khttp.patch(
-                url = "$baseUrl/repos/ClausPolanka/$repoName/pulls/$number",
+                url = "$baseUrl$repoName/pulls/$number",
                 headers = mapOf(
                         "Accept" to "application/json",
                         "Authorization" to "Basic $basicAuthToken",

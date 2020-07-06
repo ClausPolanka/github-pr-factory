@@ -4,6 +4,8 @@ import pullrequestfactory.domain.GithubPRFactory
 import pullrequestfactory.domain.NoopCache
 import pullrequestfactory.domain.Program
 
+private const val repoPath = "/repos/ClausPolanka/wordcount"
+
 class ClosePullRequestsProgram(private val programArgs: ProgramArgs) : Program {
 
     override fun execute() {
@@ -13,7 +15,7 @@ class ClosePullRequestsProgram(private val programArgs: ProgramArgs) : Program {
         val baseUrl = Properties("app.properties").get_base_url()
         val githubRepo = GithubHttpRepo(
                 baseUrl,
-                "wordcount",
+                repoPath,
                 githubBasicAuthToken,
                 NoopCache(),
                 ui)

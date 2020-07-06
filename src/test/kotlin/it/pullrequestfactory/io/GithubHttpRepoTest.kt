@@ -12,16 +12,16 @@ import org.junit.Test
 import pullrequestfactory.domain.*
 import pullrequestfactory.io.GithubHttpRepo
 
-private const val repoName = "repository-name"
+private const val repoPath = "/repos/ClausPolanka/repository-name"
 private const val wireMockDefaultUrl = "http://localhost:8080"
 private const val linkHeaderForPage1 = "<https://api.github.com/repositories/157517927/branches?page=2>; rel=\"next\", <https://api.github.com/repositories/157517927/branches?page=2>; rel=\"last\""
 private const val linkHeaderPullRequestsPage1 = "<https://api.github.com/repositories/157517927/pulls?page=2>; rel=\"next\", <https://api.github.com/repositories/157517927/pulls?page=2>; rel=\"last\""
 private const val linkHeaderPullRequestsPage2 = "<https://api.github.com/repositories/157517927/pulls?page=1>; rel=\"prev\", <https://api.github.com/repositories/157517927/pulls?page=1>; rel=\"first\""
 private const val contentTypeHeader = "application/json; charset=utf-8"
-private const val pullRequestPath = "/repos/ClausPolanka/$repoName/pulls"
+private const val pullRequestPath = "$repoPath/pulls"
 private const val pullRequestPathPage1 = "$pullRequestPath?page=1"
-private const val branchRequestPathPage1 = "/repos/ClausPolanka/$repoName/branches?page=1"
-private const val branchRequestPathPage2 = "/repos/ClausPolanka/$repoName/branches?page=2"
+private const val branchRequestPathPage1 = "$repoPath/branches?page=1"
+private const val branchRequestPathPage2 = "$repoPath/branches?page=2"
 private const val anySha = "4861382d8bd73481b98f72706cb57dc493de592b"
 private const val anyUrl = "https://api.github.com/repos/ClausPolanka/wordcount/commits/4861382d8bd73481b98f72706cb57dc493de592b"
 private val branch = Branch("first_name_iteration_1_claus")
@@ -140,7 +140,7 @@ class GithubHttpRepoTest {
 
     private fun createGithubHttpRepo(): GithubHttpRepo = GithubHttpRepo(
             wireMockDefaultUrl,
-            repoName,
+            repoPath,
             "basic-auth-token",
             NoopCache(),
             QuietUI())

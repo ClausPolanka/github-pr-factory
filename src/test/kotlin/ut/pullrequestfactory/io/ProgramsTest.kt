@@ -74,7 +74,7 @@ class ProgramsTest {
                 "-p",
                 "claus-dominik-mihai-christian-berni-markus-shubi"))
 
-        assertThat(program is CreatePullRequestsProgram)
+        assertThat(program is OpenPullRequestsProgram)
                 .describedAs("program opens pull requests")
                 .isTrue()
     }

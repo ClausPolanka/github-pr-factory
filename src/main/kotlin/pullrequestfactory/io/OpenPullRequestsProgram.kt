@@ -4,7 +4,9 @@ import pullrequestfactory.domain.GithubPRFactory
 import pullrequestfactory.domain.NoopCache
 import pullrequestfactory.domain.Program
 
-class CreatePullRequestsProgram(private val programArgs: ProgramArgs) : Program {
+private const val repoPath = "/repos/ClausPolanka/wordcount"
+
+class OpenPullRequestsProgram(private val programArgs: ProgramArgs) : Program {
 
     override fun execute() {
         val candidate = programArgs.get_candidate()
@@ -14,7 +16,7 @@ class CreatePullRequestsProgram(private val programArgs: ProgramArgs) : Program 
         val baseUrl = Properties("app.properties").get_base_url()
         val githubRepo = GithubHttpRepo(
                 baseUrl,
-                "wordcount",
+                repoPath,
                 githubBasicAuthToken,
                 NoopCache(),
                 ui)
