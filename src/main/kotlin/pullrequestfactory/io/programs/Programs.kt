@@ -18,6 +18,9 @@ class Programs {
         if (pa.has_invalid_open_command()) {
             return ShowInvalidOpenCommandOutputProgram()
         }
+        if (pa.has_open_command_with_optional_options()) {
+            return OpenPullRequestsProgram(pa)
+        }
         if (pa.has_open_command()) {
             return OpenPullRequestsProgram(pa)
         }

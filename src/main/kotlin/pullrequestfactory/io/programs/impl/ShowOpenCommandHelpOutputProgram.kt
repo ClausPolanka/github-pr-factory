@@ -17,6 +17,8 @@ class ShowOpenCommandHelpOutputProgram : Program {
         println("    \t\t  claus, berni, bernhard, nandor, dominik, mihai, lampe, shubi")
         println("    \t\t  markus, tibor, christian, michal, tomas, peter, martin, john, andrej")
         println("")
+        println("  -l, --last-finished\t\tMarks last iteration pull request with '[PR]' as finished")
+        println("")
         println("Example:")
         println("  github-pr-factory open -c firstname-lastname \\")
         println("    -g 10238sadf08klasjdf098 \\")

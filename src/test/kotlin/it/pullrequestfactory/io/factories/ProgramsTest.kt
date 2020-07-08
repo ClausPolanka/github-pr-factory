@@ -58,7 +58,7 @@ class ProgramsTest {
         val program = sut.create_program_for(arrayOf("open"))
 
         assertThat(program is ShowInvalidOpenCommandOutputProgram)
-                .describedAs("program shows help for open command")
+                .describedAs("program shows help for open command but was: '${program::class.simpleName}'")
                 .isTrue()
     }
 
