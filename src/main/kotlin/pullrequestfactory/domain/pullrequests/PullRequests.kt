@@ -16,9 +16,8 @@ class PullRequests {
     }
 
     private fun mark_pull_request_titles(pullRequests: List<PullRequest>): List<PullRequest> {
-        pullRequests.forEachIndexed { idx, pr ->
-            if (idx > 0)
-                pullRequests[idx - 1].mark_title(pr)
+        for (prIdx in 1 until pullRequests.size) {
+            pullRequests[prIdx - 1].mark_title(pullRequests[prIdx])
         }
         return pullRequests
     }
