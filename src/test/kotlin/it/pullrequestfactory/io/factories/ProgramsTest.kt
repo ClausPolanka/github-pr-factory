@@ -82,6 +82,25 @@ class ProgramsTest {
     }
 
     @Test
+    fun creates_program_which_opens_pull_requests_and_marks_last_pull_request_as_finished() {
+        val sut = Programs()
+
+        val program = sut.create_program_for(arrayOf(
+                "open",
+                "-l",
+                "-c",
+                "firstname-lastname",
+                "-g",
+                "askdasaeu129",
+                "-p",
+                "claus-dominik-mihai-christian-berni-markus-shubi"))
+
+        assertThat(program is OpenPullRequestsProgramWithOptionalOptions)
+                .describedAs("program opens pull requests with optinal options ${actual_program(program)}")
+                .isTrue()
+    }
+
+    @Test
     fun creates_program_which_shows_help_for_close_command() {
         val sut = Programs()
 
