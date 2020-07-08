@@ -10,7 +10,8 @@ import pullrequestfactory.domain.pullrequests.PullRequests
 class GithubPRFactory(
         private val githubBranchesRepo: GithubBranchesRepo,
         private val githubPullRequestsRepo: GithubPullRequestsRepo,
-        private val branchSyntaxValidator: BranchSyntaxValidator) {
+        private val branchSyntaxValidator: BranchSyntaxValidator,
+        private val pullRequests: PullRequests) {
 
     /**
      * @param pairingPartner A list of George backend chapter team member names which must be in the order in
@@ -21,7 +22,7 @@ class GithubPRFactory(
     fun open_pull_requests(candidate: Candidate, pairingPartner: List<String>) {
         val branches = get_branches_for(candidate)
         val sortedBranches = BranchSorter().sort_branches_by_pairing_partner(branches, pairingPartner)
-        val pullRequests = PullRequests().create_pull_requests_for(sortedBranches)
+        val pullRequests = pullRequests.create_pull_requests_for(sortedBranches)
         pullRequests.forEach { githubPullRequestsRepo.open_pull_request(it) }
     }
 

@@ -136,7 +136,8 @@ class GithubPRFactoryTest {
         val sut = GithubPRFactory(
                 githubBranchesRepo,
                 github_pull_requests_repo(github_write_repo(pullRequests)),
-                BranchSyntaxValidator(QuietUI()))
+                BranchSyntaxValidator(QuietUI()),
+                PullRequests())
         return Pair(pullRequests, sut)
     }
 
@@ -147,7 +148,8 @@ class GithubPRFactoryTest {
                 github_pull_requests_repo(
                         github_write_repo(mutableListOf(), pullRequestNumbersToBeClosed),
                         pullRequests.toMutableList()),
-                BranchSyntaxValidator(QuietUI()))
+                BranchSyntaxValidator(QuietUI()),
+                PullRequests())
         return Pair(pullRequestNumbersToBeClosed, sut)
     }
 
@@ -155,7 +157,8 @@ class GithubPRFactoryTest {
             GithubPRFactory(
                     github_branches_repo(listOf(Branch(branchName))),
                     github_pull_requests_repo(noop_github_write_repo()),
-                    BranchSyntaxValidator(QuietUI()))
+                    BranchSyntaxValidator(QuietUI()),
+                    PullRequests())
 
     private fun github_branches_repo(branches: List<Branch>): GithubBranchesRepo {
         return object : GithubBranchesRepo {

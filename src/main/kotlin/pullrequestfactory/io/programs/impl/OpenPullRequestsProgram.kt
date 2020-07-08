@@ -2,6 +2,7 @@ package pullrequestfactory.io.programs.impl
 
 import pullrequestfactory.domain.GithubPRFactory
 import pullrequestfactory.domain.branches.BranchSyntaxValidator
+import pullrequestfactory.domain.pullrequests.PullRequests
 import pullrequestfactory.io.programs.Program
 import pullrequestfactory.io.programs.ProgramArgs
 import pullrequestfactory.io.repositories.GithubHttpBranchesRepos
@@ -21,7 +22,7 @@ class OpenPullRequestsProgram(private val programArgs: ProgramArgs) : Program {
         val ui = ConsoleUI()
         val githubBranchesRepo = GithubHttpBranchesRepos(baseUrl + repoPath, ui)
         val githubPullRequestsRepo = GithubHttpPullRequestsRepo(baseUrl + repoPath, githubBasicAuthToken, ui)
-        val f = GithubPRFactory(githubBranchesRepo, githubPullRequestsRepo, BranchSyntaxValidator(ui))
+        val f = GithubPRFactory(githubBranchesRepo, githubPullRequestsRepo, BranchSyntaxValidator(ui), PullRequests())
         f.open_pull_requests(candidate, pairingPartner)
     }
 
