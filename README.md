@@ -55,6 +55,8 @@ Options:
     		  claus, berni, bernhard, nandor, dominik, mihai, lampe, shubi
     		  markus, tibor, christian, michal, tomas, peter, martin, john, andrej
 
+  -l, --last-finished		Marks last iteration pull request with '[PR]' as finished
+
 Example:
   github-pr-factory open -c firstname-lastname \
     -g 10238sadf08klasjdf098 \
