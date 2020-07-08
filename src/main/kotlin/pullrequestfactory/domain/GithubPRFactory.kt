@@ -22,8 +22,8 @@ class GithubPRFactory(
     fun open_pull_requests(candidate: Candidate, pairingPartner: List<String>) {
         val branches = get_branches_for(candidate)
         val sortedBranches = BranchSorter().sort_branches_by_pairing_partner(branches, pairingPartner)
-        val pullRequests = pullRequests.create_pull_requests_for(sortedBranches)
-        pullRequests.forEach { githubPullRequestsRepo.open_pull_request(it) }
+        val prs = pullRequests.create_pull_requests_for(sortedBranches)
+        prs.forEach { githubPullRequestsRepo.open_pull_request(it) }
     }
 
     private fun get_branches_for(candidate: Candidate): List<Branch> {

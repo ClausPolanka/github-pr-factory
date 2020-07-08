@@ -19,7 +19,7 @@ class Programs {
             return ShowInvalidOpenCommandOutputProgram()
         }
         if (pa.has_open_command_with_optional_options()) {
-            return OpenPullRequestsProgram(pa)
+            return OpenPullRequestsProgramWithOptionalOptions(pa)
         }
         if (pa.has_open_command()) {
             return OpenPullRequestsProgram(pa)

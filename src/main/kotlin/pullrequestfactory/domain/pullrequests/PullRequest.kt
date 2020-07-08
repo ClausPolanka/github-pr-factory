@@ -15,6 +15,10 @@ data class PullRequest(
         _title = if (nextPr.has_new_iteration()) "$_title [PR]" else _title
     }
 
+    fun mark_title_finsihed() {
+        _title = "$_title [PR]"
+    }
+
     private fun has_new_iteration(): Boolean = _base.iteration_nr() < _head.iteration_nr()
 
 }
