@@ -173,6 +173,40 @@ class ProgramArgsTest {
     }
 
     @Test
+    fun has_valid_open_command_with_optional_options_for_correct_arguments() {
+        val sut = ProgramArgs(arrayOf(
+                "open",
+                "-l",
+                "-c",
+                "firstname-lastname",
+                "-g",
+                GITHUB_BASIC_AUTH_TOKEN,
+                "-p",
+                PAIRING_PARTNER))
+
+        val hasInvalidOpenCommand = sut.has_invalid_open_command()
+
+        assertThat(hasInvalidOpenCommand).isFalse()
+    }
+
+    @Test
+    fun has_valid_open_command_with_optional_options_long_version_for_correct_arguments() {
+        val sut = ProgramArgs(arrayOf(
+                "open",
+                "--last-finished",
+                "-c",
+                "firstname-lastname",
+                "-g",
+                GITHUB_BASIC_AUTH_TOKEN,
+                "-p",
+                PAIRING_PARTNER))
+
+        val hasInvalidOpenCommand = sut.has_invalid_open_command()
+
+        assertThat(hasInvalidOpenCommand).isFalse()
+    }
+
+    @Test
     fun has_invalid_open_command_because_of_invalid_candidate_syntax() {
         val sut = ProgramArgs(arrayOf(
                 "open",
@@ -213,6 +247,23 @@ class ProgramArgsTest {
                 "-g",
                 GITHUB_BASIC_AUTH_TOKEN,
                 "-x",
+                PAIRING_PARTNER))
+
+        val hasInvalidOpenCommand = sut.has_invalid_open_command()
+
+        assertThat(hasInvalidOpenCommand).isTrue()
+    }
+
+    @Test
+    fun has_invalid_open_command_because_of_wrong_number_of_arguments_for_optinal_options() {
+        val sut = ProgramArgs(arrayOf(
+                "open",
+                "-last-fin", // wrong
+                "-c",
+                "firstname-lastname",
+                "-g",
+                GITHUB_BASIC_AUTH_TOKEN,
+                "-p",
                 PAIRING_PARTNER))
 
         val hasInvalidOpenCommand = sut.has_invalid_open_command()

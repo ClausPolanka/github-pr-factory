@@ -22,7 +22,7 @@ class ProgramArgs(private val args: Array<String>) {
             args[0] == OPEN_COMMAND && args.size == 2 && args[1] == "--help"
 
     fun has_invalid_open_command() = has_open_command()
-            && !(has_open_command_required_options() || has_open_command_required_and_optional_options())
+            && !((args.size == 7 && has_open_command_required_options()) || (args.size == 8 && has_open_command_required_and_optional_options()))
 
     fun has_open_command() = args[0] == OPEN_COMMAND
 
@@ -33,7 +33,7 @@ class ProgramArgs(private val args: Array<String>) {
             && is_pairing_partner_syntax_valid()
 
     private fun has_open_command_required_and_optional_options() =
-            has_close_command_required_options() && is_last_pull_request_finished()
+            has_open_command_required_options() && is_last_pull_request_finished()
 
     fun has_close_command_help_option() =
             args[0] == CLOSE_COMMAND && args.size == 2 && args[1] == "--help"
