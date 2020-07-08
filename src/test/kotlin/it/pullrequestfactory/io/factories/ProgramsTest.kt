@@ -2,6 +2,7 @@ package it.pullrequestfactory.io.factories
 
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
+import pullrequestfactory.io.programs.Program
 import pullrequestfactory.io.programs.Programs
 import pullrequestfactory.io.programs.impl.*
 
@@ -14,7 +15,7 @@ class ProgramsTest {
         val program = sut.create_program_for(emptyArray())
 
         assertThat(program is ShowHelpOutputProgram)
-                .describedAs("program shows help output")
+                .describedAs("program shows help output ${actual_program(program)}")
                 .isTrue()
     }
 
@@ -25,7 +26,7 @@ class ProgramsTest {
         val program = sut.create_program_for(arrayOf("foo", "bar", "baz"))
 
         assertThat(program is ShowHelpOutputProgram)
-                .describedAs("program shows help output")
+                .describedAs("program shows help output ${actual_program(program)}")
                 .isTrue()
     }
 
@@ -36,7 +37,7 @@ class ProgramsTest {
         val program = sut.create_program_for(arrayOf("-v"))
 
         assertThat(program is ShowVersionOutputProgram)
-                .describedAs("program shows version output")
+                .describedAs("program shows version output ${actual_program(program)}")
                 .isTrue()
     }
 
@@ -47,7 +48,7 @@ class ProgramsTest {
         val program = sut.create_program_for(arrayOf("open", "--help"))
 
         assertThat(program is ShowOpenCommandHelpOutputProgram)
-                .describedAs("program shows help for open command")
+                .describedAs("program shows help for open command ${actual_program(program)}")
                 .isTrue()
     }
 
@@ -58,7 +59,7 @@ class ProgramsTest {
         val program = sut.create_program_for(arrayOf("open"))
 
         assertThat(program is ShowInvalidOpenCommandOutputProgram)
-                .describedAs("program shows help for open command but was: '${program::class.simpleName}'")
+                .describedAs("program shows help for open command ${actual_program(program)}")
                 .isTrue()
     }
 
@@ -76,7 +77,7 @@ class ProgramsTest {
                 "claus-dominik-mihai-christian-berni-markus-shubi"))
 
         assertThat(program is OpenPullRequestsProgram)
-                .describedAs("program opens pull requests")
+                .describedAs("program opens pull requests ${actual_program(program)}")
                 .isTrue()
     }
 
@@ -87,7 +88,7 @@ class ProgramsTest {
         val program = sut.create_program_for(arrayOf("close", "--help"))
 
         assertThat(program is ShowCloseCommandHelpOutputProgram)
-                .describedAs("program shows help for close command")
+                .describedAs("program shows help for close command ${actual_program(program)}")
                 .isTrue()
     }
 
@@ -98,7 +99,7 @@ class ProgramsTest {
         val program = sut.create_program_for(arrayOf("close"))
 
         assertThat(program is ShowInvalidCloseCommandOutputProgram)
-                .describedAs("program shows help for close command")
+                .describedAs("program shows help for close command ${actual_program(program)}")
                 .isTrue()
     }
 
@@ -114,8 +115,10 @@ class ProgramsTest {
                 "askdasaeu129"))
 
         assertThat(program is ClosePullRequestsProgram)
-                .describedAs("program closes pull requests")
+                .describedAs("program closes pull requests ${actual_program(program)}")
                 .isTrue()
     }
+
+    private fun actual_program(program: Program) = "but was: '${program::class.simpleName}'"
 
 }
