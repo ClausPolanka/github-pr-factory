@@ -6,34 +6,18 @@ class Programs {
 
     fun create_program_for(args: Array<String>): Program {
         val pa = ProgramArgs(args)
-        if (pa.has_help_option()) {
-            return ShowHelpOutputProgram()
+        return when {
+            pa.has_help_option() -> ShowHelpOutputProgram()
+            pa.has_version_option() -> ShowVersionOutputProgram()
+            pa.has_open_command_help_option() -> ShowOpenCommandHelpOutputProgram()
+            pa.has_invalid_open_command() -> ShowInvalidOpenCommandOutputProgram()
+            pa.has_open_command_with_optional_options() -> OpenPullRequestsProgramWithOptionalOptions(pa)
+            pa.has_open_command() -> OpenPullRequestsProgram(pa)
+            pa.has_close_command_help_option() -> ShowCloseCommandHelpOutputProgram()
+            pa.has_invalid_close_command() -> ShowInvalidCloseCommandOutputProgram()
+            pa.has_close_command() -> ClosePullRequestsProgram(pa)
+            else -> ShowHelpOutputProgram()
         }
-        if (pa.has_version_option()) {
-            return ShowVersionOutputProgram()
-        }
-        if (pa.has_open_command_help_option()) {
-            return ShowOpenCommandHelpOutputProgram()
-        }
-        if (pa.has_invalid_open_command()) {
-            return ShowInvalidOpenCommandOutputProgram()
-        }
-        if (pa.has_open_command_with_optional_options()) {
-            return OpenPullRequestsProgramWithOptionalOptions(pa)
-        }
-        if (pa.has_open_command()) {
-            return OpenPullRequestsProgram(pa)
-        }
-        if (pa.has_close_command_help_option()) {
-            return ShowCloseCommandHelpOutputProgram()
-        }
-        if (pa.has_invalid_close_command()) {
-            return ShowInvalidCloseCommandOutputProgram()
-        }
-        if (pa.has_close_command()) {
-            return ClosePullRequestsProgram(pa)
-        }
-        return ShowHelpOutputProgram()
     }
 
 }
