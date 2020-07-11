@@ -2,17 +2,19 @@ package pullrequestfactory.io.repositories
 
 class HeaderLinkLastPageParser {
 
-    private val idxOfMatchedVal = 1
+    private val DEFAULT_VALUE = "-1"
+    private val IDX_OF_MATCHED_VAL = 1
+    private val pattern = "page=([0-9]+)".toRegex()
 
     fun last_page_of_branches(linkHeader: String?): String {
-        return if (linkHeader == null) {
-            "-1"
-        } else {
-            val pattern = "page=([0-9]+)".toRegex()
-            val matches = pattern.findAll(linkHeader)
-            when {
-                matches.none() -> "-1"
-                else -> matches.last().groupValues[idxOfMatchedVal]
+        return when (linkHeader) {
+            null -> DEFAULT_VALUE
+            else -> {
+                val matches = pattern.findAll(linkHeader)
+                when {
+                    matches.none() -> DEFAULT_VALUE
+                    else -> matches.last().groupValues[IDX_OF_MATCHED_VAL]
+                }
             }
         }
     }
