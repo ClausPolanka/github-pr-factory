@@ -155,6 +155,19 @@
         </repository>
     </repositories>
 
+    <distributionManagement>
+        <repository>
+            <id>nexusReleases</id>
+            <name>Releases</name>
+            <url>http://localhost:8081/repository/maven-releases</url>
+        </repository>
+        <snapshotRepository>
+            <id>nexusSnapshots</id>
+            <name>Snapshots</name>
+            <url>http://localhost:8081/repository/maven-snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
+
     <scm>
         <connection>scm:git:https://github.com/ClausPolanka/github-pr-factory
         </connection>
