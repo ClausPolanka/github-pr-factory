@@ -10,7 +10,7 @@ class HeaderLinkLastPageParserTest {
     fun last_page_of_branches_will_be_negative_when_link_header_does_not_exist() {
         val sut = HeaderLinkLastPageParser()
 
-        val lastPage = sut.last_page_of_branches(linkHeader = null)
+        val lastPage = sut.last_page_of_branches_in(linkHeader = null)
 
         assertThat(lastPage).isEqualTo("-1")
     }
@@ -19,7 +19,7 @@ class HeaderLinkLastPageParserTest {
     fun last_page_of_branches_will_be_parsed_from_given_link_header() {
         val sut = HeaderLinkLastPageParser()
 
-        val lastPage = sut.last_page_of_branches(linkHeader = "page=1")
+        val lastPage = sut.last_page_of_branches_in(linkHeader = "page=1")
 
         assertThat(lastPage).isEqualTo("1")
     }
@@ -28,7 +28,7 @@ class HeaderLinkLastPageParserTest {
     fun last_page_of_branches_will_be_negative_if_link_header_is_not_in_expected_format() {
         val sut = HeaderLinkLastPageParser()
 
-        val lastPage = sut.last_page_of_branches(linkHeader = "foo")
+        val lastPage = sut.last_page_of_branches_in(linkHeader = "foo")
 
         assertThat(lastPage).isEqualTo("-1")
     }

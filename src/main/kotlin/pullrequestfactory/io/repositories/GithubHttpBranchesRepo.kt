@@ -11,7 +11,7 @@ class GithubHttpBranchesRepo(
         private val response: Response) : GithubBranchesRepo {
 
     override fun get_all_branches(): List<Branch> {
-        val lastPage = HeaderLinkLastPageParser().last_page_of_branches(response.headers["link"])
+        val lastPage = HeaderLinkLastPageParser().last_page_of_branches_in(response.headers["link"])
         val allBranches = mutableListOf<List<Branch>>()
         allBranches.add(Klaxon().parseArray(response.text)!!)
         (2..lastPage.toInt()).forEach {
