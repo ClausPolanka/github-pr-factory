@@ -81,8 +81,7 @@ Options:
   -g		Your Github basic authorization token
 
 Example:
-  github-pr-factory close -c firstname-lastname \
-    -g 10238sadf08klasjdf098 \
+  github-pr-factory close -c firstname-lastname -g 10238sadf08klasjdf098
 </pre>
 
 In root project-directory: <pre>mvn clean package</pre>

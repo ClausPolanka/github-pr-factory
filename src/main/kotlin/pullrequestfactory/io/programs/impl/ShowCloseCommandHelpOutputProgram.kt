@@ -14,8 +14,7 @@ class ShowCloseCommandHelpOutputProgram : Program {
         println("  -g\t\tYour Github basic authorization token")
         println("")
         println("Example:")
-        println("  github-pr-factory close -c firstname-lastname \\")
-        println("    -g 10238sadf08klasjdf098 \\")
+        println("  github-pr-factory close -c firstname-lastname -g 10238sadf08klasjdf098")
     }
 
 }
