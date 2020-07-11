@@ -15,10 +15,12 @@ class GithubPullRequestsReadRepos(
 
     private fun create_pull_requests_repo(): GithubPullRequestsReadRepo {
         val response = khttp.get("$repoPath/pulls?page=1")
-        if (response.statusCode == 403) {
-            ui.show("Too many requests to Github within time limit")
-            return EmptyPullRequestsReadRepo()
+        return when (response.statusCode) {
+            403 -> {
+                ui.show("Too many requests to Github within time limit")
+                EmptyPullRequestsReadRepo()
+            }
+            else -> GithubHttpPullRequestsReadRepo(repoPath, response)
         }
-        return GithubHttpPullRequestsReadRepo(repoPath, response)
     }
 }

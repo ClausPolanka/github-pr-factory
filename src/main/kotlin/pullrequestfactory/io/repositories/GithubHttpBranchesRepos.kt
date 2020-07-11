@@ -13,11 +13,13 @@ class GithubHttpBranchesRepos(private val repoUrl: String, private val ui: UI) :
 
     private fun create_branch_repo(): GithubBranchesRepo {
         val response = khttp.get("$repoUrl/branches?page=1")
-        if (response.statusCode == 403) {
-            ui.show("Too many requests to Github within time limit")
-            return EmptyGithubBranchesRepo()
+        return when (response.statusCode) {
+            403 -> {
+                ui.show("Too many requests to Github within time limit")
+                EmptyGithubBranchesRepo()
+            }
+            else -> GithubHttpBranchesRepo(repoUrl, response)
         }
-        return GithubHttpBranchesRepo(repoUrl, response)
     }
 
 }
