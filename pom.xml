@@ -75,7 +75,8 @@
             </resource>
         </resources>
         <sourceDirectory>${project.basedir}/src/main/kotlin</sourceDirectory>
-        <testSourceDirectory>${project.basedir}/src/test/kotlin</testSourceDirectory>
+        <testSourceDirectory>${project.basedir}/src/test/kotlin
+        </testSourceDirectory>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -131,11 +132,13 @@
                         <configuration>
                             <archive>
                                 <manifest>
-                                    <mainClass>pullrequestfactory.MainKt</mainClass>
+                                    <mainClass>pullrequestfactory.MainKt
+                                    </mainClass>
                                 </manifest>
                             </archive>
                             <descriptorRefs>
-                                <descriptorRef>jar-with-dependencies</descriptorRef>
+                                <descriptorRef>jar-with-dependencies
+                                </descriptorRef>
                             </descriptorRefs>
                         </configuration>
                     </execution>
@@ -152,4 +155,12 @@
         </repository>
     </repositories>
 
+    <scm>
+        <connection>scm:git:https://github.com/ClausPolanka/github-pr-factory
+        </connection>
+        <developerConnection>
+            scm:git:https://github.com/ClausPolanka/github-pr-factory
+        </developerConnection>
+        <url>https://github.com/ClausPolanka/github-pr-factory</url>
+    </scm>
 </project>
