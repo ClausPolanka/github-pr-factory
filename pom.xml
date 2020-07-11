@@ -173,6 +173,6 @@
             scm:git:https://github.com/ClausPolanka/github-pr-factory
         </developerConnection>
         <url>https://github.com/ClausPolanka/github-pr-factory</url>
-      <tag>release/1.0.x</tag>
+      <tag>HEAD</tag>
   </scm>
 </project>
