@@ -35,7 +35,7 @@ Options:
 
 Commands:
   open		Open Github pull requests
-  close		Open Github pull requests
+  close		Close Github pull requests
 
 Run 'github-pr-factory COMMAND --help' for more information on a command.
 </pre>

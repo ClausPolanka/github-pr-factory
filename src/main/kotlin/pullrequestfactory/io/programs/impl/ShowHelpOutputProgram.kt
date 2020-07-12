@@ -16,7 +16,7 @@ class ShowHelpOutputProgram : Program {
         println("")
         println("Commands:")
         println("  open\t\tOpen Github pull requests")
-        println("  close\t\tOpen Github pull requests")
+        println("  close\t\tClose Github pull requests")
         println("")
         println("Run 'github-pr-factory COMMAND --help' for more information on a command.")
     }
