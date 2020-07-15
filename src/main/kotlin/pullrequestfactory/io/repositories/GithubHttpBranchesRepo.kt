@@ -12,13 +12,12 @@ class GithubHttpBranchesRepo(
 
     override fun get_all_branches(): List<Branch> {
         val lastPage = HeaderLinkLastPageParser().last_page_of_branches_in(response.headers["link"])
-        val allBranches = mutableListOf<List<Branch>>()
-        allBranches.add(Klaxon().parseArray(response.text)!!)
+        var branches: List<Branch> = Klaxon().parseArray(response.text)!!
         (2..lastPage.toInt()).forEach {
             val json = get("$repoUrl/branches?page=$it").text
-            allBranches.add(Klaxon().parseArray(json)!!)
+            branches = branches + Klaxon().parseArray(json)!!
         }
-        return allBranches.flatten()
+        return branches
     }
 
 }
