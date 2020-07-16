@@ -15,9 +15,12 @@ class GithubHttpPullRequestsReadRepo(
         var pullRequests: List<GetPullRequest> = Klaxon().parseArray(response.text)!!
         (2..lastPage.toInt()).forEach {
             val json = get("$repoUrl/pulls?page=$it").text
-            pullRequests = pullRequests + Klaxon().parseArray(json)!!
+            pullRequests = pullRequests + toGetPullRequests(json)
         }
         return pullRequests
     }
+
+    private fun toGetPullRequests(json: String) =
+            (Klaxon().parseArray(json) ?: emptyList<GetPullRequest>())
 
 }

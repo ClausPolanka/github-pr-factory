@@ -15,9 +15,12 @@ class GithubHttpBranchesRepo(
         var branches: List<Branch> = Klaxon().parseArray(response.text)!!
         (2..lastPage.toInt()).forEach {
             val json = get("$repoUrl/branches?page=$it").text
-            branches = branches + Klaxon().parseArray(json)!!
+            branches = branches + toBranches(json)
         }
         return branches
     }
+
+    private fun toBranches(json: String) =
+            (Klaxon().parseArray(json) ?: emptyList<Branch>())
 
 }
