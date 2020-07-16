@@ -11,9 +11,7 @@ data class PullRequest(
     val base: String get() = _base.name
     val head: String get() = _head.name
 
-    private val emptyPr = PullRequest("", Branch(""), Branch(""))
-
-    fun mark_title_finished(nextPr: PullRequest = emptyPr) {
+    fun mark_title_finished(nextPr: PullRequest = PullRequest("", Branch(""), Branch(""))) {
         _title = if (nextPr.has_new_iteration()) "$_title [PR]" else _title
     }
 
