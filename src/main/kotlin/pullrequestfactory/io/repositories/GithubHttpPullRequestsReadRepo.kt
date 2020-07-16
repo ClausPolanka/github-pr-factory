@@ -12,12 +12,12 @@ class GithubHttpPullRequestsReadRepo(
 
     override fun get_all_open_pull_requests(): List<GetPullRequest> {
         val pages = HeaderLinkPageParser().parse_pages(response.headers["link"])
-        var pullRequests = emptyList<GetPullRequest>()
+        val pullRequests = mutableListOf<List<GetPullRequest>>()
         pages.forEach {
             val json = get("$repoUrl/pulls?page=$it").text
-            pullRequests = pullRequests + toGetPullRequests(json)
+            pullRequests.add(toGetPullRequests(json))
         }
-        return pullRequests
+        return pullRequests.flatten()
     }
 
     private fun toGetPullRequests(json: String) =

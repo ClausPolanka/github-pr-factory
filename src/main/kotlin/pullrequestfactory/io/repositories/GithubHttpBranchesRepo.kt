@@ -12,12 +12,12 @@ class GithubHttpBranchesRepo(
 
     override fun get_all_branches(): List<Branch> {
         val pages = HeaderLinkPageParser().parse_pages(response.headers["link"])
-        var branches = emptyList<Branch>()
+        val branches = mutableListOf<List<Branch>>()
         pages.forEach {
             val json = get("$repoUrl/branches?page=$it").text
-            branches = branches + toBranches(json)
+            branches.add(toBranches(json))
         }
-        return branches
+        return branches.flatten()
     }
 
     private fun toBranches(json: String) =
