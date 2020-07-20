@@ -6,7 +6,7 @@ class PullRequestLastNotFinishedMarker : PullRequestMarker {
         for (prIdx in 1 until pullRequests.size) {
             val prevPr = pullRequests[prIdx - 1]
             val nextPr = pullRequests[prIdx]
-            prevPr.mark_title_finished(nextPr)
+            prevPr.mark_title_finished_when_next_pull_request_has_new_iteration(nextPr)
         }
         return pullRequests
     }

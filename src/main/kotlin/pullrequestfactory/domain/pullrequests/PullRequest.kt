@@ -11,7 +11,7 @@ data class PullRequest(
     val base: String get() = _base.name
     val head: String get() = _head.name
 
-    fun mark_title_finished(nextPr: PullRequest) {
+    fun mark_title_finished_when_next_pull_request_has_new_iteration(nextPr: PullRequest) {
         _title = when {
             nextPr.has_new_iteration() -> mark(_title)
             else -> _title
