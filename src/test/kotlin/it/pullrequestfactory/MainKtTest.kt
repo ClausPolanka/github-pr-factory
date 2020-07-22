@@ -140,42 +140,42 @@ class MainKtTest {
         val candidateLastName = candidate.split("-")[1]
 
         verifyPostRequestToGithubToCreatePullRequestFor(PullRequest(
-                _title = "$candidateFirstName $candidateLastName Iteration 1 / Session 1 Claus",
+                title = "$candidateFirstName $candidateLastName Iteration 1 / Session 1 Claus",
                 _base = Branch("master"),
                 _head = Branch("radek_leifer_interation_1_claus")))
 
         verifyPostRequestToGithubToCreatePullRequestFor(PullRequest(
-                _title = "$candidateFirstName $candidateLastName Iteration 1 / Session 2 Berni",
+                title = "$candidateFirstName $candidateLastName Iteration 1 / Session 2 Berni",
                 _base = Branch("radek_leifer_interation_1_claus"),
                 _head = Branch("radek_leifer_interation_1_berni")))
 
         verifyPostRequestToGithubToCreatePullRequestFor(PullRequest(
-                _title = "$candidateFirstName $candidateLastName Iteration 1 / Session 3 Dominik [PR]",
+                title = "$candidateFirstName $candidateLastName Iteration 1 / Session 3 Dominik [PR]",
                 _base = Branch("radek_leifer_interation_1_berni"),
                 _head = Branch("radek_leifer_iteration_1_dominik")))
 
         verifyPostRequestToGithubToCreatePullRequestFor(PullRequest(
-                _title = "$candidateFirstName $candidateLastName Iteration 2 / Session 3 Dominik",
+                title = "$candidateFirstName $candidateLastName Iteration 2 / Session 3 Dominik",
                 _base = Branch("radek_leifer_iteration_1_dominik"),
                 _head = Branch("radek_leifer_iteration_2_dominik")))
 
         verifyPostRequestToGithubToCreatePullRequestFor(PullRequest(
-                _title = "$candidateFirstName $candidateLastName Iteration 2 / Session 4 Christian [PR]",
+                title = "$candidateFirstName $candidateLastName Iteration 2 / Session 4 Christian [PR]",
                 _base = Branch("radek_leifer_iteration_2_dominik"),
                 _head = Branch("radek_leifer_iteration_2_christian")))
 
         verifyPostRequestToGithubToCreatePullRequestFor(PullRequest(
-                _title = "$candidateFirstName $candidateLastName Iteration 3 / Session 5 Shubi",
+                title = "$candidateFirstName $candidateLastName Iteration 3 / Session 5 Shubi",
                 _base = Branch("radek_leifer_iteration_2_christian"),
                 _head = Branch("radek_leifer_iteration_3_shubi")))
 
         verifyPostRequestToGithubToCreatePullRequestFor(PullRequest(
-                _title = "$candidateFirstName $candidateLastName Iteration 3 / Session 6 Markus",
+                title = "$candidateFirstName $candidateLastName Iteration 3 / Session 6 Markus",
                 _base = Branch("radek_leifer_iteration_3_shubi"),
                 _head = Branch("radek_leifer_iteration_3_markus")))
 
         verifyPostRequestToGithubToCreatePullRequestFor(PullRequest(
-                _title = "$candidateFirstName $candidateLastName Iteration 3 / Session 7 Mihai",
+                title = "$candidateFirstName $candidateLastName Iteration 3 / Session 7 Mihai",
                 _base = Branch("radek_leifer_iteration_3_markus"),
                 _head = Branch("radek_leifer_iteration_3_mihai")))
     }

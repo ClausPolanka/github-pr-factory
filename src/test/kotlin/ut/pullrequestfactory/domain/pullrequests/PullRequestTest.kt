@@ -15,7 +15,7 @@ class PullRequestTest {
         val sut = create_pull_request_with(PULL_REQUEST_TITLE)
 
         val newPr = sut.mark_title_finished_when_next_pull_request_has_new_iteration(nextPr = PullRequest(
-                _title = "any",
+                title = "any",
                 _base = create_branch_for(iterationNr = 1),
                 _head = create_branch_for(iterationNr = 2)))
 
@@ -27,7 +27,7 @@ class PullRequestTest {
         val sut = create_pull_request_with(PULL_REQUEST_TITLE)
 
         val newPr = sut.mark_title_finished_when_next_pull_request_has_new_iteration(nextPr = PullRequest(
-                _title = "any",
+                title = "any",
                 _base = create_branch_for(iterationNr = 1),
                 _head = create_branch_for(iterationNr = 1)))
 
@@ -35,7 +35,7 @@ class PullRequestTest {
     }
 
     private fun create_pull_request_with(title: String): PullRequest {
-        return PullRequest(_title = title, _base = Branch("any"), _head = Branch("any"))
+        return PullRequest(title = title, _base = Branch("any"), _head = Branch("any"))
     }
 
     private fun create_branch_for(iterationNr: Int) =

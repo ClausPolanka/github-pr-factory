@@ -10,7 +10,7 @@ class PullRequests(val pullRequestMarker: PullRequestMarker) {
         val titles = BranchTitles(branches).create()
         val baseBranches = BaseBranches(branches).create()
         val pullRequests = branches.mapIndexed { idx, branch ->
-            PullRequest(_title = titles[idx], _base = baseBranches[idx], _head = branch)
+            PullRequest(title = titles[idx], _base = baseBranches[idx], _head = branch)
         }
         return pullRequestMarker.mark(pullRequests)
     }
