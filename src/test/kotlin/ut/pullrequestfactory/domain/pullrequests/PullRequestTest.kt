@@ -14,24 +14,24 @@ class PullRequestTest {
     fun mark_title_of_current_pull_request_when_next_pull_request_has_new_iteration() {
         val sut = create_pull_request_with(PULL_REQUEST_TITLE)
 
-        sut.mark_title_finished_when_next_pull_request_has_new_iteration(nextPr = PullRequest(
+        val newPr = sut.mark_title_finished_when_next_pull_request_has_new_iteration(nextPr = PullRequest(
                 _title = "any",
                 _base = create_branch_for(iterationNr = 1),
                 _head = create_branch_for(iterationNr = 2)))
 
-        assertThat(sut.title).isEqualTo("$PULL_REQUEST_TITLE [PR]")
+        assertThat(newPr.title).isEqualTo("$PULL_REQUEST_TITLE [PR]")
     }
 
     @Test
     fun keep_title_of_current_pull_request_when_next_pull_request_has_same_iteration() {
         val sut = create_pull_request_with(PULL_REQUEST_TITLE)
 
-        sut.mark_title_finished_when_next_pull_request_has_new_iteration(nextPr = PullRequest(
+        val newPr = sut.mark_title_finished_when_next_pull_request_has_new_iteration(nextPr = PullRequest(
                 _title = "any",
                 _base = create_branch_for(iterationNr = 1),
                 _head = create_branch_for(iterationNr = 1)))
 
-        assertThat(sut.title).isEqualTo(PULL_REQUEST_TITLE)
+        assertThat(newPr.title).isEqualTo(PULL_REQUEST_TITLE)
     }
 
     private fun create_pull_request_with(title: String): PullRequest {
