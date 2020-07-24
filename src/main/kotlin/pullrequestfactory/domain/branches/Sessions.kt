@@ -5,9 +5,9 @@ package pullrequestfactory.domain.branches
  * the candidate and and an existing team-member. A new pairing-partner always
  * results in a new session.
  */
-internal class Sessions(private val branches: List<Branch>) {
+internal object Sessions {
 
-    fun create(): List<String> {
+    fun create_sessions_for(branches: List<Branch>): List<String> {
         var prevSession = 1
         return branches.mapIndexed { idx, branch ->
             when (idx) {

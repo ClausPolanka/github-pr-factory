@@ -137,7 +137,7 @@ class GithubPRFactoryTest {
                 githubBranchesRepo,
                 github_pull_requests_repo(github_write_repo(pullRequests)),
                 BranchSyntaxValidator(QuietUI()),
-                PullRequests(PullRequestLastNotFinishedMarker()))
+                PullRequestLastNotFinishedMarker())
         return Pair(pullRequests, sut)
     }
 
@@ -149,7 +149,7 @@ class GithubPRFactoryTest {
                         github_write_repo(mutableListOf(), pullRequestNumbersToBeClosed),
                         pullRequests.toMutableList()),
                 BranchSyntaxValidator(QuietUI()),
-                PullRequests(PullRequestLastNotFinishedMarker()))
+                PullRequestLastNotFinishedMarker())
         return Pair(pullRequestNumbersToBeClosed, sut)
     }
 
@@ -158,7 +158,7 @@ class GithubPRFactoryTest {
                     github_branches_repo(listOf(Branch(branchName))),
                     github_pull_requests_repo(noop_github_write_repo()),
                     BranchSyntaxValidator(QuietUI()),
-                    PullRequests(PullRequestLastNotFinishedMarker()))
+                    PullRequestLastNotFinishedMarker())
 
     private fun github_branches_repo(branches: List<Branch>): GithubBranchesRepo {
         return object : GithubBranchesRepo {

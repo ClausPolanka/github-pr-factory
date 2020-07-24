@@ -1,17 +1,16 @@
 package pullrequestfactory.domain
 
-import pullrequestfactory.domain.branches.Branch
-import pullrequestfactory.domain.branches.BranchSorter.sort_branches_by_pairing_partner
 import pullrequestfactory.domain.branches.BranchSyntaxValidator
+import pullrequestfactory.domain.branches.Branches
 import pullrequestfactory.domain.branches.GithubBranchesRepo
 import pullrequestfactory.domain.pullrequests.GithubPullRequestsRepo
-import pullrequestfactory.domain.pullrequests.PullRequests
+import pullrequestfactory.domain.pullrequests.PullRequestMarker
 
 class GithubPRFactory(
         private val githubBranchesRepo: GithubBranchesRepo,
         private val githubPullRequestsRepo: GithubPullRequestsRepo,
         private val branchSyntaxValidator: BranchSyntaxValidator,
-        private val pullRequests: PullRequests) {
+        private val pullRequestMarker: PullRequestMarker) {
 
     /**
      * @param pairingPartner A list of George backend chapter team member names which must be in the order in
@@ -21,19 +20,19 @@ class GithubPRFactory(
      */
     fun open_pull_requests(candidate: Candidate, pairingPartner: List<String>) {
         val branches = get_branches_for(candidate)
-        val sortedBranches = sort_branches_by_pairing_partner(branches, pairingPartner)
-        val prs = pullRequests.create_pull_requests_for(sortedBranches)
+        val prs = branches.pull_requests_for(pairingPartner)
         prs.forEach { githubPullRequestsRepo.open_pull_request(it) }
     }
 
-    private fun get_branches_for(candidate: Candidate): List<Branch> {
-        return githubBranchesRepo.get_all_branches()
+    private fun get_branches_for(candidate: Candidate): Branches {
+        val branches = githubBranchesRepo.get_all_branches()
                 .filter { it.name.contains(candidate.firstName, ignoreCase = true) }
                 .filter { it.name.contains(candidate.lastName, ignoreCase = true) }
                 .map {
                     branchSyntaxValidator.validate(it)
                     it
                 }
+        return Branches(branches, pullRequestMarker)
     }
 
     fun close_pull_requests_for(candidate: Candidate) {

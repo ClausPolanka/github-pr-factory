@@ -3,7 +3,6 @@ package pullrequestfactory.io.programs.impl
 import pullrequestfactory.domain.GithubPRFactory
 import pullrequestfactory.domain.branches.BranchSyntaxValidator
 import pullrequestfactory.domain.pullrequests.PullRequestLastFinishedMarker
-import pullrequestfactory.domain.pullrequests.PullRequests
 import pullrequestfactory.io.programs.Program
 import pullrequestfactory.io.programs.ProgramArgs
 import pullrequestfactory.io.repositories.GithubHttpBranchesRepos
@@ -27,7 +26,7 @@ class OpenPullRequestsProgramWithOptionalOptions(private val programArgs: Progra
                 githubBranchesRepo,
                 githubPullRequestsRepo,
                 BranchSyntaxValidator(ui),
-                PullRequests(PullRequestLastFinishedMarker()))
+                PullRequestLastFinishedMarker())
         f.open_pull_requests(candidate, pairingPartner)
     }
 

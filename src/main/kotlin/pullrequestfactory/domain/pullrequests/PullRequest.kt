@@ -10,13 +10,13 @@ data class PullRequest(
     val base: String get() = _base.name
     val head: String get() = _head.name
 
-    fun mark_title_finished_when_next_pull_request_has_new_iteration(nextPr: PullRequest) = when {
-        nextPr.has_new_iteration() -> mark_title_finished()
+    fun mark_title_when_next_has_new_iteration(nextPr: PullRequest) = when {
+        nextPr.has_new_iteration() -> mark_title()
         else -> this.copy()
     }
 
     private fun has_new_iteration() = _base.iteration_nr() < _head.iteration_nr()
 
-    fun mark_title_finished() = this.copy(title = "$title [PR]")
+    fun mark_title() = this.copy(title = "$title [PR]")
 
 }
