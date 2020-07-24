@@ -8,7 +8,7 @@ class BranchSyntaxValidator(private val ui: UI) {
 
     fun validate(branch: Branch) {
         when {
-            branch.parts().size != 5 -> throw InvalidBranchSyntax(errorMessageFor(branch))
+            branch.parts().size != 5 -> throw InvalidBranchSyntax(error_message_for(branch))
 
             !branchSyntaxRegex.matches(branch.name) -> {
                 ui.show("[WARNING] Branch has incorrect syntax: $branch")
@@ -16,7 +16,7 @@ class BranchSyntaxValidator(private val ui: UI) {
         }
     }
 
-    private fun errorMessageFor(branch: Branch) =
+    private fun error_message_for(branch: Branch) =
             "Following branch has an invalid name and therefore can't be processed: '${branch.name}'"
 
     class InvalidBranchSyntax(msg: String) : RuntimeException(msg)
