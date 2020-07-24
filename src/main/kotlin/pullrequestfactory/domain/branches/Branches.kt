@@ -24,23 +24,24 @@ class Branches(private val branches: List<Branch>, private val pullRequestMarker
         get() = Sessions.create_sessions_for(branches)
 
     fun pull_requests_for(pairingPartner: List<String>): List<PullRequest> {
-        val brs = sort_by(pairingPartner)
-        val pullRequests = brs.branches.mapIndexed { idx, branch ->
-            PullRequest(
-                    title = brs.branch_titles[idx],
-                    _base = brs.base_branches[idx],
-                    _head = branch)
+        val brs = sort_branches_by(pairingPartner)
+        with(brs) {
+            val pullRequests = branches.mapIndexed { idx, branch ->
+                PullRequest(
+                        title = branch_titles[idx],
+                        _base = base_branches[idx],
+                        _head = branch)
+            }
+            return pullRequestMarker.mark_titles_of(pullRequests)
         }
-        return pullRequestMarker.mark_titles_of(pullRequests)
     }
 
-    private fun sort_by(pairingPartner: List<String>) = Branches(
-            pairingPartner.map { sort_by_iteration_nr_and_by(it) }.flatten(),
+    private fun sort_branches_by(pairingPartner: List<String>) = Branches(
+            pairingPartner.map { sort_branches_by(it) }.flatten(),
             pullRequestMarker)
 
-    private fun sort_by_iteration_nr_and_by(pairingPartner: String) =
-            branches
-                    .filter { it.name.endsWith(pairingPartner.toLowerCase()) }
+    private fun sort_branches_by(pairingPartner: String) =
+            branches.filter { it.name.endsWith(pairingPartner.toLowerCase()) }
                     .map { Pair(it.name, it.iteration_nr()) }
                     .sortedBy { it.second }
                     .map { Branch(it.first) }
