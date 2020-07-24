@@ -1,6 +1,6 @@
 package pullrequestfactory.domain.branches
 
-class BranchSorter {
+object BranchSorter {
 
     fun sort_branches_by_pairing_partner(branches: List<Branch>, pairingPartner: List<String>): List<Branch> {
         return pairingPartner.map {

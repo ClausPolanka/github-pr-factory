@@ -11,9 +11,7 @@ class BranchSorterTest {
 
     @Test
     fun sorts_unsorted_branches_by_iteration_number_for_the_same_pairing_partner() {
-        val sut = BranchSorter()
-
-        val sortedBranches = sut.sort_branches_by_pairing_partner(listOf(
+        val sortedBranches = BranchSorter.sort_branches_by_pairing_partner(listOf(
                 branch_for(PAIRING_PARTNER, iterationNr = 2),
                 branch_for(PAIRING_PARTNER, iterationNr = 1)),
                 pairingPartner = listOf(PAIRING_PARTNER))
@@ -25,9 +23,7 @@ class BranchSorterTest {
 
     @Test
     fun sorts_unsorted_branches_by_pairing_partner_for_the_same_iteration_number() {
-        val sut = BranchSorter()
-
-        val sortedBranches = sut.sort_branches_by_pairing_partner(listOf(
+        val sortedBranches = BranchSorter.sort_branches_by_pairing_partner(listOf(
                 branch_for(PAIRING_PARTNER + 2, iterationNr = 1),
                 branch_for(PAIRING_PARTNER + 1, iterationNr = 1)),
                 pairingPartner = listOf(PAIRING_PARTNER + 1, PAIRING_PARTNER + 2))
@@ -39,9 +35,7 @@ class BranchSorterTest {
 
     @Test
     fun sorts_unsorted_branches_by_iteration_number_for_the_same_pairing_partner_ignoring_case() {
-        val sut = BranchSorter()
-
-        val sortedBranches = sut.sort_branches_by_pairing_partner(listOf(
+        val sortedBranches = BranchSorter.sort_branches_by_pairing_partner(listOf(
                 branch_for(PAIRING_PARTNER, iterationNr = 2),
                 branch_for(PAIRING_PARTNER, iterationNr = 1)),
                 pairingPartner = listOf(PAIRING_PARTNER.capitalize()))

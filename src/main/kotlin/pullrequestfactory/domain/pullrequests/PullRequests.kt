@@ -4,7 +4,7 @@ import pullrequestfactory.domain.branches.BaseBranches
 import pullrequestfactory.domain.branches.Branch
 import pullrequestfactory.domain.branches.BranchTitles
 
-class PullRequests(val pullRequestMarker: PullRequestMarker) {
+class PullRequests(private val pullRequestMarker: PullRequestMarker) {
 
     fun create_pull_requests_for(branches: List<Branch>): List<PullRequest> {
         val titles = BranchTitles(branches).create()

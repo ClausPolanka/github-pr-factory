@@ -1,7 +1,7 @@
 package pullrequestfactory.domain
 
 import pullrequestfactory.domain.branches.Branch
-import pullrequestfactory.domain.branches.BranchSorter
+import pullrequestfactory.domain.branches.BranchSorter.sort_branches_by_pairing_partner
 import pullrequestfactory.domain.branches.BranchSyntaxValidator
 import pullrequestfactory.domain.branches.GithubBranchesRepo
 import pullrequestfactory.domain.pullrequests.GithubPullRequestsRepo
@@ -21,7 +21,7 @@ class GithubPRFactory(
      */
     fun open_pull_requests(candidate: Candidate, pairingPartner: List<String>) {
         val branches = get_branches_for(candidate)
-        val sortedBranches = BranchSorter().sort_branches_by_pairing_partner(branches, pairingPartner)
+        val sortedBranches = sort_branches_by_pairing_partner(branches, pairingPartner)
         val prs = pullRequests.create_pull_requests_for(sortedBranches)
         prs.forEach { githubPullRequestsRepo.open_pull_request(it) }
     }
