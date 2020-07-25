@@ -4,6 +4,10 @@ import pullrequestfactory.domain.Candidate
 
 class ProgramArgs(private val args: Array<String>) {
 
+    private val HELP_COMMAND = "-?"
+    private val HELP_COMMAND_LONG_VERSION = "--help"
+    private val VERSION_COMMAND = "-v"
+    private val VERSION_COMMAND_LONG_VERSION = "--version"
     private val CANDIDATE_OPTION = "-c"
     private val GITHUB_BASIC_AUTH_TOKEN_OPTION = "-g"
     private val PAIRING_PARTNER_OPTION = "-p"
@@ -16,13 +20,13 @@ class ProgramArgs(private val args: Array<String>) {
     private val ERROR_MSG_TOKEN = "Either option -g or github basic auth token missing"
 
     fun has_help_option() =
-            args.isEmpty() || args.size == 1 && (args[0] == "-?" || args[0] == "--help")
+            args.isEmpty() || args.size == 1 && (args[0] == HELP_COMMAND || args[0] == HELP_COMMAND_LONG_VERSION)
 
     fun has_version_option() =
-            args.size == 1 && (args[0] == "-v" || args[0] == "--version")
+            args.size == 1 && (args[0] == VERSION_COMMAND || args[0] == VERSION_COMMAND_LONG_VERSION)
 
     fun has_open_command_help_option() =
-            args[0] == OPEN_COMMAND && args.size == 2 && args[1] == "--help"
+            args[0] == OPEN_COMMAND && args.size == 2 && args[1] == HELP_COMMAND_LONG_VERSION
 
     fun has_invalid_open_command() = has_open_command()
             && !((args.size == 7 && has_open_command_required_options()) || (args.size == 8 && has_open_command_required_and_optional_options()))
@@ -39,7 +43,7 @@ class ProgramArgs(private val args: Array<String>) {
             has_open_command_required_options() && is_last_pull_request_finished()
 
     fun has_close_command_help_option() =
-            args[0] == CLOSE_COMMAND && args.size == 2 && args[1] == "--help"
+            args[0] == CLOSE_COMMAND && args.size == 2 && args[1] == HELP_COMMAND_LONG_VERSION
 
     fun has_invalid_close_command() = has_close_command() && !has_close_command_required_options()
 
