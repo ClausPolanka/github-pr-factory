@@ -3,11 +3,12 @@ package pullrequestfactory.io.repositories
 import com.beust.klaxon.Klaxon
 import khttp.get
 import khttp.responses.Response
+import pullrequestfactory.io.repositories.HeaderLinkPageParser.parse_pages
 
 class ReadHttpRepo {
 
     inline fun <reified T> get_list(res: Response, url: String): List<T> {
-        val pages = HeaderLinkPageParser().parse_pages(res.headers["link"])
+        val pages = parse_pages(res.headers["link"])
         val branches = mutableListOf<List<T>>()
         pages.forEach {
             val json = get("$url?page=$it").text

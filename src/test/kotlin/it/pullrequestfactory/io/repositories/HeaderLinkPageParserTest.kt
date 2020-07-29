@@ -8,36 +8,28 @@ class HeaderLinkPageParserTest {
 
     @Test
     fun default_value_for_null() {
-        val sut = HeaderLinkPageParser()
-
-        val pages = sut.parse_pages(linkHeader = null)
+        val pages = HeaderLinkPageParser.parse_pages(linkHeader = null)
 
         assertThat(pages).isEqualTo(1..1)
     }
 
     @Test
     fun pages_for_a_single_page() {
-        val sut = HeaderLinkPageParser()
-
-        val pages = sut.parse_pages(linkHeader = "page=1")
+        val pages = HeaderLinkPageParser.parse_pages(linkHeader = "page=1")
 
         assertThat(pages).isEqualTo(1..1)
     }
 
     @Test
     fun pages_for_100_pages() {
-        val sut = HeaderLinkPageParser()
-
-        val pages = sut.parse_pages(linkHeader = "page=100")
+        val pages = HeaderLinkPageParser.parse_pages(linkHeader = "page=100")
 
         assertThat(pages).isEqualTo(1..100)
     }
 
     @Test
     fun default_value_for_missing_page_in_link_header() {
-        val sut = HeaderLinkPageParser()
-
-        val pages = sut.parse_pages(linkHeader = "foo")
+        val pages = HeaderLinkPageParser.parse_pages(linkHeader = "foo")
 
         assertThat(pages).isEqualTo(1..1)
     }
