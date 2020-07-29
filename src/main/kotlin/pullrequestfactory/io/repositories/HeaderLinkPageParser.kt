@@ -1,6 +1,6 @@
 package pullrequestfactory.io.repositories
 
-class HeaderLinkPageParser {
+object HeaderLinkPageParser {
 
     private val DEFAULT_VALUE = 1..1
     private val IDX_OF_MATCHED_VAL = 1
