@@ -3,9 +3,9 @@ package pullrequestfactory.io.repositories
 import com.beust.klaxon.Klaxon
 import khttp.get
 import khttp.responses.Response
-import pullrequestfactory.io.repositories.HeaderLinkPageParser.parse_pages
+import pullrequestfactory.io.repositories.GithubHttpHeaderLinkPageParser.parse_pages
 
-class ReadHttpRepo {
+class GithubHttpReadRepo {
 
     inline fun <reified T> get_list(res: Response, url: String): List<T> {
         val pages = parse_pages(res.headers["link"])

@@ -9,7 +9,7 @@ class GithubHttpBranchesRepo(
         private val response: Response) : GithubBranchesRepo {
 
     override fun get_all_branches(): List<Branch> {
-        return ReadHttpRepo().get_list(response, "$repoUrl/branches")
+        return GithubHttpReadRepo().get_list(response, "$repoUrl/branches")
     }
 
 }

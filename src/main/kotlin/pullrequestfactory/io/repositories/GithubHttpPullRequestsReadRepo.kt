@@ -9,7 +9,7 @@ class GithubHttpPullRequestsReadRepo(
         private val response: Response) : GithubPullRequestsReadRepo {
 
     override fun get_all_open_pull_requests(): List<GetPullRequest> {
-        return ReadHttpRepo().get_list(response, "$repoUrl/pulls")
+        return GithubHttpReadRepo().get_list(response, "$repoUrl/pulls")
     }
 
 }
