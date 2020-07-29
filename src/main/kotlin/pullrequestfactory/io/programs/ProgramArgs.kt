@@ -90,8 +90,8 @@ class ProgramArgs(private val args: Array<String>) {
 
     fun get_pairing_partner(): List<PairingPartner> {
         validate_args_pairing_partner_syntax()
-        val idx = args.indexOf(PAIRING_PARTNER_OPTION) + 1
-        return create_pairing_partner(args[idx])
+        val pairingPartner = args[args.indexOf(PAIRING_PARTNER_OPTION) + 1]
+        return create_pairing_partner(pairingPartner)
     }
 
     private fun create_pairing_partner(pairingPartner: String): List<PairingPartner> {
