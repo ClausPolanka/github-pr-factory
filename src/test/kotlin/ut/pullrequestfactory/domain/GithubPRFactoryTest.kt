@@ -39,11 +39,11 @@ class GithubPRFactoryTest {
 
         assertThat(pullRequests).containsExactly(
                 PullRequest(
-                        title = "Firstname Lastname Iteration 1 / Session 1 ${pairingPartner1.nickName} [PR]",
+                        title = "Firstname Lastname Iteration 1 / Session 1 ${pairingPartner1.pullRequestName} [PR]",
                         _base = Branch("master"),
                         _head = branch1),
                 PullRequest(
-                        title = "Firstname Lastname Iteration 2 / Session 2 ${pairingPartner2.nickName}",
+                        title = "Firstname Lastname Iteration 2 / Session 2 ${pairingPartner2.pullRequestName}",
                         _base = branch1,
                         _head = branch2))
     }
@@ -61,7 +61,7 @@ class GithubPRFactoryTest {
         sut.open_pull_requests(candidate, listOf(pairingPartner))
 
         assertThat(pullRequests).containsExactly(PullRequest(
-                title = "Firstname Lastname Iteration 1 / Session 1 ${pairingPartner.nickName}",
+                title = "Firstname Lastname Iteration 1 / Session 1 ${pairingPartner.pullRequestName}",
                 _base = Branch("master"),
                 _head = branch))
     }
@@ -79,7 +79,7 @@ class GithubPRFactoryTest {
         sut.open_pull_requests(candidate, listOf(pairingPartner))
 
         assertThat(pullRequests).containsExactly(PullRequest(
-                title = "Firstname Lastname Iteration 1 / Session 1 ${pairingPartner.nickName}",
+                title = "Firstname Lastname Iteration 1 / Session 1 ${pairingPartner.pullRequestName}",
                 _base = Branch("master"),
                 _head = branch))
     }

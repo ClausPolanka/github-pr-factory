@@ -28,7 +28,7 @@ class CreatePullRequestsForAListOfBranches {
         val prs = sut.pull_requests_for(listOf(pairingPartner))
 
         assertThat(prs).containsExactly(PullRequest(
-                "Firstname Lastname Iteration 1 / Session 1 ${pairingPartner.nickName}",
+                "Firstname Lastname Iteration 1 / Session 1 ${pairingPartner.pullRequestName}",
                 Branch("master"),
                 branch))
     }
@@ -52,11 +52,11 @@ class CreatePullRequestsForAListOfBranches {
 
         assertThat(prs)
                 .contains(PullRequest(
-                        "Firstname Lastname Iteration 1 / Session 1 ${pairingPartner.nickName} [PR]",
+                        "Firstname Lastname Iteration 1 / Session 1 ${pairingPartner.pullRequestName} [PR]",
                         Branch("master"),
                         branch1))
                 .contains(PullRequest(
-                        "Firstname Lastname Iteration 2 / Session 1 ${pairingPartner.nickName}",
+                        "Firstname Lastname Iteration 2 / Session 1 ${pairingPartner.pullRequestName}",
                         branch1,
                         branch2))
     }
@@ -80,11 +80,11 @@ class CreatePullRequestsForAListOfBranches {
 
         assertThat(prs)
                 .contains(PullRequest(
-                        "Firstname Lastname Iteration 1 / Session 1 ${pairingPartner1.nickName}",
+                        "Firstname Lastname Iteration 1 / Session 1 ${pairingPartner1.pullRequestName}",
                         Branch("master"),
                         branch1))
                 .contains(PullRequest(
-                        "Firstname Lastname Iteration 1 / Session 2 ${pairingPartner2.nickName}",
+                        "Firstname Lastname Iteration 1 / Session 2 ${pairingPartner2.pullRequestName}",
                         branch1,
                         branch2))
     }
@@ -108,11 +108,11 @@ class CreatePullRequestsForAListOfBranches {
 
         assertThat(prs)
                 .contains(PullRequest(
-                        "Firstname Lastname Iteration 1 / Session 1 ${pairingPartner1.nickName} [PR]",
+                        "Firstname Lastname Iteration 1 / Session 1 ${pairingPartner1.pullRequestName} [PR]",
                         Branch("master"),
                         branch1))
                 .contains(PullRequest(
-                        "Firstname Lastname Iteration 2 / Session 2 ${pairingPartner2.nickName}",
+                        "Firstname Lastname Iteration 2 / Session 2 ${pairingPartner2.pullRequestName}",
                         branch1,
                         branch2))
 
@@ -142,15 +142,15 @@ class CreatePullRequestsForAListOfBranches {
 
         assertThat(prs)
                 .contains(PullRequest(
-                        "Firstname Lastname Iteration 1 / Session 1 ${pairingPartner1.nickName} [PR]",
+                        "Firstname Lastname Iteration 1 / Session 1 ${pairingPartner1.pullRequestName} [PR]",
                         Branch("master"),
                         branch1))
                 .contains(PullRequest(
-                        "Firstname Lastname Iteration 2 / Session 1 ${pairingPartner1.nickName}",
+                        "Firstname Lastname Iteration 2 / Session 1 ${pairingPartner1.pullRequestName}",
                         branch1,
                         branch2))
                 .contains(PullRequest(
-                        "Firstname Lastname Iteration 2 / Session 2 ${pairingPartner2.nickName}",
+                        "Firstname Lastname Iteration 2 / Session 2 ${pairingPartner2.pullRequestName}",
                         branch2,
                         branch3))
     }

@@ -1,6 +1,6 @@
 package pullrequestfactory.domain
 
-enum class PairingPartner(val nickName: String) {
+enum class PairingPartner(val pullRequestName: String) {
     ANDREJ("Andrej"),
     SHUBI("Shubi"),
     CLAUS("Claus"),
