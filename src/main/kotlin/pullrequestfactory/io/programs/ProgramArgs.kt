@@ -17,7 +17,7 @@ class ProgramArgs(private val args: Array<String>) {
     private val IS_LAST_PULL_REQUEST_FINISHED = "-l"
     private val IS_LAST_PULL_REQUEST_FINISHED_LONG_VERSION = "--last-finished"
     private val ERROR_MSG_CANDIDATE = "Either option -c or candidate missing or candidate has wrong format"
-    private val ERROR_MSG_PAIRING_PARTNER = "Either option -p or pairing partner are missing or pairing partner have wrong format"
+    private val ERROR_MSG_PAIRING_PARTNER = "Either option -p or pairing partner are missing or pairing partner have wrong format or is unknown"
     private val ERROR_MSG_TOKEN = "Either option -g or github basic auth token missing"
 
     fun has_help_option() =
@@ -50,7 +50,6 @@ class ProgramArgs(private val args: Array<String>) {
 
     fun has_close_command() = args[0] == CLOSE_COMMAND
 
-
     private fun has_close_command_required_options() = args.size == 5
             && is_candidate_syntax_valid()
             && is_github_basic_auth_token_syntax_valid()
@@ -69,7 +68,7 @@ class ProgramArgs(private val args: Array<String>) {
         }
     }
 
-    private fun is_candidate_syntax_valid() = args.size >= 2
+    private fun is_candidate_syntax_valid() = args.size >= args.indexOf(CANDIDATE_OPTION) + 1 /*candidate */ + 1 /* since array is 0-based */
             && args.contains(CANDIDATE_OPTION)
             && args[args.indexOf(CANDIDATE_OPTION) + 1].contains("-")
 
@@ -86,12 +85,21 @@ class ProgramArgs(private val args: Array<String>) {
     }
 
     private fun is_github_basic_auth_token_syntax_valid() =
-            args.size >= 2 && args.contains(GITHUB_BASIC_AUTH_TOKEN_OPTION)
+            args.size >= args.indexOf(GITHUB_BASIC_AUTH_TOKEN_OPTION) + 1 /* token */ + 1 /* since array is 0-based */
+                    && args.contains(GITHUB_BASIC_AUTH_TOKEN_OPTION)
 
     fun get_pairing_partner(): List<PairingPartner> {
         validate_args_pairing_partner_syntax()
         val idx = args.indexOf(PAIRING_PARTNER_OPTION) + 1
-        return args[idx].split("-").map { PairingPartner.valueOf(it.toUpperCase()) }
+        return create_pairing_partner(args[idx])
+    }
+
+    private fun create_pairing_partner(pairingPartner: String): List<PairingPartner> {
+        return try {
+            pairingPartner.split("-").map { PairingPartner.valueOf(it.toUpperCase()) }
+        } catch (e: IllegalArgumentException) {
+            throw WrongPairingPartnerArgumentSyntax("$ERROR_MSG_PAIRING_PARTNER ${e.message}")
+        }
     }
 
     private fun validate_args_pairing_partner_syntax() {
@@ -100,16 +108,17 @@ class ProgramArgs(private val args: Array<String>) {
         }
     }
 
-    private fun is_pairing_partner_syntax_valid() = args.size >= 2
-            && args.contains(PAIRING_PARTNER_OPTION)
-            && args[args.indexOf(PAIRING_PARTNER_OPTION) + 1].contains("-")
-            && args[args.indexOf(PAIRING_PARTNER_OPTION) + 1].split("-").size == 7
+    private fun is_pairing_partner_syntax_valid() =
+            args.size >= args.indexOf(PAIRING_PARTNER_OPTION) + 1 /* pairing partner */ + 1 /* since array is 0-based */
+                    && args.contains(PAIRING_PARTNER_OPTION)
+                    && args[args.indexOf(PAIRING_PARTNER_OPTION) + 1].contains("-")
+                    && args[args.indexOf(PAIRING_PARTNER_OPTION) + 1].split("-").size == 7
 
     private fun is_last_pull_request_finished() =
             args.contains(IS_LAST_PULL_REQUEST_FINISHED) || args.contains(IS_LAST_PULL_REQUEST_FINISHED_LONG_VERSION)
 
-    private class WrongCandidateArgumentSyntax(msg: String) : RuntimeException(msg)
-    private class WrongGithubBasicAuthTokenArgumentSyntax(msg: String) : RuntimeException(msg)
-    private class WrongPairingPartnerArgumentSyntax(msg: String) : RuntimeException(msg)
+    inner class WrongCandidateArgumentSyntax(msg: String) : RuntimeException(msg)
+    inner class WrongGithubBasicAuthTokenArgumentSyntax(msg: String) : RuntimeException(msg)
+    inner class WrongPairingPartnerArgumentSyntax(msg: String) : RuntimeException(msg)
 
 }

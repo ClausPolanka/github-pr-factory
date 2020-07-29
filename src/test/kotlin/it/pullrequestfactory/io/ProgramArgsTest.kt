@@ -7,7 +7,6 @@ import pullrequestfactory.domain.Candidate
 import pullrequestfactory.domain.PairingPartner
 import pullrequestfactory.io.programs.ProgramArgs
 
-
 class ProgramArgsTest {
 
     private val GITHUB_BASIC_AUTH_TOKEN = "asdfkk3282kas8ölash8"
@@ -356,6 +355,8 @@ class ProgramArgsTest {
         val sut = ProgramArgs(arrayOf("-x", "firstname-lastname"))
 
         assertThatThrownBy { sut.get_candidate() }
+                .isInstanceOf(ProgramArgs.WrongCandidateArgumentSyntax::class.java)
+
     }
 
     @Test
@@ -363,6 +364,7 @@ class ProgramArgsTest {
         val sut = ProgramArgs(arrayOf("-c"))
 
         assertThatThrownBy { sut.get_candidate() }
+                .isInstanceOf(ProgramArgs.WrongCandidateArgumentSyntax::class.java)
     }
 
     @Test
@@ -370,6 +372,7 @@ class ProgramArgsTest {
         val sut = ProgramArgs(arrayOf("-c", "firstname"))
 
         assertThatThrownBy { sut.get_candidate() }
+                .isInstanceOf(ProgramArgs.WrongCandidateArgumentSyntax::class.java)
     }
 
     @Test
@@ -377,6 +380,7 @@ class ProgramArgsTest {
         val sut = ProgramArgs(arrayOf("firstname-lastname", "-c"))
 
         assertThatThrownBy { sut.get_candidate() }
+                .isInstanceOf(ProgramArgs.WrongCandidateArgumentSyntax::class.java)
     }
 
     @Test
@@ -393,6 +397,7 @@ class ProgramArgsTest {
         val sut = ProgramArgs(arrayOf("-x", GITHUB_BASIC_AUTH_TOKEN))
 
         assertThatThrownBy { sut.get_github_basic_auth_token() }
+                .isInstanceOf(ProgramArgs.WrongGithubBasicAuthTokenArgumentSyntax::class.java)
     }
 
     @Test
@@ -400,6 +405,7 @@ class ProgramArgsTest {
         val sut = ProgramArgs(arrayOf("-g"))
 
         assertThatThrownBy { sut.get_github_basic_auth_token() }
+                .isInstanceOf(ProgramArgs.WrongGithubBasicAuthTokenArgumentSyntax::class.java)
     }
 
     @Test
@@ -407,6 +413,7 @@ class ProgramArgsTest {
         val sut = ProgramArgs(arrayOf(GITHUB_BASIC_AUTH_TOKEN, "-g"))
 
         assertThatThrownBy { sut.get_github_basic_auth_token() }
+                .isInstanceOf(ProgramArgs.WrongGithubBasicAuthTokenArgumentSyntax::class.java)
     }
 
     @Test
@@ -426,10 +433,19 @@ class ProgramArgsTest {
     }
 
     @Test
+    fun throws_when_one_pairing_partner_is_unknown() {
+        val sut = ProgramArgs(arrayOf("-p", "claus-berni-dominik-andrej-shubi-tibor-xxx"))
+
+        assertThatThrownBy { sut.get_pairing_partner() }
+                .isInstanceOf(ProgramArgs.WrongPairingPartnerArgumentSyntax::class.java)
+    }
+
+    @Test
     fun throws_when_pairing_partner_arguments_are_missing_the_pairing_partner_option() {
         val sut = ProgramArgs(arrayOf("-x", PAIRING_PARTNER))
 
         assertThatThrownBy { sut.get_pairing_partner() }
+                .isInstanceOf(ProgramArgs.WrongPairingPartnerArgumentSyntax::class.java)
     }
 
     @Test
@@ -437,6 +453,7 @@ class ProgramArgsTest {
         val sut = ProgramArgs(arrayOf("-p"))
 
         assertThatThrownBy { sut.get_pairing_partner() }
+                .isInstanceOf(ProgramArgs.WrongPairingPartnerArgumentSyntax::class.java)
     }
 
     @Test
@@ -444,6 +461,7 @@ class ProgramArgsTest {
         val sut = ProgramArgs(arrayOf(PAIRING_PARTNER, "-p"))
 
         assertThatThrownBy { sut.get_pairing_partner() }
+                .isInstanceOf(ProgramArgs.WrongPairingPartnerArgumentSyntax::class.java)
     }
 
     @Test
@@ -451,6 +469,7 @@ class ProgramArgsTest {
         val sut = ProgramArgs(arrayOf("-p", "clausbern"))
 
         assertThatThrownBy { sut.get_pairing_partner() }
+                .isInstanceOf(ProgramArgs.WrongPairingPartnerArgumentSyntax::class.java)
     }
 
     @Test
@@ -458,6 +477,7 @@ class ProgramArgsTest {
         val sut = ProgramArgs(arrayOf("-p", "claus-berni-dominik-andrej-shubi-tibor"))
 
         assertThatThrownBy { sut.get_pairing_partner() }
+                .isInstanceOf(ProgramArgs.WrongPairingPartnerArgumentSyntax::class.java)
     }
 
     @Test
@@ -465,6 +485,7 @@ class ProgramArgsTest {
         val sut = ProgramArgs(arrayOf("-p", "$PAIRING_PARTNER-mihai"))
 
         assertThatThrownBy { sut.get_pairing_partner() }
+                .isInstanceOf(ProgramArgs.WrongPairingPartnerArgumentSyntax::class.java)
     }
 
 }
