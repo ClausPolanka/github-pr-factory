@@ -4,6 +4,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.Test
 import pullrequestfactory.domain.Candidate
+import pullrequestfactory.domain.PairingPartner
 import pullrequestfactory.io.programs.ProgramArgs
 
 
@@ -414,7 +415,14 @@ class ProgramArgsTest {
 
         val pairingPartner = sut.get_pairing_partner()
 
-        assertThat(pairingPartner).isEqualTo(listOf("claus", "berni", "dominik", "andrej", "shubi", "tibor", "nandor"))
+        assertThat(pairingPartner).isEqualTo(listOf(
+                PairingPartner.CLAUS,
+                PairingPartner.BERNI,
+                PairingPartner.DOMINIK,
+                PairingPartner.ANDREJ,
+                PairingPartner.SHUBI,
+                PairingPartner.TIBOR,
+                PairingPartner.NANDOR))
     }
 
     @Test

@@ -18,7 +18,7 @@ class GithubPRFactory(
      * branches unsorted. The names in the list must be the same (case insensitve) as the ones which are at the end of
      * each branch.
      */
-    fun open_pull_requests(candidate: Candidate, pairingPartner: List<String>) {
+    fun open_pull_requests(candidate: Candidate, pairingPartner: List<PairingPartner>) {
         val branches = get_branches_for(candidate)
         val prs = branches.pull_requests_for(pairingPartner)
         prs.forEach { githubPullRequestsRepo.open_pull_request(it) }

@@ -1,5 +1,6 @@
 package pullrequestfactory.domain.branches
 
+import pullrequestfactory.domain.PairingPartner
 import pullrequestfactory.domain.pullrequests.PullRequest
 import pullrequestfactory.domain.pullrequests.PullRequestMarker
 
@@ -23,7 +24,7 @@ class Branches(private val branches: List<Branch>, private val pullRequestMarker
     private val branch_sessions: List<String>
         get() = Sessions.create_sessions_for(branches)
 
-    fun pull_requests_for(pairingPartner: List<String>): List<PullRequest> {
+    fun pull_requests_for(pairingPartner: List<PairingPartner>): List<PullRequest> {
         val brs = sort_branches_by(pairingPartner)
         with(brs) {
             val pullRequests = branches.mapIndexed { idx, branch ->
@@ -36,12 +37,12 @@ class Branches(private val branches: List<Branch>, private val pullRequestMarker
         }
     }
 
-    private fun sort_branches_by(pairingPartner: List<String>) = Branches(
+    private fun sort_branches_by(pairingPartner: List<PairingPartner>) = Branches(
             pairingPartner.map { sort_branches_by(it) }.flatten(),
             pullRequestMarker)
 
-    private fun sort_branches_by(pairingPartner: String) =
-            branches.filter { it.name.endsWith(pairingPartner.toLowerCase()) }
+    private fun sort_branches_by(pairingPartner: PairingPartner) =
+            branches.filter { it.name.endsWith(pairingPartner.name.toLowerCase()) }
                     .map { Pair(it.name, it.iteration_nr()) }
                     .sortedBy { it.second }
                     .map { Branch(it.first) }

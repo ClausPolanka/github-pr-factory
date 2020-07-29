@@ -1,6 +1,7 @@
 package pullrequestfactory.io.programs
 
 import pullrequestfactory.domain.Candidate
+import pullrequestfactory.domain.PairingPartner
 
 class ProgramArgs(private val args: Array<String>) {
 
@@ -87,10 +88,10 @@ class ProgramArgs(private val args: Array<String>) {
     private fun is_github_basic_auth_token_syntax_valid() =
             args.size >= 2 && args.contains(GITHUB_BASIC_AUTH_TOKEN_OPTION)
 
-    fun get_pairing_partner(): List<String> {
+    fun get_pairing_partner(): List<PairingPartner> {
         validate_args_pairing_partner_syntax()
         val idx = args.indexOf(PAIRING_PARTNER_OPTION) + 1
-        return args[idx].split("-")
+        return args[idx].split("-").map { PairingPartner.valueOf(it.toUpperCase()) }
     }
 
     private fun validate_args_pairing_partner_syntax() {
