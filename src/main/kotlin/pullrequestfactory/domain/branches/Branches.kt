@@ -17,8 +17,17 @@ class Branches(private val branches: List<Branch>, private val pullRequestMarker
     val branch_titles: List<String>
         get() = branches.mapIndexed { idx, br ->
             val (firstName, lastName, _, iterationNr, pairingPartner) = br.parts()
-            "${firstName.capitalize()} ${lastName.capitalize()} " +
-                    "Iteration $iterationNr / Session ${branch_sessions[idx]} ${pairingPartner.capitalize()}"
+            val titleParts = listOf(
+                    firstName.capitalize(),
+                    lastName.capitalize(),
+                    "Iteration",
+                    iterationNr,
+                    "/",
+                    "Session",
+                    branch_sessions[idx],
+                    pairingPartner.capitalize()
+            )
+            titleParts.joinToString(" ")
         }
 
     private val branch_sessions: List<String>
