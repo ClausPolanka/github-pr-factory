@@ -94,17 +94,17 @@ class ProgramArgs(private val args: Array<String>) {
         return create_pairing_partner(pairingPartner)
     }
 
+    private fun validate_args_pairing_partner_syntax() {
+        if (!is_pairing_partner_syntax_valid()) {
+            throw WrongPairingPartnerArgumentSyntax(ERROR_MSG_PAIRING_PARTNER)
+        }
+    }
+
     private fun create_pairing_partner(pairingPartner: String): List<PairingPartner> {
         return try {
             pairingPartner.split("-").map { PairingPartner.valueOf(it.toUpperCase()) }
         } catch (e: IllegalArgumentException) {
             throw WrongPairingPartnerArgumentSyntax("$ERROR_MSG_PAIRING_PARTNER ${e.message}")
-        }
-    }
-
-    private fun validate_args_pairing_partner_syntax() {
-        if (!is_pairing_partner_syntax_valid()) {
-            throw WrongPairingPartnerArgumentSyntax(ERROR_MSG_PAIRING_PARTNER)
         }
     }
 
