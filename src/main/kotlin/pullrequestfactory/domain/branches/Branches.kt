@@ -1,6 +1,7 @@
 package pullrequestfactory.domain.branches
 
 import pullrequestfactory.domain.PairingPartner
+import pullrequestfactory.domain.branches.Sessions.create_sessions_for
 import pullrequestfactory.domain.pullrequests.PullRequest
 import pullrequestfactory.domain.pullrequests.PullRequestMarker
 
@@ -24,14 +25,11 @@ class Branches(private val branches: List<Branch>, private val pullRequestMarker
                     iterationNr,
                     "/",
                     "Session",
-                    branch_sessions[idx],
+                    create_sessions_for(branches)[idx],
                     pairingPartner.capitalize()
             )
             titleParts.joinToString(" ")
         }
-
-    private val branch_sessions: List<String>
-        get() = Sessions.create_sessions_for(branches)
 
     fun pull_requests_for(pairingPartner: List<PairingPartner>): List<PullRequest> {
         val brs = sort_branches_by(pairingPartner)
