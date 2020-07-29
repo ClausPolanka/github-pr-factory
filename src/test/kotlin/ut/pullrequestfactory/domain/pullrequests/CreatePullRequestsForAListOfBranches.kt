@@ -2,11 +2,13 @@ package ut.pullrequestfactory.domain.pullrequests
 
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
+import pullrequestfactory.domain.Candidate
 import pullrequestfactory.domain.PairingPartner
 import pullrequestfactory.domain.branches.Branch
 import pullrequestfactory.domain.branches.Branches
 import pullrequestfactory.domain.pullrequests.PullRequest
 import pullrequestfactory.domain.pullrequests.PullRequestLastNotFinishedMarker
+import ut.pullrequestfactory.domain.TestBranchBuilder
 
 class CreatePullRequestsForAListOfBranches {
 
@@ -16,91 +18,143 @@ class CreatePullRequestsForAListOfBranches {
 
     @Test
     fun create_pull_request_for_one_session_within_same_iteration_for_same_pairing_partner() {
-        val prs = Branches(
-                listOf(Branch("firstname_lastname_iteration_1_${pairingPartner.name.toLowerCase()}")),
-                PullRequestLastNotFinishedMarker()).pull_requests_for(listOf(pairingPartner))
+        val branch = TestBranchBuilder()
+                .with_candidate(Candidate("Firstname", "Lastname"))
+                .with_iteration(1)
+                .with_pairing_partner(pairingPartner)
+                .build()
+        val sut = create_branches_for(listOf(branch))
+
+        val prs = sut.pull_requests_for(listOf(pairingPartner))
 
         assertThat(prs).containsExactly(PullRequest(
                 "Firstname Lastname Iteration 1 / Session 1 ${pairingPartner.nickName}",
                 Branch("master"),
-                Branch("firstname_lastname_iteration_1_${pairingPartner.name.toLowerCase()}")))
+                branch))
     }
 
     @Test
     fun create_pull_requests_for_one_session_and_two_iterations_for_same_pairing_partner() {
-        val prs = Branches(listOf(
-                Branch("firstname_lastname_iteration_1_${pairingPartner.name.toLowerCase()}"),
-                Branch("firstname_lastname_iteration_2_${pairingPartner.name.toLowerCase()}")),
-                PullRequestLastNotFinishedMarker()).pull_requests_for(listOf(pairingPartner))
+        val candidate = Candidate("Firstname", "Lastname")
+        val branch1 = TestBranchBuilder()
+                .with_candidate(candidate)
+                .with_iteration(1)
+                .with_pairing_partner(pairingPartner)
+                .build()
+        val branch2 = TestBranchBuilder()
+                .with_candidate(candidate)
+                .with_iteration(2)
+                .with_pairing_partner(pairingPartner)
+                .build()
+        val sut = create_branches_for(listOf(branch1, branch2))
+
+        val prs = sut.pull_requests_for(listOf(pairingPartner))
 
         assertThat(prs)
                 .contains(PullRequest(
                         "Firstname Lastname Iteration 1 / Session 1 ${pairingPartner.nickName} [PR]",
                         Branch("master"),
-                        Branch("firstname_lastname_iteration_1_${pairingPartner.name.toLowerCase()}")))
+                        branch1))
                 .contains(PullRequest(
                         "Firstname Lastname Iteration 2 / Session 1 ${pairingPartner.nickName}",
-                        Branch("firstname_lastname_iteration_1_${pairingPartner.name.toLowerCase()}"),
-                        Branch("firstname_lastname_iteration_2_${pairingPartner.name.toLowerCase()}")))
+                        branch1,
+                        branch2))
     }
 
     @Test
     fun create_pull_requests_for_two_sessions_within_same_iteration_for_different_pairing_partner() {
-        val prs = Branches(listOf(
-                Branch("firstname_lastname_iteration_1_${pairingPartner1.name.toLowerCase()}"),
-                Branch("firstname_lastname_iteration_1_${pairingPartner2.name.toLowerCase()}")),
-                PullRequestLastNotFinishedMarker()).pull_requests_for(listOf(pairingPartner1, pairingPartner2))
+        val candidate = Candidate("Firstname", "Lastname")
+        val branch1 = TestBranchBuilder()
+                .with_candidate(candidate)
+                .with_iteration(1)
+                .with_pairing_partner(pairingPartner1)
+                .build()
+        val branch2 = TestBranchBuilder()
+                .with_candidate(candidate)
+                .with_iteration(1)
+                .with_pairing_partner(pairingPartner2)
+                .build()
+        val sut = create_branches_for(listOf(branch1, branch2))
+
+        val prs = sut.pull_requests_for(listOf(pairingPartner1, pairingPartner2))
 
         assertThat(prs)
                 .contains(PullRequest(
                         "Firstname Lastname Iteration 1 / Session 1 ${pairingPartner1.nickName}",
                         Branch("master"),
-                        Branch("firstname_lastname_iteration_1_${pairingPartner1.name.toLowerCase()}")))
+                        branch1))
                 .contains(PullRequest(
                         "Firstname Lastname Iteration 1 / Session 2 ${pairingPartner2.nickName}",
-                        Branch("firstname_lastname_iteration_1_${pairingPartner1.name.toLowerCase()}"),
-                        Branch("firstname_lastname_iteration_1_${pairingPartner2.name.toLowerCase()}")))
+                        branch1,
+                        branch2))
     }
 
     @Test
     fun create_pull_requests_for_two_sessions_for_two_iterations_for_different_pairing_partner() {
-        val prs = Branches(listOf(
-                Branch("firstname_lastname_iteration_1_${pairingPartner1.name.toLowerCase()}"),
-                Branch("firstname_lastname_iteration_2_${pairingPartner2.name.toLowerCase()}")),
-                PullRequestLastNotFinishedMarker()).pull_requests_for(listOf(pairingPartner1, pairingPartner2))
+        val candidate = Candidate("Firstname", "Lastname")
+        val branch1 = TestBranchBuilder()
+                .with_candidate(candidate)
+                .with_iteration(1)
+                .with_pairing_partner(pairingPartner1)
+                .build()
+        val branch2 = TestBranchBuilder()
+                .with_candidate(candidate)
+                .with_iteration(2)
+                .with_pairing_partner(pairingPartner2)
+                .build()
+        val sut = create_branches_for(listOf(branch1, branch2))
+
+        val prs = sut.pull_requests_for(listOf(pairingPartner1, pairingPartner2))
 
         assertThat(prs)
                 .contains(PullRequest(
                         "Firstname Lastname Iteration 1 / Session 1 ${pairingPartner1.nickName} [PR]",
                         Branch("master"),
-                        Branch("firstname_lastname_iteration_1_${pairingPartner1.name.toLowerCase()}")))
+                        branch1))
                 .contains(PullRequest(
                         "Firstname Lastname Iteration 2 / Session 2 ${pairingPartner2.nickName}",
-                        Branch("firstname_lastname_iteration_1_${pairingPartner1.name.toLowerCase()}"),
-                        Branch("firstname_lastname_iteration_2_${pairingPartner2.name.toLowerCase()}")))
+                        branch1,
+                        branch2))
+
     }
 
     @Test
     fun create_pull_requests_for_two_different_sessions_where_in_first_session_a_new_iteration_is_started() {
-        val prs = Branches(listOf(
-                Branch("firstname_lastname_iteration_1_${pairingPartner1.name.toLowerCase()}"),
-                Branch("firstname_lastname_iteration_2_${pairingPartner1.name.toLowerCase()}"),
-                Branch("firstname_lastname_iteration_2_${pairingPartner2.name.toLowerCase()}")),
-                PullRequestLastNotFinishedMarker()).pull_requests_for(listOf(pairingPartner1, pairingPartner2))
+        val candidate = Candidate("Firstname", "Lastname")
+        val branch1 = TestBranchBuilder()
+                .with_candidate(candidate)
+                .with_iteration(1)
+                .with_pairing_partner(pairingPartner1)
+                .build()
+        val branch2 = TestBranchBuilder()
+                .with_candidate(candidate)
+                .with_iteration(2)
+                .with_pairing_partner(pairingPartner1)
+                .build()
+        val branch3 = TestBranchBuilder()
+                .with_candidate(candidate)
+                .with_iteration(2)
+                .with_pairing_partner(pairingPartner2)
+                .build()
+        val sut = create_branches_for(listOf(branch1, branch2, branch3))
+
+        val prs = sut.pull_requests_for(listOf(pairingPartner1, pairingPartner2))
 
         assertThat(prs)
                 .contains(PullRequest(
                         "Firstname Lastname Iteration 1 / Session 1 ${pairingPartner1.nickName} [PR]",
                         Branch("master"),
-                        Branch("firstname_lastname_iteration_1_${pairingPartner1.name.toLowerCase()}")))
+                        branch1))
                 .contains(PullRequest(
                         "Firstname Lastname Iteration 2 / Session 1 ${pairingPartner1.nickName}",
-                        Branch("firstname_lastname_iteration_1_${pairingPartner1.name.toLowerCase()}"),
-                        Branch("firstname_lastname_iteration_2_${pairingPartner1.name.toLowerCase()}")))
+                        branch1,
+                        branch2))
                 .contains(PullRequest(
                         "Firstname Lastname Iteration 2 / Session 2 ${pairingPartner2.nickName}",
-                        Branch("firstname_lastname_iteration_2_${pairingPartner1.name.toLowerCase()}"),
-                        Branch("firstname_lastname_iteration_2_${pairingPartner2.name.toLowerCase()}")))
+                        branch2,
+                        branch3))
     }
+
+    private fun create_branches_for(branches: List<Branch>) = Branches(branches, PullRequestLastNotFinishedMarker())
 
 }
