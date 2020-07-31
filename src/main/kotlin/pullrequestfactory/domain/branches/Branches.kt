@@ -11,7 +11,7 @@ class Branches(private val branches: List<Branch>, private val pullRequestMarker
         get() = branches.mapIndexed { idx, _ ->
             when (idx) {
                 0 -> Branch("master")
-                else -> branches[idx.dec()]
+                else -> branches[idx.dec()].copy()
             }
         }
 
@@ -37,8 +37,8 @@ class Branches(private val branches: List<Branch>, private val pullRequestMarker
             val pullRequests = branches.mapIndexed { idx, branch ->
                 PullRequest(
                         title = branch_titles[idx],
-                        _base = base_branches[idx],
-                        _head = branch)
+                        _base = base_branches[idx].copy(),
+                        _head = branch.copy())
             }
             return pullRequestMarker.mark_titles_of(pullRequests)
         }
