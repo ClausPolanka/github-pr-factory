@@ -25,7 +25,7 @@ class CreatePullRequestsForAListOfBranches {
                 .build()
         val sut = create_branches_for(listOf(branch))
 
-        val prs = sut.pull_requests_for(listOf(pairingPartner))
+        val prs = sut.get_pull_requests_for(listOf(pairingPartner))
 
         assertThat(prs).containsExactly(PullRequest(
                 "Firstname Lastname Iteration 1 / Session 1 ${pairingPartner.pullRequestName}",
@@ -48,7 +48,7 @@ class CreatePullRequestsForAListOfBranches {
                 .build()
         val sut = create_branches_for(listOf(branch1, branch2))
 
-        val prs = sut.pull_requests_for(listOf(pairingPartner))
+        val prs = sut.get_pull_requests_for(listOf(pairingPartner))
 
         assertThat(prs)
                 .contains(PullRequest(
@@ -76,7 +76,7 @@ class CreatePullRequestsForAListOfBranches {
                 .build()
         val sut = create_branches_for(listOf(branch1, branch2))
 
-        val prs = sut.pull_requests_for(listOf(pairingPartner1, pairingPartner2))
+        val prs = sut.get_pull_requests_for(listOf(pairingPartner1, pairingPartner2))
 
         assertThat(prs)
                 .contains(PullRequest(
@@ -104,7 +104,7 @@ class CreatePullRequestsForAListOfBranches {
                 .build()
         val sut = create_branches_for(listOf(branch1, branch2))
 
-        val prs = sut.pull_requests_for(listOf(pairingPartner1, pairingPartner2))
+        val prs = sut.get_pull_requests_for(listOf(pairingPartner1, pairingPartner2))
 
         assertThat(prs)
                 .contains(PullRequest(
@@ -138,7 +138,7 @@ class CreatePullRequestsForAListOfBranches {
                 .build()
         val sut = create_branches_for(listOf(branch1, branch2, branch3))
 
-        val prs = sut.pull_requests_for(listOf(pairingPartner1, pairingPartner2))
+        val prs = sut.get_pull_requests_for(listOf(pairingPartner1, pairingPartner2))
 
         assertThat(prs)
                 .contains(PullRequest(

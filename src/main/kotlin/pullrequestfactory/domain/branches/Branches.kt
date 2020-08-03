@@ -31,7 +31,7 @@ class Branches(private val branches: List<Branch>, private val pullRequestMarker
             titleParts.joinToString(" ")
         }
 
-    fun pull_requests_for(pairingPartner: List<PairingPartner>): List<PullRequest> {
+    fun get_pull_requests_for(pairingPartner: List<PairingPartner>): List<PullRequest> {
         val brs = sort_branches_by(pairingPartner)
         with(brs) {
             val pullRequests = branches.mapIndexed { idx, branch ->
