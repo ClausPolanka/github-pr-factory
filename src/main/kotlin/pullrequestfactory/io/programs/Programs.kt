@@ -2,7 +2,7 @@ package pullrequestfactory.io.programs
 
 import pullrequestfactory.io.programs.impl.*
 
-class Programs {
+object Programs {
 
     fun create_program_for(args: Array<String>): Program {
         val pa = ProgramArgs(args)
