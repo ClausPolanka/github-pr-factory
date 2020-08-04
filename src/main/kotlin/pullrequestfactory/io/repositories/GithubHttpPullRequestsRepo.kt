@@ -3,7 +3,6 @@ package pullrequestfactory.io.repositories
 import com.beust.klaxon.Klaxon
 import pullrequestfactory.domain.pullrequests.GetPullRequest
 import pullrequestfactory.domain.pullrequests.GithubPullRequestsRepo
-import pullrequestfactory.domain.pullrequests.PatchPullRequest
 import pullrequestfactory.domain.pullrequests.PullRequest
 import pullrequestfactory.domain.uis.UI
 
@@ -36,7 +35,9 @@ class GithubHttpPullRequestsRepo(
                         "Accept" to "application/json",
                         "Authorization" to "Basic $basicAuthToken",
                         "Content-Type" to "application/json"),
-                data = Klaxon().toJsonString(PatchPullRequest(state = "closed")))
+                data = Klaxon().toJsonString(object {
+                    val state = "closed"
+                }))
         ui.show("$response")
     }
 
