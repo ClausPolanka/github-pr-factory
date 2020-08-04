@@ -5,7 +5,7 @@ import pullrequestfactory.domain.pullrequests.GetPullRequest
 import pullrequestfactory.domain.pullrequests.GithubPullRequestsReadRepo
 import pullrequestfactory.domain.uis.UI
 
-class GithubPullRequestsReadRepos(
+class GithubHttpPullRequestsReadRepos(
         private val repoPath: String,
         private val ui: UI) : GithubPullRequestsReadRepo {
 

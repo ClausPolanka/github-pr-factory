@@ -13,7 +13,7 @@ class GithubHttpPullRequestsRepo(
         private val ui: UI) : GithubPullRequestsRepo {
 
     override fun get_all_open_pull_requests(): List<GetPullRequest> {
-        return GithubPullRequestsReadRepos(repoPath, ui).get_all_open_pull_requests()
+        return GithubHttpPullRequestsReadRepos(repoPath, ui).get_all_open_pull_requests()
     }
 
     override fun open_pull_request(pullRequest: PullRequest) {
