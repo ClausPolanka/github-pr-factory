@@ -15,8 +15,8 @@ class ClosePullRequestsProgramInteractiveMode : Program {
     private val ui = ConsoleUI()
 
     override fun execute() {
-        println("Welcome to interactive mode for closing pull requests")
-        println("Please provide data for the following questions")
+        ui.show("Welcome to interactive mode for closing pull requests")
+        ui.show("Please provide data for the following questions")
         val candidateFirstName = ui.get_user_input(msg = "Candidate first name: ")
         val candidateLastName = ui.get_user_input(msg = "Candidate last name: ")
         val githubBasicAuthToken = ui.get_user_input(msg = "Your Github.com basic authorization token: ")
@@ -25,7 +25,7 @@ class ClosePullRequestsProgramInteractiveMode : Program {
     }
 
     private fun close_pull_requests_for(candidate: Candidate, githubBasicAuthToken: String) {
-        println("Closing pull requests for: $candidate")
+        ui.show("Closing pull requests for: $candidate")
         val baseUrl = properties.get_github_base_url()
         val repoPath = properties.get_github_repository_path()
         val githubBranchesRepo = GithubHttpBranchesRepos(baseUrl + repoPath, ui)
@@ -36,8 +36,8 @@ class ClosePullRequestsProgramInteractiveMode : Program {
                 BranchSyntaxValidator(ui),
                 PullRequestLastNotFinishedMarker())
         f.close_pull_requests_for(candidate)
-        println("Successfully closed all pull requests for: $candidate")
-        println("Have a nice day. Bye bye.")
+        ui.show("Successfully closed all pull requests for: $candidate")
+        ui.show("Have a nice day. Bye bye.")
     }
 
 }
