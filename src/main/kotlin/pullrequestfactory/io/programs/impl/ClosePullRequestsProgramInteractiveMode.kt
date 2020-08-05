@@ -16,30 +16,14 @@ class ClosePullRequestsProgramInteractiveMode : Program {
     override fun execute() {
         println("Welcome to interactive mode for closing pull requests")
         println("Please provide data for the following questions")
-
-        print("Candidate first name: ")
-        var candidateFirstName = readLine()
-        while (candidateFirstName.isNullOrEmpty()) {
-            print("Candidate first name: ")
-            candidateFirstName = readLine()
-        }
-
-        print("Candidate last name: ")
-        var candidateLastName = readLine()
-        while (candidateLastName.isNullOrEmpty()) {
-            print("Candidate last name: ")
-            candidateLastName = readLine()
-        }
-
-        print("Your Github.com basic authorization token: ")
-        var githubBasicAuthToken = readLine()
-        while (githubBasicAuthToken.isNullOrEmpty()) {
-            print("Your Github.com basic authorization token: ")
-            githubBasicAuthToken = readLine()
-        }
-
+        val candidateFirstName = get_user_input(msg = "Candidate first name: ")
+        val candidateLastName = get_user_input(msg = "Candidate last name: ")
+        val githubBasicAuthToken = get_user_input(msg = "Your Github.com basic authorization token: ")
         val candidate = Candidate(candidateFirstName, candidateLastName)
+        close_pull_requests_for(candidate, githubBasicAuthToken)
+    }
 
+    private fun close_pull_requests_for(candidate: Candidate, githubBasicAuthToken: String) {
         println("Closing pull requests for: $candidate")
         val baseUrl = properties.get_github_base_url()
         val repoPath = properties.get_github_repository_path()
@@ -54,6 +38,15 @@ class ClosePullRequestsProgramInteractiveMode : Program {
         f.close_pull_requests_for(candidate)
         println("Successfully closed all pull requests for: $candidate")
         println("Have a nice day. Bye bye.")
+    }
+
+    private fun get_user_input(msg: String): String {
+        var userInput: String? = null
+        while (userInput.isNullOrEmpty()) {
+            print(msg)
+            userInput = readLine()
+        }
+        return userInput
     }
 
 }
