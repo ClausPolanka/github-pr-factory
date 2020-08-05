@@ -119,6 +119,10 @@ class ProgramArgs(private val args: Array<String>) {
     private fun is_last_pull_request_finished() =
             args.contains(IS_LAST_PULL_REQUEST_FINISHED) || args.contains(IS_LAST_PULL_REQUEST_FINISHED_LONG_VERSION)
 
+    fun has_close_command_in_interactive_mode(): Boolean {
+        return is_interactive_mode()
+    }
+
     class WrongCandidateArgumentSyntax(msg: String) : RuntimeException(msg)
     class WrongGithubBasicAuthTokenArgumentSyntax(msg: String) : RuntimeException(msg)
     class WrongPairingPartnerArgumentSyntax(msg: String) : RuntimeException(msg)
