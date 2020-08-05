@@ -12,12 +12,12 @@ class ShowHelpOutputProgram : Program {
         for the George backend chapter 2nd round hirings.
         
         Options:
-          -?, --help\t\t\tPrint this help statement
-          -v, --version\t\t\tPrint version information and quit
+          -?, --help${"\t\t\t"}Print this help statement
+          -v, --version${"\t\t\t"}Print version information and quit
         
         Commands:
-          open\t\tOpen Github pull requests
-          close\t\tClose Github pull requests
+          open${"\t\t"}Open Github pull requests
+          close${"\t\t"}Close Github pull requests
         
         Run 'github-pr-factory COMMAND --help' for more information on a command.
         """
