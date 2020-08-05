@@ -18,14 +18,25 @@ class ClosePullRequestsProgramInteractiveMode : Program {
         println("Please provide data for the following questions")
 
         print("Candidate first name: ")
-        val candidateFirstName = readLine() ?: "invalid first name"
+        var candidateFirstName = readLine()
+        while (candidateFirstName.isNullOrEmpty()) {
+            print("Candidate first name: ")
+            candidateFirstName = readLine()
+        }
 
         print("Candidate last name: ")
-        val candidateLastName = readLine() ?: "invalid last name"
+        var candidateLastName = readLine()
+        while (candidateLastName.isNullOrEmpty()) {
+            print("Candidate last name: ")
+            candidateLastName = readLine()
+        }
 
         print("Your Github.com basic authorization token: ")
-        val githubBasicAuthToken = readLine()
-                ?: "invalid Github basic auth token"
+        var githubBasicAuthToken = readLine()
+        while (githubBasicAuthToken.isNullOrEmpty()) {
+            print("Your Github.com basic authorization token: ")
+            githubBasicAuthToken = readLine()
+        }
 
         val candidate = Candidate(candidateFirstName, candidateLastName)
 
