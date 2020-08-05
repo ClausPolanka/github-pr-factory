@@ -7,9 +7,9 @@ class ShowOpenCommandHelpOutputProgram : Program {
     override fun execute() {
         val helpOutput = """
         Usage: github-pr-factory open [OPTION]
-        
+
         Open new Github pull requests for a 2nd round hiring candidate
-        
+
         Options:
           -c${"\t\t"}The candidate's first name and last-name separated by hyphen
           -g${"\t\t"}Your Github basic authorization token
@@ -17,9 +17,9 @@ class ShowOpenCommandHelpOutputProgram : Program {
             ${"\t\t"}  Currently supported names:
             ${"\t\t"}  claus, berni, bernhard, nandor, dominik, mihai, lampe, shubi
             ${"\t\t"}  markus, tibor, christian, michal, tomas, peter, martin, john, andrej
-        
+
           -l, --last-finished${"\t\t"}Marks last iteration pull request with '[PR]' as finished
-        
+
         Example:
           github-pr-factory open -c firstname-lastname ${"\\"}
             -g 10238sadf08klasjdf098 ${"\\"}
