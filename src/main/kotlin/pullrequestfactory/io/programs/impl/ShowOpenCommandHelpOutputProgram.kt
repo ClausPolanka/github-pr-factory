@@ -11,18 +11,18 @@ class ShowOpenCommandHelpOutputProgram : Program {
         Open new Github pull requests for a 2nd round hiring candidate
         
         Options:
-          -c\t\tThe candidate's first name and last-name separated by hyphen
-          -g\t\tYour Github basic authorization token
-          -p\t\tSeven pairing-partner names separated by hyphen
-            \t\t  Currently supported names:
-            \t\t  claus, berni, bernhard, nandor, dominik, mihai, lampe, shubi
-            \t\t  markus, tibor, christian, michal, tomas, peter, martin, john, andrej
+          -c${"\t\t"}The candidate's first name and last-name separated by hyphen
+          -g${"\t\t"}Your Github basic authorization token
+          -p${"\t\t"}Seven pairing-partner names separated by hyphen
+            ${"\t\t"}  Currently supported names:
+            ${"\t\t"}  claus, berni, bernhard, nandor, dominik, mihai, lampe, shubi
+            ${"\t\t"}  markus, tibor, christian, michal, tomas, peter, martin, john, andrej
         
-          -l, --last-finished\t\tMarks last iteration pull request with '[PR]' as finished
+          -l, --last-finished${"\t\t"}Marks last iteration pull request with '[PR]' as finished
         
         Example:
-          github-pr-factory open -c firstname-lastname \\
-            -g 10238sadf08klasjdf098 \\
+          github-pr-factory open -c firstname-lastname ${"\\"}
+            -g 10238sadf08klasjdf098 ${"\\"}
             -p claus-berni-nandor-dominik-mihai-lampe-shubi
         """
         println(helpOutput.trimIndent())
