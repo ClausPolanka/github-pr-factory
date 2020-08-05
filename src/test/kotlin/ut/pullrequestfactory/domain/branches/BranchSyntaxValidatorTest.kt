@@ -15,6 +15,10 @@ class BranchSyntaxValidatorTest {
             override fun show(msg: String) {
                 message = msg
             }
+
+            override fun get_user_input(msg: String): String {
+                Ignore()
+            }
         })
         listOf("_lastname_iteration_1_pairingpartner",
                 "firstname_lastname_iter_1_pairingpartner",
@@ -34,11 +38,19 @@ class BranchSyntaxValidatorTest {
             override fun show(msg: String) {
                 message = msg
             }
+
+            override fun get_user_input(msg: String): String {
+                Ignore()
+            }
         })
 
         sut.validate(Branch("firstname_lastname_iteration_1_claus"))
 
         assertThat(message).isEmpty()
+    }
+
+    private fun Ignore(): Nothing {
+        throw NotImplementedError("Ooperation is not required")
     }
 
 }
