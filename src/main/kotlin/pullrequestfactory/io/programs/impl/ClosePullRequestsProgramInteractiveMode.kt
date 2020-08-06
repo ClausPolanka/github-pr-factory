@@ -6,13 +6,12 @@ import pullrequestfactory.domain.branches.BranchSyntaxValidator
 import pullrequestfactory.domain.pullrequests.PullRequestLastNotFinishedMarker
 import pullrequestfactory.domain.uis.UI
 import pullrequestfactory.io.programs.Program
-import pullrequestfactory.io.programs.Properties
 import pullrequestfactory.io.repositories.GithubHttpBranchesRepos
 import pullrequestfactory.io.repositories.GithubHttpPullRequestsRepo
 
 class ClosePullRequestsProgramInteractiveMode(
         private val ui: UI,
-        private val properties: Properties) : Program {
+        private val repoUrl: String) : Program {
 
     override fun execute() {
         ui.show("Welcome to interactive mode for closing pull requests")
@@ -26,10 +25,8 @@ class ClosePullRequestsProgramInteractiveMode(
 
     private fun close_pull_requests_for(candidate: Candidate, githubBasicAuthToken: String) {
         ui.show("Closing pull requests for: $candidate")
-        val baseUrl = properties.get_github_base_url()
-        val repoPath = properties.get_github_repository_path()
-        val githubBranchesRepo = GithubHttpBranchesRepos(baseUrl + repoPath, ui)
-        val githubPullRequestsRepo = GithubHttpPullRequestsRepo(baseUrl + repoPath, githubBasicAuthToken, ui)
+        val githubBranchesRepo = GithubHttpBranchesRepos(repoUrl, ui)
+        val githubPullRequestsRepo = GithubHttpPullRequestsRepo(repoUrl, githubBasicAuthToken, ui)
         val f = GithubPRFactory(
                 githubBranchesRepo,
                 githubPullRequestsRepo,
