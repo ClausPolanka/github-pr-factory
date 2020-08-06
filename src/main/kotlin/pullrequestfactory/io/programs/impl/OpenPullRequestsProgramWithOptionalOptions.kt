@@ -5,13 +5,14 @@ import pullrequestfactory.domain.branches.BranchSyntaxValidator
 import pullrequestfactory.domain.pullrequests.PullRequestLastFinishedMarker
 import pullrequestfactory.io.programs.Program
 import pullrequestfactory.io.programs.ProgramArgs
+import pullrequestfactory.io.programs.Properties
 import pullrequestfactory.io.repositories.GithubHttpBranchesRepos
 import pullrequestfactory.io.repositories.GithubHttpPullRequestsRepo
 import pullrequestfactory.io.uis.ConsoleUI
 
-class OpenPullRequestsProgramWithOptionalOptions(private val programArgs: ProgramArgs) : Program {
-
-    private val properties = FileProperties("app.properties")
+class OpenPullRequestsProgramWithOptionalOptions(
+        private val programArgs: ProgramArgs,
+        private val properties: Properties) : Program {
 
     override fun execute() {
         val candidate = programArgs.get_candidate()

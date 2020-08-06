@@ -4,15 +4,15 @@ import pullrequestfactory.domain.Candidate
 import pullrequestfactory.domain.GithubPRFactory
 import pullrequestfactory.domain.branches.BranchSyntaxValidator
 import pullrequestfactory.domain.pullrequests.PullRequestLastNotFinishedMarker
+import pullrequestfactory.domain.uis.UI
 import pullrequestfactory.io.programs.Program
+import pullrequestfactory.io.programs.Properties
 import pullrequestfactory.io.repositories.GithubHttpBranchesRepos
 import pullrequestfactory.io.repositories.GithubHttpPullRequestsRepo
-import pullrequestfactory.io.uis.ConsoleUI
 
-class ClosePullRequestsProgramInteractiveMode : Program {
-
-    private val properties = FileProperties("app.properties")
-    private val ui = ConsoleUI()
+class ClosePullRequestsProgramInteractiveMode(
+        private val ui: UI,
+        private val properties: Properties) : Program {
 
     override fun execute() {
         ui.show("Welcome to interactive mode for closing pull requests")
