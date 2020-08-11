@@ -5,8 +5,10 @@ import pullrequestfactory.domain.branches.Branches
 import pullrequestfactory.domain.branches.GithubBranchesRepo
 import pullrequestfactory.domain.pullrequests.GithubPullRequestsRepo
 import pullrequestfactory.domain.pullrequests.PullRequestMarker
+import pullrequestfactory.domain.uis.UI
 
 class GithubPRFactory(
+        val ui: UI,
         private val githubBranchesRepo: GithubBranchesRepo,
         private val githubPullRequestsRepo: GithubPullRequestsRepo,
         private val branchSyntaxValidator: BranchSyntaxValidator,
@@ -36,11 +38,14 @@ class GithubPRFactory(
     }
 
     fun close_pull_requests_for(candidate: Candidate) {
+        ui.show("Closing pull requests for: $candidate")
         val prs = githubPullRequestsRepo.get_all_open_pull_requests()
                 .filter { it.title.contains(candidate.firstName, ignoreCase = true) }
                 .filter { it.title.contains(candidate.lastName, ignoreCase = true) }
 
         prs.forEach { githubPullRequestsRepo.close_pull_request(it.number) }
+        ui.show("Successfully closed all pull requests for: $candidate")
+        ui.show("Have a nice day. Bye bye.")
     }
 
 }

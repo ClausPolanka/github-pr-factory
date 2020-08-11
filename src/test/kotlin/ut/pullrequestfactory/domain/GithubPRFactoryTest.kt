@@ -11,6 +11,7 @@ import pullrequestfactory.domain.branches.BranchSyntaxValidator
 import pullrequestfactory.domain.branches.GithubBranchesRepo
 import pullrequestfactory.domain.pullrequests.*
 import pullrequestfactory.domain.uis.QuietUI
+import pullrequestfactory.io.uis.ConsoleUI
 
 class GithubPRFactoryTest {
 
@@ -164,6 +165,7 @@ class GithubPRFactoryTest {
         val pullRequests = mutableListOf<PullRequest>()
         val githubBranchesRepo = github_branches_repo(branches)
         val sut = GithubPRFactory(
+                ConsoleUI(),
                 githubBranchesRepo,
                 github_pull_requests_repo(github_write_repo(pullRequests)),
                 BranchSyntaxValidator(QuietUI()),
@@ -174,6 +176,7 @@ class GithubPRFactoryTest {
     private fun create_github_pr_factory_for(pullRequests: List<GetPullRequest>): Pair<MutableList<Int>, GithubPRFactory> {
         val pullRequestNumbersToBeClosed = mutableListOf<Int>()
         val sut = GithubPRFactory(
+                ConsoleUI(),
                 github_branches_repo(emptyList()),
                 github_pull_requests_repo(
                         github_write_repo(mutableListOf(), pullRequestNumbersToBeClosed),
@@ -185,6 +188,7 @@ class GithubPRFactoryTest {
 
     private fun create_github_pr_factory_for(branchName: String) =
             GithubPRFactory(
+                    ConsoleUI(),
                     github_branches_repo(listOf(Branch(branchName))),
                     github_pull_requests_repo(noop_github_write_repo()),
                     BranchSyntaxValidator(QuietUI()),

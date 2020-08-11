@@ -8,6 +8,7 @@ import pullrequestfactory.io.programs.Program
 import pullrequestfactory.io.programs.ProgramArgs
 import pullrequestfactory.io.repositories.GithubHttpBranchesRepos
 import pullrequestfactory.io.repositories.GithubHttpPullRequestsRepo
+import pullrequestfactory.io.uis.ConsoleUI
 
 class ClosePullRequestsProgram(
         private val ui: UI,
@@ -20,6 +21,7 @@ class ClosePullRequestsProgram(
         val githubBranchesRepo = GithubHttpBranchesRepos(repoUrl, ui)
         val githubPullRequestsRepo = GithubHttpPullRequestsRepo(repoUrl, githubBasicAuthToken, ui)
         val f = GithubPRFactory(
+                ConsoleUI(),
                 githubBranchesRepo,
                 githubPullRequestsRepo,
                 BranchSyntaxValidator(ui),

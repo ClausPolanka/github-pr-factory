@@ -24,17 +24,15 @@ class ClosePullRequestsProgramInteractiveMode(
     }
 
     private fun close_pull_requests_for(candidate: Candidate, githubBasicAuthToken: String) {
-        ui.show("Closing pull requests for: $candidate")
         val githubBranchesRepo = GithubHttpBranchesRepos(repoUrl, ui)
         val githubPullRequestsRepo = GithubHttpPullRequestsRepo(repoUrl, githubBasicAuthToken, ui)
         val f = GithubPRFactory(
+                ui,
                 githubBranchesRepo,
                 githubPullRequestsRepo,
                 BranchSyntaxValidator(ui),
                 PullRequestLastNotFinishedMarker())
         f.close_pull_requests_for(candidate)
-        ui.show("Successfully closed all pull requests for: $candidate")
-        ui.show("Have a nice day. Bye bye.")
     }
 
 }
