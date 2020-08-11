@@ -17,17 +17,17 @@ class OpenPullRequestsProgram(
 
     override fun execute() {
         val candidate = programArgs.get_candidate()
-        val githubBasicAuthToken = programArgs.get_github_basic_auth_token()
-        val pairingPartner = programArgs.get_pairing_partner()
-        val githubBranchesRepo = GithubHttpBranchesRepos(repoUrl, ui)
-        val githubPullRequestsRepo = GithubHttpPullRequestsRepo(repoUrl, githubBasicAuthToken, ui)
+        val token = programArgs.get_github_basic_auth_token()
+        val pp = programArgs.get_pairing_partner()
+        val branchesRepo = GithubHttpBranchesRepos(repoUrl, ui)
+        val prRepo = GithubHttpPullRequestsRepo(repoUrl, token, ui)
         val f = GithubPRFactory(
                 ConsoleUI(),
-                githubBranchesRepo,
-                githubPullRequestsRepo,
+                branchesRepo,
+                prRepo,
                 BranchSyntaxValidator(ui),
                 PullRequestLastNotFinishedMarker())
-        f.open_pull_requests(candidate, pairingPartner)
+        f.open_pull_requests(candidate, pp)
     }
 
 }

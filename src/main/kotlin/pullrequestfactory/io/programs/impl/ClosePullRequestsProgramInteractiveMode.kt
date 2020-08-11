@@ -16,20 +16,25 @@ class ClosePullRequestsProgramInteractiveMode(
     override fun execute() {
         ui.show("Welcome to interactive mode for closing pull requests")
         ui.show("Please provide data for the following questions")
-        val candidateFirstName = ui.get_user_input(msg = "Candidate first name: ")
-        val candidateLastName = ui.get_user_input(msg = "Candidate last name: ")
-        val githubBasicAuthToken = ui.get_user_input(msg = "Your Github.com basic authorization token: ")
-        val candidate = Candidate(candidateFirstName, candidateLastName)
-        close_pull_requests_for(candidate, githubBasicAuthToken)
+        val candidate = create_candidate()
+        val token = ui.get_user_input(msg = "Your Github.com basic authorization token: ")
+        close_pull_requests_for(candidate, token)
+    }
+
+    private fun create_candidate(): Candidate {
+        val firstName = ui.get_user_input(msg = "Candidate first name: ")
+        val lastName = ui.get_user_input(msg = "Candidate last name: ")
+        val candidate = Candidate(firstName, lastName)
+        return candidate
     }
 
     private fun close_pull_requests_for(candidate: Candidate, githubBasicAuthToken: String) {
-        val githubBranchesRepo = GithubHttpBranchesRepos(repoUrl, ui)
-        val githubPullRequestsRepo = GithubHttpPullRequestsRepo(repoUrl, githubBasicAuthToken, ui)
+        val branchesRepo = GithubHttpBranchesRepos(repoUrl, ui)
+        val prRepo = GithubHttpPullRequestsRepo(repoUrl, githubBasicAuthToken, ui)
         val f = GithubPRFactory(
                 ui,
-                githubBranchesRepo,
-                githubPullRequestsRepo,
+                branchesRepo,
+                prRepo,
                 BranchSyntaxValidator(ui),
                 PullRequestLastNotFinishedMarker())
         f.close_pull_requests_for(candidate)

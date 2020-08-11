@@ -17,13 +17,13 @@ class ClosePullRequestsProgram(
 
     override fun execute() {
         val candidate = programArgs.get_candidate()
-        val githubBasicAuthToken = programArgs.get_github_basic_auth_token()
-        val githubBranchesRepo = GithubHttpBranchesRepos(repoUrl, ui)
-        val githubPullRequestsRepo = GithubHttpPullRequestsRepo(repoUrl, githubBasicAuthToken, ui)
+        val token = programArgs.get_github_basic_auth_token()
+        val branchesRepo = GithubHttpBranchesRepos(repoUrl, ui)
+        val prRepo = GithubHttpPullRequestsRepo(repoUrl, token, ui)
         val f = GithubPRFactory(
                 ConsoleUI(),
-                githubBranchesRepo,
-                githubPullRequestsRepo,
+                branchesRepo,
+                prRepo,
                 BranchSyntaxValidator(ui),
                 PullRequestLastNotFinishedMarker())
         f.close_pull_requests_for(candidate)
