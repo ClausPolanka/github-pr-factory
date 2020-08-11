@@ -286,6 +286,30 @@ class ProgramArgsTest {
     }
 
     @Test
+    fun has_valid_close_command_for_given_interactive_mode_arguments() {
+        val args = arrayOf("close", "-i")
+        val sut = ProgramArgs(args)
+
+        val hasInvalidCloseCommand = sut.has_invalid_close_command()
+
+        assertThat(hasInvalidCloseCommand)
+                .describedAs("correct number of close command arguments: '${args.toList()}'")
+                .isFalse()
+    }
+
+    @Test
+    fun has_valid_close_command_for_given_interactive_mode_arguments_long_version() {
+        val args = arrayOf("close", "--interactive")
+        val sut = ProgramArgs(args)
+
+        val hasInvalidCloseCommand = sut.has_invalid_close_command()
+
+        assertThat(hasInvalidCloseCommand)
+                .describedAs("correct number of close command arguments: '${args.toList()}'")
+                .isFalse()
+    }
+
+    @Test
     fun has_invalid_close_command_because_of_too_many_arguments() {
         val sut = ProgramArgs(arrayOf(
                 "close",
