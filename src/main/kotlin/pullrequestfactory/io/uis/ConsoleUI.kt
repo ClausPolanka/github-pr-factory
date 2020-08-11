@@ -16,4 +16,5 @@ class ConsoleUI : UI {
         }
         return userInput
     }
+
 }
