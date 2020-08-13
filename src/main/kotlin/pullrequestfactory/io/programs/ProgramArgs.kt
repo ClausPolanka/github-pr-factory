@@ -130,7 +130,3 @@ class ProgramArgs(private val args: Array<String>) {
     class WrongPairingPartnerArgumentSyntax(msg: String) : RuntimeException(msg)
 
 }
-
-fun main() {
-    println(PairingPartner.valueOf("CLAUS"))
-}
