@@ -49,7 +49,7 @@ class Branches(private val branches: List<Branch>, private val pullRequestMarker
             pullRequestMarker)
 
     private fun sort_branches_by(pairingPartner: PairingPartner) =
-            branches.filter { it.name.endsWith(pairingPartner.name.toLowerCase()) }
+            branches.filter { pairingPartner.contains(it.pairing_partner()) }
                     .map { Pair(it.name, it.iteration_nr()) }
                     .sortedBy { it.second }
                     .map { Branch(it.first) }

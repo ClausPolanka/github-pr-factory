@@ -104,7 +104,7 @@ class ProgramArgs(private val args: Array<String>) {
 
     private fun create_pairing_partner(pairingPartner: String): List<PairingPartner> {
         return try {
-            pairingPartner.split("-").map { PairingPartner.valueOf(it.toUpperCase()) }
+            pairingPartner.split("-").map { br -> PairingPartner.value_of(br) }
         } catch (e: IllegalArgumentException) {
             throw WrongPairingPartnerArgumentSyntax("$ERROR_MSG_PAIRING_PARTNER ${e.message}")
         }
@@ -129,4 +129,8 @@ class ProgramArgs(private val args: Array<String>) {
     class WrongGithubBasicAuthTokenArgumentSyntax(msg: String) : RuntimeException(msg)
     class WrongPairingPartnerArgumentSyntax(msg: String) : RuntimeException(msg)
 
+}
+
+fun main() {
+    println(PairingPartner.valueOf("CLAUS"))
 }

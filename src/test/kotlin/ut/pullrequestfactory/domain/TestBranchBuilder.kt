@@ -8,6 +8,7 @@ class TestBranchBuilder {
 
     private var _iteration: Int = 0
     private var _pairingPartner: PairingPartner? = null
+    private var _pairingPartnerBranchName: String? = null
     private var _candidate: Candidate = Candidate("test-first-name", "test-last-name")
 
     fun with_iteration(iteration: Int): TestBranchBuilder {
@@ -17,6 +18,11 @@ class TestBranchBuilder {
 
     fun with_pairing_partner(pairingPartner: PairingPartner): TestBranchBuilder {
         _pairingPartner = pairingPartner
+        return this
+    }
+
+    fun with_pairing_partner(pairingPartner: String): TestBranchBuilder {
+        _pairingPartnerBranchName = pairingPartner
         return this
     }
 
@@ -31,9 +37,23 @@ class TestBranchBuilder {
                 _candidate.lastName.toLowerCase(),
                 "iteration",
                 _iteration,
-                _pairingPartner?.name?.toLowerCase()
+                pairing_partner() ?: throwException()
         ).joinToString("_")
         return Branch(name)
+    }
+
+    private fun pairing_partner(): String? {
+        if (_pairingPartner == null && _pairingPartnerBranchName == null) {
+            throwException()
+        }
+        return when (_pairingPartner) {
+            null -> _pairingPartnerBranchName
+            else -> _pairingPartner?.name?.toLowerCase()
+        }
+    }
+
+    private fun throwException() {
+        throw RuntimeException("Branch must contain pairing partner")
     }
 
 }

@@ -181,6 +181,9 @@ class MainKtTest {
     }
 
     private fun verifyPostRequestToGithubToCreatePullRequestFor(pr: PullRequest) {
+        println()
+        println(pr)
+        println()
         verify(postRequestedFor(urlMatching(PULL_REQUEST_PATH))
                 .withRequestBody(matching(Regex.escape(Klaxon().toJsonString(pr))))
                 .addCommonHeaders())

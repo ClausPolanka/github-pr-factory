@@ -19,7 +19,7 @@ class GithubPRFactoryTest {
     private val candidate = Candidate("Firstname", "Lastname")
     private val pairingPartner = PairingPartner.SHUBI
     private val pairingPartner1 = PairingPartner.SHUBI
-    private val pairingPartner2 = PairingPartner.BERNI
+    private val pairingPartner2 = PairingPartner.BERNHARD
 
     @Test
     fun opens_two_pull_requests_for_different_iterations_and_pairing_partner() {
@@ -40,11 +40,11 @@ class GithubPRFactoryTest {
 
         assertThat(pullRequests).containsExactly(
                 PullRequest(
-                        title = "Firstname Lastname Iteration 1 / Session 1 ${pairingPartner1.pullRequestName} [PR]",
+                        title = "Firstname Lastname Iteration 1 / Session 1 ${pairingPartner1.pullRequestNames[0]} [PR]",
                         _base = Branch("master"),
                         _head = branch1),
                 PullRequest(
-                        title = "Firstname Lastname Iteration 2 / Session 2 ${pairingPartner2.pullRequestName}",
+                        title = "Firstname Lastname Iteration 2 / Session 2 ${pairingPartner2.pullRequestNames[0]}",
                         _base = branch1,
                         _head = branch2))
     }
@@ -62,7 +62,7 @@ class GithubPRFactoryTest {
         sut.open_pull_requests(candidate, listOf(pairingPartner))
 
         assertThat(pullRequests).containsExactly(PullRequest(
-                title = "Firstname Lastname Iteration 1 / Session 1 ${pairingPartner.pullRequestName}",
+                title = "Firstname Lastname Iteration 1 / Session 1 ${pairingPartner.pullRequestNames[0]}",
                 _base = Branch("master"),
                 _head = branch))
     }
@@ -80,7 +80,7 @@ class GithubPRFactoryTest {
         sut.open_pull_requests(candidate, listOf(pairingPartner))
 
         assertThat(pullRequests).containsExactly(PullRequest(
-                title = "Firstname Lastname Iteration 1 / Session 1 ${pairingPartner.pullRequestName}",
+                title = "Firstname Lastname Iteration 1 / Session 1 ${pairingPartner.pullRequestNames[0]}",
                 _base = Branch("master"),
                 _head = branch))
     }
