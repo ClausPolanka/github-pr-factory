@@ -8,6 +8,7 @@ class TestBranchBuilder {
 
     private var _iteration: Int = 0
     private var _pairingPartner: PairingPartner? = null
+    private var _branchName: String? = null
     private var _pairingPartnerBranchName: String? = null
     private var _candidate: Candidate = Candidate("test-first-name", "test-last-name")
 
@@ -31,8 +32,13 @@ class TestBranchBuilder {
         return this
     }
 
+    fun with_branch_name(branchName: String): TestBranchBuilder {
+        _branchName = branchName
+        return this
+    }
+
     fun build(): Branch {
-        val name = listOf(
+        val name = _branchName ?: listOf(
                 _candidate.firstName.toLowerCase(),
                 _candidate.lastName.toLowerCase(),
                 "iteration",
