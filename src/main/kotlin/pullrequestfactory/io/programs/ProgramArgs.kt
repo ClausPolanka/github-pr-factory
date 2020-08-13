@@ -110,11 +110,13 @@ class ProgramArgs(private val args: Array<String>) {
         }
     }
 
-    private fun is_pairing_partner_syntax_valid() =
+    private fun is_pairing_partner_syntax_valid() = has_correct_nr_of_pairing_partner_arguments()
+            && args.contains(PAIRING_PARTNER_OPTION)
+            && args[args.indexOf(PAIRING_PARTNER_OPTION) + 1].contains("-")
+            && args[args.indexOf(PAIRING_PARTNER_OPTION) + 1].split("-").size == 7
+
+    private fun has_correct_nr_of_pairing_partner_arguments() =
             args.size >= args.indexOf(PAIRING_PARTNER_OPTION) + 1 /* pairing partner */ + 1 /* since array is 0-based */
-                    && args.contains(PAIRING_PARTNER_OPTION)
-                    && args[args.indexOf(PAIRING_PARTNER_OPTION) + 1].contains("-")
-                    && args[args.indexOf(PAIRING_PARTNER_OPTION) + 1].split("-").size == 7
 
     private fun is_last_pull_request_finished() =
             args.contains(IS_LAST_PULL_REQUEST_FINISHED) || args.contains(IS_LAST_PULL_REQUEST_FINISHED_LONG_VERSION)
