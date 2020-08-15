@@ -4,7 +4,7 @@ import pullrequestfactory.domain.uis.UI
 
 class BranchSyntaxValidator(private val ui: UI) {
 
-    private val branchSyntaxRegex = Regex("[a-z]+_[a-z]+_iteration_[0-9]+_[a-z]+")
+    private val branchSyntaxRegex = Regex("[a-z]+_[a-z]+_[iI]teration_[0-9]+_[a-z]+")
 
     fun validate(branch: Branch) {
         when {
