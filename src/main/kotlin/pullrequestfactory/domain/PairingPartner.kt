@@ -11,6 +11,7 @@ enum class PairingPartner(vararg val pullRequestNames: String) {
     NANDOR("Nandor"),
     CHRISTIAN("Christian"),
     TOMAS("Tomas", "Tomasr"),
+    PATRICK("Patrick"),
     LAMPE("Lampe"),
     MARKUS("Markus"),
     JOHN("John"),
