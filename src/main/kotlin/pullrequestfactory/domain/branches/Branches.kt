@@ -40,18 +40,34 @@ class Branches(private val branches: List<Branch>, private val pullRequestMarker
                         _base = base_branches[idx].copy(),
                         _head = branch.copy())
             }
-            return pullRequestMarker.mark_titles_of(pullRequests)
+            val prs = pullRequestMarker.mark_titles_of(pullRequests)
+            return prs
         }
     }
 
-    private fun sort_branches_by(pairingPartner: List<PairingPartner>) = Branches(
-            pairingPartner.map { sort_branches_by(it) }.flatten(),
-            pullRequestMarker)
+    private fun sort_branches_by(pairingPartner: List<PairingPartner>): Branches {
+        val sorted = pairingPartner
+                .map { pp ->
+                    val brs = sort_branches_by(pp)
+                    brs
+                }
+                .flatten()
+        val sortedBranches = Branches(
+                sorted,
+                pullRequestMarker)
+        return sortedBranches
+    }
 
-    private fun sort_branches_by(pairingPartner: PairingPartner) =
-            branches.filter { pairingPartner.contains(it.pairing_partner()) }
-                    .map { Pair(it.name, it.iteration_nr()) }
-                    .sortedBy { it.second }
-                    .map { Branch(it.first) }
+    private fun sort_branches_by(pairingPartner: PairingPartner): List<Branch> {
+        val sortedBranches = branches
+                .filter { br ->
+                    val pp = br.pairing_partner()
+                    pairingPartner.contains(pp) // TOMAS contains tomas and tomasr
+                }
+                .map { br -> Pair(br.name, br.iteration_nr()) }
+                .sortedBy { br -> br.second }
+                .map { br -> Branch(br.first) }
+        return sortedBranches
+    }
 
 }
