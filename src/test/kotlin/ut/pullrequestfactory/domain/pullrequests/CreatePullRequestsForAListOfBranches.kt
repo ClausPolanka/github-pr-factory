@@ -154,6 +154,39 @@ class CreatePullRequestsForAListOfBranches {
                         branch3))
     }
 
+    @Test
+    fun support_multiple_sessions_for_same_pairing_partner() {
+        val branch1 = TestBranchBuilder()
+                .with_branch_name("firstname_lastname_Iteration_1_tomas")
+                .build()
+        val branch2 = TestBranchBuilder()
+                .with_branch_name("firstname_lastname_Iteration_1_claus")
+                .build()
+        val branch3 = TestBranchBuilder()
+                .with_branch_name("firstname_lastname_Iteration_1_tomasr")
+                .build()
+        val sut = create_branches_for(listOf(branch1, branch2, branch3))
+
+        val prs = sut.get_pull_requests_for(listOf(
+                PairingPartner.TOMAS,
+                PairingPartner.CLAUS,
+                PairingPartner.TOMAS))
+
+        assertThat(prs)
+                .contains(PullRequest(
+                        "Firstname Lastname Iteration 1 / Session 1 Tomas",
+                        Branch("master"),
+                        branch1))
+                .contains(PullRequest(
+                        "Firstname Lastname Iteration 1 / Session 2 Claus",
+                        branch1,
+                        branch2))
+                .contains(PullRequest(
+                        "Firstname Lastname Iteration 1 / Session 3 Tomas",
+                        branch2,
+                        branch3))
+    }
+
     private fun create_branches_for(branches: List<Branch>) = Branches(branches, PullRequestLastNotFinishedMarker())
 
 }

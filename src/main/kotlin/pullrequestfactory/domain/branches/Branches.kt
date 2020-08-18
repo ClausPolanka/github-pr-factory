@@ -33,6 +33,7 @@ class Branches(private val branches: List<Branch>, private val pullRequestMarker
 
     fun get_pull_requests_for(pairingPartner: List<PairingPartner>): List<PullRequest> {
         val brs = sort_branches_by(pairingPartner)
+        assert_number_of_branches(brs)
         with(brs) {
             val pullRequests = branches.mapIndexed { idx, branch ->
                 PullRequest(
@@ -44,6 +45,14 @@ class Branches(private val branches: List<Branch>, private val pullRequestMarker
             return prs
         }
     }
+
+    private fun assert_number_of_branches(brs: Branches) {
+        if (brs.branches.size != branches.size) {
+            throw BranchSortingException("Number of sorted branches are different from original list of branches")
+        }
+    }
+
+    class BranchSortingException(msg: String) : RuntimeException(msg)
 
     private fun sort_branches_by(pairingPartner: List<PairingPartner>): Branches {
         val sorted = pairingPartner
@@ -60,9 +69,16 @@ class Branches(private val branches: List<Branch>, private val pullRequestMarker
 
     private fun sort_branches_by(pairingPartner: PairingPartner): List<Branch> {
         val sortedBranches = branches
+                // "firstname_lastname_Iteration_1_tomas"
+                // "firstname_lastname_Iteration_2_tomas"
+                // "firstname_lastname_Iteration_2_tomasr"
+                // claus
+                // "firstname_lastname_Iteration_1_tomas"
+                // "firstname_lastname_Iteration_2_tomas"
+                // "firstname_lastname_Iteration_2_tomasr"
                 .filter { br ->
                     val pp = br.pairing_partner()
-                    pairingPartner.contains(pp) // TOMAS contains tomas and tomasr
+                    pairingPartner.contains(pp)
                 }
                 .map { br -> Pair(br.name, br.iteration_nr()) }
                 .sortedBy { br -> br.second }
