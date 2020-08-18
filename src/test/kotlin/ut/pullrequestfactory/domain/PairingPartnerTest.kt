@@ -22,6 +22,13 @@ class PairingPartnerTest {
     }
 
     @Test
+    fun pairing_partner_branch_names_for_definied_pairing_partner_shubi() {
+        val pp = PairingPartner.value_of("shubi")
+
+        assertThat(pp).isEqualTo(PairingPartner.SHUBI)
+    }
+
+    @Test
     fun throws_when_pairing_partner_branch_name_is_invalid() {
         assertThatThrownBy { PairingPartner.value_of("xxx") }
                 .hasMessage("Pairing partner branch name is invalid: 'xxx'")

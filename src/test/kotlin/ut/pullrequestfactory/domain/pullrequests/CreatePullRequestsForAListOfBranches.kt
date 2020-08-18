@@ -12,8 +12,8 @@ import ut.pullrequestfactory.domain.TestBranchBuilder
 
 class CreatePullRequestsForAListOfBranches {
 
-    private val pairingPartner = PairingPartner.SHUBI
-    private val pairingPartner1 = PairingPartner.SHUBI
+    private val pairingPartner = PairingPartner.SHUBHI
+    private val pairingPartner1 = PairingPartner.SHUBHI
     private val pairingPartner2 = PairingPartner.BERNHARD
 
     @Test
@@ -95,7 +95,7 @@ class CreatePullRequestsForAListOfBranches {
         val branch1 = TestBranchBuilder()
                 .with_candidate(candidate)
                 .with_iteration(1)
-                .with_pairing_partner("shubi")
+                .with_pairing_partner("shubhi")
                 .build()
         val branch2 = TestBranchBuilder()
                 .with_candidate(candidate)
@@ -104,11 +104,11 @@ class CreatePullRequestsForAListOfBranches {
                 .build()
         val sut = create_branches_for(listOf(branch1, branch2))
 
-        val prs = sut.get_pull_requests_for(listOf(PairingPartner.SHUBI, PairingPartner.BERNHARD))
+        val prs = sut.get_pull_requests_for(listOf(PairingPartner.SHUBHI, PairingPartner.BERNHARD))
 
         assertThat(prs)
                 .contains(PullRequest(
-                        "Firstname Lastname Iteration 1 / Session 1 Shubi [PR]",
+                        "Firstname Lastname Iteration 1 / Session 1 Shubhi [PR]",
                         Branch("master"),
                         branch1))
                 .contains(PullRequest(

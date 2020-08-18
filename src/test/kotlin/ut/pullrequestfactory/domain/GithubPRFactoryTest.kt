@@ -17,8 +17,8 @@ class GithubPRFactoryTest {
 
     private val INVALID_BRANCH_NAME = "firstname_lastname_claus"
     private val candidate = Candidate("Firstname", "Lastname")
-    private val pairingPartner = PairingPartner.SHUBI
-    private val pairingPartner1 = PairingPartner.SHUBI
+    private val pairingPartner = PairingPartner.SHUBHI
+    private val pairingPartner1 = PairingPartner.SHUBHI
     private val pairingPartner2 = PairingPartner.BERNHARD
 
     @Test

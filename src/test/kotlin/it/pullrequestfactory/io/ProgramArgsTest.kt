@@ -442,7 +442,7 @@ class ProgramArgsTest {
 
     @Test
     fun gets_pairing_partner_for_correct_pairing_partner_arguments() {
-        val sut = ProgramArgs(arrayOf("-p", "claus-berni-dominik-andrej-shubi-tibor-nandor"))
+        val sut = ProgramArgs(arrayOf("-p", "claus-berni-dominik-andrej-shubhi-tibor-nandor"))
 
         val pairingPartner = sut.get_pairing_partner()
 
@@ -451,7 +451,7 @@ class ProgramArgsTest {
                 PairingPartner.BERNHARD,
                 PairingPartner.DOMINIK,
                 PairingPartner.ANDREJ,
-                PairingPartner.SHUBI,
+                PairingPartner.SHUBHI,
                 PairingPartner.TIBOR,
                 PairingPartner.NANDOR))
     }
