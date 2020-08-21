@@ -18,14 +18,14 @@ class PairingPartnerTest {
     fun pairing_partner_branch_names_for_definied_pairing_partner_berni() {
         val pp = PairingPartner.value_of("berni")
 
-        assertThat(pp).isEqualTo(PairingPartner.BERNHARD)
+        assertThat(pp).isEqualTo(PairingPartner.BERNI)
     }
 
     @Test
     fun pairing_partner_branch_names_for_definied_pairing_partner_shubi() {
         val pp = PairingPartner.value_of("shubi")
 
-        assertThat(pp).isEqualTo(PairingPartner.SHUBI)
+        assertThat(pp).isEqualTo(PairingPartner.SHUBHI)
     }
 
     @Test

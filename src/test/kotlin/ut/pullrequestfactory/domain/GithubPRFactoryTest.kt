@@ -19,7 +19,7 @@ class GithubPRFactoryTest {
     private val candidate = Candidate("Firstname", "Lastname")
     private val pairingPartner = PairingPartner.SHUBHI
     private val pairingPartner1 = PairingPartner.SHUBHI
-    private val pairingPartner2 = PairingPartner.BERNHARD
+    private val pairingPartner2 = PairingPartner.BERNI
 
     @Test
     fun opens_two_pull_requests_for_different_iterations_and_pairing_partner() {
@@ -40,11 +40,11 @@ class GithubPRFactoryTest {
 
         assertThat(pullRequests).containsExactly(
                 PullRequest(
-                        title = "Firstname Lastname Iteration 1 / Session 1 ${pairingPartner1.pullRequestNames[0]} [PR]",
+                        title = "Firstname Lastname Iteration 1 / Session 1 ${pairingPartner1.pull_request_name()} [PR]",
                         _base = Branch("master"),
                         _head = branch1),
                 PullRequest(
-                        title = "Firstname Lastname Iteration 2 / Session 2 ${pairingPartner2.pullRequestNames[0]}",
+                        title = "Firstname Lastname Iteration 2 / Session 2 ${pairingPartner2.pull_request_name()}",
                         _base = branch1,
                         _head = branch2))
     }
@@ -62,7 +62,7 @@ class GithubPRFactoryTest {
         sut.open_pull_requests(candidate, listOf(pairingPartner))
 
         assertThat(pullRequests).containsExactly(PullRequest(
-                title = "Firstname Lastname Iteration 1 / Session 1 ${pairingPartner.pullRequestNames[0]}",
+                title = "Firstname Lastname Iteration 1 / Session 1 ${pairingPartner.pull_request_name()}",
                 _base = Branch("master"),
                 _head = branch))
     }
@@ -80,7 +80,7 @@ class GithubPRFactoryTest {
         sut.open_pull_requests(candidate, listOf(pairingPartner))
 
         assertThat(pullRequests).containsExactly(PullRequest(
-                title = "Firstname Lastname Iteration 1 / Session 1 ${pairingPartner.pullRequestNames[0]}",
+                title = "Firstname Lastname Iteration 1 / Session 1 ${pairingPartner.pull_request_name()}",
                 _base = Branch("master"),
                 _head = branch))
     }

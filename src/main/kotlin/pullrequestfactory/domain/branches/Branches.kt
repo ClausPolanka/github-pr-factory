@@ -26,7 +26,7 @@ class Branches(private val branches: List<Branch>, private val pullRequestMarker
                     "/",
                     "Session",
                     create_sessions_for(branches)[idx],
-                    pairingPartner.capitalize()
+                    PairingPartner.value_of(pairingPartner).pull_request_name()
             )
             titleParts.joinToString(" ")
         }
@@ -36,7 +36,7 @@ class Branches(private val branches: List<Branch>, private val pullRequestMarker
         with(brs) {
             val pullRequests = branches.mapIndexed { idx, branch ->
                 PullRequest(
-                        title = branch_titles[idx],
+                        title = brs.branch_titles[idx],
                         _base = base_branches[idx].copy(),
                         _head = branch.copy())
             }
@@ -46,28 +46,18 @@ class Branches(private val branches: List<Branch>, private val pullRequestMarker
     }
 
     private fun sort_branches_by(pairingPartner: List<PairingPartner>): Branches {
-        val sorted = pairingPartner
-                .map { pp ->
-                    val brs = sort_branches_by(pp)
-                    brs
-                }
-                .flatten()
-        val sortedBranches = Branches(
-                sorted,
-                pullRequestMarker)
-        return sortedBranches
-    }
-
-    private fun sort_branches_by(pairingPartner: PairingPartner): List<Branch> {
-        val sortedBranches = branches
-                .filter { br ->
-                    val pp = br.pairing_partner()
-                    pairingPartner.contains(pp)
-                }
-                .map { br -> Pair(br.name, br.iteration_nr()) }
-                .sortedBy { br -> br.second }
-                .map { br -> Branch(br.first) }
-        return sortedBranches
+        var brsm = branches.toMutableList()
+        val sorted = mutableListOf<Branch>()
+        for (i in pairingPartner.indices) {
+            val pp = pairingPartner[i]
+            val filtered = brsm.takeWhile {
+                val ppName = it.pairing_partner()
+                pp.contains(ppName)
+            }
+            brsm = brsm.drop(filtered.size).toMutableList()
+            sorted.addAll(filtered)
+        }
+        return Branches(sorted, pullRequestMarker)
     }
 
 }

@@ -2,10 +2,9 @@ package pullrequestfactory.domain
 
 enum class PairingPartner(vararg val pullRequestNames: String) {
     ANDREJ("Andrej"),
-    SHUBI("Shubi"),
-    SHUBHI("Shubhi"),
+    SHUBHI("Shubhi", "Shubi"),
     CLAUS("Claus"),
-    BERNHARD("Bernhard", "Berni"),
+    BERNI("Bernhard", "Berni"),
     DOMINIK("Dominik", "Moser"),
     MIHAI("Mihai"),
     MICHAL("Michal"),
@@ -25,6 +24,8 @@ enum class PairingPartner(vararg val pullRequestNames: String) {
     fun contains(branchName: String): Boolean {
         return pullRequestNames.contains(branchName.capitalize())
     }
+
+    fun pull_request_name() = name.toLowerCase().capitalize()
 
     companion object {
 

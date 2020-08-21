@@ -448,7 +448,7 @@ class ProgramArgsTest {
 
         assertThat(pairingPartner).isEqualTo(listOf(
                 PairingPartner.CLAUS,
-                PairingPartner.BERNHARD,
+                PairingPartner.BERNI,
                 PairingPartner.DOMINIK,
                 PairingPartner.ANDREJ,
                 PairingPartner.SHUBHI,
