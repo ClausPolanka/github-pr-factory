@@ -45,8 +45,6 @@ class Branches(private val branches: List<Branch>, private val pullRequestMarker
         }
     }
 
-    class BranchSortingException(msg: String) : RuntimeException(msg)
-
     private fun sort_branches_by(pairingPartner: List<PairingPartner>): Branches {
         val sorted = pairingPartner
                 .map { pp ->
