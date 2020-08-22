@@ -188,7 +188,7 @@ class CreatePullRequestsForAListOfBranches {
     }
 
     @Test
-    fun wrong_order() {
+    fun create_pull_requests_where_branches_are_in_wrong_order_compared_to_given_pairing_partner() {
         val branch1 = TestBranchBuilder()
                 .with_branch_name("firstname_lastname_Iteration_1_berni")
                 .build()
