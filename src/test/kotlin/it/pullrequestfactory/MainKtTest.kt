@@ -165,7 +165,7 @@ class MainKtTest {
                 _head = Branch("radek_leifer_iteration_2_christian")))
 
         verifyPostRequestToGithubToCreatePullRequestFor(PullRequest(
-                title = "$candidateFirstName $candidateLastName Iteration 3 / Session 5 Shubi",
+                title = "$candidateFirstName $candidateLastName Iteration 3 / Session 5 Shubhi",
                 _base = Branch("radek_leifer_iteration_2_christian"),
                 _head = Branch("radek_leifer_iteration_3_shubi")))
 

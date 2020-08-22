@@ -46,16 +46,15 @@ class Branches(private val branches: List<Branch>, private val pullRequestMarker
     }
 
     private fun sort_branches_by(pairingPartner: List<PairingPartner>): Branches {
-        var brsm = branches.toMutableList()
         val sorted = mutableListOf<Branch>()
-        for (i in pairingPartner.indices) {
-            val pp = pairingPartner[i]
-            val filtered = brsm.takeWhile {
-                val ppName = it.pairing_partner()
-                pp.contains(ppName)
+        val sortedByIterNr = branches.sortedBy { it.iteration_nr() }.toMutableList()
+        pairingPartner.forEach { pp ->
+            for (i in 1..7) {
+                val filtered = sortedByIterNr.filter { it.iteration_nr() == i }
+                        .filter { pp.contains(it.pairing_partner()) }
+                sorted.addAll(filtered)
+                sortedByIterNr.removeAll(filtered)
             }
-            brsm = brsm.drop(filtered.size).toMutableList()
-            sorted.addAll(filtered)
         }
         return Branches(sorted, pullRequestMarker)
     }

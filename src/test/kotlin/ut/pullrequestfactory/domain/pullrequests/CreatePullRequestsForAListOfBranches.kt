@@ -187,6 +187,31 @@ class CreatePullRequestsForAListOfBranches {
                         branch3))
     }
 
+    @Test
+    fun wrong_order() {
+        val branch1 = TestBranchBuilder()
+                .with_branch_name("firstname_lastname_Iteration_1_berni")
+                .build()
+        val branch2 = TestBranchBuilder()
+                .with_branch_name("firstname_lastname_Iteration_1_claus")
+                .build()
+        val sut = create_branches_for(listOf(branch1, branch2))
+
+        val prs = sut.get_pull_requests_for(listOf(
+                PairingPartner.CLAUS,
+                PairingPartner.BERNI))
+
+        assertThat(prs)
+                .contains(PullRequest(
+                        "Firstname Lastname Iteration 1 / Session 1 Claus",
+                        Branch("master"),
+                        branch2))
+                .contains(PullRequest(
+                        "Firstname Lastname Iteration 1 / Session 2 Berni",
+                        branch2,
+                        branch1))
+    }
+
     private fun create_branches_for(branches: List<Branch>) = Branches(branches, PullRequestLastNotFinishedMarker())
 
 }
