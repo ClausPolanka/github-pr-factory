@@ -46,17 +46,21 @@ class Branches(private val branches: List<Branch>, private val pullRequestMarker
     }
 
     private fun sort_branches_by(pairingPartner: List<PairingPartner>): Branches {
-        val sorted = mutableListOf<Branch>()
+        val sorted = mutableListOf<Pair<Int, Branch>>()
         val sortedByIterNr = branches.sortedBy { it.iteration_nr() }.toMutableList()
         pairingPartner.forEach { pp ->
             for (i in 1..7) {
-                val filtered = sortedByIterNr.filter { it.iteration_nr() == i }
-                        .filter { pp.contains(it.pairing_partner()) }
+                val filtered = sortedByIterNr
+                        .mapIndexed { idx, br -> Pair(idx, br) }
+                        .filter { it.second.iteration_nr() == i }
+                        .filter { pp.contains(it.second.pairing_partner()) }
                 sorted.addAll(filtered)
-                sortedByIterNr.removeAll(filtered)
+                sortedByIterNr.removeAll(filtered.map { it.second })
             }
         }
-        return Branches(sorted, pullRequestMarker)
+        if (pairingPartner.groupingBy { it }.eachCount().any { it.value > 1 })
+            sorted.sortBy { it.first }
+        return Branches(sorted.map { it.second }, pullRequestMarker)
     }
 
 }
