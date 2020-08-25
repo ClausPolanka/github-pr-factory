@@ -58,7 +58,8 @@ class Branches(private val branches: List<Branch>, private val prMarker: PullReq
             }
         }
         sort_by_idx(allIdxBranchPairs, pairingPartner)
-        return Branches(allIdxBranchPairs.map { it.second }, prMarker)
+        val brs = allIdxBranchPairs.map { it.second }
+        return Branches(brs, prMarker)
     }
 
     /**
