@@ -49,10 +49,10 @@ class Branches(private val branches: List<Branch>, private val pullRequestMarker
         val sorted = mutableListOf<Pair<Int, Branch>>()
         val sortedByIterNr = branches.sortedBy { it.iteration_nr() }.toMutableList()
         pairingPartner.forEach { pp ->
-            for (i in 1..7) {
+            for (iterationNr in 1..9) {
                 val filtered = sortedByIterNr
                         .mapIndexed { idx, br -> Pair(idx, br) }
-                        .filter { it.second.iteration_nr() == i }
+                        .filter { it.second.iteration_nr() == iterationNr }
                         .filter { pp.contains(it.second.pairing_partner()) }
                 sorted.addAll(filtered)
                 sortedByIterNr.removeAll(filtered.map { it.second })
