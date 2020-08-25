@@ -90,3 +90,6 @@ For example: <pre>java -jar target/github-pr-factory-1.0-SNAPSHOT-jar-with-depen
 ### Continuous Integration with circleci
 
 [![ClausPolanka](https://circleci.com/gh/ClausPolanka/github-pr-factory.svg?style=svg)](https://app.circleci.com/pipelines/github/ClausPolanka/github-pr-factory)
+### Automated Code Quality Check via bettercodehub
+
+[![BCH compliance](https://bettercodehub.com/edge/badge/ClausPolanka/github-pr-factory?branch=master)](https://bettercodehub.com/)
