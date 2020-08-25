@@ -5,7 +5,7 @@ import pullrequestfactory.domain.branches.Sessions.create_sessions_for
 import pullrequestfactory.domain.pullrequests.PullRequest
 import pullrequestfactory.domain.pullrequests.PullRequestMarker
 
-class Branches(private val branches: List<Branch>, private val pullRequestMarker: PullRequestMarker) {
+class Branches(private val branches: List<Branch>, private val prMarker: PullRequestMarker) {
 
     val base_branches: List<Branch>
         get() = branches.mapIndexed { idx, _ ->
@@ -34,14 +34,14 @@ class Branches(private val branches: List<Branch>, private val pullRequestMarker
     fun get_pull_requests_for(pairingPartner: List<PairingPartner>): List<PullRequest> {
         val brs = sort_branches_by(pairingPartner)
         with(brs) {
-            val pullRequests = branches.mapIndexed { idx, branch ->
+            val prs = branches.mapIndexed { idx, branch ->
                 PullRequest(
                         title = branch_titles[idx],
                         _base = base_branches[idx].copy(),
                         _head = branch.copy())
             }
-            val prs = pullRequestMarker.mark_titles_of(pullRequests)
-            return prs
+            val markedPrs = prMarker.mark_titles_of(prs)
+            return markedPrs
         }
     }
 
@@ -59,7 +59,7 @@ class Branches(private val branches: List<Branch>, private val pullRequestMarker
             }
         }
         sort_by_idx(allIdxBranchPairs, pairingPartner)
-        return Branches(allIdxBranchPairs.map { it.second }, pullRequestMarker)
+        return Branches(allIdxBranchPairs.map { it.second }, prMarker)
     }
 
     private fun sort_by_idx(idxBranchPairs: MutableList<Pair<Int, Branch>>, pairingPartner: List<PairingPartner>) {
