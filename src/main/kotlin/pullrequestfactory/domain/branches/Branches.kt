@@ -46,29 +46,29 @@ class Branches(private val branches: List<Branch>, private val pullRequestMarker
     }
 
     private fun sort_branches_by(pairingPartner: List<PairingPartner>): Branches {
-        val sorted = mutableListOf<Pair<Int, Branch>>()
+        val allIdxBranchPairs = mutableListOf<Pair<Int, Branch>>()
         val sortedByIterNr = branches.sortedBy { it.iteration_nr() }.toMutableList()
         pairingPartner.forEach { pp ->
             for (iterationNr in 1..9) {
-                val branchesByIdx = sortedByIterNr
+                val idxBranchPairs = sortedByIterNr
                         .mapIndexed { idx, br -> Pair(idx, br) }
                         .filter { it.second.iteration_nr() == iterationNr }
                         .filter { pp.contains(it.second.pairing_partner()) }
-                sorted.addAll(branchesByIdx)
-                sortedByIterNr.removeAll(branchesByIdx.map { it.second })
+                allIdxBranchPairs.addAll(idxBranchPairs)
+                sortedByIterNr.removeAll(idxBranchPairs.map { it.second })
             }
         }
-        sort_by_idx(sorted, pairingPartner)
-        return Branches(sorted.map { it.second }, pullRequestMarker)
+        sort_by_idx(allIdxBranchPairs, pairingPartner)
+        return Branches(allIdxBranchPairs.map { it.second }, pullRequestMarker)
     }
 
-    private fun sort_by_idx(sorted: MutableList<Pair<Int, Branch>>, pairingPartner: List<PairingPartner>) {
+    private fun sort_by_idx(idxBranchPairs: MutableList<Pair<Int, Branch>>, pairingPartner: List<PairingPartner>) {
         val aPairingPartnerHasMultipleSessions = pairingPartner
                 .groupingBy { it }
                 .eachCount()
                 .any { it.value > 1 }
         when {
-            aPairingPartnerHasMultipleSessions -> sorted.sortBy { it.first }
+            aPairingPartnerHasMultipleSessions -> idxBranchPairs.sortBy { it.first }
         }
     }
 
