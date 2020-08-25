@@ -62,6 +62,18 @@ class Branches(private val branches: List<Branch>, private val prMarker: PullReq
         return Branches(allIdxBranchPairs.map { it.second }, prMarker)
     }
 
+    /**
+     * Example
+     * Before
+     * idx, iter nr, pp-branch-name, pp
+     * 0, 1, tomas, TOMAS
+     * 2, 1, tomasr, TOMAS
+     * 1, 1, claus, CLAUS
+     * After
+     * 0, 1, tomas, TOMAS
+     * 1, 1, claus, CLAUS
+     * 2, 1, tomasr, TOMAS
+     */
     private fun sort_by_idx(idxBranchPairs: MutableList<Pair<Int, Branch>>, pairingPartner: List<PairingPartner>) {
         val aPairingPartnerHasMultipleSessions = pairingPartner
                 .groupingBy { it }
