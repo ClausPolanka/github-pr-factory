@@ -36,7 +36,7 @@ class Branches(private val branches: List<Branch>, private val pullRequestMarker
         with(brs) {
             val pullRequests = branches.mapIndexed { idx, branch ->
                 PullRequest(
-                        title = brs.branch_titles[idx],
+                        title = branch_titles[idx],
                         _base = base_branches[idx].copy(),
                         _head = branch.copy())
             }
