@@ -58,11 +58,11 @@ class Branches(private val branches: List<Branch>, private val pullRequestMarker
                 sortedByIterNr.removeAll(filtered.map { it.second })
             }
         }
-        sort_by_idx(pairingPartner, sorted)
+        sort_by_idx(sorted, pairingPartner)
         return Branches(sorted.map { it.second }, pullRequestMarker)
     }
 
-    private fun sort_by_idx(pairingPartner: List<PairingPartner>, sorted: MutableList<Pair<Int, Branch>>) {
+    private fun sort_by_idx(sorted: MutableList<Pair<Int, Branch>>, pairingPartner: List<PairingPartner>) {
         val aPairingPartnerHasMultipleSessions = pairingPartner
                 .groupingBy { it }
                 .eachCount()
