@@ -55,7 +55,6 @@ class Branches(private val branches: List<Branch>, private val prMarker: PullReq
                         .filter { it.second.iteration_nr() == iterationNr }
                         .filter { pp.contains(it.second.pairing_partner()) }
                 allIdxBranchPairs.addAll(idxBranchPairs)
-                sortedByIterNr.removeAll(idxBranchPairs.map { it.second })
             }
         }
         sort_by_idx(allIdxBranchPairs, pairingPartner)
