@@ -7,11 +7,8 @@ adhere to https://github.com/olivierlacan/keep-a-changelog.
 ### Added
 - [Issue-#4] Interactive command to close pull requests for better user experience
 
-### Changed
-
-### Removed
- 
 ### Fixed
+- [Issue-#6] Allow multiple sessions per pairing-partner
 
 ### Internal
 
@@ -23,3 +20,4 @@ adhere to https://github.com/olivierlacan/keep-a-changelog.
 
 [1.1.0-SNAPSHOT]: https://github.beeone.at/George/georgebackend/compare/release-1.0.0...master
 [Issue-#4]: https://github.com/ClausPolanka/github-pr-factory/issues/4
+[Issue-#6]: https://github.com/ClausPolanka/github-pr-factory/issues/6
