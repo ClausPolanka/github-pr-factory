@@ -1,5 +1,8 @@
 #! /bin/sh
 
+# Before executing this script to build a releases the changelog must be
+# prepared for the release.
+
 # -e  Exit immediately if a command exits with a non-zero status.
 # -u  Treat unset variables as an error when substituting.
 set -eu
