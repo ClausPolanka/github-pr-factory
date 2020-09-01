@@ -1,8 +1,5 @@
 #! /bin/sh
 
-# Before executing this script to build a releases the changelog must be
-# prepared for the release.
-
 # This file got copied from https://github.com/alexec/reltut/blob/master/release.sh
 # and minor changes were done to optimize release process for this project.
 
