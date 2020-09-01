@@ -2,7 +2,6 @@
 
 # -e  Exit immediately if a command exits with a non-zero status.
 # -u  Treat unset variables as an error when substituting.
-# -x  Print commands and their arguments as they are executed.
 set -eu
 
 function commitChangedPoms() {
@@ -41,11 +40,6 @@ if [ $(git branch | grep '^*' | cut -c 2-) = 'master' ]; then
     git checkout master
 else
     echo 'Performing interim release'
-
-    # update patch versions
-#    mvn versions:use-latest-releases -DallowMajorUpdates=false -DallowMinorUpdates=false
-#    commitChangedPoms 'Updated branch dependency patch versions for release'
-
-#    mvn release:prepare release:perform -B
-    # commitChangedPoms 'Updated branch project version after release'
+    mvn release:prepare release:perform -B
+    commitChangedPoms 'Updated branch project version after release'
 fi
