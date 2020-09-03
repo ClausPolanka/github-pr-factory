@@ -9,6 +9,7 @@ adhere to https://github.com/olivierlacan/keep-a-changelog.
 ### Changed
 
 ### Fixed
+- [Issue-#7] Remove legacy pairing-partner names (new ones are SHUBHI and LAMPE)
 
 ### Removed
 
@@ -34,3 +35,4 @@ adhere to https://github.com/olivierlacan/keep-a-changelog.
 [1.1.0]: https://github.beeone.at/George/georgebackend/compare/release-1.0.0...release-1.1.0
 [Issue-#4]: https://github.com/ClausPolanka/github-pr-factory/issues/4
 [Issue-#6]: https://github.com/ClausPolanka/github-pr-factory/issues/6
+[Issue-#7]: https://github.com/ClausPolanka/github-pr-factory/issues/7
