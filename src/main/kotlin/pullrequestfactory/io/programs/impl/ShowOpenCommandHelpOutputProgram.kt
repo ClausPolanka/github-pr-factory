@@ -11,6 +11,8 @@ class ShowOpenCommandHelpOutputProgram : Program {
         Open new Github pull requests for a 2nd round hiring candidate
 
         Options:
+          -i, --interactive${"\t\t"}Interactive flow of opening new pull requests
+
           -c${"\t\t"}The candidate's first name and last-name separated by hyphen
           -g${"\t\t"}Your Github basic authorization token
           -p${"\t\t"}Seven pairing-partner names separated by hyphen
