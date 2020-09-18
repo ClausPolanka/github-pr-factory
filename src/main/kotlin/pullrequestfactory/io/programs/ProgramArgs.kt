@@ -29,8 +29,21 @@ class ProgramArgs(private val args: Array<String>) {
     fun has_open_command_help_option() =
             args[0] == OPEN_COMMAND && args.size == 2 && args[1] == HELP_COMMAND_LONG_VERSION
 
-    fun has_invalid_open_command() = has_open_command()
-            && !((args.size == 7 && has_open_command_required_options()) || (args.size == 8 && has_open_command_required_and_optional_options()))
+    fun has_invalid_open_command() =
+            has_open_command() && !has_correct_nr_of_args_for_open_command()
+
+    private fun has_correct_nr_of_args_for_open_command() =
+            has_open_command_in_interactive_mode()
+                    || hast_correct_nr_of_args()
+                    || has_correct_nr_of_optional_args()
+
+    fun has_open_command_in_interactive_mode() = args.size == 2 && is_interactive_mode()
+
+    private fun hast_correct_nr_of_args() =
+            args.size == 7 && has_open_command_required_options()
+
+    private fun has_correct_nr_of_optional_args() =
+            args.size == 8 && has_open_command_required_and_optional_options()
 
     fun has_open_command() = args[0] == OPEN_COMMAND
 
