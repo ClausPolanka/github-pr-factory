@@ -180,7 +180,7 @@ class ProgramArgsTest {
         val hasInvalidOpenCommand = sut.has_invalid_open_command()
 
         assertThat(hasInvalidOpenCommand)
-                .describedAs("correct number of open command arguments: '${args.toList()}'")
+                .describedAs("has correct number of open command arguments: '${args.toList()}'")
                 .isFalse()
     }
 
