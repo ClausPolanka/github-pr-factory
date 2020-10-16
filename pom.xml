@@ -9,7 +9,7 @@
     <properties>
         <kotlin.version>1.4.0</kotlin.version>
         <kotlin.compiler.incremental>true</kotlin.compiler.incremental>
-        <junit.version>4.13</junit.version>
+        <junit.version>4.13.1</junit.version>
         <assertj.version>3.17.1</assertj.version>
         <wiremock.version>2.27.1</wiremock.version>
         <khttp.version>1.0.0</khttp.version>
