@@ -32,18 +32,23 @@ class OpenPullRequestsProgramInteractiveMode(
     private fun create_pairing_partner(): List<PairingPartner> {
         val pairingPartner = (1..7).map {
             ui.show("${PairingPartner.values().toList()}")
-            var pp: PairingPartner? = null
-            while (pp == null) {
-                try {
-                    val ppCandidate = ui.get_user_input(msg = "Pairing Partner Session $it: ")
-                    pp = PairingPartner.value_of(ppCandidate)
-                } catch (e: Exception) {
-                    ui.show("Pairing partner name not supported. Please retry.")
-                }
-            }
+            val pp = pairing_partner_for_session(it)
             pp
         }
         return pairingPartner
+    }
+
+    private fun pairing_partner_for_session(session: Int): PairingPartner {
+        var pp: PairingPartner? = null
+        while (pp == null) {
+            try {
+                val ppCandidate = ui.get_user_input(msg = "Pairing Partner Session $session: ")
+                pp = PairingPartner.value_of(ppCandidate)
+            } catch (e: Exception) {
+                ui.show("Pairing partner name not supported. Please retry.")
+            }
+        }
+        return pp
     }
 
     private fun open_pull_requests_for(candidate: Candidate, githubBasicAuthToken: String, pairingPartner: List<PairingPartner>) {
