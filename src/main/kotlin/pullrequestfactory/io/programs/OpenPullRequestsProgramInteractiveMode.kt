@@ -35,7 +35,8 @@ class OpenPullRequestsProgramInteractiveMode(
             var pp: PairingPartner? = null
             while (pp == null) {
                 try {
-                    pp = PairingPartner.value_of(ui.get_user_input(msg = "Pairing Partner Session $it: "))
+                    val ppCandidate = ui.get_user_input(msg = "Pairing Partner Session $it: ")
+                    pp = PairingPartner.value_of(ppCandidate)
                 } catch (e: Exception) {
                     ui.show("Pairing partner name not supported. Please retry.")
                 }
