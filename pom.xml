@@ -7,11 +7,11 @@
     <version>1.2.0-SNAPSHOT</version>
 
     <properties>
-        <kotlin.version>1.4.0</kotlin.version>
+        <kotlin.version>1.4.10</kotlin.version>
         <kotlin.compiler.incremental>true</kotlin.compiler.incremental>
         <junit.version>4.13.1</junit.version>
-        <assertj.version>3.17.1</assertj.version>
-        <wiremock.version>2.27.1</wiremock.version>
+        <assertj.version>3.17.2</assertj.version>
+        <wiremock.version>2.27.2</wiremock.version>
         <khttp.version>1.0.0</khttp.version>
         <klaxon.version>5.4</klaxon.version>
         <maven-surefire-plugin.version>3.0.0-M4</maven-surefire-plugin.version>
