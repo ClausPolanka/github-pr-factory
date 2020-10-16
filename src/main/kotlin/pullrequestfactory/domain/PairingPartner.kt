@@ -2,7 +2,7 @@ package pullrequestfactory.domain
 
 enum class PairingPartner(vararg val pullRequestNames: String) {
     ANDREJ("Andrej"),
-    SHUBHI("Shubhi", "Shubi"),
+    SHUBHI("Shubhi", "Shubi", "Joshi"),
     CLAUS("Claus"),
     BERNI("Bernhard", "Berni"),
     DOMINIK("Dominik", "Moser"),
