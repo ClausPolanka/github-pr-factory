@@ -30,15 +30,15 @@ class OpenPullRequestsProgramInteractiveMode(
     }
 
     private fun create_pairing_partner(): List<PairingPartner> {
-        val pps = mutableListOf<String>()
-        val pairingPartner = (1..7).map {
+        val chosenPP = mutableListOf<String>()
+        val pps = (1..7).map {
             ui.show(PairingPartner.indexed_names().toString())
             val pp = pairing_partner_for_session(it)
-            pps.add("Pairing Partner Session $it: '${pp.pull_request_name()}'")
-            ui.show(pps.joinToString(System.lineSeparator()))
+            chosenPP.add("Pairing Partner Session $it: '${pp.pull_request_name()}'")
+            ui.show(chosenPP.joinToString(System.lineSeparator()))
             pp
         }
-        return pairingPartner
+        return pps
     }
 
     private fun pairing_partner_for_session(session: Int): PairingPartner {
