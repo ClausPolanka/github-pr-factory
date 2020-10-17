@@ -38,6 +38,19 @@ enum class PairingPartner(vararg val pullRequestNames: String) {
             }
         }
 
+        fun value_of(ordinal: Int): PairingPartner {
+            val pp = try {
+                values()[ordinal]
+            } catch (e: Exception) {
+                throw IllegalArgumentException("No pairing partner found for given index: '$ordinal'")
+            }
+            return pp
+        }
+
+        fun indexed_names(): List<String> {
+            return values().map { "${it.pull_request_name()} (${it.ordinal + 1})" }.toList()
+        }
+
     }
 
 }

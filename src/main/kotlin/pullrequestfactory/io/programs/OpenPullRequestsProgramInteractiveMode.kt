@@ -30,25 +30,45 @@ class OpenPullRequestsProgramInteractiveMode(
     }
 
     private fun create_pairing_partner(): List<PairingPartner> {
+        val pps = mutableListOf<String>()
         val pairingPartner = (1..7).map {
-            ui.show("${PairingPartner.values().toList()}")
+            ui.show(PairingPartner.indexed_names().toString())
             val pp = pairing_partner_for_session(it)
+            pps.add("Pairing Partner Session $it: '${pp.pull_request_name()}'")
+            ui.show(pps.joinToString(System.lineSeparator()))
             pp
         }
         return pairingPartner
     }
 
     private fun pairing_partner_for_session(session: Int): PairingPartner {
+        var ppIdx = get_pairing_partner_idx_for(session)
+        var ppOrdinal = ppIdx - 1
         var pp: PairingPartner? = null
         while (pp == null) {
             try {
-                val ppCandidate = ui.get_user_input(msg = "Pairing Partner Session $session: ")
-                pp = PairingPartner.value_of(ppCandidate)
+                pp = PairingPartner.value_of(ppOrdinal)
             } catch (e: Exception) {
-                ui.show("Pairing partner name not supported. Please retry.")
+                ui.show("No pairing partner found for given index: '$ppIdx'")
+                ppIdx = get_pairing_partner_idx_for(session)
+                ppOrdinal = ppIdx - 1
             }
         }
         return pp
+    }
+
+    private fun get_pairing_partner_idx_for(session: Int): Int {
+        var ppIdx = -1
+        var ppIdxCandidate: String? = null
+        while (ppIdx == -1) {
+            try {
+                ppIdxCandidate = ui.get_user_input(msg = "Pairing Partner Session $session: ")
+                ppIdx = ppIdxCandidate.toInt()
+            } catch (e: NumberFormatException) {
+                ui.show("No pairing partner found for given index: '$ppIdxCandidate'")
+            }
+        }
+        return ppIdx
     }
 
     private fun open_pull_requests_for(candidate: Candidate, githubBasicAuthToken: String, pairingPartner: List<PairingPartner>) {
