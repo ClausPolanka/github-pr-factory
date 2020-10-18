@@ -5,12 +5,14 @@ import pullrequestfactory.domain.uis.UI
 
 class PairingPartnerUI(private val ui: UI) {
 
+    private val sessions = (1..7)
+
     fun create_pairing_partner_from_user_input(): List<PairingPartner> {
         val chosenPPs = mutableListOf<String>()
-        val pps = (1..7).map {
+        val pps = sessions.map { session ->
             ui.show(PairingPartner.indexed_names().toString())
-            val pp = pairing_partner_for_session(it)
-            chosenPPs.add("👌 Pairing Partner Session $it: '${pp.pull_request_name()}'")
+            val pp = pairing_partner_for_session(session)
+            chosenPPs.add("👌 Pairing Partner Session $session: '${pp.pull_request_name()}'")
             ui.show(chosenPPs.joinToString(System.lineSeparator()))
             pp
         }
