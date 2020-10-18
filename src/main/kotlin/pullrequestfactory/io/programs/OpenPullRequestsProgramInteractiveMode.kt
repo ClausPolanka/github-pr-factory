@@ -17,9 +17,9 @@ class OpenPullRequestsProgramInteractiveMode(
         ui.show("Welcome to interactive mode for opening pull requests")
         ui.show("Please provide data for the following questions")
         val candidate = create_candidate_from_user_input()
-        val token = ui.get_user_input(msg = "Your Github.com basic authorization token: ")
-        val pairingPartner = create_pairing_partner_from_user_input()
-        open_pull_requests_for(candidate, token, pairingPartner)
+        val token = create_basic_auth_token_from_user_input()
+        val pp = create_pairing_partner_from_user_input()
+        open_pull_requests_for(candidate, token, pp)
     }
 
     private fun create_candidate_from_user_input(): Candidate {
@@ -27,6 +27,11 @@ class OpenPullRequestsProgramInteractiveMode(
         val lastName = ui.get_user_input(msg = "Candidate last name: ")
         val candidate = Candidate(firstName, lastName)
         return candidate
+    }
+
+    private fun create_basic_auth_token_from_user_input(): String {
+        val token = ui.get_user_input(msg = "Your Github.com basic authorization token: ")
+        return token
     }
 
     private fun create_pairing_partner_from_user_input(): List<PairingPartner> {
