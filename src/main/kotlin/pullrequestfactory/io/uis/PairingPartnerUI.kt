@@ -36,17 +36,21 @@ class PairingPartnerUI(private val ui: UI) {
     }
 
     private fun get_pairing_partner_idx_for(session: Int): Int {
-        var ppIdx = -1
-        var ppIdxCandidate: String? = null
-        while (ppIdx == -1) {
-            try {
-                ppIdxCandidate = ui.get_user_input(msg = "👉 Pairing Partner Session $session: ")
-                ppIdx = ppIdxCandidate.toInt()
-            } catch (e: NumberFormatException) {
-                ui.show("🤭 No pairing partner found for given index: '$ppIdxCandidate'")
-            }
+        var ppIdx = Int.MIN_VALUE
+        while (ppIdx == Int.MIN_VALUE) {
+            val ppIdxCandidate = ui.get_user_input(msg = "👉 Pairing Partner Session $session: ")
+            ppIdx = to_int(ppIdxCandidate)
         }
         return ppIdx
+    }
+
+    private fun to_int(ppIdxCandidate: String): Int {
+        try {
+            return ppIdxCandidate.toInt()
+        } catch (e: NumberFormatException) {
+            ui.show("🤭 No pairing partner found for given index: '$ppIdxCandidate'")
+        }
+        return Int.MIN_VALUE
     }
 
 }
