@@ -16,26 +16,26 @@ class OpenPullRequestsProgramInteractiveMode(
     override fun execute() {
         ui.show("Welcome to interactive mode for opening pull requests")
         ui.show("Please provide data for the following questions")
-        val candidate = create_candidate()
+        val candidate = create_candidate_from_user_input()
         val token = ui.get_user_input(msg = "Your Github.com basic authorization token: ")
-        val pairingPartner = create_pairing_partner()
+        val pairingPartner = create_pairing_partner_from_user_input()
         open_pull_requests_for(candidate, token, pairingPartner)
     }
 
-    private fun create_candidate(): Candidate {
+    private fun create_candidate_from_user_input(): Candidate {
         val firstName = ui.get_user_input(msg = "Candidate first name: ")
         val lastName = ui.get_user_input(msg = "Candidate last name: ")
         val candidate = Candidate(firstName, lastName)
         return candidate
     }
 
-    private fun create_pairing_partner(): List<PairingPartner> {
-        val chosenPP = mutableListOf<String>()
+    private fun create_pairing_partner_from_user_input(): List<PairingPartner> {
+        val chosenPPs = mutableListOf<String>()
         val pps = (1..7).map {
             ui.show(PairingPartner.indexed_names().toString())
             val pp = pairing_partner_for_session(it)
-            chosenPP.add("Pairing Partner Session $it: '${pp.pull_request_name()}'")
-            ui.show(chosenPP.joinToString(System.lineSeparator()))
+            chosenPPs.add("Pairing Partner Session $it: '${pp.pull_request_name()}'")
+            ui.show(chosenPPs.joinToString(System.lineSeparator()))
             pp
         }
         return pps
