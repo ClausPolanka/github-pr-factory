@@ -14,7 +14,7 @@ class OpenPullRequestsProgramInteractiveMode(
         private val repoUrl: String) : Program {
 
     override fun execute() {
-        ui.show("Welcome to interactive mode for opening pull requests")
+        ui.show("👋 Welcome to interactive mode for opening pull requests")
         ui.show("Please provide data for the following questions")
         val candidate = create_candidate_from_user_input()
         val token = create_basic_auth_token_from_user_input()
@@ -23,14 +23,14 @@ class OpenPullRequestsProgramInteractiveMode(
     }
 
     private fun create_candidate_from_user_input(): Candidate {
-        val firstName = ui.get_user_input(msg = "Candidate first name: ")
-        val lastName = ui.get_user_input(msg = "Candidate last name: ")
-        val candidate = Candidate(firstName, lastName)
-        return candidate
+        val firstName = ui.get_user_input(msg = "👉 Candidate first name: ")
+        val lastName = ui.get_user_input(msg = "👉 Candidate last name: ")
+        val c = Candidate(firstName, lastName)
+        return c
     }
 
     private fun create_basic_auth_token_from_user_input(): String {
-        val token = ui.get_user_input(msg = "Your Github.com basic authorization token: ")
+        val token = ui.get_user_input(msg = "👉 Your Github.com basic authorization token: ")
         return token
     }
 
@@ -39,7 +39,7 @@ class OpenPullRequestsProgramInteractiveMode(
         val pps = (1..7).map {
             ui.show(PairingPartner.indexed_names().toString())
             val pp = pairing_partner_for_session(it)
-            chosenPPs.add("Pairing Partner Session $it: '${pp.pull_request_name()}'")
+            chosenPPs.add("👌 Pairing Partner Session $it: '${pp.pull_request_name()}'")
             ui.show(chosenPPs.joinToString(System.lineSeparator()))
             pp
         }
@@ -54,7 +54,7 @@ class OpenPullRequestsProgramInteractiveMode(
             try {
                 pp = PairingPartner.value_of(ppOrdinal)
             } catch (e: Exception) {
-                ui.show("No pairing partner found for given index: '$ppIdx'")
+                ui.show("🤭 No pairing partner found for given index: '$ppIdx'")
                 ppIdx = get_pairing_partner_idx_for(session)
                 ppOrdinal = ppIdx - 1
             }
@@ -67,10 +67,10 @@ class OpenPullRequestsProgramInteractiveMode(
         var ppIdxCandidate: String? = null
         while (ppIdx == -1) {
             try {
-                ppIdxCandidate = ui.get_user_input(msg = "Pairing Partner Session $session: ")
+                ppIdxCandidate = ui.get_user_input(msg = "👉 Pairing Partner Session $session: ")
                 ppIdx = ppIdxCandidate.toInt()
             } catch (e: NumberFormatException) {
-                ui.show("No pairing partner found for given index: '$ppIdxCandidate'")
+                ui.show("🤭 No pairing partner found for given index: '$ppIdxCandidate'")
             }
         }
         return ppIdx
@@ -85,7 +85,7 @@ class OpenPullRequestsProgramInteractiveMode(
                 prRepo,
                 BranchSyntaxValidator(ui),
                 PullRequestLastNotFinishedMarker())
-        ui.show("Open pull requests for: $candidate and $pairingPartner")
+        ui.show("🤩 Open pull requests for: $candidate and $pairingPartner")
         f.open_pull_requests(candidate, pairingPartner)
     }
 
