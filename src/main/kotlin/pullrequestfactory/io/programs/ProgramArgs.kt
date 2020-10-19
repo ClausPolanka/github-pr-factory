@@ -116,10 +116,12 @@ class ProgramArgs(private val args: Array<String>) {
     }
 
     private fun create_pairing_partner(pairingPartner: String): List<PairingPartner> {
-        return try {
-            pairingPartner.split("-").map { br -> PairingPartner.value_of(br) }
-        } catch (e: IllegalArgumentException) {
-            throw WrongPairingPartnerArgumentSyntax("$ERROR_MSG_PAIRING_PARTNER ${e.message}")
+        return pairingPartner.split("-").map { br ->
+            val pp = PairingPartner.value_of(br)
+            when (pp) {
+                null -> throw WrongPairingPartnerArgumentSyntax("$ERROR_MSG_PAIRING_PARTNER for given branch '$br'")
+                else -> pp
+            }
         }
     }
 

@@ -1,7 +1,6 @@
 package ut.pullrequestfactory.domain
 
 import org.assertj.core.api.Assertions.assertThat
-import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.Test
 import pullrequestfactory.domain.PairingPartner
 
@@ -29,9 +28,10 @@ class PairingPartnerTest {
     }
 
     @Test
-    fun throws_when_pairing_partner_branch_name_is_invalid() {
-        assertThatThrownBy { PairingPartner.value_of("xxx") }
-                .hasMessage("Pairing partner branch name is invalid: 'xxx'")
+    fun returns_null_when_pairing_partner_name_in_branch_is_invalid() {
+        val pp = PairingPartner.value_of("xxx")
+
+        assertThat(pp).isNull()
     }
 
 }

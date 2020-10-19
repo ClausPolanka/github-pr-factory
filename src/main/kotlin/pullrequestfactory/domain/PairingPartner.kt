@@ -30,21 +30,17 @@ enum class PairingPartner(vararg val pullRequestNames: String) {
 
     companion object {
 
-        fun value_of(value: String): PairingPartner {
-            val pp = values().find { it.pullRequestNames.contains(value.capitalize()) }
-            return when (pp) {
-                null -> throw IllegalArgumentException("Pairing partner branch name is invalid: '$value'")
-                else -> pp
-            }
+        fun value_of(value: String): PairingPartner? {
+            return values().find { it.pullRequestNames.contains(value.capitalize()) }
         }
 
-        fun value_of(ordinal: Int): PairingPartner {
-            val pp = try {
-                values()[ordinal]
+        fun value_of(ordinal: Int): PairingPartner? {
+            try {
+                val pp = values()[ordinal]
+                return pp
             } catch (e: Exception) {
-                throw IllegalArgumentException("No pairing partner found for given index: '$ordinal'")
+                return null
             }
-            return pp
         }
 
         fun indexed_names(): List<String> {

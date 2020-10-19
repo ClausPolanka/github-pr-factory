@@ -22,15 +22,12 @@ class PairingPartnerUI(private val ui: UI) {
     private fun pairing_partner_for_session(session: Int): PairingPartner {
         var ppIdx = get_pairing_partner_idx_for(session)
         var ppOrdinal = ppIdx - 1
-        var pp: PairingPartner? = null
+        var pp = PairingPartner.value_of(ppOrdinal)
         while (pp == null) {
-            try {
-                pp = PairingPartner.value_of(ppOrdinal)
-            } catch (e: Exception) {
-                ui.show("🤭 No pairing partner found for given index: '$ppIdx'")
-                ppIdx = get_pairing_partner_idx_for(session)
-                ppOrdinal = ppIdx - 1
-            }
+            ui.show("🤭 No pairing partner found for given index: '$ppIdx'")
+            ppIdx = get_pairing_partner_idx_for(session)
+            ppOrdinal = ppIdx - 1
+            pp = PairingPartner.value_of(ppOrdinal)
         }
         return pp
     }
