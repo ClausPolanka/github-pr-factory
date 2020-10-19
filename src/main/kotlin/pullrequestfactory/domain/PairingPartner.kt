@@ -31,15 +31,16 @@ enum class PairingPartner(vararg val pullRequestNames: String) {
     companion object {
 
         fun value_of(value: String): PairingPartner? {
-            return values().find { it.pullRequestNames.contains(value.capitalize()) }
+            val pps = values().find { it.pullRequestNames.contains(value.capitalize()) }
+            return pps
         }
 
         fun value_of(ordinal: Int): PairingPartner? {
-            try {
+            return try {
                 val pp = values()[ordinal]
-                return pp
+                pp
             } catch (e: Exception) {
-                return null
+                null
             }
         }
 
