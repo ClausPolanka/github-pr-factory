@@ -23,10 +23,14 @@ enum class PairingPartner(vararg val pullRequestNames: String) {
     JAROMIR("Jaromir");
 
     fun contains(branchName: String): Boolean {
-        return pullRequestNames.contains(branchName.capitalize())
+        val containsBranchName = pullRequestNames.contains(branchName.capitalize())
+        return containsBranchName
     }
 
-    fun pull_request_name() = name.toLowerCase().capitalize()
+    fun pull_request_name(): String {
+        val prName = name.toLowerCase().capitalize()
+        return prName
+    }
 
     companion object {
 
@@ -45,9 +49,9 @@ enum class PairingPartner(vararg val pullRequestNames: String) {
         }
 
         fun indexed_names(): List<String> {
-            return values().map { "${it.pull_request_name()} (${it.ordinal + 1})" }.toList()
+            val indexedNames = values().map { "${it.pull_request_name()} (${it.ordinal + 1})" }
+            return indexedNames
         }
-
     }
 
 }
