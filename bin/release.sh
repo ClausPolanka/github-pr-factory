@@ -1,6 +1,7 @@
 #! /bin/sh
 
 # ! Make sure Nexus Maven Proxy is running !
+# docker start 9b81e5df1f1a3abfde1ff28e2145b8e269ef3bc720513528136b70d6616234c3
 
 # This file got copied from https://github.com/alexec/reltut/blob/master/release.sh
 # and minor changes were done to optimize release process for this project.
