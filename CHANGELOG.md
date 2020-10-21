@@ -2,7 +2,19 @@
 All notable changes to this project will be documented in this file. We try to 
 adhere to https://github.com/olivierlacan/keep-a-changelog.
 
-## [1.2.0-SNAPSHOT]
+## [1.3.0-SNAPSHOT] 
+
+### Added       
+
+### Changed     
+
+### Fixed       
+
+### Removed     
+
+### Internal    
+
+## [1.2.0] - 2020-10-21
 
 ### Added
 - [Issue-#4] Interactive command to open pull requests for better user experience
@@ -32,7 +44,8 @@ adhere to https://github.com/olivierlacan/keep-a-changelog.
 - Open pull requests for George 2nd round hiring candidates via CLI
 - Close pull requests for George 2nd round hiring candidates via CLI
 
-[1.2.0-SNAPSHOT]: https://github.beeone.at/George/georgebackend/compare/release-1.1.0...master
+[1.3.0-SNAPSHOT]: https://github.beeone.at/George/georgebackend/compare/release-1.2.0...master
+[1.2.0]: https://github.beeone.at/George/georgebackend/compare/release-1.1.0...release-1.2.0
 [1.1.0]: https://github.beeone.at/George/georgebackend/compare/release-1.0.0...release-1.1.0
 [Issue-#4]: https://github.com/ClausPolanka/github-pr-factory/issues/4
 [Issue-#6]: https://github.com/ClausPolanka/github-pr-factory/issues/6
