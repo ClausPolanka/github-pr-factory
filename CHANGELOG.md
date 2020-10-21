@@ -18,7 +18,7 @@ adhere to https://github.com/olivierlacan/keep-a-changelog.
 ## [1.2.0] - 2020-10-21
 
 ### Added
-- [Issue-#4] Interactive command to open pull requests for better user experience
+- [Issue-#14] Interactive command to open pull requests for better user experience
 
 ### Changed
 
