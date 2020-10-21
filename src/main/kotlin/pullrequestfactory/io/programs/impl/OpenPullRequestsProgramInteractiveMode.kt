@@ -1,4 +1,4 @@
-package pullrequestfactory.io.programs
+package pullrequestfactory.io.programs.impl
 
 import pullrequestfactory.domain.Candidate
 import pullrequestfactory.domain.GithubPRFactory
@@ -6,6 +6,7 @@ import pullrequestfactory.domain.PairingPartner
 import pullrequestfactory.domain.branches.BranchSyntaxValidator
 import pullrequestfactory.domain.pullrequests.PullRequestLastNotFinishedMarker
 import pullrequestfactory.domain.uis.UI
+import pullrequestfactory.io.programs.Program
 import pullrequestfactory.io.repositories.GithubHttpBranchesRepos
 import pullrequestfactory.io.repositories.GithubHttpPullRequestsRepo
 import pullrequestfactory.io.uis.PairingPartnerUI
