@@ -88,6 +88,9 @@ class ProgramArgs(private val args: Array<String>, private val basicAuthToken: S
             && args[args.indexOf(CANDIDATE_OPTION) + 1].contains("-")
 
     fun get_github_basic_auth_token(): String {
+        if (basicAuthToken != null) {
+            return basicAuthToken
+        }
         validate_args_token_syntax()
         val indexOfGithubToken = args.indexOf(GITHUB_BASIC_AUTH_TOKEN_OPTION) + 1
         return args[indexOfGithubToken]
@@ -103,12 +106,7 @@ class ProgramArgs(private val args: Array<String>, private val basicAuthToken: S
         val idxOfToken = args.indexOf(GITHUB_BASIC_AUTH_TOKEN_OPTION) + 1
         val hasCorrectNrOfArgs = args.size >= idxOfToken + 1 /* since array is 0-based */
         val isValidFromUserInput = args.contains(GITHUB_BASIC_AUTH_TOKEN_OPTION) && hasCorrectNrOfArgs
-        return isValidFromUserInput || is_valid_from_properties()
-    }
-
-    private fun is_valid_from_properties(): Boolean {
-        val isValid = basicAuthToken != null
-        return isValid
+        return isValidFromUserInput
     }
 
     fun get_pairing_partner(): List<PairingPartner> {
