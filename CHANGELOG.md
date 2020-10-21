@@ -5,6 +5,7 @@ adhere to https://github.com/olivierlacan/keep-a-changelog.
 ## [1.2.0-SNAPSHOT]
 
 ### Added
+- [Issue-#4] Interactive command to open pull requests for better user experience
 
 ### Changed
 
