@@ -18,12 +18,16 @@ class OpenPullRequestsProgramInteractiveMode(
     private val ppUI = PairingPartnerUI(ui)
 
     override fun execute() {
-        ui.show("👋 Welcome to interactive mode for opening pull requests")
-        ui.show("Please provide data for the following questions")
+        show_welcome_message()
         val candidate = create_candidate_from_user_input()
         val token = create_basic_auth_token_from_user_input()
         val pp = ppUI.create_pairing_partner_from_user_input()
         open_pull_requests_for(candidate, token, pp)
+    }
+
+    private fun show_welcome_message() {
+        ui.show("👋 Welcome to interactive mode for opening pull requests")
+        ui.show("Please provide data for the following questions")
     }
 
     private fun create_candidate_from_user_input(): Candidate {
