@@ -23,7 +23,7 @@ object Programs {
             pa.has_open_command() -> OpenPullRequestsProgram(ui, pa, repoUrl)
             pa.has_close_command_help_option() -> ShowCloseCommandHelpOutputProgram()
             pa.has_invalid_close_command() -> ShowInvalidCloseCommandOutputProgram()
-            pa.has_close_command_in_interactive_mode() -> ClosePullRequestsProgramInteractiveMode(ui, repoUrl)
+            pa.has_close_command_in_interactive_mode() -> ClosePullRequestsProgramInteractiveMode(ui, repoUrl, basicAuthToken)
             pa.has_close_command() -> ClosePullRequestsProgram(ui, pa, repoUrl)
             else -> ShowHelpOutputProgram()
         }

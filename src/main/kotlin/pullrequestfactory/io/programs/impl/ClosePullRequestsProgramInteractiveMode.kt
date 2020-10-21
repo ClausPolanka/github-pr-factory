@@ -11,7 +11,8 @@ import pullrequestfactory.io.repositories.GithubHttpPullRequestsRepo
 
 class ClosePullRequestsProgramInteractiveMode(
         private val ui: UI,
-        private val repoUrl: String) : Program {
+        private val repoUrl: String,
+        private val basicAuthToken: String?) : Program {
 
     override fun execute() {
         show_welcome_message()
@@ -33,6 +34,9 @@ class ClosePullRequestsProgramInteractiveMode(
     }
 
     private fun create_basic_auth_token_from_user_input(): String {
+        if (basicAuthToken != null) {
+            return basicAuthToken
+        }
         val token = ui.get_user_input(msg = "Your Github.com basic authorization token: ")
         return token
     }
