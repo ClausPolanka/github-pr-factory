@@ -26,7 +26,7 @@ class Branches(private val branches: List<Branch>, private val prMarker: PullReq
                     "/",
                     "Session",
                     create_sessions_for(branches)[idx],
-                    PairingPartner.value_of(pairingPartner).pull_request_name()
+                    PairingPartner.value_of(pairingPartner)?.pull_request_name()
             )
             titleParts.joinToString(" ")
         }

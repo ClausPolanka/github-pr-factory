@@ -1,37 +1,94 @@
 package ut.pullrequestfactory.domain
 
 import org.assertj.core.api.Assertions.assertThat
-import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.Test
 import pullrequestfactory.domain.PairingPartner
 
 class PairingPartnerTest {
 
     @Test
-    fun pairing_partner_branch_names_for_definied_pairing_partner() {
-        val pp = PairingPartner.value_of("tomasr")
+    fun pairing_partner_contains_given_branch_name() {
+        val branchName = "berni"
+        val contains = PairingPartner.BERNI.contains(branchName)
 
-        assertThat(pp).isEqualTo(PairingPartner.TOMAS)
+        assertThat(contains)
+                .describedAs("expecting branch name to be contained: '$branchName'")
+                .isTrue()
+    }
+
+    @Test
+    fun returns_pull_request_name_for_given_pairing_partner() {
+        val prName = PairingPartner.BERNI.pull_request_name()
+
+        assertThat(prName).isEqualTo("Berni")
+    }
+
+    @Test
+    fun pairing_partner_branch_names_for_definied_pairing_partner() {
+        val ppName = "tomasr"
+        val pp = PairingPartner.value_of(ppName)
+
+        assertThat(pp)
+                .describedAs("expecting known pairing partner name: '$ppName'")
+                .isEqualTo(PairingPartner.TOMAS)
     }
 
     @Test
     fun pairing_partner_branch_names_for_definied_pairing_partner_berni() {
-        val pp = PairingPartner.value_of("berni")
+        val ppName = "berni"
+        val pp = PairingPartner.value_of(ppName)
 
-        assertThat(pp).isEqualTo(PairingPartner.BERNI)
+        assertThat(pp)
+                .describedAs("expecting known pairing partner name: '$ppName∆'")
+                .isEqualTo(PairingPartner.BERNI)
     }
 
     @Test
     fun pairing_partner_branch_names_for_definied_pairing_partner_shubi() {
-        val pp = PairingPartner.value_of("shubi")
+        val ppName = "shubi"
+        val pp = PairingPartner.value_of(ppName)
 
-        assertThat(pp).isEqualTo(PairingPartner.SHUBHI)
+        assertThat(pp)
+                .describedAs("expecting known pairing partner name: '$ppName'")
+                .isEqualTo(PairingPartner.SHUBHI)
     }
 
     @Test
-    fun throws_when_pairing_partner_branch_name_is_invalid() {
-        assertThatThrownBy { PairingPartner.value_of("xxx") }
-                .hasMessage("Pairing partner branch name is invalid: 'xxx'")
+    fun returns_null_when_pairing_partner_name_in_branch_is_invalid() {
+        val ppName = "xxx"
+        val pp = PairingPartner.value_of(ppName)
+
+        assertThat(pp)
+                .describedAs("expecting pairing partner to be invalid: '$ppName'")
+                .isNull()
+    }
+
+    @Test
+    fun returns_null_when_when_ordinal_is_too_high() {
+        val ordinal = PairingPartner.values().size
+        val pp = PairingPartner.value_of(ordinal)
+
+        assertThat(pp)
+                .describedAs("ordinal is not high enough: '$ordinal'")
+                .isNull()
+    }
+
+    @Test
+    fun returns_pairing_partner_for_given_ordinal() {
+        val ordinal = 0
+        val pp = PairingPartner.value_of(ordinal)
+
+        assertThat(pp)
+                .describedAs("expecting valid ordinal: '$ordinal'")
+                .isEqualTo(PairingPartner.ANDREJ)
+    }
+
+    @Test
+    fun returns_indexed_pairing_partner_pull_request_names() {
+        val pps = PairingPartner.indexed_names()
+
+        assertThat(pps.size).isEqualTo(pps.size)
+        assertThat(pps[0]).isEqualTo("Andrej (1)")
     }
 
 }
