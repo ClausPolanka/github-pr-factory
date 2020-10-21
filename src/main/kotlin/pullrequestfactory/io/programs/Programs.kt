@@ -7,10 +7,11 @@ object Programs {
 
     fun create_program_for(args: Array<String>): Program {
         val ui = ConsoleUI()
-        val pa = ProgramArgs(args)
         val properties = FileProperties("app.properties")
         val baseUrl = properties.get_github_base_url()
         val repoPath = properties.get_github_repository_path()
+        val basicAuthToken = properties.get_github_basic_auth_token()
+        val pa = ProgramArgs(args, basicAuthToken)
         val repoUrl = baseUrl + repoPath
         return when {
             pa.has_help_option() -> ShowHelpOutputProgram()

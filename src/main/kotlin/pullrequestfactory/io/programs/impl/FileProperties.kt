@@ -17,4 +17,6 @@ class FileProperties(fileName: String) : Properties {
 
     override fun get_github_repository_path() = props.getProperty("repoPath", DEFAULT_URL)
 
+    override fun get_github_basic_auth_token() = props.getProperty("githubBasicAuthToken")
+
 }

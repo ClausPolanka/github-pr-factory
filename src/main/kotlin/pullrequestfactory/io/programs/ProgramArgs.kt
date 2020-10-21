@@ -3,7 +3,7 @@ package pullrequestfactory.io.programs
 import pullrequestfactory.domain.Candidate
 import pullrequestfactory.domain.PairingPartner
 
-class ProgramArgs(private val args: Array<String>) {
+class ProgramArgs(private val args: Array<String>, private val basicAuthToken: String?) {
 
     private val HELP_COMMAND = "-?"
     private val HELP_COMMAND_LONG_VERSION = "--help"
@@ -99,9 +99,17 @@ class ProgramArgs(private val args: Array<String>) {
         }
     }
 
-    private fun is_github_basic_auth_token_syntax_valid() =
-            args.size >= args.indexOf(GITHUB_BASIC_AUTH_TOKEN_OPTION) + 1 /* token */ + 1 /* since array is 0-based */
-                    && args.contains(GITHUB_BASIC_AUTH_TOKEN_OPTION)
+    private fun is_github_basic_auth_token_syntax_valid(): Boolean {
+        val idxOfToken = args.indexOf(GITHUB_BASIC_AUTH_TOKEN_OPTION) + 1
+        val hasCorrectNrOfArgs = args.size >= idxOfToken + 1 /* since array is 0-based */
+        val isValidFromUserInput = args.contains(GITHUB_BASIC_AUTH_TOKEN_OPTION) && hasCorrectNrOfArgs
+        return isValidFromUserInput || is_valid_from_properties()
+    }
+
+    private fun is_valid_from_properties(): Boolean {
+        val isValid = basicAuthToken != null
+        return isValid
+    }
 
     fun get_pairing_partner(): List<PairingPartner> {
         validate_args_pairing_partner_syntax()
