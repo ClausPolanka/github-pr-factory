@@ -1,5 +1,7 @@
 #! /bin/sh
 
+# ! Make sure Nexus Maven Proxy is running !
+
 # This file got copied from https://github.com/alexec/reltut/blob/master/release.sh
 # and minor changes were done to optimize release process for this project.
 
