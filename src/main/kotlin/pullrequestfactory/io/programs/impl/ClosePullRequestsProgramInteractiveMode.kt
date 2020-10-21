@@ -14,11 +14,15 @@ class ClosePullRequestsProgramInteractiveMode(
         private val repoUrl: String) : Program {
 
     override fun execute() {
-        ui.show("Welcome to interactive mode for closing pull requests")
-        ui.show("Please provide data for the following questions")
+        show_welcome_message()
         val candidate = create_candidate()
         val token = ui.get_user_input(msg = "Your Github.com basic authorization token: ")
         close_pull_requests_for(candidate, token)
+    }
+
+    private fun show_welcome_message() {
+        ui.show("Welcome to interactive mode for closing pull requests")
+        ui.show("Please provide data for the following questions")
     }
 
     private fun create_candidate(): Candidate {
