@@ -3,7 +3,7 @@ package pullrequestfactory.io.programs
 import pullrequestfactory.domain.Candidate
 import pullrequestfactory.domain.PairingPartner
 
-class ProgramArgs(private val args: Array<String>, private val basicAuthToken: String?) {
+class ProgramArgs(private val args: Array<String>, private val basicAuthToken: String? = null) {
 
     private val HELP_COMMAND = "-?"
     private val HELP_COMMAND_LONG_VERSION = "--help"

@@ -14,7 +14,7 @@ import pullrequestfactory.io.uis.PairingPartnerUI
 class OpenPullRequestsProgramInteractiveMode(
         private val ui: UI,
         private val repoUrl: String,
-        private val basicAuthToken: String?) : Program {
+        private val basicAuthToken: String? = null) : Program {
 
     private val ppUI = PairingPartnerUI(ui)
 

@@ -12,7 +12,7 @@ import pullrequestfactory.io.repositories.GithubHttpPullRequestsRepo
 class ClosePullRequestsProgramInteractiveMode(
         private val ui: UI,
         private val repoUrl: String,
-        private val basicAuthToken: String?) : Program {
+        private val basicAuthToken: String? = null) : Program {
 
     override fun execute() {
         show_welcome_message()
