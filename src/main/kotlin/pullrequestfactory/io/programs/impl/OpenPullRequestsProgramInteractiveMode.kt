@@ -13,7 +13,8 @@ import pullrequestfactory.io.uis.PairingPartnerUI
 
 class OpenPullRequestsProgramInteractiveMode(
         private val ui: UI,
-        private val repoUrl: String) : Program {
+        private val repoUrl: String,
+        private val basicAuthToken: String?) : Program {
 
     private val ppUI = PairingPartnerUI(ui)
 
@@ -38,6 +39,9 @@ class OpenPullRequestsProgramInteractiveMode(
     }
 
     private fun create_basic_auth_token_from_user_input(): String {
+        if (basicAuthToken != null) {
+            return basicAuthToken
+        }
         val token = ui.get_user_input(msg = "👉 Your Github.com basic authorization token: ")
         return token
     }
