@@ -3,6 +3,7 @@ package pullrequestfactory.io.programs.impl
 import pullrequestfactory.io.programs.UserProperties
 import java.io.File
 import java.io.FileNotFoundException
+import java.io.InputStream
 
 class FileUserProperties(fileName: String) : UserProperties {
 
@@ -11,17 +12,21 @@ class FileUserProperties(fileName: String) : UserProperties {
     init {
         var propFile = this::class.java.classLoader.getResourceAsStream(fileName)
         if (propFile == null) {
-            propFile = try {
-                val file = File(fileName)
-                file.inputStream()
-            } catch (ex: NullPointerException) {
-                null
-            } catch (ex: FileNotFoundException) {
-                null
-            }
+            propFile = read_from_file_system(fileName)
         }
         if (propFile != null) {
             props.load(propFile)
+        }
+    }
+
+    private fun read_from_file_system(fileName: String): InputStream? {
+        return try {
+            val file = File(fileName)
+            file.inputStream()
+        } catch (ex: NullPointerException) {
+            null
+        } catch (ex: FileNotFoundException) {
+            null
         }
     }
 
