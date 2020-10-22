@@ -1,13 +1,25 @@
 package pullrequestfactory.io.programs.impl
 
 import pullrequestfactory.io.programs.UserProperties
+import java.io.File
+import java.io.FileNotFoundException
 
 class FileUserProperties(fileName: String) : UserProperties {
 
     private val props = java.util.Properties()
 
     init {
-        val propFile = this::class.java.classLoader.getResourceAsStream(fileName)
+        var propFile = this::class.java.classLoader.getResourceAsStream(fileName)
+        if (propFile == null) {
+            propFile = try {
+                val file = File(fileName)
+                file.inputStream()
+            } catch (ex: NullPointerException) {
+                null
+            } catch (ex: FileNotFoundException) {
+                null
+            }
+        }
         if (propFile != null) {
             props.load(propFile)
         }
