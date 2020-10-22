@@ -7,12 +7,15 @@ class FileUserProperties(fileName: String) : UserProperties {
     private val props = java.util.Properties()
 
     init {
-        props.load(this::class.java.classLoader.getResourceAsStream(fileName))
+        val propFile = this::class.java.classLoader.getResourceAsStream(fileName)
+        if (propFile != null) {
+            props.load(propFile)
+        }
     }
 
     override fun get_github_basic_auth_token(): String? {
         val token = props.getProperty("githubBasicAuthToken")
-        if (token.isEmpty()) {
+        if (token.isNullOrEmpty()) {
             return null
         }
         return token

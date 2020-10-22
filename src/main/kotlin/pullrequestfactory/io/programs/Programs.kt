@@ -8,7 +8,7 @@ object Programs {
     fun create_program_for(args: Array<String>): Program {
         val ui = ConsoleUI()
         val appProps = FileAppProperties("app.properties")
-        val userProps = FileUserProperties("user.properties")
+        val userProps = FileUserProperties("userr.properties")
         val baseUrl = appProps.get_github_base_url()
         val repoPath = appProps.get_github_repository_path()
         val basicAuthToken = userProps.get_github_basic_auth_token()
