@@ -1,8 +1,8 @@
 package pullrequestfactory.io.programs.impl
 
-import pullrequestfactory.io.programs.Properties
+import pullrequestfactory.io.programs.AppProperties
 
-class FileProperties(fileName: String) : Properties {
+class FileAppProperties(fileName: String) : AppProperties {
 
     private val DEFAULT_URL = "http://localhost"
     private val props = java.util.Properties()
@@ -16,7 +16,5 @@ class FileProperties(fileName: String) : Properties {
     override fun get_project_version() = props.getProperty("projectVersion", DEFAULT_URL)
 
     override fun get_github_repository_path() = props.getProperty("repoPath", DEFAULT_URL)
-
-    override fun get_github_basic_auth_token() = props.getProperty("githubBasicAuthToken")
 
 }
