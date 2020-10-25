@@ -1,8 +1,8 @@
 package pullrequestfactory.io.programs.impl
 
-import pullrequestfactory.io.programs.Properties
+import pullrequestfactory.io.programs.AppProperties
 
-class FileProperties(fileName: String) : Properties {
+class FileAppProperties(fileName: String) : AppProperties {
 
     private val DEFAULT_URL = "http://localhost"
     private val props = java.util.Properties()

@@ -14,7 +14,7 @@ class ShowOpenCommandHelpOutputProgram : Program {
           -i, --interactive${"\t\t"}Interactive mode of opening new pull requests
 
           -c${"\t\t"}The candidate's first name and last-name separated by hyphen
-          -g${"\t\t"}Your Github basic authorization token
+          -g${"\t\t"}Your Github basic authentication token
           -p${"\t\t"}Seven pairing-partner names separated by hyphen
             ${"\t\t"}  Currently supported names:
             ${"\t\t"}  claus, berni, bernhard, nandor, dominik, mihai, lampe, shubi

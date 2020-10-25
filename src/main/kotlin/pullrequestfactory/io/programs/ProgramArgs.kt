@@ -3,7 +3,7 @@ package pullrequestfactory.io.programs
 import pullrequestfactory.domain.Candidate
 import pullrequestfactory.domain.PairingPartner
 
-class ProgramArgs(private val args: Array<String>) {
+class ProgramArgs(private val args: Array<String>, private val basicAuthToken: String? = null) {
 
     private val HELP_COMMAND = "-?"
     private val HELP_COMMAND_LONG_VERSION = "--help"
@@ -37,7 +37,8 @@ class ProgramArgs(private val args: Array<String>) {
                     || hast_correct_nr_of_args()
                     || has_correct_nr_of_optional_args()
 
-    fun has_open_command_in_interactive_mode() = args.size == 2 && is_interactive_mode()
+    fun has_open_command_in_interactive_mode() =
+            args.size == 2 && args.contains(OPEN_COMMAND) && is_interactive_mode()
 
     private fun hast_correct_nr_of_args() =
             args.size == 7 && has_open_command_required_options()
@@ -88,6 +89,9 @@ class ProgramArgs(private val args: Array<String>) {
             && args[args.indexOf(CANDIDATE_OPTION) + 1].contains("-")
 
     fun get_github_basic_auth_token(): String {
+        if (basicAuthToken != null) {
+            return basicAuthToken
+        }
         validate_args_token_syntax()
         val indexOfGithubToken = args.indexOf(GITHUB_BASIC_AUTH_TOKEN_OPTION) + 1
         return args[indexOfGithubToken]
@@ -99,9 +103,12 @@ class ProgramArgs(private val args: Array<String>) {
         }
     }
 
-    private fun is_github_basic_auth_token_syntax_valid() =
-            args.size >= args.indexOf(GITHUB_BASIC_AUTH_TOKEN_OPTION) + 1 /* token */ + 1 /* since array is 0-based */
-                    && args.contains(GITHUB_BASIC_AUTH_TOKEN_OPTION)
+    private fun is_github_basic_auth_token_syntax_valid(): Boolean {
+        val idxOfToken = args.indexOf(GITHUB_BASIC_AUTH_TOKEN_OPTION) + 1
+        val hasCorrectNrOfArgs = args.size >= idxOfToken + 1 /* since array is 0-based */
+        val isValidFromUserInput = args.contains(GITHUB_BASIC_AUTH_TOKEN_OPTION) && hasCorrectNrOfArgs
+        return isValidFromUserInput
+    }
 
     fun get_pairing_partner(): List<PairingPartner> {
         validate_args_pairing_partner_syntax()
@@ -137,7 +144,7 @@ class ProgramArgs(private val args: Array<String>) {
             args.contains(IS_LAST_PULL_REQUEST_FINISHED) || args.contains(IS_LAST_PULL_REQUEST_FINISHED_LONG_VERSION)
 
     fun has_close_command_in_interactive_mode(): Boolean {
-        return is_interactive_mode()
+        return args.size == 2 && args.contains(CLOSE_COMMAND) && is_interactive_mode()
     }
 
     class WrongCandidateArgumentSyntax(msg: String) : RuntimeException(msg)
