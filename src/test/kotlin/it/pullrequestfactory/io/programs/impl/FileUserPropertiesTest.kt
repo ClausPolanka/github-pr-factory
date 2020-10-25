@@ -11,7 +11,9 @@ import java.nio.file.Paths
 
 class FileUserPropertiesTest {
 
-    @Rule @JvmField val tempFolder = TemporaryFolder()
+    @Rule
+    @JvmField
+    val tempFolder = TemporaryFolder()
 
     private val propsFileName = "tmp-user.properties"
 
