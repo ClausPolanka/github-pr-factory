@@ -1,6 +1,6 @@
 package it.pullrequestfactory.io.programs.impl
 
-import org.assertj.core.api.Assertions
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.After
 import org.junit.Rule
 import org.junit.Test
@@ -29,7 +29,7 @@ class FileUserPropertiesTest {
 
         val basicAuthToken = sut.get_github_basic_auth_token()
 
-        Assertions.assertThat(basicAuthToken).isNull()
+        assertThat(basicAuthToken).isNull()
     }
 
     @Test
@@ -39,7 +39,7 @@ class FileUserPropertiesTest {
 
         val basicAuthToken = sut.get_github_basic_auth_token()
 
-        Assertions.assertThat(basicAuthToken).isNull()
+        assertThat(basicAuthToken).isNull()
     }
 
     @Test
@@ -49,7 +49,7 @@ class FileUserPropertiesTest {
 
         val basicAuthToken = sut.get_github_basic_auth_token()
 
-        Assertions.assertThat(basicAuthToken).isEqualTo("asdfkj24398")
+        assertThat(basicAuthToken).isEqualTo("asdfkj24398")
     }
 
     @Test
@@ -58,7 +58,7 @@ class FileUserPropertiesTest {
 
         val basicAuthToken = sut.get_github_basic_auth_token()
 
-        Assertions.assertThat(basicAuthToken).isNull()
+        assertThat(basicAuthToken).isNull()
     }
 
     @Test
@@ -68,7 +68,7 @@ class FileUserPropertiesTest {
 
         val basicAuthToken = sut.get_github_basic_auth_token()
 
-        Assertions.assertThat(basicAuthToken).isEqualTo("asdfkj24398")
+        assertThat(basicAuthToken).isEqualTo("asdfkj24398")
     }
 
     private fun createEmptyPropsFileOnClasspath(): String {
