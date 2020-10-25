@@ -1,4 +1,4 @@
-package it.pullrequestfactory.io
+package it.pullrequestfactory.io.programs.impl
 
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.After
@@ -9,7 +9,7 @@ import java.nio.file.Paths
 
 class FileAppPropertiesTest {
 
-    private val propsFileName = "tmp.properties"
+    private val propsFileName = "tmp-app.properties"
 
     @After
     fun tearDown() {
