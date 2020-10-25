@@ -33,6 +33,16 @@ class FileUserPropertiesTest {
     }
 
     @Test
+    fun get_github_basic_auth_token_returns_null_when_file_exists_on_classpath_and_property_is_empty() {
+        val fileName = createPropsFileOnClasspathWith("githubBasicAuthToken=")
+        val sut = FileUserProperties(fileName)
+
+        val basicAuthToken = sut.get_github_basic_auth_token()
+
+        Assertions.assertThat(basicAuthToken).isNull()
+    }
+
+    @Test
     fun get_github_basic_auth_token_returns_token_when_file_exists_on_classpath_and_property_exists() {
         val fileName = createPropsFileOnClasspathWith("githubBasicAuthToken=asdfkj24398")
         val sut = FileUserProperties(fileName)
