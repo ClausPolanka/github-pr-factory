@@ -23,8 +23,6 @@ class FileUserProperties(fileName: String) : UserProperties {
         return try {
             val file = File(fileName)
             file.inputStream()
-        } catch (ex: NullPointerException) {
-            null
         } catch (ex: FileNotFoundException) {
             null
         }

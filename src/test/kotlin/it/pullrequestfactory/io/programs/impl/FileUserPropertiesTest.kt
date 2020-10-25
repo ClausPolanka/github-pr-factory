@@ -24,7 +24,7 @@ class FileUserPropertiesTest {
 
     @Test
     fun get_github_basic_auth_token_returns_null_when_file_exists_on_classpath_but_no_property_exists() {
-        val fileName = createEmptyPropsFile()
+        val fileName = createEmptyPropsFileOnClasspath()
         val sut = FileUserProperties(fileName)
 
         val basicAuthToken = sut.get_github_basic_auth_token()
@@ -34,7 +34,7 @@ class FileUserPropertiesTest {
 
     @Test
     fun get_github_basic_auth_token_returns_token_when_file_exists_on_classpath_and_property_exists() {
-        val fileName = createPropsWith("githubBasicAuthToken=asdfkj24398")
+        val fileName = createPropsFileOnClasspathWith("githubBasicAuthToken=asdfkj24398")
         val sut = FileUserProperties(fileName)
 
         val basicAuthToken = sut.get_github_basic_auth_token()
@@ -43,7 +43,7 @@ class FileUserPropertiesTest {
     }
 
     @Test
-    fun get_github_basic_auth_token_returns_null_when_file_exists_on_filesystem_but_no_property_exists() {
+    fun get_github_basic_auth_token_returns_null_when_file_does_not_exist_on_filesystem() {
         val sut = FileUserProperties("tmp-user.properties")
 
         val basicAuthToken = sut.get_github_basic_auth_token()
@@ -53,23 +53,28 @@ class FileUserPropertiesTest {
 
     @Test
     fun get_github_basic_auth_token_returns_token_when_file_exists_on_filesystem_and_property_exists() {
-        val tempFile = tempFolder.newFile("tmp-user.properties")
-        tempFile.writeText("githubBasicAuthToken=asdfkj24398")
-        val sut = FileUserProperties(tempFile.absolutePath)
+        val fileName = createPropsFileOnFileSystemWith("githubBasicAuthToken=asdfkj24398")
+        val sut = FileUserProperties(fileName)
 
         val basicAuthToken = sut.get_github_basic_auth_token()
 
         Assertions.assertThat(basicAuthToken).isEqualTo("asdfkj24398")
     }
 
-    private fun createEmptyPropsFile(): String {
+    private fun createEmptyPropsFileOnClasspath(): String {
         Files.createFile(Paths.get("target/test-classes/$propsFileName"))
         return propsFileName
     }
 
-    private fun createPropsWith(prop: String): String {
+    private fun createPropsFileOnClasspathWith(prop: String): String {
         Files.write(Paths.get("target/test-classes/$propsFileName"), prop.toByteArray())
         return propsFileName
+    }
+
+    private fun createPropsFileOnFileSystemWith(prop: String): String {
+        val propsFile = tempFolder.newFile("tmp-user.properties")
+        propsFile.writeText(prop)
+        return propsFile.absolutePath
     }
 
 }
