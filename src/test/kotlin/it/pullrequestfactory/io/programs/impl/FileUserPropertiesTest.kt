@@ -54,7 +54,7 @@ class FileUserPropertiesTest {
 
     @Test
     fun get_github_basic_auth_token_returns_null_when_file_does_not_exist_on_filesystem() {
-        val sut = FileUserProperties("tmp-user.properties")
+        val sut = FileUserProperties(propsFileName)
 
         val basicAuthToken = sut.get_github_basic_auth_token()
 
@@ -82,7 +82,7 @@ class FileUserPropertiesTest {
     }
 
     private fun createPropsFileOnFileSystemWith(prop: String): String {
-        val propsFile = tempFolder.newFile("tmp-user.properties")
+        val propsFile = tempFolder.newFile(propsFileName)
         propsFile.writeText(prop)
         return propsFile.absolutePath
     }
