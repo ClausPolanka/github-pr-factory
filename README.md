@@ -49,7 +49,7 @@ Open new Github pull requests for a 2nd round hiring candidate
 
 Options:
   -c		The candidate's first name and last-name separated by hyphen
-  -g		Your Github basic authorization token
+  -g		Your Github basic authentication token
   -p		Seven pairing-partner names separated by hyphen
     		  Currently supported names:
     		  claus, berni, bernhard, nandor, dominik, mihai, lampe, shubi
@@ -78,7 +78,7 @@ Close Github pull requests for a 2nd round hiring candidate
 
 Options:
   -c		The candidate's first name and last-name separated by hyphen
-  -g		Your Github basic authorization token
+  -g		Your Github basic authentication token
 
 Example:
   github-pr-factory close -c firstname-lastname -g 10238sadf08klasjdf098

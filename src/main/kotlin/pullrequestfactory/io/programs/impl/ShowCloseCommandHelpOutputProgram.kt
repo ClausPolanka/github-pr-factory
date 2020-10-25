@@ -14,7 +14,7 @@ class ShowCloseCommandHelpOutputProgram : Program {
           -i, --interactive${"\t\t"}Interactive flow of closing open pull requests
 
           -c${"\t\t"}The candidate's first name and last-name separated by hyphen
-          -g${"\t\t"}Your Github basic authorization token
+          -g${"\t\t"}Your Github basic authentication token
 
         Example:
           github-pr-factory close -c firstname-lastname -g 10238sadf08klasjdf098

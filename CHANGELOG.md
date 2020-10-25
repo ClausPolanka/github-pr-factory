@@ -5,7 +5,7 @@ adhere to https://github.com/olivierlacan/keep-a-changelog.
 ## [1.3.0-SNAPSHOT] 
 
 ### Added
-- [Issue-#14] Github basic authorization token configurable through app.properties
+- [Issue-#14] Github basic authentication token configurable through app.properties
 
 ### Changed
 

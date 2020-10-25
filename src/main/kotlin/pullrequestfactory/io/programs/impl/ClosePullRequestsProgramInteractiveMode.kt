@@ -37,7 +37,7 @@ class ClosePullRequestsProgramInteractiveMode(
         if (basicAuthToken != null) {
             return basicAuthToken
         }
-        val token = ui.get_user_input(msg = "Your Github.com basic authorization token: ")
+        val token = ui.get_user_input(msg = "Your Github.com basic authentication token: ")
         return token
     }
 
