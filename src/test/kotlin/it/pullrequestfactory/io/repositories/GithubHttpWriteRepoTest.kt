@@ -10,6 +10,7 @@ import pullrequestfactory.domain.branches.Branch
 import pullrequestfactory.domain.pullrequests.PullRequest
 import pullrequestfactory.domain.uis.QuietUI
 import pullrequestfactory.io.repositories.GithubHttpPullRequestsRepo
+import pullrequestfactory.io.repositories.KhttpClientStats
 
 class GithubHttpWriteRepoTest {
 
@@ -57,7 +58,8 @@ class GithubHttpWriteRepoTest {
     private fun createGithubHttpRepo(): GithubHttpPullRequestsRepo = GithubHttpPullRequestsRepo(
             WIRE_MOCK_DEFAULT_URL + REPO_PATH,
             "basic-auth-token",
-            QuietUI())
+            QuietUI(),
+            KhttpClientStats())
 
     private fun jsonFor(pr: PullRequest) =
             Regex.escape("""{"base" : "${pr.base}", "head" : "${pr.head}", "title" : "${pr.title}"}""")
