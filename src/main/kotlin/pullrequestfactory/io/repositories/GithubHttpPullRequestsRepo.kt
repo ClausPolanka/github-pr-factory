@@ -30,7 +30,7 @@ class GithubHttpPullRequestsRepo(
 
     override fun close_pull_request(number: Int) {
         ui.show("Close pull request with number: '$number'")
-        val response = khttp.patch(
+        val response = httpClient.patch(
                 url = "$repoPath/pulls/$number",
                 headers = mapOf(
                         "Accept" to "application/json",
