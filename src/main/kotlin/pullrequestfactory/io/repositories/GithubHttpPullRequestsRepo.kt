@@ -18,7 +18,7 @@ class GithubHttpPullRequestsRepo(
 
     override fun open_pull_request(pullRequest: PullRequest) {
         ui.show("Open pull request on Github: $pullRequest")
-        val response = khttp.post(
+        val response = httpClient.post(
                 url = "$repoPath/pulls",
                 headers = mapOf(
                         "Accept" to "application/json",
