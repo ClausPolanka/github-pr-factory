@@ -59,6 +59,8 @@ class OpenPullRequestsProgramInteractiveMode(
                 PullRequestLastNotFinishedMarker())
         ui.show("🤩 Open pull requests for: $candidate and $pairingPartner")
         f.open_pull_requests(candidate, pairingPartner)
+        println()
+        println(httpClient.stats())
     }
 
 }

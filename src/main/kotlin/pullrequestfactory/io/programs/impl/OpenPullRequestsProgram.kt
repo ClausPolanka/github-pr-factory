@@ -30,6 +30,8 @@ class OpenPullRequestsProgram(
                 BranchSyntaxValidator(ui),
                 PullRequestLastNotFinishedMarker())
         f.open_pull_requests(candidate, pp)
+        println()
+        println(httpClient.stats())
     }
 
 }

@@ -1,6 +1,7 @@
 package pullrequestfactory.io.repositories
 
 import khttp.responses.Response
+import java.lang.System.lineSeparator
 
 class KhttpClientStats {
 
@@ -43,7 +44,13 @@ class KhttpClientStats {
     }
 
     fun patch(url: String, headers: Map<String, String>, data: String): Response {
+        patchCounter = patchCounter.inc()
         return khttp.patch(url, headers, data = data)
     }
 
+    fun stats(): String {
+        return "get-requests:\t$getCounter ${lineSeparator()}" +
+                "post-requests:\t$postCounter ${lineSeparator()}" +
+                "patch-requests:\t$patchCounter"
+    }
 }

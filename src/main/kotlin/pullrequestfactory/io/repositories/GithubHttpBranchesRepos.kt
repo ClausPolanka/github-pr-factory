@@ -22,7 +22,7 @@ class GithubHttpBranchesRepos(
                 ui.show("Too many requests to Github within time limit")
                 EmptyGithubBranchesRepo()
             }
-            else -> GithubHttpBranchesRepo(repoUrl, response)
+            else -> GithubHttpBranchesRepo(repoUrl, response, httpClient)
         }
     }
 

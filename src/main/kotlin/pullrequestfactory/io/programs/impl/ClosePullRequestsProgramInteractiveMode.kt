@@ -53,6 +53,8 @@ class ClosePullRequestsProgramInteractiveMode(
                 BranchSyntaxValidator(ui),
                 PullRequestLastNotFinishedMarker())
         f.close_pull_requests_for(candidate)
+        println()
+        println(httpClient.stats())
     }
 
 }
