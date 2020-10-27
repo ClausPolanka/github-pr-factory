@@ -4,7 +4,7 @@ import com.beust.klaxon.Klaxon
 import khttp.responses.Response
 import pullrequestfactory.io.repositories.GithubHttpHeaderLinkPageParser.parse_pages
 
-class GithubHttpReadRepo(val httpClient: KhttpClientStats) {
+class GithubHttpReadRepo(val httpClient: HttpClient) {
 
     inline fun <reified T> get_list(res: Response, url: String): List<T> {
         val pages = parse_pages(res.headers["link"])

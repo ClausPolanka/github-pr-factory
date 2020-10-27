@@ -3,15 +3,15 @@ package pullrequestfactory.io.repositories
 import khttp.responses.Response
 import java.lang.System.lineSeparator
 
-class KhttpClientStats {
+class KhttpClientStats(private val httpClient: HttpClient) : HttpClient {
 
     private var getCounter: Int = 0
     private var postCounter: Int = 0
     private var patchCounter: Int = 0
 
-    fun get(url: String): Response {
+    override fun get(url: String): Response {
         getCounter = getCounter.inc()
-        return khttp.get(url)
+        return httpClient.get(url)
     }
 
     fun getCounter(): Int {
@@ -38,14 +38,14 @@ class KhttpClientStats {
         patchCounter = 0
     }
 
-    fun post(url: String, headers: Map<String, String>, data: String): Response {
+    override fun post(url: String, headers: Map<String, String>, data: String): Response {
         postCounter = postCounter.inc()
-        return khttp.post(url, headers, data = data)
+        return httpClient.post(url, headers, data = data)
     }
 
-    fun patch(url: String, headers: Map<String, String>, data: String): Response {
+    override fun patch(url: String, headers: Map<String, String>, data: String): Response {
         patchCounter = patchCounter.inc()
-        return khttp.patch(url, headers, data = data)
+        return httpClient.patch(url, headers, data = data)
     }
 
     fun stats(): String {

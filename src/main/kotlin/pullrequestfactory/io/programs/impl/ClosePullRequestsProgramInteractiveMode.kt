@@ -8,6 +8,7 @@ import pullrequestfactory.domain.uis.UI
 import pullrequestfactory.io.programs.Program
 import pullrequestfactory.io.repositories.GithubHttpBranchesRepos
 import pullrequestfactory.io.repositories.GithubHttpPullRequestsRepo
+import pullrequestfactory.io.repositories.KhttpClient
 import pullrequestfactory.io.repositories.KhttpClientStats
 
 class ClosePullRequestsProgramInteractiveMode(
@@ -43,7 +44,7 @@ class ClosePullRequestsProgramInteractiveMode(
     }
 
     private fun close_pull_requests_for(candidate: Candidate, githubBasicAuthToken: String) {
-        val httpClient = KhttpClientStats()
+        val httpClient = KhttpClientStats(KhttpClient())
         val branchesRepo = GithubHttpBranchesRepos(repoUrl, ui, httpClient)
         val prRepo = GithubHttpPullRequestsRepo(repoUrl, githubBasicAuthToken, ui, httpClient)
         val f = GithubPRFactory(

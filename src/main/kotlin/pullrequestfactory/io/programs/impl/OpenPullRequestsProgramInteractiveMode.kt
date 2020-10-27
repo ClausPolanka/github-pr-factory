@@ -9,6 +9,7 @@ import pullrequestfactory.domain.uis.UI
 import pullrequestfactory.io.programs.Program
 import pullrequestfactory.io.repositories.GithubHttpBranchesRepos
 import pullrequestfactory.io.repositories.GithubHttpPullRequestsRepo
+import pullrequestfactory.io.repositories.KhttpClient
 import pullrequestfactory.io.repositories.KhttpClientStats
 import pullrequestfactory.io.uis.PairingPartnerUI
 
@@ -48,7 +49,7 @@ class OpenPullRequestsProgramInteractiveMode(
     }
 
     private fun open_pull_requests_for(candidate: Candidate, githubBasicAuthToken: String, pairingPartner: List<PairingPartner>) {
-        val httpClient = KhttpClientStats()
+        val httpClient = KhttpClientStats(KhttpClient())
         val branchesRepo = GithubHttpBranchesRepos(repoUrl, ui, httpClient)
         val prRepo = GithubHttpPullRequestsRepo(repoUrl, githubBasicAuthToken, ui, httpClient)
         val f = GithubPRFactory(

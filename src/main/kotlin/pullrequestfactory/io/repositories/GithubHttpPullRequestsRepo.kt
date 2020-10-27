@@ -10,7 +10,7 @@ class GithubHttpPullRequestsRepo(
         private val repoPath: String,
         private val basicAuthToken: String,
         private val ui: UI,
-        private val httpClient: KhttpClientStats) : GithubPullRequestsRepo {
+        private val httpClient: HttpClient) : GithubPullRequestsRepo {
 
     override fun get_all_open_pull_requests(): List<GetPullRequest> {
         return GithubHttpPullRequestsReadRepos(repoPath, ui, httpClient).get_all_open_pull_requests()

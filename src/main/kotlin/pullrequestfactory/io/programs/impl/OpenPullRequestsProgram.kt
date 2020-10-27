@@ -8,6 +8,7 @@ import pullrequestfactory.io.programs.Program
 import pullrequestfactory.io.programs.ProgramArgs
 import pullrequestfactory.io.repositories.GithubHttpBranchesRepos
 import pullrequestfactory.io.repositories.GithubHttpPullRequestsRepo
+import pullrequestfactory.io.repositories.KhttpClient
 import pullrequestfactory.io.repositories.KhttpClientStats
 import pullrequestfactory.io.uis.ConsoleUI
 
@@ -20,7 +21,7 @@ class OpenPullRequestsProgram(
         val candidate = programArgs.get_candidate()
         val token = programArgs.get_github_basic_auth_token()
         val pp = programArgs.get_pairing_partner()
-        val httpClient = KhttpClientStats()
+        val httpClient = KhttpClientStats(KhttpClient())
         val branchesRepo = GithubHttpBranchesRepos(repoUrl, ui, httpClient)
         val prRepo = GithubHttpPullRequestsRepo(repoUrl, token, ui, httpClient)
         val f = GithubPRFactory(
