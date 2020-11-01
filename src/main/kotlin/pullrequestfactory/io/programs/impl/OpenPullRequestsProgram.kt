@@ -26,6 +26,9 @@ class OpenPullRequestsProgram(
         val rateLimitBefore = GithubAPIClient(httpClient).get_rate_limit()
         println()
         println("Rate rate limit before opening pull requests: $rateLimitBefore")
+        if (rateLimitBefore.rate.remaining < 6000) {
+            println("The limit exeeded for calling the Github API with your Github user")
+        }
         val httpClientStats = KhttpClientStats(httpClient)
         val branchesRepo = GithubHttpBranchesRepos(repoUrl, ui, httpClientStats)
         val prRepo = GithubHttpPullRequestsRepo(repoUrl, token, ui, httpClientStats)

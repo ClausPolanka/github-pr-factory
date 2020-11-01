@@ -20,10 +20,6 @@ class GithubHttpPullRequestsRepo(
         ui.show("Open pull request on Github: $pullRequest")
         val response = httpClient.post(
                 url = "$repoPath/pulls",
-                headers = mapOf(
-                        "Accept" to "application/json",
-                        "Authorization" to "Basic $basicAuthToken",
-                        "Content-Type" to "application/json"),
                 data = Klaxon().toJsonString(pullRequest))
         ui.show(response.toString())
     }
@@ -32,10 +28,6 @@ class GithubHttpPullRequestsRepo(
         ui.show("Close pull request with number: '$number'")
         val response = httpClient.patch(
                 url = "$repoPath/pulls/$number",
-                headers = mapOf(
-                        "Accept" to "application/json",
-                        "Authorization" to "Basic $basicAuthToken",
-                        "Content-Type" to "application/json"),
                 data = Klaxon().toJsonString(object {
                     val state = "closed"
                 }))

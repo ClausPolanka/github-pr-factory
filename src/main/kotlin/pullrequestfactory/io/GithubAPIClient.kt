@@ -8,11 +8,14 @@ import java.time.Instant
 
 class GithubAPIClient(private val httpClient: HttpClient) {
 
-    fun get_rate_limit(): RateLimit? {
+    fun get_rate_limit(): RateLimit {
         val res = httpClient.get("https://api.github.com/rate_limit")
-        val rateLimit: RateLimit? = json_parser().parse(res.text)
+        val rateLimit = (json_parser().parse(res.text) ?: DefaultRateLimit())
         return rateLimit
     }
+
+    private fun DefaultRateLimit() =
+            RateLimit((Rate(limit = 0, remaining = 0, Instant.now(), 0)))
 
     private fun json_parser(): Klaxon {
         val jsonParser = Klaxon().converter(EpochMilliInstantConverter())

@@ -38,14 +38,14 @@ class KhttpClientStats(private val httpClient: HttpClient) : HttpClient {
         patchCounter = 0
     }
 
-    override fun post(url: String, headers: Map<String, String>, data: String): Response {
+    override fun post(url: String, data: String): Response {
         postCounter = postCounter.inc()
-        return httpClient.post(url, headers, data = data)
+        return httpClient.post(url, data = data)
     }
 
-    override fun patch(url: String, headers: Map<String, String>, data: String): Response {
+    override fun patch(url: String, data: String): Response {
         patchCounter = patchCounter.inc()
-        return httpClient.patch(url, headers, data = data)
+        return httpClient.patch(url, data = data)
     }
 
     fun stats(): String {
