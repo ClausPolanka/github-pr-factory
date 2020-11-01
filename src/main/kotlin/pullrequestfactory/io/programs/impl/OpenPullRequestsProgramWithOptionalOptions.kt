@@ -4,6 +4,7 @@ import pullrequestfactory.domain.GithubPRFactory
 import pullrequestfactory.domain.branches.BranchSyntaxValidator
 import pullrequestfactory.domain.pullrequests.PullRequestLastFinishedMarker
 import pullrequestfactory.domain.uis.UI
+import pullrequestfactory.io.GithubAPIClient
 import pullrequestfactory.io.programs.Program
 import pullrequestfactory.io.programs.ProgramArgs
 import pullrequestfactory.io.repositories.GithubHttpBranchesRepos
@@ -21,9 +22,13 @@ class OpenPullRequestsProgramWithOptionalOptions(
         val candidate = programArgs.get_candidate()
         val token = programArgs.get_github_basic_auth_token()
         val pp = programArgs.get_pairing_partner()
-        val httpClient = KhttpClientStats(KhttpClient())
-        val branchesRepo = GithubHttpBranchesRepos(repoUrl, ui, httpClient)
-        val prRepo = GithubHttpPullRequestsRepo(repoUrl, token, ui, httpClient)
+        val httpClient = KhttpClient()
+        val rateLimitBefore = GithubAPIClient(httpClient).get_rate_limit()
+        println()
+        println("Rate rate limit before opening pull requests: $rateLimitBefore")
+        val httpClientStats = KhttpClientStats(httpClient)
+        val branchesRepo = GithubHttpBranchesRepos(repoUrl, ui, httpClientStats)
+        val prRepo = GithubHttpPullRequestsRepo(repoUrl, token, ui, httpClientStats)
         val f = GithubPRFactory(
                 ConsoleUI(),
                 branchesRepo,
@@ -32,7 +37,10 @@ class OpenPullRequestsProgramWithOptionalOptions(
                 PullRequestLastFinishedMarker())
         f.open_pull_requests(candidate, pp)
         println()
-        println(httpClient.stats())
+        println(httpClientStats.stats())
+        println()
+        val rateLimitAfter = GithubAPIClient(httpClient).get_rate_limit()
+        println("Rate rate limit after opening pull requests: $rateLimitAfter")
     }
 
 }
