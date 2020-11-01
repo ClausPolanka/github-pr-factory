@@ -4,7 +4,6 @@ import com.beust.klaxon.Converter
 import com.beust.klaxon.JsonValue
 import com.beust.klaxon.Klaxon
 import pullrequestfactory.io.repositories.HttpClient
-import pullrequestfactory.io.repositories.KhttpClient
 import java.time.Instant
 
 class GithubAPIClient(private val httpClient: HttpClient) {
@@ -33,8 +32,4 @@ class EpochMilliInstantConverter : Converter {
         return instant
     }
 
-}
-
-fun main() {
-    println(GithubAPIClient(KhttpClient()).get_rate_limit())
 }

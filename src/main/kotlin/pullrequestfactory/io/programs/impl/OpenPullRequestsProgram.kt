@@ -22,7 +22,7 @@ class OpenPullRequestsProgram(
         val candidate = programArgs.get_candidate()
         val token = programArgs.get_github_basic_auth_token()
         val pp = programArgs.get_pairing_partner()
-        val httpClient = KhttpClient()
+        val httpClient = KhttpClient(token)
         val rateLimitBefore = GithubAPIClient(httpClient).get_rate_limit()
         println()
         println("Rate rate limit before opening pull requests: $rateLimitBefore")
