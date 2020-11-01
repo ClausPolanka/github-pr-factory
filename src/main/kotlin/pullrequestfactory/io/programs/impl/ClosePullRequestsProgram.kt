@@ -18,6 +18,7 @@ class ClosePullRequestsProgram(
         private val programArgs: ProgramArgs,
         private val repoUrl: String) : Program {
 
+    // TODO Add rate limit check
     override fun execute() {
         val candidate = programArgs.get_candidate()
         val token = programArgs.get_github_basic_auth_token()

@@ -16,6 +16,7 @@ class ClosePullRequestsProgramInteractiveMode(
         private val repoUrl: String,
         private val basicAuthToken: String? = null) : Program {
 
+    // TODO Add rate limit check
     override fun execute() {
         show_welcome_message()
         val candidate = create_candidate_from_user_input()

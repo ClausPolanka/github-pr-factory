@@ -20,6 +20,7 @@ class OpenPullRequestsProgramInteractiveMode(
 
     private val ppUI = PairingPartnerUI(ui)
 
+    // TODO Add rate limit check
     override fun execute() {
         show_welcome_message()
         val candidate = create_candidate_from_user_input()
