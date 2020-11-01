@@ -20,7 +20,6 @@ object Programs {
             pa.has_open_command_help_option() -> ShowOpenCommandHelpOutputProgram()
             pa.has_invalid_open_command() -> ShowInvalidOpenCommandOutputProgram()
             pa.has_open_command_in_interactive_mode() -> OpenPullRequestsProgramInteractiveMode(ui, repoUrl, basicAuthToken)
-            pa.has_open_command_with_optional_options() -> OpenPullRequestsProgramWithOptionalOptions(ui, pa, repoUrl)
             pa.has_open_command() -> OpenPullRequestsProgram(ui, pa, repoUrl)
             pa.has_close_command_help_option() -> ShowCloseCommandHelpOutputProgram()
             pa.has_invalid_close_command() -> ShowInvalidCloseCommandOutputProgram()

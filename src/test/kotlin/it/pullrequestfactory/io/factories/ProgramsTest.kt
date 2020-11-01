@@ -81,7 +81,7 @@ class ProgramsTest {
                 "-p",
                 "claus-dominik-mihai-christian-berni-markus-shubi"))
 
-        assertThat(program is OpenPullRequestsProgramWithOptionalOptions)
+        assertThat(program is OpenPullRequestsProgram)
                 .describedAs("program opens pull requests with optinal options ${actual_program(program)}")
                 .isTrue()
     }
