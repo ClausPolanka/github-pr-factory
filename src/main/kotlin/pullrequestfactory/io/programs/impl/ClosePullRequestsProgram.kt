@@ -22,7 +22,7 @@ class ClosePullRequestsProgram(
         val candidate = programArgs.get_candidate()
         val token = programArgs.get_github_basic_auth_token()
 
-        val httpClient = KhttpClient()
+        val httpClient = KhttpClient(token)
         val rateLimitBefore = GithubAPIClient(httpClient).get_rate_limit()
         println("Rate rate limit before closing pull requests: $rateLimitBefore")
         println()

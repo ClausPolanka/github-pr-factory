@@ -60,7 +60,7 @@ class GithubHttpWriteRepoTest {
             WIRE_MOCK_DEFAULT_URL + REPO_PATH,
             "basic-auth-token",
             QuietUI(),
-            KhttpClientStats(KhttpClient()))
+            KhttpClientStats(KhttpClient("basic-auth-token")))
 
     private fun jsonFor(pr: PullRequest) =
             Regex.escape("""{"base" : "${pr.base}", "head" : "${pr.head}", "title" : "${pr.title}"}""")

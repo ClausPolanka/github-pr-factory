@@ -49,7 +49,7 @@ class OpenPullRequestsProgramInteractiveMode(
     }
 
     private fun open_pull_requests_for(candidate: Candidate, githubBasicAuthToken: String, pairingPartner: List<PairingPartner>) {
-        val httpClient = KhttpClientStats(KhttpClient())
+        val httpClient = KhttpClientStats(KhttpClient(githubBasicAuthToken))
         val branchesRepo = GithubHttpBranchesRepos(repoUrl, ui, httpClient)
         val prRepo = GithubHttpPullRequestsRepo(repoUrl, githubBasicAuthToken, ui, httpClient)
         val f = GithubPRFactory(

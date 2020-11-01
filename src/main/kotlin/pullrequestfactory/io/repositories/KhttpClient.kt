@@ -2,10 +2,13 @@ package pullrequestfactory.io.repositories
 
 import khttp.responses.Response
 
-class KhttpClient : HttpClient {
+class KhttpClient(private val basicAuthToken: String) : HttpClient {
 
     override fun get(url: String): Response {
-        return khttp.get(url)
+        return khttp.get(url, headers = mapOf(
+                "Accept" to "application/json",
+                "Authorization" to "Basic $basicAuthToken",
+                "Content-Type" to "application/json"))
     }
 
     override fun post(url: String, headers: Map<String, String>, data: String): Response {
