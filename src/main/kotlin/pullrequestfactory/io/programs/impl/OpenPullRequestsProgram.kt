@@ -22,9 +22,10 @@ class OpenPullRequestsProgram(
         val candidate = programArgs.get_candidate()
         val token = programArgs.get_github_basic_auth_token()
         val pp = programArgs.get_pairing_partner()
-
         val httpClient = KhttpClient()
-        val rateLimit = GithubAPIClient(httpClient).get_rate_limit()
+        val rateLimitBefore = GithubAPIClient(httpClient).get_rate_limit()
+        println()
+        println("Rate rate limit before opening pull requests: $rateLimitBefore")
         val httpClientStats = KhttpClientStats(httpClient)
         val branchesRepo = GithubHttpBranchesRepos(repoUrl, ui, httpClientStats)
         val prRepo = GithubHttpPullRequestsRepo(repoUrl, token, ui, httpClientStats)
@@ -37,6 +38,9 @@ class OpenPullRequestsProgram(
         f.open_pull_requests(candidate, pp)
         println()
         println(httpClientStats.stats())
+        println()
+        val rateLimitAfter = GithubAPIClient(httpClient).get_rate_limit()
+        println("Rate rate limit after opening pull requests: $rateLimitAfter")
     }
 
 }
