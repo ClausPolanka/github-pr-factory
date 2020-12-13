@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>github-pr-factory</groupId>
@@ -146,10 +148,10 @@
     </build>
 
     <repositories>
-        <!-- Klaxon, khttp dependencies are located in spring-io maven repository -->
+        <!-- Klaxon, khttp dependencies are located in jcenter maven repository -->
         <repository>
-            <id>spring-io</id>
-            <url>https://repo.spring.io/libs-release/</url>
+            <id>jcenter</id>
+            <url>https://jcenter.bintray.com/</url>
         </repository>
     </repositories>
 
@@ -173,6 +175,6 @@
             scm:git:https://github.com/ClausPolanka/github-pr-factory
         </developerConnection>
         <url>https://github.com/ClausPolanka/github-pr-factory</url>
-      <tag>HEAD</tag>
-  </scm>
+        <tag>HEAD</tag>
+    </scm>
 </project>

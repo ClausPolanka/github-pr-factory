@@ -5,11 +5,12 @@ adhere to https://github.com/olivierlacan/keep-a-changelog.
 ## [1.3.0-SNAPSHOT] 
 
 ### Added
-- [Issue-#14] Github basic authentication token configurable through app.properties
+- [Issue-#14] Github authentication token configurable through app.properties
 
 ### Changed
 
 ### Fixed
+- [Issue-#18] Use GitHub's OAuth 2.0 token for Authorization
 
 ### Removed
 
@@ -51,4 +52,7 @@ adhere to https://github.com/olivierlacan/keep-a-changelog.
 [Issue-#4]: https://github.com/ClausPolanka/github-pr-factory/issues/4
 [Issue-#6]: https://github.com/ClausPolanka/github-pr-factory/issues/6
 [Issue-#7]: https://github.com/ClausPolanka/github-pr-factory/issues/7
+
 [Issue-#14]: https://github.com/ClausPolanka/github-pr-factory/issues/14
+
+[Issue-#18]: https://github.com/ClausPolanka/github-pr-factory/issues/18

@@ -6,10 +6,11 @@ import pullrequestfactory.domain.branches.GithubBranchesRepo
 
 class GithubHttpBranchesRepo(
         private val repoUrl: String,
-        private val response: Response) : GithubBranchesRepo {
+        private val response: Response,
+        private val authToken: String) : GithubBranchesRepo {
 
     override fun get_all_branches(): List<Branch> {
-        return GithubHttpReadRepo().get_list(response, "$repoUrl/branches")
+        return GithubHttpReadRepo().get_list(response, "$repoUrl/branches", authToken)
     }
 
 }

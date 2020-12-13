@@ -13,13 +13,14 @@ import pullrequestfactory.io.uis.ConsoleUI
 class OpenPullRequestsProgramWithOptionalOptions(
         private val ui: UI,
         private val programArgs: ProgramArgs,
-        private val repoUrl: String) : Program {
+        private val repoUrl: String,
+        private val authToken: String) : Program {
 
     override fun execute() {
         val candidate = programArgs.get_candidate()
-        val token = programArgs.get_github_basic_auth_token()
+        val token = programArgs.get_github_auth_token()
         val pp = programArgs.get_pairing_partner()
-        val branchesRepo = GithubHttpBranchesRepos(repoUrl, ui)
+        val branchesRepo = GithubHttpBranchesRepos(repoUrl, ui, authToken)
         val prRepo = GithubHttpPullRequestsRepo(repoUrl, token, ui)
         val f = GithubPRFactory(
                 ConsoleUI(),
