@@ -433,7 +433,7 @@ class ProgramArgsTest {
         val sut = ProgramArgs(arrayOf("-x", GITHUB_AUTH_TOKEN))
 
         assertThatThrownBy { sut.get_github_auth_token() }
-                .isInstanceOf(ProgramArgs.WronggithubAuthTokenArgumentSyntax::class.java)
+                .isInstanceOf(ProgramArgs.WrongGithubAuthTokenArgumentSyntax::class.java)
     }
 
     @Test
@@ -441,7 +441,7 @@ class ProgramArgsTest {
         val sut = ProgramArgs(arrayOf("-g"))
 
         assertThatThrownBy { sut.get_github_auth_token() }
-                .isInstanceOf(ProgramArgs.WronggithubAuthTokenArgumentSyntax::class.java)
+                .isInstanceOf(ProgramArgs.WrongGithubAuthTokenArgumentSyntax::class.java)
     }
 
     @Test
@@ -449,7 +449,7 @@ class ProgramArgsTest {
         val sut = ProgramArgs(arrayOf(GITHUB_AUTH_TOKEN, "-g"))
 
         assertThatThrownBy { sut.get_github_auth_token() }
-                .isInstanceOf(ProgramArgs.WronggithubAuthTokenArgumentSyntax::class.java)
+                .isInstanceOf(ProgramArgs.WrongGithubAuthTokenArgumentSyntax::class.java)
     }
 
     @Test

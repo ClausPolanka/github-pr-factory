@@ -100,7 +100,7 @@ class ProgramArgs(private val args: Array<String>,
 
     private fun validate_args_token_syntax() {
         if (!is_github_auth_token_syntax_valid()) {
-            throw WronggithubAuthTokenArgumentSyntax(ERROR_MSG_TOKEN)
+            throw WrongGithubAuthTokenArgumentSyntax(ERROR_MSG_TOKEN)
         }
     }
 
@@ -149,7 +149,7 @@ class ProgramArgs(private val args: Array<String>,
     }
 
     class WrongCandidateArgumentSyntax(msg: String) : RuntimeException(msg)
-    class WronggithubAuthTokenArgumentSyntax(msg: String) : RuntimeException(msg)
+    class WrongGithubAuthTokenArgumentSyntax(msg: String) : RuntimeException(msg)
     class WrongPairingPartnerArgumentSyntax(msg: String) : RuntimeException(msg)
 
 }
