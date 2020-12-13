@@ -3,7 +3,8 @@ package pullrequestfactory.io.programs
 import pullrequestfactory.domain.Candidate
 import pullrequestfactory.domain.PairingPartner
 
-class ProgramArgs(private val args: Array<String>, private val basicAuthToken: String? = null) {
+class ProgramArgs(private val args: Array<String>,
+                  private val basicAuthTokenFromUserProps: String? = null) {
 
     private val HELP_COMMAND = "-?"
     private val HELP_COMMAND_LONG_VERSION = "--help"
@@ -89,8 +90,8 @@ class ProgramArgs(private val args: Array<String>, private val basicAuthToken: S
             && args[args.indexOf(CANDIDATE_OPTION) + 1].contains("-")
 
     fun get_github_basic_auth_token(): String {
-        if (basicAuthToken != null) {
-            return basicAuthToken
+        if (basicAuthTokenFromUserProps != null) {
+            return basicAuthTokenFromUserProps
         }
         validate_args_token_syntax()
         val indexOfGithubToken = args.indexOf(GITHUB_BASIC_AUTH_TOKEN_OPTION) + 1

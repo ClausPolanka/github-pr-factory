@@ -219,7 +219,7 @@ class MainKtTest {
 
 private fun RequestPatternBuilder.addCommonHeaders(): RequestPatternBuilder? {
     return this.withHeader("Accept", matching("application/json"))
-            .withHeader("Authorization", matching("Basic .*"))
+            .withHeader("Authorization", matching("token .*"))
             .withHeader("Content-Type", matching("application/json"))
 }
 

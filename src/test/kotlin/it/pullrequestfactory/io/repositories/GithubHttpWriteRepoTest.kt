@@ -65,7 +65,7 @@ class GithubHttpWriteRepoTest {
     private fun RequestPatternBuilder.addCommonHeaders(): RequestPatternBuilder? {
         return this
                 .withHeader("Accept", WireMock.matching("application/json"))
-                .withHeader("Authorization", WireMock.matching("Basic .*"))
+                .withHeader("Authorization", WireMock.matching("token.*"))
                 .withHeader("Content-Type", WireMock.matching("application/json"))
     }
 }

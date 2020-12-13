@@ -42,7 +42,7 @@ class ClosePullRequestsProgramInteractiveMode(
     }
 
     private fun close_pull_requests_for(candidate: Candidate, githubBasicAuthToken: String) {
-        val branchesRepo = GithubHttpBranchesRepos(repoUrl, ui)
+        val branchesRepo = GithubHttpBranchesRepos(repoUrl, ui, create_basic_auth_token_from_user_input())
         val prRepo = GithubHttpPullRequestsRepo(repoUrl, githubBasicAuthToken, ui)
         val f = GithubPRFactory(
                 ui,
