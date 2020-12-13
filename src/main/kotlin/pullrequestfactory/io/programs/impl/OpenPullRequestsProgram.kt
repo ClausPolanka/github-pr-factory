@@ -14,13 +14,13 @@ class OpenPullRequestsProgram(
         private val ui: UI,
         private val programArgs: ProgramArgs,
         private val repoUrl: String,
-        private val basicAuthToken: String) : Program {
+        private val authToken: String) : Program {
 
     override fun execute() {
         val candidate = programArgs.get_candidate()
-        val token = programArgs.get_github_basic_auth_token()
+        val token = programArgs.get_github_auth_token()
         val pp = programArgs.get_pairing_partner()
-        val branchesRepo = GithubHttpBranchesRepos(repoUrl, ui, basicAuthToken)
+        val branchesRepo = GithubHttpBranchesRepos(repoUrl, ui, authToken)
         val prRepo = GithubHttpPullRequestsRepo(repoUrl, token, ui)
         val f = GithubPRFactory(
                 ConsoleUI(),

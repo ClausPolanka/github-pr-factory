@@ -8,11 +8,11 @@ import pullrequestfactory.domain.uis.UI
 
 class GithubHttpPullRequestsRepo(
         private val repoPath: String,
-        private val basicAuthToken: String,
+        private val authToken: String,
         private val ui: UI) : GithubPullRequestsRepo {
 
     override fun get_all_open_pull_requests(): List<GetPullRequest> {
-        return GithubHttpPullRequestsReadRepos(repoPath, ui, basicAuthToken).get_all_open_pull_requests()
+        return GithubHttpPullRequestsReadRepos(repoPath, ui, authToken).get_all_open_pull_requests()
     }
 
     override fun open_pull_request(pullRequest: PullRequest) {
@@ -21,7 +21,7 @@ class GithubHttpPullRequestsRepo(
                 url = "$repoPath/pulls",
                 headers = mapOf(
                         "Accept" to "application/json",
-                        "Authorization" to "token $basicAuthToken",
+                        "Authorization" to "token $authToken",
                         "Content-Type" to "application/json"),
                 data = Klaxon().toJsonString(pullRequest))
         ui.show(response.toString())
@@ -33,7 +33,7 @@ class GithubHttpPullRequestsRepo(
                 url = "$repoPath/pulls/$number",
                 headers = mapOf(
                         "Accept" to "application/json",
-                        "Authorization" to "token $basicAuthToken",
+                        "Authorization" to "token $authToken",
                         "Content-Type" to "application/json"),
                 data = Klaxon().toJsonString(object {
                     val state = "closed"

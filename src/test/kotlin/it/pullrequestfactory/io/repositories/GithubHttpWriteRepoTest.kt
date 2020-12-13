@@ -56,7 +56,7 @@ class GithubHttpWriteRepoTest {
 
     private fun createGithubHttpRepo(): GithubHttpPullRequestsRepo = GithubHttpPullRequestsRepo(
             WIRE_MOCK_DEFAULT_URL + REPO_PATH,
-            "basic-auth-token",
+            "auth-token",
             QuietUI())
 
     private fun jsonFor(pr: PullRequest) =

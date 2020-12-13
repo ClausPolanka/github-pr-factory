@@ -23,7 +23,7 @@ import java.nio.file.Paths
 class MainKtTest {
 
     private val CANDIDATE = "Radek-Leifer"
-    private val BASIC_AUTH_TOKEN = "any-valid-token"
+    private val AUTH_TOKEN = "any-valid-token"
     private val PAIRING_PARTNER = "claus-berni-dominik-christian-shubi-markus-mihai"
     private val PROPS_FILE_NAME = "app.properties"
     private val PROPS_FILE_PATH = "target/test-classes/$PROPS_FILE_NAME"
@@ -78,14 +78,14 @@ class MainKtTest {
     fun creates_pull_requests_for_the_given_program_arguments() {
         stubGetRequestsForGithubBranchesFromFiles()
 
-        main(args = arrayOf("open", "-c", CANDIDATE, "-g", BASIC_AUTH_TOKEN, "-p", PAIRING_PARTNER))
+        main(args = arrayOf("open", "-c", CANDIDATE, "-g", AUTH_TOKEN, "-p", PAIRING_PARTNER))
 
         verifyPostRequestsToGithubToCreatePullRequests(CANDIDATE)
     }
 
     @Test
     fun shows_open_command_usage_when_arguments_are_not_correct() {
-        main(args = arrayOf("open", "-c", CANDIDATE, "-g", BASIC_AUTH_TOKEN, PAIRING_PARTNER))
+        main(args = arrayOf("open", "-c", CANDIDATE, "-g", AUTH_TOKEN, PAIRING_PARTNER))
 
         assertThat(uiOutput.toString()).contains("Usage: github-pr-factory open [OPTION]")
     }
@@ -94,7 +94,7 @@ class MainKtTest {
     fun closes_pull_requests_for_given_program_arguments() {
         val prs = stubGetRequestForPullRequests(CANDIDATE)
 
-        main(args = arrayOf("close", "-c", CANDIDATE, "-g", BASIC_AUTH_TOKEN))
+        main(args = arrayOf("close", "-c", CANDIDATE, "-g", AUTH_TOKEN))
 
         verifyPatchRequestToCloseOpenPullRequests(prs)
     }

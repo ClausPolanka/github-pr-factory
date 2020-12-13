@@ -49,7 +49,7 @@ Open new Github pull requests for a 2nd round hiring candidate
 
 Options:
   -c		The candidate's first name and last-name separated by hyphen
-  -g		Your Github basic authentication token
+  -g		Your Github authentication token
   -p		Seven pairing-partner names separated by hyphen
     		  Currently supported names:
     		  claus, berni, bernhard, nandor, dominik, mihai, lampe, shubi
@@ -65,7 +65,7 @@ Example:
 
 In root project-directory: <pre>mvn clean package</pre>
 
-In root project-directory: <pre>java -jar target/github-pr-factory-<version>-jar-with-dependencies.jar open -c <first_name>-<last_name> -g <github_basic_auth_token> -p <[pairing_partner]></pre> 
+In root project-directory: <pre>java -jar target/github-pr-factory-<version>-jar-with-dependencies.jar open -c <first_name>-<last_name> -g <github_auth_token> -p <[pairing_partner]></pre> 
 
 For example: <pre>java -jar target/github-pr-factory-1.0-SNAPSHOT-jar-with-dependencies.jar open -c Firstname-Lastname -g asdif8970702als -p name1-name2-name3</pre>
 
@@ -78,24 +78,18 @@ Close Github pull requests for a 2nd round hiring candidate
 
 Options:
   -c		The candidate's first name and last-name separated by hyphen
-  -g		Your Github basic authentication token
+  -g		Your Github authentication token
 
 Example:
   github-pr-factory close -c firstname-lastname -g 10238sadf08klasjdf098
 </pre>
 
 In root project-directory: <pre>mvn clean package</pre>
-In root project-directory: <pre>java -jar target/github-pr-factory-<version>-jar-with-dependencies.jar close -c <first_name>-<last_name> -g <github_basic_auth_token></pre>
-For example: <pre>java -jar target/github-pr-factory-1.0-SNAPSHOT-jar-with-dependencies.jar close -c Firstname-Lastname -g asdif8970702als</pre>
+In root project-directory: <pre>java -jar target/github-pr-factory-<version> -jar-with-dependencies.jar close -c <first_name>-<last_name> -g < github_auth_token></pre> For example: <pre>java -jar target/github-pr-factory-1.0-SNAPSHOT-jar-with-dependencies.jar close -c Firstname-Lastname -g asdif8970702als</pre>
 
 ### user.properties - Setting user properties to reduce typing
 
-You can set your Github basic authentication token in a file called `user.properties`.
-The `github-pr-factory` app expects the file to be either on the classpath or in the
-same directory in which the app gets executed. In case you are using a `user.properties` you 
-can set the Github basic authentication token by adding a key-value-pair `githubBasicAuthToken=TODO`
-to the file where the `TODO` must be replaced with your token. Therefore you don't
-need to pass the token neither to the `open` nor `close` command. 
+You can set your Github authentication token in a file called `user.properties`. The `github-pr-factory` app expects the file to be either on the classpath or in the same directory in which the app gets executed. In case you are using a `user.properties` you can set the Github authentication token by adding a key-value-pair `githubAuthToken=TODO` to the file where the `TODO` must be replaced with your token. Therefore, you don't need to pass the token neither to the `open` nor `close` command.
 
 ### Continuous Integration with circleci
 

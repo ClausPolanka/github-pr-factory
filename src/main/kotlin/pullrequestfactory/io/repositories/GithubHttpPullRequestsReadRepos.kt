@@ -8,7 +8,7 @@ import pullrequestfactory.domain.uis.UI
 class GithubHttpPullRequestsReadRepos(
         private val repoPath: String,
         private val ui: UI,
-        private val basicAuthToken: String) : GithubPullRequestsReadRepo {
+        private val authToken: String) : GithubPullRequestsReadRepo {
 
     override fun get_all_open_pull_requests(): List<GetPullRequest> {
         return create_pull_requests_repo().get_all_open_pull_requests()
@@ -17,14 +17,14 @@ class GithubHttpPullRequestsReadRepos(
     private fun create_pull_requests_repo(): GithubPullRequestsReadRepo {
         val response = khttp.get("$repoPath/pulls?page=1", headers = mapOf(
                 "Accept" to "application/json",
-                "Authorization" to "token $basicAuthToken",
+                "Authorization" to "token $authToken",
                 "Content-Type" to "application/json"))
         return when (response.statusCode) {
             403 -> {
                 ui.show("Too many requests to Github within time limit")
                 EmptyPullRequestsReadRepo()
             }
-            else -> GithubHttpPullRequestsReadRepo(repoPath, response, basicAuthToken)
+            else -> GithubHttpPullRequestsReadRepo(repoPath, response, authToken)
         }
     }
 }

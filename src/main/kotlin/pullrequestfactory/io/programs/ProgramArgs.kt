@@ -4,14 +4,14 @@ import pullrequestfactory.domain.Candidate
 import pullrequestfactory.domain.PairingPartner
 
 class ProgramArgs(private val args: Array<String>,
-                  private val basicAuthTokenFromUserProps: String? = null) {
+                  private val authTokenFromUserProps: String? = null) {
 
     private val HELP_COMMAND = "-?"
     private val HELP_COMMAND_LONG_VERSION = "--help"
     private val VERSION_COMMAND = "-v"
     private val VERSION_COMMAND_LONG_VERSION = "--version"
     private val CANDIDATE_OPTION = "-c"
-    private val GITHUB_BASIC_AUTH_TOKEN_OPTION = "-g"
+    private val GITHUB_AUTH_TOKEN_OPTION = "-g"
     private val PAIRING_PARTNER_OPTION = "-p"
     private val CLOSE_COMMAND = "close"
     private val OPEN_COMMAND = "open"
@@ -19,7 +19,7 @@ class ProgramArgs(private val args: Array<String>,
     private val IS_LAST_PULL_REQUEST_FINISHED_LONG_VERSION = "--last-finished"
     private val ERROR_MSG_CANDIDATE = "Either option -c or candidate missing or candidate has wrong format"
     private val ERROR_MSG_PAIRING_PARTNER = "Either option -p or pairing partner are missing or pairing partner have wrong format or is unknown"
-    private val ERROR_MSG_TOKEN = "Either option -g or github basic auth token missing"
+    private val ERROR_MSG_TOKEN = "Either option -g or github auth token missing"
 
     fun has_help_option() =
             args.isEmpty() || args.size == 1 && (args[0] == HELP_COMMAND || args[0] == HELP_COMMAND_LONG_VERSION)
@@ -52,7 +52,7 @@ class ProgramArgs(private val args: Array<String>,
     fun has_open_command_with_optional_options() = args[0] == OPEN_COMMAND && is_last_pull_request_finished()
 
     private fun has_open_command_required_options() = is_candidate_syntax_valid()
-            && is_github_basic_auth_token_syntax_valid()
+            && is_github_auth_token_syntax_valid()
             && is_pairing_partner_syntax_valid()
 
     private fun has_open_command_required_and_optional_options() =
@@ -67,7 +67,7 @@ class ProgramArgs(private val args: Array<String>,
 
     private fun has_close_command_required_options() = args.size == 5
             && is_candidate_syntax_valid()
-            && is_github_basic_auth_token_syntax_valid()
+            && is_github_auth_token_syntax_valid()
 
     private fun is_interactive_mode() = args.contains("-i") || args.contains("--interactive")
 
@@ -89,25 +89,25 @@ class ProgramArgs(private val args: Array<String>,
             && args.contains(CANDIDATE_OPTION)
             && args[args.indexOf(CANDIDATE_OPTION) + 1].contains("-")
 
-    fun get_github_basic_auth_token(): String {
-        if (basicAuthTokenFromUserProps != null) {
-            return basicAuthTokenFromUserProps
+    fun get_github_auth_token(): String {
+        if (authTokenFromUserProps != null) {
+            return authTokenFromUserProps
         }
         validate_args_token_syntax()
-        val indexOfGithubToken = args.indexOf(GITHUB_BASIC_AUTH_TOKEN_OPTION) + 1
+        val indexOfGithubToken = args.indexOf(GITHUB_AUTH_TOKEN_OPTION) + 1
         return args[indexOfGithubToken]
     }
 
     private fun validate_args_token_syntax() {
-        if (!is_github_basic_auth_token_syntax_valid()) {
-            throw WrongGithubBasicAuthTokenArgumentSyntax(ERROR_MSG_TOKEN)
+        if (!is_github_auth_token_syntax_valid()) {
+            throw WronggithubAuthTokenArgumentSyntax(ERROR_MSG_TOKEN)
         }
     }
 
-    private fun is_github_basic_auth_token_syntax_valid(): Boolean {
-        val idxOfToken = args.indexOf(GITHUB_BASIC_AUTH_TOKEN_OPTION) + 1
+    private fun is_github_auth_token_syntax_valid(): Boolean {
+        val idxOfToken = args.indexOf(GITHUB_AUTH_TOKEN_OPTION) + 1
         val hasCorrectNrOfArgs = args.size >= idxOfToken + 1 /* since array is 0-based */
-        val isValidFromUserInput = args.contains(GITHUB_BASIC_AUTH_TOKEN_OPTION) && hasCorrectNrOfArgs
+        val isValidFromUserInput = args.contains(GITHUB_AUTH_TOKEN_OPTION) && hasCorrectNrOfArgs
         return isValidFromUserInput
     }
 
@@ -149,7 +149,7 @@ class ProgramArgs(private val args: Array<String>,
     }
 
     class WrongCandidateArgumentSyntax(msg: String) : RuntimeException(msg)
-    class WrongGithubBasicAuthTokenArgumentSyntax(msg: String) : RuntimeException(msg)
+    class WronggithubAuthTokenArgumentSyntax(msg: String) : RuntimeException(msg)
     class WrongPairingPartnerArgumentSyntax(msg: String) : RuntimeException(msg)
 
 }

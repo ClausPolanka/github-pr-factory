@@ -28,8 +28,8 @@ class FileUserProperties(fileName: String) : UserProperties {
         }
     }
 
-    override fun get_github_basic_auth_token(): String? {
-        val token = props.getProperty("githubBasicAuthToken")
+    override fun get_github_auth_token(): String? {
+        val token = props.getProperty("githubAuthToken")
         if (token.isNullOrEmpty()) {
             return null
         }

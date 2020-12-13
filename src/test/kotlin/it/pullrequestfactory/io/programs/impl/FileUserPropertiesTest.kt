@@ -23,52 +23,52 @@ class FileUserPropertiesTest {
     }
 
     @Test
-    fun get_github_basic_auth_token_returns_null_when_file_exists_on_classpath_but_no_property_exists() {
+    fun get_github_auth_token_returns_null_when_file_exists_on_classpath_but_no_property_exists() {
         val fileName = createEmptyPropsFileOnClasspath()
         val sut = FileUserProperties(fileName)
 
-        val basicAuthToken = sut.get_github_basic_auth_token()
+        val authToken = sut.get_github_auth_token()
 
-        assertThat(basicAuthToken).isNull()
+        assertThat(authToken).isNull()
     }
 
     @Test
-    fun get_github_basic_auth_token_returns_null_when_file_exists_on_classpath_and_property_is_empty() {
-        val fileName = createPropsFileOnClasspathWith("githubBasicAuthToken=")
+    fun get_github_auth_token_returns_null_when_file_exists_on_classpath_and_property_is_empty() {
+        val fileName = createPropsFileOnClasspathWith("githubAuthToken=")
         val sut = FileUserProperties(fileName)
 
-        val basicAuthToken = sut.get_github_basic_auth_token()
+        val authToken = sut.get_github_auth_token()
 
-        assertThat(basicAuthToken).isNull()
+        assertThat(authToken).isNull()
     }
 
     @Test
-    fun get_github_basic_auth_token_returns_token_when_file_exists_on_classpath_and_property_exists() {
-        val fileName = createPropsFileOnClasspathWith("githubBasicAuthToken=asdfkj24398")
+    fun get_github_auth_token_returns_token_when_file_exists_on_classpath_and_property_exists() {
+        val fileName = createPropsFileOnClasspathWith("githubAuthToken=asdfkj24398")
         val sut = FileUserProperties(fileName)
 
-        val basicAuthToken = sut.get_github_basic_auth_token()
+        val authToken = sut.get_github_auth_token()
 
-        assertThat(basicAuthToken).isEqualTo("asdfkj24398")
+        assertThat(authToken).isEqualTo("asdfkj24398")
     }
 
     @Test
-    fun get_github_basic_auth_token_returns_null_when_file_does_not_exist_on_filesystem() {
+    fun get_github_auth_token_returns_null_when_file_does_not_exist_on_filesystem() {
         val sut = FileUserProperties(propsFileName)
 
-        val basicAuthToken = sut.get_github_basic_auth_token()
+        val authToken = sut.get_github_auth_token()
 
-        assertThat(basicAuthToken).isNull()
+        assertThat(authToken).isNull()
     }
 
     @Test
-    fun get_github_basic_auth_token_returns_token_when_file_exists_on_filesystem_and_property_exists() {
-        val fileName = createPropsFileOnFileSystemWith("githubBasicAuthToken=asdfkj24398")
+    fun get_github_auth_token_returns_token_when_file_exists_on_filesystem_and_property_exists() {
+        val fileName = createPropsFileOnFileSystemWith("githubAuthToken=asdfkj24398")
         val sut = FileUserProperties(fileName)
 
-        val basicAuthToken = sut.get_github_basic_auth_token()
+        val authToken = sut.get_github_auth_token()
 
-        assertThat(basicAuthToken).isEqualTo("asdfkj24398")
+        assertThat(authToken).isEqualTo("asdfkj24398")
     }
 
     private fun createEmptyPropsFileOnClasspath(): String {
