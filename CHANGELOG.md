@@ -52,7 +52,5 @@ adhere to https://github.com/olivierlacan/keep-a-changelog.
 [Issue-#4]: https://github.com/ClausPolanka/github-pr-factory/issues/4
 [Issue-#6]: https://github.com/ClausPolanka/github-pr-factory/issues/6
 [Issue-#7]: https://github.com/ClausPolanka/github-pr-factory/issues/7
-
 [Issue-#14]: https://github.com/ClausPolanka/github-pr-factory/issues/14
-
 [Issue-#18]: https://github.com/ClausPolanka/github-pr-factory/issues/18
