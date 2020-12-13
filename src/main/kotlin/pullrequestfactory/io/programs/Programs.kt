@@ -14,19 +14,18 @@ object Programs {
         val authTokenFromProps = userProps.get_github_auth_token()
         val pa = ProgramArgs(args, authTokenFromProps)
         val repoUrl = baseUrl + repoPath
-        val authTokenFromArgs = pa.get_github_auth_token()
         return when {
             pa.has_help_option() -> ShowHelpOutputProgram()
             pa.has_version_option() -> ShowVersionOutputProgram(appProps)
             pa.has_open_command_help_option() -> ShowOpenCommandHelpOutputProgram()
             pa.has_invalid_open_command() -> ShowInvalidOpenCommandOutputProgram()
             pa.has_open_command_in_interactive_mode() -> OpenPullRequestsProgramInteractiveMode(ui, repoUrl, authTokenFromProps)
-            pa.has_open_command_with_optional_options() -> OpenPullRequestsProgramWithOptionalOptions(ui, pa, repoUrl, authTokenFromArgs)
-            pa.has_open_command() -> OpenPullRequestsProgram(ui, pa, repoUrl, authTokenFromArgs)
+            pa.has_open_command_with_optional_options() -> OpenPullRequestsProgramWithOptionalOptions(ui, pa, repoUrl, pa.get_github_auth_token())
+            pa.has_open_command() -> OpenPullRequestsProgram(ui, pa, repoUrl, pa.get_github_auth_token())
             pa.has_close_command_help_option() -> ShowCloseCommandHelpOutputProgram()
             pa.has_invalid_close_command() -> ShowInvalidCloseCommandOutputProgram()
             pa.has_close_command_in_interactive_mode() -> ClosePullRequestsProgramInteractiveMode(ui, repoUrl, authTokenFromProps)
-            pa.has_close_command() -> ClosePullRequestsProgram(ui, pa, repoUrl, authTokenFromArgs)
+            pa.has_close_command() -> ClosePullRequestsProgram(ui, pa, repoUrl, pa.get_github_auth_token())
             else -> ShowHelpOutputProgram()
         }
     }
