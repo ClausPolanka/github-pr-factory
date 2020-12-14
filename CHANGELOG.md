@@ -15,6 +15,7 @@ adhere to https://github.com/olivierlacan/keep-a-changelog.
 ### Removed
 
 ### Internal
+- [Issue-#20] Update patch version of Maven dependencies
 
 ## [1.2.0] - 2020-10-21
 
@@ -54,3 +55,4 @@ adhere to https://github.com/olivierlacan/keep-a-changelog.
 [Issue-#7]: https://github.com/ClausPolanka/github-pr-factory/issues/7
 [Issue-#14]: https://github.com/ClausPolanka/github-pr-factory/issues/14
 [Issue-#18]: https://github.com/ClausPolanka/github-pr-factory/issues/18
+[Issue-#20]: https://github.com/ClausPolanka/github-pr-factory/issues/20
