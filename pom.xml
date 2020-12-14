@@ -27,15 +27,6 @@
             <artifactId>kotlin-stdlib</artifactId>
             <version>${kotlin.version}</version>
         </dependency>
-        <!--
-            Added this dependency explicitely because when it got loaded transitively
-            it had the wrong version and triggered a warnining in the IDE
-        -->
-        <dependency>
-            <groupId>org.jetbrains.kotlin</groupId>
-            <artifactId>kotlin-reflect</artifactId>
-            <version>${kotlin.version}</version>
-        </dependency>
         <!-- Kotlin JSON parser -->
         <dependency>
             <groupId>com.beust</groupId>
