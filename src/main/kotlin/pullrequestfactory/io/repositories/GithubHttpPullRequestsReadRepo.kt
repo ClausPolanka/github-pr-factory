@@ -7,10 +7,11 @@ import pullrequestfactory.domain.pullrequests.GithubPullRequestsReadRepo
 class GithubHttpPullRequestsReadRepo(
         private val repoUrl: String,
         private val response: Response,
-        private val httpClient: HttpClient) : GithubPullRequestsReadRepo {
+        private val httpClient: HttpClient,
+        private val authToken: String) : GithubPullRequestsReadRepo {
 
     override fun get_all_open_pull_requests(): List<GetPullRequest> {
-        return GithubHttpReadRepo(httpClient).get_list(response, "$repoUrl/pulls")
+        return GithubHttpReadRepo(httpClient).get_list(response, "$repoUrl/pulls", authToken)
     }
 
 }

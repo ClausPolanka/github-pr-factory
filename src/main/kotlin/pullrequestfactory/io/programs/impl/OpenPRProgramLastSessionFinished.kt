@@ -24,7 +24,7 @@ class OpenPRProgramLastSessionFinished(
         val candidate = programArgs.get_candidate()
         val pp = programArgs.get_pairing_partner()
         val httpClientStats = KhttpClientStats(httpClient)
-        val branchesRepo = GithubHttpBranchesRepos(repoUrl, ui, httpClientStats)
+        val branchesRepo = GithubHttpBranchesRepos(repoUrl, ui, httpClientStats, token)
         val prRepo = GithubHttpPullRequestsRepo(repoUrl, token, ui, httpClientStats)
         val f = GithubPRFactory(
                 ConsoleUI(),

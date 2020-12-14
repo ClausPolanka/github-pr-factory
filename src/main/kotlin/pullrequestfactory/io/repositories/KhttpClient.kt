@@ -6,7 +6,7 @@ class KhttpClient(private val basicAuthToken: String) : HttpClient {
 
     private val defaultHeaders = mapOf(
             "Accept" to "application/json",
-            "Authorization" to "Basic $basicAuthToken",
+            "Authorization" to "token $basicAuthToken",
             "Content-Type" to "application/json")
 
     override fun get(url: String): Response {

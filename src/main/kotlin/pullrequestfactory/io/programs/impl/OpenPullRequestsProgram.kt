@@ -9,7 +9,8 @@ import pullrequestfactory.io.repositories.KhttpClient
 class OpenPullRequestsProgram(
         private val ui: UI,
         private val programArgs: ProgramArgs,
-        private val repoUrl: String) : Program {
+        private val repoUrl: String,
+        private val authToken: String) : Program {
 
     private val requiredNrOfRequestsForOpeningPRs = 24
 
@@ -18,7 +19,7 @@ class OpenPullRequestsProgram(
     }
 
     private fun create(): OpenPRProgram {
-        val token = programArgs.get_github_basic_auth_token()
+        val token = programArgs.get_github_auth_token()
         val httpClient = KhttpClient(token)
         val rateLimitBefore = GithubAPIClient(httpClient).get_rate_limit()
 

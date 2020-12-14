@@ -8,7 +8,8 @@ import pullrequestfactory.domain.uis.UI
 class GithubHttpPullRequestsReadRepos(
         private val repoPath: String,
         private val ui: UI,
-        private val httpClient: HttpClient) : GithubPullRequestsReadRepo {
+        private val httpClient: HttpClient,
+        private val authToken: String) : GithubPullRequestsReadRepo {
 
     override fun get_all_open_pull_requests(): List<GetPullRequest> {
         return create_pull_requests_repo().get_all_open_pull_requests()
@@ -21,7 +22,7 @@ class GithubHttpPullRequestsReadRepos(
                 ui.show("Too many requests to Github within time limit")
                 EmptyPullRequestsReadRepo()
             }
-            else -> GithubHttpPullRequestsReadRepo(repoPath, response, httpClient)
+            else -> GithubHttpPullRequestsReadRepo(repoPath, response, httpClient, authToken)
         }
     }
 }

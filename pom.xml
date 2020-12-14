@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>github-pr-factory</groupId>
@@ -7,10 +9,10 @@
     <version>1.3.0-SNAPSHOT</version>
 
     <properties>
-        <kotlin.version>1.4.10</kotlin.version>
+        <kotlin.version>1.4.21</kotlin.version>
         <kotlin.compiler.incremental>true</kotlin.compiler.incremental>
         <junit.version>4.13.1</junit.version>
-        <assertj.version>3.18.0</assertj.version>
+        <assertj.version>3.18.1</assertj.version>
         <wiremock.version>2.27.2</wiremock.version>
         <khttp.version>1.0.0</khttp.version>
         <klaxon.version>5.4</klaxon.version>
@@ -23,15 +25,6 @@
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
             <artifactId>kotlin-stdlib</artifactId>
-            <version>${kotlin.version}</version>
-        </dependency>
-        <!--
-            Added this dependency explicitely because when it got loaded transitively
-            it had the wrong version and triggered a warnining in the IDE
-        -->
-        <dependency>
-            <groupId>org.jetbrains.kotlin</groupId>
-            <artifactId>kotlin-reflect</artifactId>
             <version>${kotlin.version}</version>
         </dependency>
         <!-- Kotlin JSON parser -->
@@ -146,10 +139,10 @@
     </build>
 
     <repositories>
-        <!-- Klaxon, khttp dependencies are located in spring-io maven repository -->
+        <!-- Klaxon, khttp dependencies are located in jcenter maven repository -->
         <repository>
-            <id>spring-io</id>
-            <url>https://repo.spring.io/libs-release/</url>
+            <id>jcenter</id>
+            <url>https://jcenter.bintray.com/</url>
         </repository>
     </repositories>
 
@@ -173,6 +166,6 @@
             scm:git:https://github.com/ClausPolanka/github-pr-factory
         </developerConnection>
         <url>https://github.com/ClausPolanka/github-pr-factory</url>
-      <tag>HEAD</tag>
-  </scm>
+        <tag>HEAD</tag>
+    </scm>
 </project>

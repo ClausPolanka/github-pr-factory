@@ -58,9 +58,9 @@ class GithubHttpWriteRepoTest {
 
     private fun createGithubHttpRepo(): GithubHttpPullRequestsRepo = GithubHttpPullRequestsRepo(
             WIRE_MOCK_DEFAULT_URL + REPO_PATH,
-            "basic-auth-token",
+            "auth-token",
             QuietUI(),
-            KhttpClientStats(KhttpClient("basic-auth-token")))
+            KhttpClientStats(KhttpClient("auth-token")))
 
     private fun jsonFor(pr: PullRequest) =
             Regex.escape("""{"base" : "${pr.base}", "head" : "${pr.head}", "title" : "${pr.title}"}""")
@@ -68,7 +68,7 @@ class GithubHttpWriteRepoTest {
     private fun RequestPatternBuilder.addCommonHeaders(): RequestPatternBuilder? {
         return this
                 .withHeader("Accept", WireMock.matching("application/json"))
-                .withHeader("Authorization", WireMock.matching("Basic .*"))
+                .withHeader("Authorization", WireMock.matching("token.*"))
                 .withHeader("Content-Type", WireMock.matching("application/json"))
     }
 }

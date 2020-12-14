@@ -14,13 +14,13 @@ import pullrequestfactory.io.repositories.KhttpClientStats
 class ClosePullRequestsProgramInteractiveMode(
         private val ui: UI,
         private val repoUrl: String,
-        private val basicAuthToken: String? = null) : Program {
+        private val authToken: String? = null) : Program {
 
     // TODO Add rate limit check
     override fun execute() {
         show_welcome_message()
         val candidate = create_candidate_from_user_input()
-        val token = create_basic_auth_token_from_user_input()
+        val token = create_auth_token_from_user_input()
         close_pull_requests_for(candidate, token)
     }
 
@@ -36,18 +36,18 @@ class ClosePullRequestsProgramInteractiveMode(
         return candidate
     }
 
-    private fun create_basic_auth_token_from_user_input(): String {
-        if (basicAuthToken != null) {
-            return basicAuthToken
+    private fun create_auth_token_from_user_input(): String {
+        if (authToken != null) {
+            return authToken
         }
-        val token = ui.get_user_input(msg = "Your Github.com basic authentication token: ")
+        val token = ui.get_user_input(msg = "Your Github.com authentication token: ")
         return token
     }
 
-    private fun close_pull_requests_for(candidate: Candidate, githubBasicAuthToken: String) {
-        val httpClient = KhttpClientStats(KhttpClient(githubBasicAuthToken))
-        val branchesRepo = GithubHttpBranchesRepos(repoUrl, ui, httpClient)
-        val prRepo = GithubHttpPullRequestsRepo(repoUrl, githubBasicAuthToken, ui, httpClient)
+    private fun close_pull_requests_for(candidate: Candidate, githubAuthToken: String) {
+        val httpClient = KhttpClientStats(KhttpClient(githubAuthToken))
+        val branchesRepo = GithubHttpBranchesRepos(repoUrl, ui, httpClient, githubAuthToken)
+        val prRepo = GithubHttpPullRequestsRepo(repoUrl, githubAuthToken, ui, httpClient)
         val f = GithubPRFactory(
                 ui,
                 branchesRepo,

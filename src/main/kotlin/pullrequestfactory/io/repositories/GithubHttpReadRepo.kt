@@ -6,7 +6,7 @@ import pullrequestfactory.io.repositories.GithubHttpHeaderLinkPageParser.parse_p
 
 class GithubHttpReadRepo(val httpClient: HttpClient) {
 
-    inline fun <reified T> get_list(res: Response, url: String): List<T> {
+    inline fun <reified T> get_list(res: Response, url: String, authToken: String): List<T> {
         val pages = parse_pages(res.headers["link"])
         val branches = mutableListOf<List<T>>()
         pages.forEach {

@@ -8,7 +8,8 @@ import pullrequestfactory.domain.uis.UI
 class GithubHttpBranchesRepos(
         private val repoUrl: String,
         private val ui: UI,
-        private val httpClient: HttpClient
+        private val httpClient: HttpClient,
+        private val authToken: String
 ) : GithubBranchesRepo {
 
     override fun get_all_branches(): List<Branch> {
@@ -22,7 +23,7 @@ class GithubHttpBranchesRepos(
                 ui.show("Too many requests to Github within time limit")
                 EmptyGithubBranchesRepo()
             }
-            else -> GithubHttpBranchesRepo(repoUrl, response, httpClient)
+            else -> GithubHttpBranchesRepo(repoUrl, response, httpClient, authToken)
         }
     }
 
