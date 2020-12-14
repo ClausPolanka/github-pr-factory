@@ -78,6 +78,7 @@ class MainKtTest {
     fun creates_pull_requests_for_the_given_program_arguments() {
         stubGetRequestsForGithubBranchesFromFiles()
 
+        // FIXME Test fails when user.properties doesn't contain valid token. Wiremock must return a valid rate limit
         main(args = arrayOf("open", "-c", CANDIDATE, "-g", AUTH_TOKEN, "-p", PAIRING_PARTNER))
 
         verifyPostRequestsToGithubToCreatePullRequests(CANDIDATE)
@@ -94,6 +95,7 @@ class MainKtTest {
     fun closes_pull_requests_for_given_program_arguments() {
         val prs = stubGetRequestForPullRequests(CANDIDATE)
 
+        // FIXME Test fails when user.properties doesn't contain valid token. Wiremock must return a valid rate limit
         main(args = arrayOf("close", "-c", CANDIDATE, "-g", AUTH_TOKEN))
 
         verifyPatchRequestToCloseOpenPullRequests(prs)
