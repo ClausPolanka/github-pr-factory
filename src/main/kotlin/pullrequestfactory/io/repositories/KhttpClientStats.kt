@@ -14,6 +14,22 @@ class KhttpClientStats(private val httpClient: HttpClient) : HttpClient {
         return httpClient.get(url)
     }
 
+    override fun post(url: String, data: String): Response {
+        postCounter = postCounter.inc()
+        return httpClient.post(url, data = data)
+    }
+
+    override fun patch(url: String, data: String): Response {
+        patchCounter = patchCounter.inc()
+        return httpClient.patch(url, data = data)
+    }
+
+    fun stats(): String {
+        return "get-requests:\t$getCounter ${lineSeparator()}" +
+                "post-requests:\t$postCounter ${lineSeparator()}" +
+                "patch-requests:\t$patchCounter"
+    }
+
     fun getCounter(): Int {
         return getCounter
     }
@@ -36,21 +52,5 @@ class KhttpClientStats(private val httpClient: HttpClient) : HttpClient {
 
     fun resetPatchCounter() {
         patchCounter = 0
-    }
-
-    override fun post(url: String, data: String): Response {
-        postCounter = postCounter.inc()
-        return httpClient.post(url, data = data)
-    }
-
-    override fun patch(url: String, data: String): Response {
-        patchCounter = patchCounter.inc()
-        return httpClient.patch(url, data = data)
-    }
-
-    fun stats(): String {
-        return "get-requests:\t$getCounter ${lineSeparator()}" +
-                "post-requests:\t$postCounter ${lineSeparator()}" +
-                "patch-requests:\t$patchCounter"
     }
 }
