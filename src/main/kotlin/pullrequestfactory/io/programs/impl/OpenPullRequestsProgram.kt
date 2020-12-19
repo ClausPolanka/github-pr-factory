@@ -21,8 +21,7 @@ class OpenPullRequestsProgram(
     }
 
     private fun create(): OpenPRProgram {
-        val token = programArgs.get_github_auth_token()
-        val httpClient = KhttpClient(token)
+        val httpClient = KhttpClient(authToken)
         val rateLimitBefore = GithubAPIClient(httpClient, baseUrl).get_rate_limit()
 
         println()
@@ -33,9 +32,9 @@ class OpenPullRequestsProgram(
                 OpenPRProgramRateLimitExeeded(rateLimitBefore)
             }
             programArgs.has_open_command_with_optional_options() -> {
-                OpenPRProgramLastSessionFinished(ui, programArgs, baseUrl, repoUrl, httpClient, token)
+                OpenPRProgramLastSessionFinished(ui, programArgs, baseUrl, repoUrl, httpClient, authToken)
             }
-            else -> OpenPRsProgramLastSessionNotFinished(ui, programArgs, baseUrl, repoUrl, httpClient, token)
+            else -> OpenPRsProgramLastSessionNotFinished(ui, programArgs, baseUrl, repoUrl, httpClient, authToken)
         }
     }
 
