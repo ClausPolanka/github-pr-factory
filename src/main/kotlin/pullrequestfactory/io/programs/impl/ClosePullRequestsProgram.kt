@@ -16,15 +16,17 @@ import pullrequestfactory.io.uis.ConsoleUI
 class ClosePullRequestsProgram(
         private val ui: UI,
         private val programArgs: ProgramArgs,
+        private val baseUrl: String,
         private val repoUrl: String,
-        private val authToken: String) : Program {
+        private val authToken: String
+) : Program {
 
     // TODO Add rate limit check
     override fun execute() {
         val candidate = programArgs.get_candidate()
         val token = programArgs.get_github_auth_token()
         val httpClient = KhttpClient(token)
-        val rateLimitBefore = GithubAPIClient(httpClient).get_rate_limit()
+        val rateLimitBefore = GithubAPIClient(httpClient, baseUrl).get_rate_limit()
         println("Rate rate limit before closing pull requests: $rateLimitBefore")
         println()
         val httpClientStats = KhttpClientStats(httpClient)
@@ -39,7 +41,7 @@ class ClosePullRequestsProgram(
         f.close_pull_requests_for(candidate)
         println()
         println(httpClientStats.stats())
-        val rateLimitAfter = GithubAPIClient(httpClient).get_rate_limit()
+        val rateLimitAfter = GithubAPIClient(httpClient, baseUrl).get_rate_limit()
         println()
         println("Rate rate limit after closing pull requests: $rateLimitAfter")
     }

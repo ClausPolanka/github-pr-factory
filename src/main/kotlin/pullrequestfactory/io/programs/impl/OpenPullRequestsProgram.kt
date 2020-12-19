@@ -9,8 +9,10 @@ import pullrequestfactory.io.repositories.KhttpClient
 class OpenPullRequestsProgram(
         private val ui: UI,
         private val programArgs: ProgramArgs,
+        private val baseUrl: String,
         private val repoUrl: String,
-        private val authToken: String) : Program {
+        private val authToken: String
+) : Program {
 
     private val requiredNrOfRequestsForOpeningPRs = 24
 
@@ -21,7 +23,7 @@ class OpenPullRequestsProgram(
     private fun create(): OpenPRProgram {
         val token = programArgs.get_github_auth_token()
         val httpClient = KhttpClient(token)
-        val rateLimitBefore = GithubAPIClient(httpClient).get_rate_limit()
+        val rateLimitBefore = GithubAPIClient(httpClient, baseUrl).get_rate_limit()
 
         println()
         println("Rate rate limit before opening pull requests: $rateLimitBefore")
@@ -31,9 +33,9 @@ class OpenPullRequestsProgram(
                 OpenPRProgramRateLimitExeeded(rateLimitBefore)
             }
             programArgs.has_open_command_with_optional_options() -> {
-                OpenPRProgramLastSessionFinished(ui, programArgs, repoUrl, httpClient, token)
+                OpenPRProgramLastSessionFinished(ui, programArgs, baseUrl, repoUrl, httpClient, token)
             }
-            else -> OpenPRsProgramLastSessionNotFinished(ui, programArgs, repoUrl, httpClient, token)
+            else -> OpenPRsProgramLastSessionNotFinished(ui, programArgs, baseUrl, repoUrl, httpClient, token)
         }
     }
 

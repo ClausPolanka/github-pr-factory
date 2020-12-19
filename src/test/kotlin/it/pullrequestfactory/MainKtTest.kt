@@ -76,9 +76,9 @@ class MainKtTest {
 
     @Test
     fun creates_pull_requests_for_the_given_program_arguments() {
+        stubRateLimit()
         stubGetRequestsForGithubBranchesFromFiles()
 
-        // FIXME Test fails when user.properties doesn't contain valid token. Wiremock must return a valid rate limit
         main(args = arrayOf("open", "-c", CANDIDATE, "-g", AUTH_TOKEN, "-p", PAIRING_PARTNER))
 
         verifyPostRequestsToGithubToCreatePullRequests(CANDIDATE)
@@ -93,9 +93,9 @@ class MainKtTest {
 
     @Test
     fun closes_pull_requests_for_given_program_arguments() {
+        stubRateLimit()
         val prs = stubGetRequestForPullRequests(CANDIDATE)
 
-        // FIXME Test fails when user.properties doesn't contain valid token. Wiremock must return a valid rate limit
         main(args = arrayOf("close", "-c", CANDIDATE, "-g", AUTH_TOKEN))
 
         verifyPatchRequestToCloseOpenPullRequests(prs)
@@ -124,6 +124,11 @@ class MainKtTest {
         (1..9).forEach {
             stubForGithubBranchesRequestPage(it)
         }
+    }
+
+    private fun stubRateLimit() {
+        stubFor(get("/rate_limit").willReturn(aResponse().withStatus(200)
+                .withBody("{ \n  \"rate\":  {\n    \"limit\": 5000,\n    \"used\": 0,\n    \"remaining\": 5000,\n    \"reset\": 1608411669\n  }\n}")))
     }
 
     private fun stubForGithubBranchesRequestPage(pageNr: Int) {

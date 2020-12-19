@@ -6,10 +6,13 @@ import com.beust.klaxon.Klaxon
 import pullrequestfactory.io.repositories.HttpClient
 import java.time.Instant
 
-class GithubAPIClient(private val httpClient: HttpClient) {
+class GithubAPIClient(
+        private val httpClient: HttpClient,
+        private val baseUrl: String
+) {
 
     fun get_rate_limit(): RateLimit {
-        val res = httpClient.get("https://api.github.com/rate_limit")
+        val res = httpClient.get("$baseUrl/rate_limit")
         val rateLimit = (json_parser().parse(res.text) ?: DefaultRateLimit())
         return rateLimit
     }
