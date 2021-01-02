@@ -35,13 +35,13 @@ class ProgramArgs(private val args: Array<String>,
 
     private fun has_correct_nr_of_args_for_open_command() =
             has_open_command_in_interactive_mode()
-                    || hast_correct_nr_of_args()
+                    || has_correct_nr_of_args()
                     || has_correct_nr_of_optional_args()
 
     fun has_open_command_in_interactive_mode() =
             args.size == 2 && args.contains(OPEN_COMMAND) && is_interactive_mode()
 
-    private fun hast_correct_nr_of_args() =
+    private fun has_correct_nr_of_args() =
             args.size == 7 && has_open_command_required_options()
 
     private fun has_correct_nr_of_optional_args() =
