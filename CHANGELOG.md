@@ -11,6 +11,7 @@ adhere to https://github.com/olivierlacan/keep-a-changelog.
 
 ### Fixed
 - [Issue-#18] Use GitHub's OAuth 2.0 token for Authorization
+- [Issue-#22] Make OPEN commands' -g option optional when GitHub token is set in user.properties
 
 ### Removed
 
@@ -56,3 +57,4 @@ adhere to https://github.com/olivierlacan/keep-a-changelog.
 [Issue-#14]: https://github.com/ClausPolanka/github-pr-factory/issues/14
 [Issue-#18]: https://github.com/ClausPolanka/github-pr-factory/issues/18
 [Issue-#20]: https://github.com/ClausPolanka/github-pr-factory/issues/20
+[Issue-#22]: https://github.com/ClausPolanka/github-pr-factory/issues/22
