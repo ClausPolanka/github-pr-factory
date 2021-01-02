@@ -173,6 +173,37 @@ class ProgramArgsTest {
     }
 
     @Test
+    fun has_valid_open_command_with_token_option_and_token_exists_in_user_properties() {
+        val args = arrayOf(
+                "open",
+                "-c",
+                "firstname-lastname",
+                "-g",
+                GITHUB_AUTH_TOKEN,
+                "-p",
+                PAIRING_PARTNER)
+        val sut = ProgramArgs(args, authTokenFromUserProps = "any-token")
+
+        val hasInvalidOpenCommand = sut.has_invalid_open_command()
+
+        assertThat(hasInvalidOpenCommand)
+                .describedAs("has invalid open command: '${args.toList()}'")
+                .isFalse()
+    }
+
+    @Test
+    fun has_valid_open_command_with_missing_token_option_when_token_exists_in_user_properties() {
+        val args = arrayOf("open", "-c", "firstname-lastname", "-p", PAIRING_PARTNER)
+        val sut = ProgramArgs(args, authTokenFromUserProps = "any-token")
+
+        val hasInvalidOpenCommand = sut.has_invalid_open_command()
+
+        assertThat(hasInvalidOpenCommand)
+                .describedAs("has invalid open command: '${args.toList()}'")
+                .isFalse()
+    }
+
+    @Test
     fun has_valid_open_command_for_given_interactive_mode_arguments() {
         val args = arrayOf("open", "-i")
         val sut = ProgramArgs(args)
