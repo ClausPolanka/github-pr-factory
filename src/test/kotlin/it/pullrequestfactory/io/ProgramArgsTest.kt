@@ -173,7 +173,7 @@ class ProgramArgsTest {
     }
 
     @Test
-    fun has_valid_open_command_with_missing_token_option_when_token_exists_in_user_properties() {
+    fun has_valid_open_command_with_token_option_and_token_exists_in_user_properties() {
         val args = arrayOf(
                 "open",
                 "-c",
@@ -192,7 +192,7 @@ class ProgramArgsTest {
     }
 
     @Test
-    fun has_valid_open_command_with_token_option_and_token_exists_in_user_properties() {
+    fun has_valid_open_command_with_missing_token_option_when_token_exists_in_user_properties() {
         val args = arrayOf("open", "-c", "firstname-lastname", "-p", PAIRING_PARTNER)
         val sut = ProgramArgs(args, authTokenFromUserProps = "any-token")
 
