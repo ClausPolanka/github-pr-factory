@@ -15,26 +15,31 @@ class OpenPullRequestsProgram(
 ) : Program {
 
     private val requiredNrOfRequestsForOpeningPRs = 24
+    private val httpClient = KhttpClient(authToken)
+    private val githubApiClient = GithubAPIClient(httpClient, baseUrl)
 
     override fun execute() {
-        create().execute()
+        RateLimitCheckedProgram(githubApiClient,
+                create(),
+                requiredNrOfRequestsForOpeningPRs).execute()
     }
 
     private fun create(): OpenPRProgram {
-        val httpClient = KhttpClient(authToken)
-        val rateLimitBefore = GithubAPIClient(httpClient, baseUrl).get_rate_limit()
-
-        println()
-        println("Rate rate limit before opening pull requests: $rateLimitBefore")
-
         return when {
-            rateLimitBefore.isExeeded(requiredNrOfRequestsForOpeningPRs) -> {
-                OpenPRProgramRateLimitExeeded(rateLimitBefore)
-            }
             programArgs.has_open_command_with_optional_options() -> {
-                OpenPRProgramLastSessionFinished(ui, programArgs, baseUrl, repoUrl, httpClient, authToken)
+                OpenPRProgramLastSessionFinished(ui,
+                        programArgs,
+                        baseUrl,
+                        repoUrl,
+                        httpClient,
+                        authToken)
             }
-            else -> OpenPRsProgramLastSessionNotFinished(ui, programArgs, baseUrl, repoUrl, httpClient, authToken)
+            else -> OpenPRsProgramLastSessionNotFinished(ui,
+                    programArgs,
+                    baseUrl,
+                    repoUrl,
+                    httpClient,
+                    authToken)
         }
     }
 
