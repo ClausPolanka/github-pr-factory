@@ -329,6 +329,18 @@ class ProgramArgsTest {
     }
 
     @Test
+    fun has_valid_close_command_with_missing_token_option_with_token_provided_via_user_properties() {
+        val args = arrayOf("close", "-c", "firstname-lastname")
+        val sut = ProgramArgs(args, authTokenFromUserProps = "any-token")
+
+        val hasInvalidCloseCommand = sut.has_invalid_close_command()
+
+        assertThat(hasInvalidCloseCommand)
+                .describedAs("has invalid close command: '${args.toList()}'")
+                .isFalse()
+    }
+
+    @Test
     fun has_valid_close_command_for_given_interactive_mode_arguments() {
         val args = arrayOf("close", "-i")
         val sut = ProgramArgs(args)

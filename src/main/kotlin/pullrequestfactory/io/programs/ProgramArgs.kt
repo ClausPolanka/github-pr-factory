@@ -61,11 +61,13 @@ class ProgramArgs(private val args: Array<String>,
     fun has_close_command_help_option() =
             args[0] == CLOSE_COMMAND && args.size == 2 && args[1] == HELP_COMMAND_LONG_VERSION
 
-    fun has_invalid_close_command() = has_close_command() && !(has_close_command_required_options() || is_interactive_mode())
+    fun has_invalid_close_command() =
+            has_close_command() && !(has_close_command_required_options() || is_interactive_mode())
 
     fun has_close_command() = args[0] == CLOSE_COMMAND
 
-    private fun has_close_command_required_options() = args.size == 5
+    private fun has_close_command_required_options() =
+            ((authTokenFromUserProps != null && args.size == 3) || args.size == 5)
             && is_candidate_syntax_valid()
             && is_github_auth_token_syntax_valid()
 
