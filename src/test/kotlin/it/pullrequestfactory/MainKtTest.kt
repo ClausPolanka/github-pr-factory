@@ -19,6 +19,10 @@ import java.io.PrintStream
 import java.lang.System.lineSeparator
 import java.nio.file.Files
 import java.nio.file.Paths
+import java.time.Instant
+import java.time.LocalDateTime
+import java.time.ZoneOffset
+import java.time.format.DateTimeFormatter
 
 class MainKtTest {
 
@@ -34,6 +38,7 @@ class MainKtTest {
     private val PULL_REQUEST_LINK_HEADER_PAGE_1 = "<https://api.github.com/repositories/157517927/pulls?page=2>; rel=\"next\", <https://api.github.com/repositories/157517927/pulls?page=2>; rel=\"last\""
     private val PULL_REQUEST_LINK_HEADER_PAGE_2 = "<https://api.github.com/repositories/157517927/pulls?page=1>; rel=\"prev\", <https://api.github.com/repositories/157517927/pulls?page=1>; rel=\"first\""
     private val PROJECT_VERSION = "1.0-SNAPSHOT"
+    private val RESET_IN_MILLIS = 1608411669L
 
     private val systemIn = System.`in`
     private val systemOut = System.out
@@ -85,6 +90,17 @@ class MainKtTest {
     }
 
     @Test
+    fun creates_no_pull_requests_when_rate_limit_exeeded_shows_user_local_reset_date_time_to_try_again() {
+        stubRateLimitExeeded(remaining = 0, RESET_IN_MILLIS)
+
+        main(args = arrayOf("open", "-c", CANDIDATE, "-g", AUTH_TOKEN, "-p", PAIRING_PARTNER))
+
+        assertThat(uiOutput.toString())
+                .contains("limit exeeded")
+                .contains("retry at: ${to_local_date_time(RESET_IN_MILLIS)}")
+    }
+
+    @Test
     fun shows_open_command_usage_when_arguments_are_not_correct() {
         main(args = arrayOf("open", "-c", CANDIDATE, "-g", AUTH_TOKEN, PAIRING_PARTNER))
 
@@ -129,6 +145,11 @@ class MainKtTest {
     private fun stubRateLimit() {
         stubFor(get("/rate_limit").willReturn(aResponse().withStatus(200)
                 .withBody("{ \n  \"rate\":  {\n    \"limit\": 5000,\n    \"used\": 0,\n    \"remaining\": 5000,\n    \"reset\": 1608411669\n  }\n}")))
+    }
+
+    private fun stubRateLimitExeeded(remaining: Int, resetInMillisSinceEpoch: Long) {
+        stubFor(get("/rate_limit").willReturn(aResponse().withStatus(200)
+                .withBody("{ \n  \"rate\":  {\n    \"limit\": 5000,\n    \"used\": 0,\n    \"remaining\": $remaining,\n    \"reset\": $resetInMillisSinceEpoch\n  }\n}")))
     }
 
     private fun stubForGithubBranchesRequestPage(pageNr: Int) {
@@ -220,6 +241,11 @@ class MainKtTest {
 
     private fun githubResponseFor(getPullRequest: GetPullRequest): GetPullRequestResponse {
         return GetPullRequestResponse(getPullRequest.number, getPullRequest.title)
+    }
+
+    private fun to_local_date_time(resetDateTime: Long): String {
+        val local = LocalDateTime.ofInstant(Instant.ofEpochSecond(resetDateTime), ZoneOffset.UTC)
+        return local.format(DateTimeFormatter.ofPattern("M/d/y H:m:ss"))
     }
 
 }
