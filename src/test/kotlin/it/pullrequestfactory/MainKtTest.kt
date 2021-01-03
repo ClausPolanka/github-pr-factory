@@ -101,6 +101,17 @@ class MainKtTest {
     }
 
     @Test
+    fun closes_no_pull_requests_when_rate_limit_exeeded_shows_user_local_reset_date_time_to_try_again() {
+        stubRateLimitExeeded(remaining = 0, RESET_IN_MILLIS)
+
+        main(args = arrayOf("close", "-c", CANDIDATE, "-g", AUTH_TOKEN))
+
+        assertThat(uiOutput.toString())
+                .contains("limit exeeded")
+                .contains("retry at: ${to_local_date_time(RESET_IN_MILLIS)}")
+    }
+
+    @Test
     fun shows_open_command_usage_when_arguments_are_not_correct() {
         main(args = arrayOf("open", "-c", CANDIDATE, "-g", AUTH_TOKEN, PAIRING_PARTNER))
 

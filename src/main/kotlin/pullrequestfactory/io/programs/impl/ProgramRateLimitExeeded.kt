@@ -2,7 +2,7 @@ package pullrequestfactory.io.programs.impl
 
 import pullrequestfactory.io.RateLimit
 
-class OpenPRProgramRateLimitExeeded(private val rateLimitBefore: RateLimit) : OpenPRProgram {
+class ProgramRateLimitExeeded(private val rateLimitBefore: RateLimit) : OpenPRProgram {
 
     override fun execute() {
         println("The limit exeeded for calling the Github API with your Github user")

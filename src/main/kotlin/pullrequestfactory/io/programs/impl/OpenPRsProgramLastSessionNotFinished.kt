@@ -4,18 +4,15 @@ import pullrequestfactory.domain.GithubPRFactory
 import pullrequestfactory.domain.branches.BranchSyntaxValidator
 import pullrequestfactory.domain.pullrequests.PullRequestLastNotFinishedMarker
 import pullrequestfactory.domain.uis.UI
-import pullrequestfactory.io.GithubAPIClient
 import pullrequestfactory.io.programs.ProgramArgs
 import pullrequestfactory.io.repositories.GithubHttpBranchesRepos
 import pullrequestfactory.io.repositories.GithubHttpPullRequestsRepo
 import pullrequestfactory.io.repositories.HttpClient
-import pullrequestfactory.io.repositories.KhttpClientStats
 import pullrequestfactory.io.uis.ConsoleUI
 
 class OpenPRsProgramLastSessionNotFinished(
         private val ui: UI,
         private val programArgs: ProgramArgs,
-        private val baseUrl: String,
         private val repoUrl: String,
         private val httpClient: HttpClient,
         private val token: String
@@ -24,9 +21,8 @@ class OpenPRsProgramLastSessionNotFinished(
     override fun execute() {
         val candidate = programArgs.get_candidate()
         val pp = programArgs.get_pairing_partner()
-        val httpClientStats = KhttpClientStats(httpClient)
-        val branchesRepo = GithubHttpBranchesRepos(repoUrl, ui, httpClientStats, token)
-        val prRepo = GithubHttpPullRequestsRepo(repoUrl, token, ui, httpClientStats)
+        val branchesRepo = GithubHttpBranchesRepos(repoUrl, ui, httpClient, token)
+        val prRepo = GithubHttpPullRequestsRepo(repoUrl, token, ui, httpClient)
         val f = GithubPRFactory(
                 ConsoleUI(),
                 branchesRepo,
@@ -34,11 +30,6 @@ class OpenPRsProgramLastSessionNotFinished(
                 BranchSyntaxValidator(ui),
                 PullRequestLastNotFinishedMarker())
         f.open_pull_requests(candidate, pp)
-        println()
-        println(httpClientStats.stats())
-        println()
-        val rateLimitAfter = GithubAPIClient(httpClient, baseUrl).get_rate_limit()
-        println("Rate rate limit after opening pull requests: $rateLimitAfter")
     }
 
 }

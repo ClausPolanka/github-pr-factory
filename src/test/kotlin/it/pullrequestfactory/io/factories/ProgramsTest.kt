@@ -113,7 +113,7 @@ class ProgramsTest {
                 "-g",
                 "askdasaeu129"))
 
-        assertThat(program is ClosePullRequestsProgram)
+        assertThat(program is ClosePullRequestsPrograms)
                 .describedAs("program closes pull requests ${actual_program(program)}")
                 .isTrue()
     }

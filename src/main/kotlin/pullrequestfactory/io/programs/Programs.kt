@@ -24,7 +24,7 @@ object Programs {
             pa.has_close_command_help_option() -> ShowCloseCommandHelpOutputProgram()
             pa.has_invalid_close_command() -> ShowInvalidCloseCommandOutputProgram()
             pa.has_close_command_in_interactive_mode() -> ClosePullRequestsProgramInteractiveMode(ui, repoUrl, authTokenFromProps)
-            pa.has_close_command() -> ClosePullRequestsProgram(ui, pa, baseUrl, repoUrl, pa.get_github_auth_token())
+            pa.has_close_command() -> ClosePullRequestsPrograms(ui, pa, baseUrl, repoUrl, pa.get_github_auth_token())
             else -> ShowHelpOutputProgram()
         }
     }

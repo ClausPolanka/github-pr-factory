@@ -4,34 +4,26 @@ import pullrequestfactory.domain.GithubPRFactory
 import pullrequestfactory.domain.branches.BranchSyntaxValidator
 import pullrequestfactory.domain.pullrequests.PullRequestLastNotFinishedMarker
 import pullrequestfactory.domain.uis.UI
-import pullrequestfactory.io.GithubAPIClient
-import pullrequestfactory.io.programs.Program
 import pullrequestfactory.io.programs.ProgramArgs
 import pullrequestfactory.io.repositories.GithubHttpBranchesRepos
 import pullrequestfactory.io.repositories.GithubHttpPullRequestsRepo
-import pullrequestfactory.io.repositories.KhttpClient
-import pullrequestfactory.io.repositories.KhttpClientStats
+import pullrequestfactory.io.repositories.HttpClient
 import pullrequestfactory.io.uis.ConsoleUI
 
-class ClosePullRequestsProgram(
+class ClosePullRequestProgram(
         private val ui: UI,
         private val programArgs: ProgramArgs,
         private val baseUrl: String,
         private val repoUrl: String,
+        private val httpClient: HttpClient,
         private val authToken: String
-) : Program {
+) : ClosePRProgram {
 
-    // TODO Add rate limit check
     override fun execute() {
         val candidate = programArgs.get_candidate()
         val token = programArgs.get_github_auth_token()
-        val httpClient = KhttpClient(token)
-        val rateLimitBefore = GithubAPIClient(httpClient, baseUrl).get_rate_limit()
-        println("Rate rate limit before closing pull requests: $rateLimitBefore")
-        println()
-        val httpClientStats = KhttpClientStats(httpClient)
-        val branchesRepo = GithubHttpBranchesRepos(repoUrl, ui, httpClientStats, authToken)
-        val prRepo = GithubHttpPullRequestsRepo(repoUrl, token, ui, httpClientStats)
+        val branchesRepo = GithubHttpBranchesRepos(repoUrl, ui, httpClient, authToken)
+        val prRepo = GithubHttpPullRequestsRepo(repoUrl, token, ui, httpClient)
         val f = GithubPRFactory(
                 ConsoleUI(),
                 branchesRepo,
@@ -39,11 +31,6 @@ class ClosePullRequestsProgram(
                 BranchSyntaxValidator(ui),
                 PullRequestLastNotFinishedMarker())
         f.close_pull_requests_for(candidate)
-        println()
-        println(httpClientStats.stats())
-        val rateLimitAfter = GithubAPIClient(httpClient, baseUrl).get_rate_limit()
-        println()
-        println("Rate rate limit after closing pull requests: $rateLimitAfter")
     }
 
 }
