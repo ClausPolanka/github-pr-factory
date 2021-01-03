@@ -16,6 +16,10 @@ data class RateLimit(val rate: Rate) {
         return local.format(DateTimeFormatter.ofPattern("M/d/y H:m:ss"))
     }
 
+    fun isExeeded(requiredNrOfRequests: Int): Boolean {
+        return rate.remaining < requiredNrOfRequests
+    }
+
 }
 
 data class Rate(val limit: Int, val remaining: Int, val reset: Instant, val used: Int)

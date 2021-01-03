@@ -28,7 +28,7 @@ class OpenPullRequestsProgram(
         println("Rate rate limit before opening pull requests: $rateLimitBefore")
 
         return when {
-            rateLimitBefore.rate.remaining < requiredNrOfRequestsForOpeningPRs -> {
+            rateLimitBefore.isExeeded(requiredNrOfRequestsForOpeningPRs) -> {
                 OpenPRProgramRateLimitExeeded(rateLimitBefore)
             }
             programArgs.has_open_command_with_optional_options() -> {
