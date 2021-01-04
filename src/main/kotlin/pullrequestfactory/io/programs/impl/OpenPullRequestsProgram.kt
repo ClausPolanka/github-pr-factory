@@ -15,7 +15,7 @@ class OpenPullRequestsProgram(
         private val authToken: String
 ) : Program {
 
-    private val requiredNrOfRequestsForOpeningPRs = 24
+    private val requiredNrOfRequestsForOpeningPRs = 30
     private val httpClient = KhttpClient(authToken)
     private val httpClientStats = KhttpClientStats(httpClient)
     private val githubApiClient = GithubAPIClient(httpClient, baseUrl)

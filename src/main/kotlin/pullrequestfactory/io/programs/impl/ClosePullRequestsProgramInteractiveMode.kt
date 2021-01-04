@@ -46,8 +46,8 @@ class ClosePullRequestsProgramInteractiveMode(
 
     private fun close_pull_requests_for(candidate: Candidate, githubAuthToken: String) {
         val httpClient = KhttpClientStats(KhttpClient(githubAuthToken))
-        val branchesRepo = GithubHttpBranchesRepos(repoUrl, ui, httpClient, githubAuthToken)
-        val prRepo = GithubHttpPullRequestsRepo(repoUrl, githubAuthToken, ui, httpClient)
+        val branchesRepo = GithubHttpBranchesRepos(repoUrl, ui, httpClient)
+        val prRepo = GithubHttpPullRequestsRepo(repoUrl, ui, httpClient)
         val f = GithubPRFactory(
                 ui,
                 branchesRepo,

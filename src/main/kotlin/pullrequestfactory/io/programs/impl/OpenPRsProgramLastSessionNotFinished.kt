@@ -21,8 +21,8 @@ class OpenPRsProgramLastSessionNotFinished(
     override fun execute() {
         val candidate = programArgs.get_candidate()
         val pp = programArgs.get_pairing_partner()
-        val branchesRepo = GithubHttpBranchesRepos(repoUrl, ui, httpClient, token)
-        val prRepo = GithubHttpPullRequestsRepo(repoUrl, token, ui, httpClient)
+        val branchesRepo = GithubHttpBranchesRepos(repoUrl, ui, httpClient)
+        val prRepo = GithubHttpPullRequestsRepo(repoUrl, ui, httpClient)
         val f = GithubPRFactory(
                 ConsoleUI(),
                 branchesRepo,

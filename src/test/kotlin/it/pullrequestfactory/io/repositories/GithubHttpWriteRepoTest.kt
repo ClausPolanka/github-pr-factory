@@ -58,7 +58,6 @@ class GithubHttpWriteRepoTest {
 
     private fun createGithubHttpRepo(): GithubHttpPullRequestsRepo = GithubHttpPullRequestsRepo(
             WIRE_MOCK_DEFAULT_URL + REPO_PATH,
-            "auth-token",
             QuietUI(),
             KhttpClientStats(KhttpClient("auth-token")))
 
