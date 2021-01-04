@@ -10,9 +10,9 @@ import pullrequestfactory.io.repositories.KhttpClientStats
 class ClosePullRequestsPrograms(
         private val ui: UI,
         private val programArgs: ProgramArgs,
-        private val baseUrl: String,
+        baseUrl: String,
         private val repoUrl: String,
-        private val authToken: String
+        authToken: String
 ) : Program {
 
     private val requiredNrOfRequestsForClosingPRs = 15
@@ -31,10 +31,9 @@ class ClosePullRequestsPrograms(
         return ClosePullRequestProgram(
                 ui,
                 programArgs,
-                baseUrl,
                 repoUrl,
-                httpClientStats,
-                authToken)
+                httpClientStats
+        )
     }
 
 }

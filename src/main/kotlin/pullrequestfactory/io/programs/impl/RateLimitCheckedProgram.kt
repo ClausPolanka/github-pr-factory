@@ -28,7 +28,7 @@ class RateLimitCheckedProgram(
 
     private fun print(rateLimitBefore: RateLimit) {
         println()
-        println("Rate rate limit before opening pull requests: $rateLimitBefore")
+        println("Rate rate limit before: $rateLimitBefore")
     }
 
     private fun printRateLimitAfter() {
@@ -37,7 +37,7 @@ class RateLimitCheckedProgram(
         println()
         val rateLimitAfter = githubApiClient.get_rate_limit()
         println()
-        println("Rate rate limit after closing pull requests: $rateLimitAfter")
+        println("Rate rate limit after: $rateLimitAfter")
     }
 
 }

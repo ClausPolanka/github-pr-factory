@@ -13,15 +13,11 @@ import pullrequestfactory.io.uis.ConsoleUI
 class ClosePullRequestProgram(
         private val ui: UI,
         private val programArgs: ProgramArgs,
-        private val baseUrl: String,
         private val repoUrl: String,
-        private val httpClient: HttpClient,
-        private val authToken: String
-) : ClosePRProgram {
+        private val httpClient: HttpClient) : ClosePRProgram {
 
     override fun execute() {
         val candidate = programArgs.get_candidate()
-        val token = programArgs.get_github_auth_token()
         val branchesRepo = GithubHttpBranchesRepos(repoUrl, ui, httpClient)
         val prRepo = GithubHttpPullRequestsRepo(repoUrl, ui, httpClient)
         val f = GithubPRFactory(

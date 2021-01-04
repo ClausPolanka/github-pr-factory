@@ -5,23 +5,33 @@ import pullrequestfactory.domain.GithubPRFactory
 import pullrequestfactory.domain.branches.BranchSyntaxValidator
 import pullrequestfactory.domain.pullrequests.PullRequestLastNotFinishedMarker
 import pullrequestfactory.domain.uis.UI
+import pullrequestfactory.io.GithubAPIClient
 import pullrequestfactory.io.programs.Program
-import pullrequestfactory.io.repositories.GithubHttpBranchesRepos
-import pullrequestfactory.io.repositories.GithubHttpPullRequestsRepo
-import pullrequestfactory.io.repositories.KhttpClient
-import pullrequestfactory.io.repositories.KhttpClientStats
+import pullrequestfactory.io.repositories.*
 
 class ClosePullRequestsProgramInteractiveMode(
         private val ui: UI,
+        private val baseUrl: String,
         private val repoUrl: String,
         private val authToken: String? = null) : Program {
 
-    // TODO Add rate limit check
+    private val requiredNrOfRequestsForClosingPRs = 15
+
     override fun execute() {
         show_welcome_message()
         val candidate = create_candidate_from_user_input()
         val token = create_auth_token_from_user_input()
-        close_pull_requests_for(candidate, token)
+
+        val httpClient = KhttpClient(token)
+        val httpClientStats = KhttpClientStats(httpClient)
+        RateLimitCheckedProgram(GithubAPIClient(httpClient, baseUrl),
+                httpClientStats,
+                object : Program {
+                    override fun execute() {
+                        close_pull_requests_for(candidate, httpClientStats)
+                    }
+                },
+                requiredNrOfRequestsForClosingPRs).execute()
     }
 
     private fun show_welcome_message() {
@@ -44,8 +54,7 @@ class ClosePullRequestsProgramInteractiveMode(
         return token
     }
 
-    private fun close_pull_requests_for(candidate: Candidate, githubAuthToken: String) {
-        val httpClient = KhttpClientStats(KhttpClient(githubAuthToken))
+    private fun close_pull_requests_for(candidate: Candidate, httpClient: HttpClient) {
         val branchesRepo = GithubHttpBranchesRepos(repoUrl, ui, httpClient)
         val prRepo = GithubHttpPullRequestsRepo(repoUrl, ui, httpClient)
         val f = GithubPRFactory(
@@ -55,8 +64,6 @@ class ClosePullRequestsProgramInteractiveMode(
                 BranchSyntaxValidator(ui),
                 PullRequestLastNotFinishedMarker())
         f.close_pull_requests_for(candidate)
-        println()
-        println(httpClient.stats())
     }
 
 }
