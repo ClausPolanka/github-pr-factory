@@ -4,7 +4,6 @@ import pullrequestfactory.domain.GithubPRFactory
 import pullrequestfactory.domain.branches.BranchSyntaxValidator
 import pullrequestfactory.domain.pullrequests.PullRequestLastFinishedMarker
 import pullrequestfactory.domain.uis.UI
-import pullrequestfactory.io.GithubAPIClient
 import pullrequestfactory.io.programs.ProgramArgs
 import pullrequestfactory.io.repositories.GithubHttpBranchesRepos
 import pullrequestfactory.io.repositories.GithubHttpPullRequestsRepo
@@ -34,11 +33,6 @@ class OpenPRProgramLastSessionFinished(
                 BranchSyntaxValidator(ui),
                 PullRequestLastFinishedMarker())
         f.open_pull_requests(candidate, pp)
-        println()
-        println(httpClientStats.stats())
-        println()
-        val rateLimitAfter = GithubAPIClient(httpClient, baseUrl).get_rate_limit()
-        println("Rate rate limit after opening pull requests: $rateLimitAfter")
     }
 
 }
