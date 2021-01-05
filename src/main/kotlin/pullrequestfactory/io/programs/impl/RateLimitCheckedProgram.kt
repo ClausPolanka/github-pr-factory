@@ -1,43 +1,50 @@
 package pullrequestfactory.io.programs.impl
 
+import pullrequestfactory.domain.uis.UI
 import pullrequestfactory.io.GithubAPIClient
 import pullrequestfactory.io.RateLimit
 import pullrequestfactory.io.programs.Program
 import pullrequestfactory.io.repositories.KhttpClientStats
 
 class RateLimitCheckedProgram(
+        private val ui: UI,
         private val githubApiClient: GithubAPIClient,
         private val httpClientStats: KhttpClientStats,
         private val delegate: Program,
-        private val requiredNrOfRequests: Int) : Program {
+        private val requiredNrOfRequests: Int
+) : Program {
 
     override fun execute() {
         val rateLimitBefore = githubApiClient.get_rate_limit()
-        print(rateLimitBefore)
+        ui.show(rateLimitBefore)
         when {
             rateLimitBefore.isExeeded(requiredNrOfRequests) -> {
-                ProgramRateLimitExeeded(rateLimitBefore).execute()
-                printRateLimitAfter()
+                ui.showRateLimitExeeded(rateLimitBefore)
+                ui.showRateLimitAfter()
             }
             else -> {
                 delegate.execute()
-                printRateLimitAfter()
+                ui.showRateLimitAfter()
             }
         }
     }
 
-    private fun print(rateLimitBefore: RateLimit) {
-        println()
-        println("Before: $rateLimitBefore")
+    private fun UI.showRateLimitExeeded(rateLimitBefore: RateLimit) {
+        show("The limit exeeded for calling the Github API with your Github user")
+        show("Please retry at: ${rateLimitBefore.localResetDateTime()}")
     }
 
-    private fun printRateLimitAfter() {
-        println()
-        println(httpClientStats.stats())
-        println()
+    private fun UI.show(rateLimitBefore: RateLimit) {
+        show(System.lineSeparator())
+        show("Before: $rateLimitBefore")
+    }
+
+    private fun UI.showRateLimitAfter() {
+        show(System.lineSeparator())
+        show(httpClientStats.stats())
+        show(System.lineSeparator())
         val rateLimitAfter = githubApiClient.get_rate_limit()
-        println()
-        println("After: $rateLimitAfter")
+        show("After: $rateLimitAfter")
     }
 
 }

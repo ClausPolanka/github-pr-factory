@@ -24,7 +24,8 @@ class ClosePullRequestsProgramInteractiveMode(
 
         val httpClient = KhttpClient(token)
         val httpClientStats = KhttpClientStats(httpClient)
-        RateLimitCheckedProgram(GithubAPIClient(httpClient, baseUrl),
+        RateLimitCheckedProgram(ui,
+                GithubAPIClient(httpClient, baseUrl),
                 httpClientStats,
                 object : Program {
                     override fun execute() {
