@@ -17,6 +17,7 @@ object Programs {
         val authTokenFromProps = userProps.get_github_auth_token()
         val pa = ProgramArgs(args, authTokenFromProps)
         val repoUrl = baseUrl + repoPath
+        val g by lazy { GitHubHttp(pa, baseUrl) }
         return when {
             pa.has_help_option() -> ShowHelpOutputProgram()
             pa.has_version_option() -> ShowVersionOutputProgram(appProps)
@@ -24,22 +25,33 @@ object Programs {
             pa.has_invalid_open_command() -> ShowInvalidOpenCommandOutputProgram()
             pa.has_open_command_in_interactive_mode() -> OpenPullRequestsProgramInteractiveMode(ui, baseUrl, repoUrl, authTokenFromProps)
             pa.has_open_command() -> {
-                val httpClient = KhttpClient(pa.get_github_auth_token())
-                val httpClientStats = KhttpClientStats(httpClient)
-                val githubApiClient = GithubAPIClient(httpClient, baseUrl)
-                OpenPullRequestsProgram(ui, pa, repoUrl, githubApiClient, httpClientStats)
+                OpenPullRequestsProgram(ui, pa, repoUrl, g.github_api_client(), g.http_client_stats())
             }
             pa.has_close_command_help_option() -> ShowCloseCommandHelpOutputProgram()
             pa.has_invalid_close_command() -> ShowInvalidCloseCommandOutputProgram()
             pa.has_close_command_in_interactive_mode() -> ClosePullRequestsProgramInteractiveMode(ui, baseUrl, repoUrl, authTokenFromProps)
             pa.has_close_command() -> {
-                val httpClient = KhttpClient(pa.get_github_auth_token())
-                val httpClientStats = KhttpClientStats(httpClient)
-                val githubApiClient = GithubAPIClient(httpClient, baseUrl)
-                ClosePullRequestsPrograms(ui, pa, repoUrl, githubApiClient, httpClientStats)
+                ClosePullRequestsPrograms(ui, pa, repoUrl, g.github_api_client(), g.http_client_stats())
             }
             else -> ShowHelpOutputProgram()
         }
+    }
+
+}
+
+class GitHubHttp(
+        private val programArgs: ProgramArgs,
+        private val baseUrl: String
+) {
+
+    val httpClient = KhttpClient(programArgs.get_github_auth_token())
+
+    fun github_api_client(): GithubAPIClient {
+        return GithubAPIClient(httpClient, baseUrl)
+    }
+
+    fun http_client_stats(): KhttpClientStats {
+        return KhttpClientStats(httpClient)
     }
 
 }
