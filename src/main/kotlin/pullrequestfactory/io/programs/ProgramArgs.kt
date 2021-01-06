@@ -3,8 +3,10 @@ package pullrequestfactory.io.programs
 import pullrequestfactory.domain.Candidate
 import pullrequestfactory.domain.PairingPartner
 
-class ProgramArgs(private val args: Array<String>,
-                  private val authTokenFromUserProps: String? = null) {
+class ProgramArgs(
+        private val args: Array<String>,
+        private val authTokenFromUserProps: String? = null
+) {
 
     private val HELP_COMMAND = "-?"
     private val HELP_COMMAND_LONG_VERSION = "--help"
@@ -68,8 +70,8 @@ class ProgramArgs(private val args: Array<String>,
 
     private fun has_close_command_required_options() =
             ((authTokenFromUserProps != null && args.size == 3) || args.size == 5)
-            && is_candidate_syntax_valid()
-            && is_github_auth_token_syntax_valid()
+                    && is_candidate_syntax_valid()
+                    && is_github_auth_token_syntax_valid()
 
     private fun is_interactive_mode() = args.contains("-i") || args.contains("--interactive")
 
