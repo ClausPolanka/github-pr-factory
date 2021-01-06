@@ -8,7 +8,7 @@ import pullrequestfactory.domain.pullrequests.PullRequestMarker
 import pullrequestfactory.domain.uis.UI
 
 class GithubPRFactory(
-        val ui: UI,
+        private val ui: UI,
         private val githubBranchesRepo: GithubBranchesRepo,
         private val githubPullRequestsRepo: GithubPullRequestsRepo,
         private val branchSyntaxValidator: BranchSyntaxValidator,
