@@ -44,7 +44,7 @@ class ProgramArgs(
             args.size == 2 && args.contains(OPEN_COMMAND) && is_interactive_mode()
 
     private fun has_correct_nr_of_args() =
-            ((authTokenFromUserProps != null && args.size == 5) || args.size == 7) && has_open_command_required_options()
+            ((authTokenFromUserProps != null && args.size >= 5) || args.size == 7) && has_open_command_required_options()
 
     private fun has_correct_nr_of_optional_args() =
             args.size == 8 && has_open_command_required_and_optional_options()
