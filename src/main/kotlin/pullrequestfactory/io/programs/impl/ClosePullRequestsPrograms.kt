@@ -6,7 +6,7 @@ import pullrequestfactory.io.programs.Program
 import pullrequestfactory.io.programs.ProgramArgs
 import pullrequestfactory.io.repositories.KhttpClientStats
 
-class OpenPullRequestsProgram(
+class ClosePullRequestsPrograms(
         private val ui: UI,
         private val programArgs: ProgramArgs,
         private val repoUrl: String,
@@ -14,32 +14,23 @@ class OpenPullRequestsProgram(
         private val httpClientStats: KhttpClientStats
 ) : Program {
 
-    private val requiredNrOfRequestsForOpeningPRs = 30
+    private val requiredNrOfRequestsForClosingPRs = 15
 
     override fun execute() {
         RateLimitCheckedPrograms(ui,
                 githubAPIClient,
                 httpClientStats,
                 create(),
-                requiredNrOfRequestsForOpeningPRs).instance(debug = true).execute()
+                requiredNrOfRequestsForClosingPRs).instance(debug = true).execute()
     }
 
-    private fun create(): OpenPRProgram {
-        return when {
-            programArgs.has_open_command_with_optional_options() -> {
-                OpenPRProgramLastSessionFinished(ui,
-                        programArgs,
-                        repoUrl,
-                        httpClientStats
-                )
-            }
-            else -> OpenPRsProgramLastSessionNotFinished(ui,
-                    programArgs,
-                    repoUrl,
-                    httpClientStats
-            )
-        }
+    private fun create(): ClosePRProgram {
+        return ClosePullRequestProgram(
+                ui,
+                programArgs,
+                repoUrl,
+                httpClientStats
+        )
     }
 
 }
-

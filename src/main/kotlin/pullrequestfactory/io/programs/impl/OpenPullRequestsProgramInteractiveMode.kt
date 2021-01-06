@@ -6,24 +6,37 @@ import pullrequestfactory.domain.PairingPartner
 import pullrequestfactory.domain.branches.BranchSyntaxValidator
 import pullrequestfactory.domain.pullrequests.PullRequestLastNotFinishedMarker
 import pullrequestfactory.domain.uis.UI
+import pullrequestfactory.io.GithubAPIClient
 import pullrequestfactory.io.programs.Program
-import pullrequestfactory.io.repositories.GithubHttpBranchesRepos
-import pullrequestfactory.io.repositories.GithubHttpPullRequestsRepo
+import pullrequestfactory.io.repositories.*
 import pullrequestfactory.io.uis.PairingPartnerUI
 
 class OpenPullRequestsProgramInteractiveMode(
         private val ui: UI,
+        private val baseUrl: String,
         private val repoUrl: String,
-        private val authToken: String? = null) : Program {
+        private val authToken: String? = null
+) : Program {
 
     private val ppUI = PairingPartnerUI(ui)
+    private val requiredNrOfRequestsForOpeningPRs = 30
 
     override fun execute() {
         show_welcome_message()
         val candidate = create_candidate_from_user_input()
         val token = create_auth_token_from_user_input()
         val pp = ppUI.create_pairing_partner_from_user_input()
-        open_pull_requests_for(candidate, token, pp)
+
+        val httpClient = KhttpClient(token)
+        val httpClientStats = KhttpClientStats(httpClient)
+        RateLimitCheckedPrograms(ui, GithubAPIClient(httpClient, baseUrl),
+                httpClientStats,
+                object : Program {
+                    override fun execute() {
+                        open_pull_requests_for(candidate, pp, httpClientStats)
+                    }
+                },
+                requiredNrOfRequestsForOpeningPRs).instance(debug = true).execute()
     }
 
     private fun show_welcome_message() {
@@ -46,9 +59,12 @@ class OpenPullRequestsProgramInteractiveMode(
         return token
     }
 
-    private fun open_pull_requests_for(candidate: Candidate, githubAuthToken: String, pairingPartner: List<PairingPartner>) {
-        val branchesRepo = GithubHttpBranchesRepos(repoUrl, ui, create_auth_token_from_user_input())
-        val prRepo = GithubHttpPullRequestsRepo(repoUrl, githubAuthToken, ui)
+    private fun open_pull_requests_for(
+            candidate: Candidate,
+            pairingPartner: List<PairingPartner>,
+            httpClient: HttpClient) {
+        val branchesRepo = GithubHttpBranchesRepos(repoUrl, ui, httpClient)
+        val prRepo = GithubHttpPullRequestsRepo(repoUrl, ui, httpClient)
         val f = GithubPRFactory(
                 ui,
                 branchesRepo,

@@ -8,33 +8,26 @@ import pullrequestfactory.domain.uis.UI
 
 class GithubHttpPullRequestsRepo(
         private val repoPath: String,
-        private val authToken: String,
-        private val ui: UI) : GithubPullRequestsRepo {
+        private val ui: UI,
+        private val httpClient: HttpClient
+) : GithubPullRequestsRepo {
 
     override fun get_all_open_pull_requests(): List<GetPullRequest> {
-        return GithubHttpPullRequestsReadRepos(repoPath, ui, authToken).get_all_open_pull_requests()
+        return GithubHttpPullRequestsReadRepos(repoPath, ui, httpClient).get_all_open_pull_requests()
     }
 
     override fun open_pull_request(pullRequest: PullRequest) {
         ui.show("Open pull request on Github: $pullRequest")
-        val response = khttp.post(
+        val response = httpClient.post(
                 url = "$repoPath/pulls",
-                headers = mapOf(
-                        "Accept" to "application/json",
-                        "Authorization" to "token $authToken",
-                        "Content-Type" to "application/json"),
                 data = Klaxon().toJsonString(pullRequest))
         ui.show(response.toString())
     }
 
     override fun close_pull_request(number: Int) {
         ui.show("Close pull request with number: '$number'")
-        val response = khttp.patch(
+        val response = httpClient.patch(
                 url = "$repoPath/pulls/$number",
-                headers = mapOf(
-                        "Accept" to "application/json",
-                        "Authorization" to "token $authToken",
-                        "Content-Type" to "application/json"),
                 data = Klaxon().toJsonString(object {
                     val state = "closed"
                 }))

@@ -8,11 +8,12 @@ import pullrequestfactory.domain.pullrequests.PullRequestMarker
 import pullrequestfactory.domain.uis.UI
 
 class GithubPRFactory(
-        val ui: UI,
+        private val ui: UI,
         private val githubBranchesRepo: GithubBranchesRepo,
         private val githubPullRequestsRepo: GithubPullRequestsRepo,
         private val branchSyntaxValidator: BranchSyntaxValidator,
-        private val pullRequestMarker: PullRequestMarker) {
+        private val pullRequestMarker: PullRequestMarker
+) {
 
     /**
      * @param pairingPartner A list of George backend chapter team member names which must be in the order in

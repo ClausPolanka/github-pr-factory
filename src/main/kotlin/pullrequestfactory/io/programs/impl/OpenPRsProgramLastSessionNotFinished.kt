@@ -4,30 +4,31 @@ import pullrequestfactory.domain.GithubPRFactory
 import pullrequestfactory.domain.branches.BranchSyntaxValidator
 import pullrequestfactory.domain.pullrequests.PullRequestLastNotFinishedMarker
 import pullrequestfactory.domain.uis.UI
-import pullrequestfactory.io.programs.Program
 import pullrequestfactory.io.programs.ProgramArgs
 import pullrequestfactory.io.repositories.GithubHttpBranchesRepos
 import pullrequestfactory.io.repositories.GithubHttpPullRequestsRepo
+import pullrequestfactory.io.repositories.HttpClient
 import pullrequestfactory.io.uis.ConsoleUI
 
-class ClosePullRequestsProgram(
+class OpenPRsProgramLastSessionNotFinished(
         private val ui: UI,
         private val programArgs: ProgramArgs,
         private val repoUrl: String,
-        private val authToken: String) : Program {
+        private val httpClient: HttpClient
+) : OpenPRProgram {
 
     override fun execute() {
         val candidate = programArgs.get_candidate()
-        val token = programArgs.get_github_auth_token()
-        val branchesRepo = GithubHttpBranchesRepos(repoUrl, ui, authToken)
-        val prRepo = GithubHttpPullRequestsRepo(repoUrl, token, ui)
+        val pp = programArgs.get_pairing_partner()
+        val branchesRepo = GithubHttpBranchesRepos(repoUrl, ui, httpClient)
+        val prRepo = GithubHttpPullRequestsRepo(repoUrl, ui, httpClient)
         val f = GithubPRFactory(
                 ConsoleUI(),
                 branchesRepo,
                 prRepo,
                 BranchSyntaxValidator(ui),
                 PullRequestLastNotFinishedMarker())
-        f.close_pull_requests_for(candidate)
+        f.open_pull_requests(candidate, pp)
     }
 
 }
