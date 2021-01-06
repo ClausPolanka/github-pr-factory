@@ -5,6 +5,7 @@ import pullrequestfactory.io.GithubAPIClient
 import pullrequestfactory.io.RateLimit
 import pullrequestfactory.io.programs.Program
 import pullrequestfactory.io.repositories.KhttpClientStats
+import java.lang.System.lineSeparator
 
 class RateLimitCheckedProgram(
         private val ui: UI,
@@ -35,14 +36,14 @@ class RateLimitCheckedProgram(
     }
 
     private fun UI.show(rateLimitBefore: RateLimit) {
-        show(System.lineSeparator())
+        show(lineSeparator())
         show("Before: $rateLimitBefore")
     }
 
     private fun UI.showRateLimitAfter() {
-        show(System.lineSeparator())
+        show(lineSeparator())
         show(httpClientStats.stats())
-        show(System.lineSeparator())
+        show(lineSeparator())
         val rateLimitAfter = githubApiClient.get_rate_limit()
         show("After: $rateLimitAfter")
     }
