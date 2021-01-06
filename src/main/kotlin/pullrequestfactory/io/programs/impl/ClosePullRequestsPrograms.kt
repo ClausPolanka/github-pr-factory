@@ -21,11 +21,11 @@ class ClosePullRequestsPrograms(
     private val githubApiClient = GithubAPIClient(httpClient, baseUrl)
 
     override fun execute() {
-        RateLimitCheckedProgram(ui,
+        RateLimitCheckedPrograms(ui,
                 githubApiClient,
                 httpClientStats,
                 create(),
-                requiredNrOfRequestsForClosingPRs).execute()
+                requiredNrOfRequestsForClosingPRs).instance(debug = true).execute()
     }
 
     private fun create(): ClosePRProgram {

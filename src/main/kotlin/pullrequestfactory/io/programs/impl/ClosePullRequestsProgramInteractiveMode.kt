@@ -25,7 +25,7 @@ class ClosePullRequestsProgramInteractiveMode(
 
         val httpClient = KhttpClient(token)
         val httpClientStats = KhttpClientStats(httpClient)
-        RateLimitCheckedProgram(ui,
+        RateLimitCheckedPrograms(ui,
                 GithubAPIClient(httpClient, baseUrl),
                 httpClientStats,
                 object : Program {
@@ -33,7 +33,7 @@ class ClosePullRequestsProgramInteractiveMode(
                         close_pull_requests_for(candidate, httpClientStats)
                     }
                 },
-                requiredNrOfRequestsForClosingPRs).execute()
+                requiredNrOfRequestsForClosingPRs).instance(debug = true).execute()
     }
 
     private fun show_welcome_message() {

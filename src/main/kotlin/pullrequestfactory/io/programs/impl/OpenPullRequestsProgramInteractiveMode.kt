@@ -29,14 +29,14 @@ class OpenPullRequestsProgramInteractiveMode(
 
         val httpClient = KhttpClient(token)
         val httpClientStats = KhttpClientStats(httpClient)
-        RateLimitCheckedProgram(ui, GithubAPIClient(httpClient, baseUrl),
+        RateLimitCheckedPrograms(ui, GithubAPIClient(httpClient, baseUrl),
                 httpClientStats,
                 object : Program {
                     override fun execute() {
                         open_pull_requests_for(candidate, pp, httpClientStats)
                     }
                 },
-                requiredNrOfRequestsForOpeningPRs).execute()
+                requiredNrOfRequestsForOpeningPRs).instance(debug = true).execute()
     }
 
     private fun show_welcome_message() {

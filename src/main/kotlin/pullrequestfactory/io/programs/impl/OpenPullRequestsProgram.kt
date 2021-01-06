@@ -21,11 +21,11 @@ class OpenPullRequestsProgram(
     private val githubApiClient = GithubAPIClient(httpClient, baseUrl)
 
     override fun execute() {
-        RateLimitCheckedProgram(ui,
+        RateLimitCheckedPrograms(ui,
                 githubApiClient,
                 httpClientStats,
                 create(),
-                requiredNrOfRequestsForOpeningPRs).execute()
+                requiredNrOfRequestsForOpeningPRs).instance(debug = true).execute()
     }
 
     private fun create(): OpenPRProgram {
