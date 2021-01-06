@@ -13,7 +13,8 @@ class ClosePullRequestsProgramInteractiveMode(
         private val ui: UI,
         private val baseUrl: String,
         private val repoUrl: String,
-        private val authToken: String? = null) : Program {
+        private val authToken: String? = null
+) : Program {
 
     private val requiredNrOfRequestsForClosingPRs = 15
 

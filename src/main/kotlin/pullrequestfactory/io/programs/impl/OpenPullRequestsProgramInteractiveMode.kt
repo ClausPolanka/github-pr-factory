@@ -15,7 +15,8 @@ class OpenPullRequestsProgramInteractiveMode(
         private val ui: UI,
         private val baseUrl: String,
         private val repoUrl: String,
-        private val authToken: String? = null) : Program {
+        private val authToken: String? = null
+) : Program {
 
     private val ppUI = PairingPartnerUI(ui)
     private val requiredNrOfRequestsForOpeningPRs = 30

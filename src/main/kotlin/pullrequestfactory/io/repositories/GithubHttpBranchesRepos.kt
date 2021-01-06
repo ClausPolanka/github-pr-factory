@@ -8,7 +8,8 @@ import pullrequestfactory.domain.uis.UI
 class GithubHttpBranchesRepos(
         private val repoUrl: String,
         private val ui: UI,
-        private val httpClient: HttpClient) : GithubBranchesRepo {
+        private val httpClient: HttpClient
+) : GithubBranchesRepo {
 
     override fun get_all_branches(): List<Branch> {
         return create_branch_repo().get_all_branches()

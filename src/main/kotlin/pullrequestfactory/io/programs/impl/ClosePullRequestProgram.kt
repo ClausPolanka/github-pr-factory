@@ -14,7 +14,8 @@ class ClosePullRequestProgram(
         private val ui: UI,
         private val programArgs: ProgramArgs,
         private val repoUrl: String,
-        private val httpClient: HttpClient) : ClosePRProgram {
+        private val httpClient: HttpClient
+) : ClosePRProgram {
 
     override fun execute() {
         val candidate = programArgs.get_candidate()
