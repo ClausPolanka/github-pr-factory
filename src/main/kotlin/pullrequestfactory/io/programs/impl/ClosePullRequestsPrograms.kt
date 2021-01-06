@@ -4,25 +4,21 @@ import pullrequestfactory.domain.uis.UI
 import pullrequestfactory.io.GithubAPIClient
 import pullrequestfactory.io.programs.Program
 import pullrequestfactory.io.programs.ProgramArgs
-import pullrequestfactory.io.repositories.KhttpClient
 import pullrequestfactory.io.repositories.KhttpClientStats
 
 class ClosePullRequestsPrograms(
         private val ui: UI,
         private val programArgs: ProgramArgs,
-        baseUrl: String,
         private val repoUrl: String,
-        authToken: String
+        private val githubAPIClient: GithubAPIClient,
+        private val httpClientStats: KhttpClientStats
 ) : Program {
 
     private val requiredNrOfRequestsForClosingPRs = 15
-    private val httpClient = KhttpClient(authToken)
-    private val httpClientStats = KhttpClientStats(httpClient)
-    private val githubApiClient = GithubAPIClient(httpClient, baseUrl)
 
     override fun execute() {
         RateLimitCheckedPrograms(ui,
-                githubApiClient,
+                githubAPIClient,
                 httpClientStats,
                 create(),
                 requiredNrOfRequestsForClosingPRs).instance(debug = true).execute()

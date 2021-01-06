@@ -14,8 +14,7 @@ class OpenPRsProgramLastSessionNotFinished(
         private val ui: UI,
         private val programArgs: ProgramArgs,
         private val repoUrl: String,
-        private val httpClient: HttpClient,
-        private val token: String
+        private val httpClient: HttpClient
 ) : OpenPRProgram {
 
     override fun execute() {

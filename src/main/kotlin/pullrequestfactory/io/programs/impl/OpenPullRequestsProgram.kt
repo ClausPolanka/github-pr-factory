@@ -4,7 +4,6 @@ import pullrequestfactory.domain.uis.UI
 import pullrequestfactory.io.GithubAPIClient
 import pullrequestfactory.io.programs.Program
 import pullrequestfactory.io.programs.ProgramArgs
-import pullrequestfactory.io.repositories.KhttpClient
 import pullrequestfactory.io.repositories.KhttpClientStats
 
 class OpenPullRequestsProgram(
@@ -12,17 +11,16 @@ class OpenPullRequestsProgram(
         private val programArgs: ProgramArgs,
         private val baseUrl: String,
         private val repoUrl: String,
-        private val authToken: String
+        private val authToken: String,
+        private val githubAPIClient: GithubAPIClient,
+        private val httpClientStats: KhttpClientStats
 ) : Program {
 
     private val requiredNrOfRequestsForOpeningPRs = 30
-    private val httpClient = KhttpClient(authToken)
-    private val httpClientStats = KhttpClientStats(httpClient)
-    private val githubApiClient = GithubAPIClient(httpClient, baseUrl)
 
     override fun execute() {
         RateLimitCheckedPrograms(ui,
-                githubApiClient,
+                githubAPIClient,
                 httpClientStats,
                 create(),
                 requiredNrOfRequestsForOpeningPRs).instance(debug = true).execute()
@@ -33,16 +31,15 @@ class OpenPullRequestsProgram(
             programArgs.has_open_command_with_optional_options() -> {
                 OpenPRProgramLastSessionFinished(ui,
                         programArgs,
-                        baseUrl,
                         repoUrl,
-                        httpClientStats,
-                        authToken)
+                        httpClientStats
+                )
             }
             else -> OpenPRsProgramLastSessionNotFinished(ui,
                     programArgs,
                     repoUrl,
-                    httpClientStats,
-                    authToken)
+                    httpClientStats
+            )
         }
     }
 

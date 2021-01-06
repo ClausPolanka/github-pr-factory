@@ -14,10 +14,8 @@ import pullrequestfactory.io.uis.ConsoleUI
 class OpenPRProgramLastSessionFinished(
         private val ui: UI,
         private val programArgs: ProgramArgs,
-        private val baseUrl: String,
         private val repoUrl: String,
-        private val httpClient: HttpClient,
-        private val token: String
+        private val httpClient: HttpClient
 ) : OpenPRProgram {
 
     override fun execute() {
