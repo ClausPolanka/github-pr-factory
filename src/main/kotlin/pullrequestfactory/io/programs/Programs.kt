@@ -26,7 +26,7 @@ object Programs {
             pa.has_open_command_help_option() -> ShowOpenCommandHelpOutputProgram()
             pa.has_invalid_open_command() -> ShowInvalidOpenCommandOutputProgram()
             pa.has_open_command_in_interactive_mode() -> OpenPullRequestsProgramInteractiveMode(ui, baseUrl, repoUrl, authTokenFromProps)
-            pa.has_open_command() -> OpenPullRequestsProgram(ui, pa, baseUrl, repoUrl, pa.get_github_auth_token(), githubApiClient, httpClientStats)
+            pa.has_open_command() -> OpenPullRequestsProgram(ui, pa, repoUrl, githubApiClient, httpClientStats)
             pa.has_close_command_help_option() -> ShowCloseCommandHelpOutputProgram()
             pa.has_invalid_close_command() -> ShowInvalidCloseCommandOutputProgram()
             pa.has_close_command_in_interactive_mode() -> ClosePullRequestsProgramInteractiveMode(ui, baseUrl, repoUrl, authTokenFromProps)

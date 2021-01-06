@@ -9,9 +9,7 @@ import pullrequestfactory.io.repositories.KhttpClientStats
 class OpenPullRequestsProgram(
         private val ui: UI,
         private val programArgs: ProgramArgs,
-        private val baseUrl: String,
         private val repoUrl: String,
-        private val authToken: String,
         private val githubAPIClient: GithubAPIClient,
         private val httpClientStats: KhttpClientStats
 ) : Program {
