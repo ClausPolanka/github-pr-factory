@@ -91,7 +91,7 @@ class MainKtTest {
 
     @Test
     fun creates_no_pull_requests_when_rate_limit_exeeded_shows_user_local_reset_date_time_to_try_again() {
-        stubRateLimitExeeded(remaining = 0, RESET_IN_MILLIS)
+        stubRateLimit(remaining = 0, RESET_IN_MILLIS)
 
         main(args = arrayOf("open", "-c", CANDIDATE, "-g", AUTH_TOKEN, "-p", PAIRING_PARTNER))
 
@@ -102,7 +102,7 @@ class MainKtTest {
 
     @Test
     fun closes_no_pull_requests_when_rate_limit_exeeded_shows_user_local_reset_date_time_to_try_again() {
-        stubRateLimitExeeded(remaining = 0, RESET_IN_MILLIS)
+        stubRateLimit(remaining = 0, RESET_IN_MILLIS)
 
         main(args = arrayOf("close", "-c", CANDIDATE, "-g", AUTH_TOKEN))
 
@@ -153,12 +153,7 @@ class MainKtTest {
         }
     }
 
-    private fun stubRateLimit() {
-        stubFor(get("/rate_limit").willReturn(aResponse().withStatus(200)
-                .withBody("{ \n  \"rate\":  {\n    \"limit\": 5000,\n    \"used\": 0,\n    \"remaining\": 5000,\n    \"reset\": 1608411669\n  }\n}")))
-    }
-
-    private fun stubRateLimitExeeded(remaining: Int, resetInMillisSinceEpoch: Long) {
+    private fun stubRateLimit(remaining: Int = 5000, resetInMillisSinceEpoch: Long = 1608411669) {
         stubFor(get("/rate_limit").willReturn(aResponse().withStatus(200)
                 .withBody("{ \n  \"rate\":  {\n    \"limit\": 5000,\n    \"used\": 0,\n    \"remaining\": $remaining,\n    \"reset\": $resetInMillisSinceEpoch\n  }\n}")))
     }
