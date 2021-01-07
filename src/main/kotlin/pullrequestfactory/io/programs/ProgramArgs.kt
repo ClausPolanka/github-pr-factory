@@ -41,7 +41,7 @@ class ProgramArgs(
                     || has_correct_nr_of_optional_args()
 
     fun has_open_command_in_interactive_mode() =
-            args.size == 2 && args.contains(OPEN_COMMAND) && is_interactive_mode()
+            (args.size == 2 || args.size == 3) && args.contains(OPEN_COMMAND) && is_interactive_mode()
 
     private fun has_correct_nr_of_args() =
             ((authTokenFromUserProps != null && args.size >= 5) || args.size == 7) && has_open_command_required_options()
@@ -52,6 +52,8 @@ class ProgramArgs(
     fun has_open_command() = args[0] == OPEN_COMMAND
 
     fun has_open_command_with_optional_options() = args[0] == OPEN_COMMAND && is_last_pull_request_finished()
+
+    fun has_interactive_open_command_with_optional_options() = has_open_command_with_optional_options()
 
     private fun has_open_command_required_options() = is_candidate_syntax_valid()
             && is_github_auth_token_syntax_valid()
