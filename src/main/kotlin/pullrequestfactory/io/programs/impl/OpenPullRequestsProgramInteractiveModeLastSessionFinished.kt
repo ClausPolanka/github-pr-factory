@@ -4,18 +4,19 @@ import pullrequestfactory.domain.Candidate
 import pullrequestfactory.domain.GithubPRFactory
 import pullrequestfactory.domain.PairingPartner
 import pullrequestfactory.domain.branches.BranchSyntaxValidator
-import pullrequestfactory.domain.pullrequests.PullRequestLastFinishedMarker
+import pullrequestfactory.domain.pullrequests.PullRequestMarker
 import pullrequestfactory.domain.uis.UI
 import pullrequestfactory.io.GithubAPIClient
 import pullrequestfactory.io.programs.Program
 import pullrequestfactory.io.repositories.*
 import pullrequestfactory.io.uis.PairingPartnerUI
 
-class OpenPullRequestsProgramInteractiveModeLastSessionFinished(
+class OpenPullRequestProgram(
         private val ui: UI,
         private val baseUrl: String,
         private val repoUrl: String,
-        private val authToken: String? = null
+        private val authToken: String? = null,
+        private val prMarker: PullRequestMarker
 ) : Program {
 
     private val ppUI = PairingPartnerUI(ui)
@@ -33,7 +34,7 @@ class OpenPullRequestsProgramInteractiveModeLastSessionFinished(
                 httpClientStats,
                 object : Program {
                     override fun execute() {
-                        open_pull_requests_for(candidate, pp, httpClientStats)
+                        open_pull_requests_for(candidate, pp, httpClientStats, prMarker)
                     }
                 },
                 requiredNrOfRequestsForOpeningPRs).instance(debug = true).execute()
@@ -62,7 +63,8 @@ class OpenPullRequestsProgramInteractiveModeLastSessionFinished(
     private fun open_pull_requests_for(
             candidate: Candidate,
             pairingPartner: List<PairingPartner>,
-            httpClient: HttpClient) {
+            httpClient: HttpClient,
+            prMarker: PullRequestMarker) {
         val branchesRepo = GithubHttpBranchesRepos(repoUrl, ui, httpClient)
         val prRepo = GithubHttpPullRequestsRepo(repoUrl, ui, httpClient)
         val f = GithubPRFactory(
@@ -70,7 +72,7 @@ class OpenPullRequestsProgramInteractiveModeLastSessionFinished(
                 branchesRepo,
                 prRepo,
                 BranchSyntaxValidator(ui),
-                PullRequestLastFinishedMarker())
+                prMarker)
         ui.show("🤩 Open pull requests for: $candidate and $pairingPartner")
         f.open_pull_requests(candidate, pairingPartner)
     }

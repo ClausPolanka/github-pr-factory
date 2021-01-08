@@ -1,5 +1,7 @@
 package pullrequestfactory.io.programs.impl
 
+import pullrequestfactory.domain.pullrequests.PullRequestLastFinishedMarker
+import pullrequestfactory.domain.pullrequests.PullRequestLastNotFinishedMarker
 import pullrequestfactory.domain.uis.UI
 import pullrequestfactory.io.programs.Program
 import pullrequestfactory.io.programs.ProgramArgs
@@ -19,20 +21,18 @@ class OpenPullRequestsProgramsInteractiveMode(
     private fun create(): Program {
         return when {
             pa.has_interactive_open_command_with_optional_options() -> {
-                OpenPullRequestsProgramInteractiveModeLastSessionFinished(
-                        ui,
+                OpenPullRequestProgram(ui,
                         baseUrl,
                         repoUrl,
-                        authToken
-                )
+                        authToken,
+                        PullRequestLastFinishedMarker())
             }
             else -> {
-                OpenPullRequestsProgramInteractiveMode(
-                        ui,
+                OpenPullRequestProgram(ui,
                         baseUrl,
                         repoUrl,
-                        authToken
-                )
+                        authToken,
+                        PullRequestLastNotFinishedMarker())
             }
         }
     }
