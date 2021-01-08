@@ -216,6 +216,18 @@ class ProgramArgsTest {
     }
 
     @Test
+    fun has_valid_open_command_for_given_interactive_mode_arguments_including_optional_option_for_marking_last_iteration_as_finished() {
+        val args = arrayOf("open", "--interactive", "--last-finished")
+        val sut = ProgramArgs(args)
+
+        val hasInvalidOpenCommand = sut.has_invalid_open_command()
+
+        assertThat(hasInvalidOpenCommand)
+                .describedAs("has correct number of open command arguments: '${args.toList()}'")
+                .isFalse()
+    }
+
+    @Test
     fun has_valid_open_command_with_optional_options_for_correct_arguments() {
         val sut = ProgramArgs(arrayOf(
                 "open",
