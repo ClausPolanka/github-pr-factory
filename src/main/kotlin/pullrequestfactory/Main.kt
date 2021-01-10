@@ -58,7 +58,18 @@ class Open : CliktCommand(help = "Open Pull Requests for Candidate") {
     override fun run() {
         when (val it = mode) {
             is OpenModeInteractive -> {
-                echo("Opening Pull Requests for ${it.candidateFirstName}")
+                echo("Opening Pull Requests for ${it.candidateFirstName} ${it.candidateLastName}")
+                val ui = ConsoleUI()
+                val appProps = FileAppProperties("app.properties")
+                val baseUrl = appProps.get_github_base_url()
+                val repoPath = appProps.get_github_repository_path()
+                val repoUrl = baseUrl + repoPath
+                val program = OpenPRsProgramLastSessionNotFinished(ui,
+                        repoUrl,
+                        KhttpClientStats(KhttpClient(it.githubAuthorizationToken)),
+                        Candidate(it.candidateFirstName, it.candidateLastName),
+                        create_pairing_partner("${it.pairingPartner1}-${it.pairingPartner2}-${it.pairingPartner3}-${it.pairingPartner4}-${it.pairingPartner5}-${it.pairingPartner6}-${it.pairingPartner7}"))
+                program.execute()
             }
             is OpenModeRegular -> {
                 echo("Opening Pull Requests for ${Candidate(it.candidate!!.split("-")[0], it.candidate!!.split("-")[1])}")
