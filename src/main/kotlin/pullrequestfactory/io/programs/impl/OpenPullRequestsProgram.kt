@@ -28,15 +28,17 @@ class OpenPullRequestsProgram(
         return when {
             programArgs.has_open_command_with_optional_options() -> {
                 OpenPRProgramLastSessionFinished(ui,
-                        programArgs,
                         repoUrl,
-                        httpClientStats
+                        httpClientStats,
+                        programArgs.get_candidate(),
+                        programArgs.get_pairing_partner()
                 )
             }
             else -> OpenPRsProgramLastSessionNotFinished(ui,
-                    programArgs,
                     repoUrl,
-                    httpClientStats
+                    httpClientStats,
+                    programArgs.get_candidate(),
+                    programArgs.get_pairing_partner()
             )
         }
     }
