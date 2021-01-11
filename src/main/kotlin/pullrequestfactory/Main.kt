@@ -16,6 +16,7 @@ import pullrequestfactory.domain.branches.BranchSyntaxValidator
 import pullrequestfactory.domain.pullrequests.PullRequestLastNotFinishedMarker
 import pullrequestfactory.io.programs.ProgramArgs
 import pullrequestfactory.io.programs.impl.FileAppProperties
+import pullrequestfactory.io.programs.impl.OpenPRProgramLastSessionFinished
 import pullrequestfactory.io.programs.impl.OpenPRsProgramLastSessionNotFinished
 import pullrequestfactory.io.repositories.GithubHttpBranchesRepos
 import pullrequestfactory.io.repositories.GithubHttpPullRequestsRepo
@@ -61,26 +62,35 @@ class Open : CliktCommand(help = "Open Pull Requests for Candidate") {
         val baseUrl = appProps.get_github_base_url()
         val repoPath = appProps.get_github_repository_path()
         val repoUrl = baseUrl + repoPath
-        when (val it = mode) {
+        val program = when (val it = mode) {
             is OpenModeInteractive -> {
-                echo("Opening Pull Requests for ${it.candidateFirstName} ${it.candidateLastName}")
-                val program = OpenPRsProgramLastSessionNotFinished(ui,
+                echo("Opening Pull Requests for ${it.candidateFirstName} ${it.candidateFirstName}")
+                OpenPRsProgramLastSessionNotFinished(ui,
                         repoUrl,
                         KhttpClientStats(KhttpClient(it.githubAuthorizationToken)),
                         Candidate(it.candidateFirstName, it.candidateLastName),
                         create_pairing_partner("${it.pairingPartner1}-${it.pairingPartner2}-${it.pairingPartner3}-${it.pairingPartner4}-${it.pairingPartner5}-${it.pairingPartner6}-${it.pairingPartner7}"))
-                program.execute()
             }
             is OpenModeRegular -> {
-                echo("Opening Pull Requests for ${Candidate(it.candidate!!.split("-")[0], it.candidate!!.split("-")[1])}")
-                val program = OpenPRsProgramLastSessionNotFinished(ui,
-                        repoUrl,
-                        KhttpClientStats(KhttpClient(it.githubToken!!)),
-                        Candidate(it.candidate!!.split("-")[0], it.candidate!!.split("-")[1]),
-                        create_pairing_partner(it.pairingPartner!!))
-                program.execute()
+                val candidate = Candidate(it.candidate!!.split("-")[0], it.candidate!!.split("-")[1])
+                echo("Opening Pull Requests for ${candidate.firstName} ${candidate.lastName}")
+                val httpClient = KhttpClientStats(KhttpClient(it.githubToken!!))
+                val pairingPartner = create_pairing_partner(it.pairingPartner!!)
+                when (it.isLastIterationFinished) {
+                    true -> OpenPRProgramLastSessionFinished(ui,
+                            repoUrl,
+                            httpClient,
+                            candidate,
+                            pairingPartner)
+                    else -> OpenPRsProgramLastSessionNotFinished(ui,
+                            repoUrl,
+                            httpClient,
+                            candidate,
+                            pairingPartner)
+                }
             }
         }
+        program.execute()
     }
 }
 
