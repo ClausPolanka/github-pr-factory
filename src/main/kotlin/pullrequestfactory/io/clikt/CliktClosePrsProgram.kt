@@ -10,7 +10,7 @@ import pullrequestfactory.io.repositories.GithubHttpPullRequestsRepo
 import pullrequestfactory.io.repositories.KhttpClientStats
 import pullrequestfactory.io.uis.ConsoleUI
 
-class CliktClosePrsPgram(
+class CliktClosePrsProgram(
         private val ui: ConsoleUI,
         private val repoUrl: String,
         private val httpClient: KhttpClientStats,
