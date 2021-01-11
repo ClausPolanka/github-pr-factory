@@ -9,13 +9,10 @@ import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.prompt
 import com.github.ajalt.clikt.parameters.options.required
-import pullrequestfactory.domain.Candidate
 import pullrequestfactory.domain.PairingPartner
-import pullrequestfactory.io.clikt.CliktClosePrsPgram
+import pullrequestfactory.io.clikt.CliktClosePRsFactory
 import pullrequestfactory.io.clikt.CliktOpenPRsFactory
 import pullrequestfactory.io.programs.impl.FileAppProperties
-import pullrequestfactory.io.repositories.KhttpClient
-import pullrequestfactory.io.repositories.KhttpClientStats
 import pullrequestfactory.io.uis.ConsoleUI
 
 class `Github-Pr-Factory` : CliktCommand() {
@@ -80,24 +77,10 @@ class Close : CliktCommand(help = "Close Pull Requests for Candidate") {
     ).defaultByName("regular")
 
     override fun run() {
-        val ui = ConsoleUI()
         val appProps = FileAppProperties("app.properties")
         val baseUrl = appProps.get_github_base_url()
         val repoPath = appProps.get_github_repository_path()
-        val repoUrl = baseUrl + repoPath
-
-        val program = when (val it = mode) {
-            is CloseModeInteractive -> {
-                val httpClient = KhttpClientStats(KhttpClient(it.githubAuthorizationToken))
-                val candidate = Candidate(it.candidateFirstName, it.candidateLastName)
-                CliktClosePrsPgram(ui, repoUrl, httpClient, candidate)
-            }
-            is CloseModeRegular -> {
-                val httpClient = KhttpClientStats(KhttpClient(it.githubAuthorizationToken))
-                val candidate = Candidate(it.candidate.split("-")[0], it.candidate.split("-")[1])
-                CliktClosePrsPgram(ui, repoUrl, httpClient, candidate)
-            }
-        }
+        val program = CliktClosePRsFactory(ConsoleUI(), baseUrl + repoPath).create_for(mode)
         program.execute()
     }
 
