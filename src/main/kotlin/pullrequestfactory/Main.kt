@@ -10,14 +10,10 @@ import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.prompt
 import com.github.ajalt.clikt.parameters.options.required
 import pullrequestfactory.domain.Candidate
-import pullrequestfactory.domain.GithubPRFactory
 import pullrequestfactory.domain.PairingPartner
-import pullrequestfactory.domain.branches.BranchSyntaxValidator
-import pullrequestfactory.domain.pullrequests.PullRequestLastNotFinishedMarker
+import pullrequestfactory.io.clikt.CliktClosePrsPgram
 import pullrequestfactory.io.clikt.CliktOpenPRsFactory
 import pullrequestfactory.io.programs.impl.FileAppProperties
-import pullrequestfactory.io.repositories.GithubHttpBranchesRepos
-import pullrequestfactory.io.repositories.GithubHttpPullRequestsRepo
 import pullrequestfactory.io.repositories.KhttpClient
 import pullrequestfactory.io.repositories.KhttpClientStats
 import pullrequestfactory.io.uis.ConsoleUI
@@ -64,8 +60,6 @@ class Open : CliktCommand(help = "Open Pull Requests for Candidate") {
 
 }
 
-
-
 sealed class CloseMode(name: String) : OptionGroup(name)
 
 class CloseModeInteractive : CloseMode("interactive mode") {
@@ -92,32 +86,19 @@ class Close : CliktCommand(help = "Close Pull Requests for Candidate") {
         val repoPath = appProps.get_github_repository_path()
         val repoUrl = baseUrl + repoPath
 
-        when (val it = mode) {
+        val program = when (val it = mode) {
             is CloseModeInteractive -> {
-                val httpClient = KhttpClient(it.githubAuthorizationToken)
-                val branchesRepo = GithubHttpBranchesRepos(repoUrl, ui, httpClient)
-                val prRepo = GithubHttpPullRequestsRepo(repoUrl, ui, httpClient)
-                val f = GithubPRFactory(
-                        ui,
-                        branchesRepo,
-                        prRepo,
-                        BranchSyntaxValidator(ui),
-                        PullRequestLastNotFinishedMarker())
-                f.close_pull_requests_for(Candidate(it.candidateFirstName, it.candidateLastName))
+                val httpClient = KhttpClientStats(KhttpClient(it.githubAuthorizationToken))
+                val candidate = Candidate(it.candidateFirstName, it.candidateLastName)
+                CliktClosePrsPgram(ui, repoUrl, httpClient, candidate)
             }
             is CloseModeRegular -> {
                 val httpClient = KhttpClientStats(KhttpClient(it.githubAuthorizationToken))
-                val branchesRepo = GithubHttpBranchesRepos(repoUrl, ui, httpClient)
-                val prRepo = GithubHttpPullRequestsRepo(repoUrl, ui, httpClient)
-                val f = GithubPRFactory(
-                        ConsoleUI(),
-                        branchesRepo,
-                        prRepo,
-                        BranchSyntaxValidator(ui),
-                        PullRequestLastNotFinishedMarker())
-                f.close_pull_requests_for(Candidate(it.candidate.split("-")[0], it.candidate.split("-")[1]))
+                val candidate = Candidate(it.candidate.split("-")[0], it.candidate.split("-")[1])
+                CliktClosePrsPgram(ui, repoUrl, httpClient, candidate)
             }
         }
+        program.execute()
     }
 
 }
