@@ -56,14 +56,14 @@ class Open : CliktCommand(help = "Open Pull Requests for Candidate") {
     ).defaultByName("regular")
 
     override fun run() {
+        val ui = ConsoleUI()
+        val appProps = FileAppProperties("app.properties")
+        val baseUrl = appProps.get_github_base_url()
+        val repoPath = appProps.get_github_repository_path()
+        val repoUrl = baseUrl + repoPath
         when (val it = mode) {
             is OpenModeInteractive -> {
                 echo("Opening Pull Requests for ${it.candidateFirstName} ${it.candidateLastName}")
-                val ui = ConsoleUI()
-                val appProps = FileAppProperties("app.properties")
-                val baseUrl = appProps.get_github_base_url()
-                val repoPath = appProps.get_github_repository_path()
-                val repoUrl = baseUrl + repoPath
                 val program = OpenPRsProgramLastSessionNotFinished(ui,
                         repoUrl,
                         KhttpClientStats(KhttpClient(it.githubAuthorizationToken)),
@@ -73,11 +73,6 @@ class Open : CliktCommand(help = "Open Pull Requests for Candidate") {
             }
             is OpenModeRegular -> {
                 echo("Opening Pull Requests for ${Candidate(it.candidate!!.split("-")[0], it.candidate!!.split("-")[1])}")
-                val ui = ConsoleUI()
-                val appProps = FileAppProperties("app.properties")
-                val baseUrl = appProps.get_github_base_url()
-                val repoPath = appProps.get_github_repository_path()
-                val repoUrl = baseUrl + repoPath
                 val program = OpenPRsProgramLastSessionNotFinished(ui,
                         repoUrl,
                         KhttpClientStats(KhttpClient(it.githubToken!!)),
@@ -88,6 +83,7 @@ class Open : CliktCommand(help = "Open Pull Requests for Candidate") {
         }
     }
 }
+
 private val ERROR_MSG_PAIRING_PARTNER = "Either option -p or pairing partner are missing or pairing partner have wrong format or is unknown"
 private fun create_pairing_partner(pairingPartner: String): List<PairingPartner> {
     return pairingPartner.split("-").map { br ->
@@ -119,16 +115,26 @@ class Close : CliktCommand(help = "Close Pull Requests for Candidate") {
     ).defaultByName("regular")
 
     override fun run() {
+        val ui = ConsoleUI()
+        val appProps = FileAppProperties("app.properties")
+        val baseUrl = appProps.get_github_base_url()
+        val repoPath = appProps.get_github_repository_path()
+        val repoUrl = baseUrl + repoPath
+
         when (val it = mode) {
             is CloseModeInteractive -> {
-                close_pull_requests_interactively(it)
+                val httpClient = KhttpClient(it.githubAuthorizationToken)
+                val branchesRepo = GithubHttpBranchesRepos(repoUrl, ui, httpClient)
+                val prRepo = GithubHttpPullRequestsRepo(repoUrl, ui, httpClient)
+                val f = GithubPRFactory(
+                        ui,
+                        branchesRepo,
+                        prRepo,
+                        BranchSyntaxValidator(ui),
+                        PullRequestLastNotFinishedMarker())
+                f.close_pull_requests_for(Candidate(it.candidateFirstName, it.candidateLastName))
             }
             is CloseModeRegular -> {
-                val ui = ConsoleUI()
-                val appProps = FileAppProperties("app.properties")
-                val baseUrl = appProps.get_github_base_url()
-                val repoPath = appProps.get_github_repository_path()
-                val repoUrl = baseUrl + repoPath
                 val httpClient = KhttpClientStats(KhttpClient(it.githubAuthorizationToken))
                 val branchesRepo = GithubHttpBranchesRepos(repoUrl, ui, httpClient)
                 val prRepo = GithubHttpPullRequestsRepo(repoUrl, ui, httpClient)
@@ -143,23 +149,6 @@ class Close : CliktCommand(help = "Close Pull Requests for Candidate") {
         }
     }
 
-    private fun close_pull_requests_interactively(closeMode: CloseModeInteractive) {
-        val ui = ConsoleUI()
-        val appProps = FileAppProperties("app.properties")
-        val baseUrl = appProps.get_github_base_url()
-        val repoPath = appProps.get_github_repository_path()
-        val repoUrl = baseUrl + repoPath
-        val httpClient = KhttpClient(closeMode.githubAuthorizationToken)
-        val branchesRepo = GithubHttpBranchesRepos(repoUrl, ui, httpClient)
-        val prRepo = GithubHttpPullRequestsRepo(repoUrl, ui, httpClient)
-        val f = GithubPRFactory(
-                ui,
-                branchesRepo,
-                prRepo,
-                BranchSyntaxValidator(ui),
-                PullRequestLastNotFinishedMarker())
-        f.close_pull_requests_for(Candidate(closeMode.candidateFirstName, closeMode.candidateLastName))
-    }
 }
 
 fun main(args: Array<String>) = `Github-Pr-Factory`()
