@@ -1,6 +1,6 @@
 package pullrequestfactory.io.clikt
 
-import com.github.ajalt.clikt.output.TermUi
+import com.github.ajalt.clikt.output.TermUi.echo
 import pullrequestfactory.OpenMode
 import pullrequestfactory.OpenModeInteractive
 import pullrequestfactory.OpenModeRegular
@@ -21,7 +21,7 @@ class CliktOpenPRsFactory(private val ui: ConsoleUI, private val repoUrl: String
     fun create_for(mode: OpenMode): OpenPRProgram {
         return when (val it = mode) {
             is OpenModeInteractive -> {
-                TermUi.echo("Opening Pull Requests for ${it.candidateFirstName} ${it.candidateFirstName}")
+                echo("Opening Pull Requests for ${it.candidateFirstName} ${it.candidateFirstName}")
                 OpenPRsProgramLastSessionNotFinished(ui,
                         repoUrl,
                         KhttpClientStats(KhttpClient(it.githubAuthorizationToken)),
@@ -30,7 +30,7 @@ class CliktOpenPRsFactory(private val ui: ConsoleUI, private val repoUrl: String
             }
             is OpenModeRegular -> {
                 val candidate = Candidate(it.candidate!!.split("-")[0], it.candidate!!.split("-")[1])
-                TermUi.echo("Opening Pull Requests for ${candidate.firstName} ${candidate.lastName}")
+                echo("Opening Pull Requests for ${candidate.firstName} ${candidate.lastName}")
                 val httpClient = KhttpClientStats(KhttpClient(it.githubToken!!))
                 val pairingPartner = create_pairing_partner(it.pairingPartner!!)
                 when (it.isLastIterationFinished) {
