@@ -4,14 +4,13 @@ import pullrequestfactory.domain.pullrequests.PullRequestLastFinishedMarker
 import pullrequestfactory.domain.pullrequests.PullRequestLastNotFinishedMarker
 import pullrequestfactory.domain.uis.UI
 import pullrequestfactory.io.programs.Program
-import pullrequestfactory.io.programs.ProgramArgs
 
 class OpenPullRequestsProgramsInteractiveMode(
         private val ui: UI,
-        private val pa: ProgramArgs,
         private val baseUrl: String,
         private val repoUrl: String,
-        private val authToken: String? = null
+        private val authToken: String? = null,
+        private val isLastIterationFinished: Boolean
 ) : Program {
 
     override fun execute() {
@@ -19,8 +18,8 @@ class OpenPullRequestsProgramsInteractiveMode(
     }
 
     private fun create(): Program {
-        return when {
-            pa.has_interactive_open_command_with_optional_options() -> {
+        return when (isLastIterationFinished) {
+            true -> {
                 OpenPullRequestProgram(ui,
                         baseUrl,
                         repoUrl,

@@ -51,7 +51,7 @@ class Open : CliktCommand(help = "Open Pull Requests for Candidate") {
         val appProps = FileAppProperties("app.properties")
         val baseUrl = appProps.get_github_base_url()
         val repoPath = appProps.get_github_repository_path()
-        val program = CliktOpenPRsFactory(ConsoleUI(), baseUrl + repoPath).create_for(mode)
+        val program = CliktOpenPRsFactory(ConsoleUI(), baseUrl, repoPath).create_for(mode)
         program.execute()
     }
 
