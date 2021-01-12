@@ -19,7 +19,9 @@ class `Github-Pr-Factory` : CliktCommand() {
     override fun run() = Unit
 }
 
-sealed class OpenMode(name: String) : OptionGroup(name)
+sealed class OpenMode(name: String) : OptionGroup(name) {
+    val isLastIterationFinished by option(help = "Set if last iteration is finished", names = arrayOf("-l", "--last-finished")).flag()
+}
 
 class OpenModeInteractive : OpenMode("interactive mode") {
     val candidateFirstName by option().prompt()
@@ -35,7 +37,7 @@ class OpenModeInteractive : OpenMode("interactive mode") {
 }
 
 class OpenModeRegular : OpenMode("regular mode") {
-    val isLastIterationFinished by option(help = "Set if last iteration is finished", names = arrayOf("-l", "--last-finished")).flag()
+//    val isLastIterationFinished by option(help = "Set if last iteration is finished", names = arrayOf("-l", "--last-finished")).flag()
     val candidate by option(help = "firstname-lastname", names = arrayOf("-c", "--candidate"))
     val pairingPartner by option(help = "pp1-pp2-pp3-pp4-pp5-pp6-pp7 | Please chose from: ${PairingPartner.names()}", names = arrayOf("-p", "--pairing-partner"))
     val githubToken by option(help = "Your personal GitHub authorization token", names = arrayOf("-g", "--github-token"))
