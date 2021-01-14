@@ -3,7 +3,6 @@ import com.github.ajalt.clikt.core.context
 import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.prompt
-import com.github.ajalt.clikt.parameters.options.transformValues
 import com.github.ajalt.clikt.sources.PropertiesValueSource
 import pullrequestfactory.domain.Candidate
 import pullrequestfactory.domain.PairingPartner
@@ -37,19 +36,26 @@ class OpenCommand(
     private val cfn by candidateFirstNameOption()
     private val cln by candidateLastNameOption()
     private val githubToken by gitHubAuthorizationTokenOption()
-    private val pairingPartner by pairingPartner()
+    private val pp1 by pairingPartner("1")
+    private val pp2 by pairingPartner("2")
+    private val pp3 by pairingPartner("3")
+    private val pp4 by pairingPartner("4")
+    private val pp5 by pairingPartner("5")
+    private val pp6 by pairingPartner("6")
+    private val pp7 by pairingPartner("7")
 
     override fun run() {
-        echo("Hello $cfn $cln $githubToken $isLastFinished $pairingPartner")
         val candidate = Candidate(cfn, cln)
         val httpClient = KhttpClientStats(KhttpClient(githubToken))
+        val pps = listOf(from(pp1), from(pp2), from(pp3), from(pp4), from(pp5), from(pp6), from(pp7))
+        echo("Hello $cfn $cln $githubToken $isLastFinished $pps")
         OpenPullRequestsProgram(ConsoleUI(),
                 baseUrl + repoPath,
                 GithubAPIClient(httpClient, baseUrl),
                 httpClient,
                 isLastFinished,
                 candidate,
-                pairingPartner!!).execute()
+                pps).execute()
     }
 }
 
@@ -65,19 +71,14 @@ fun CliktCommand.candidateLastNameOption() =
 fun CliktCommand.gitHubAuthorizationTokenOption() =
         option("-g", "--github-token").prompt("GitHub Authorization Token")
 
-fun CliktCommand.pairingPartner() = option("-p", "--pairing-partner", help = "Please chose 7 of: ${PairingPartner.names()}")
-        .transformValues(7) {
-            create_pairing_partner("${it[0]}-${it[1]}-${it[2]}-${it[3]}-${it[4]}-${it[5]}-${it[6]}")
-        }
+fun CliktCommand.pairingPartner(nr: String) =
+        option("-pp$nr", "--pairing-partner-$nr", help = "Please chose from: ${PairingPartner.names()}")
+                .prompt()
 
-private val ERROR_MSG_PAIRING_PARTNER = "Either option -p or pairing partner are missing or pairing partner have wrong format or is unknown"
-
-private fun create_pairing_partner(pairingPartner: String): List<PairingPartner> {
-    return pairingPartner.split("-").map { br ->
-        val pp = PairingPartner.value_of(br)
-        when (pp) {
-            null -> throw ProgramArgs.WrongPairingPartnerArgumentSyntax("$ERROR_MSG_PAIRING_PARTNER for given branch '$br'")
-            else -> pp
-        }
+private fun from(pairingPartner: String): PairingPartner {
+    val pp = PairingPartner.value_of(pairingPartner)
+    return when (pp) {
+        null -> throw ProgramArgs.WrongPairingPartnerArgumentSyntax("Unknown '$pairingPartner'")
+        else -> pp
     }
 }
