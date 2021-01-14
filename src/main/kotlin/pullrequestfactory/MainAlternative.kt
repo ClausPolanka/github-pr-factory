@@ -3,11 +3,11 @@ import com.github.ajalt.clikt.core.context
 import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.prompt
+import com.github.ajalt.clikt.parameters.types.enum
 import com.github.ajalt.clikt.sources.PropertiesValueSource
 import pullrequestfactory.domain.Candidate
 import pullrequestfactory.domain.PairingPartner
 import pullrequestfactory.io.GithubAPIClient
-import pullrequestfactory.io.programs.ProgramArgs
 import pullrequestfactory.io.programs.impl.FileAppProperties
 import pullrequestfactory.io.programs.impl.OpenPullRequestsProgram
 import pullrequestfactory.io.repositories.KhttpClient
@@ -47,7 +47,7 @@ class OpenCommand(
     override fun run() {
         val candidate = Candidate(cfn, cln)
         val httpClient = KhttpClientStats(KhttpClient(githubToken))
-        val pps = listOf(from(pp1), from(pp2), from(pp3), from(pp4), from(pp5), from(pp6), from(pp7))
+        val pps = listOf(pp1, pp2, pp3, pp4, pp5, pp6, pp7)
         echo("Hello $cfn $cln $githubToken $isLastFinished $pps")
         OpenPullRequestsProgram(ConsoleUI(),
                 baseUrl + repoPath,
@@ -73,11 +73,5 @@ fun CliktCommand.gitHubAuthorizationTokenOption() =
 
 fun CliktCommand.pairingPartner(nr: String) =
         option("-pp$nr", "--pairing-partner-$nr", help = "Please chose from: ${PairingPartner.names()}")
+                .enum<PairingPartner>()
                 .prompt()
-
-private fun from(pairingPartner: String): PairingPartner {
-    return when (val pp = PairingPartner.value_of(pairingPartner)) {
-        null -> throw ProgramArgs.WrongPairingPartnerArgumentSyntax("Unknown '$pairingPartner'")
-        else -> pp
-    }
-}
