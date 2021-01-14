@@ -1,17 +1,17 @@
 package pullrequestfactory.io.programs.impl
 
+import pullrequestfactory.domain.Candidate
 import pullrequestfactory.domain.uis.UI
 import pullrequestfactory.io.GithubAPIClient
 import pullrequestfactory.io.programs.Program
-import pullrequestfactory.io.programs.ProgramArgs
 import pullrequestfactory.io.repositories.KhttpClientStats
 
 class ClosePullRequestsPrograms(
         private val ui: UI,
-        private val programArgs: ProgramArgs,
         private val repoUrl: String,
         private val githubAPIClient: GithubAPIClient,
-        private val httpClientStats: KhttpClientStats
+        private val httpClientStats: KhttpClientStats,
+        private val candidate: Candidate
 ) : Program {
 
     private val requiredNrOfRequestsForClosingPRs = 15
@@ -27,9 +27,9 @@ class ClosePullRequestsPrograms(
     private fun create(): ClosePRProgram {
         return ClosePullRequestProgram(
                 ui,
-                programArgs,
                 repoUrl,
-                httpClientStats
+                httpClientStats,
+                candidate
         )
     }
 

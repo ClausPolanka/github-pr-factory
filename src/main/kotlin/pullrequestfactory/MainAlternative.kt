@@ -9,6 +9,7 @@ import com.github.ajalt.clikt.sources.PropertiesValueSource
 import pullrequestfactory.domain.Candidate
 import pullrequestfactory.domain.PairingPartner
 import pullrequestfactory.io.GithubAPIClient
+import pullrequestfactory.io.programs.impl.ClosePullRequestsPrograms
 import pullrequestfactory.io.programs.impl.FileAppProperties
 import pullrequestfactory.io.programs.impl.OpenPullRequestsProgram
 import pullrequestfactory.io.repositories.KhttpClient
@@ -20,7 +21,7 @@ fun main(args: Array<String>) {
     val baseUrl = appProps.get_github_base_url()
     val repoPath = appProps.get_github_repository_path()
     `Github-Pr-Factory`()
-            .subcommands(OpenCommand(baseUrl, repoPath))
+            .subcommands(OpenCommand(baseUrl, repoPath), CloseCommand(baseUrl, repoPath))
             .main(args)
 }
 
@@ -67,6 +68,35 @@ class OpenCommand(
                 isLastFinished,
                 candidate,
                 pps).execute()
+    }
+}
+
+class CloseCommand(
+        private val baseUrl: String,
+        private val repoPath: String
+) : CliktCommand(
+        name = "close",
+        help = """Close pull requests of the candidate. If any option is not passed 
+                 |then the app will prompt for it.""".trimMargin()) {
+
+    init {
+        context {
+            valueSource = PropertiesValueSource.from("user.properties")
+        }
+    }
+
+    private val cfn by candidateFirstNameOption()
+    private val cln by candidateLastNameOption()
+    private val githubToken by gitHubAuthorizationTokenOption()
+
+    override fun run() {
+        val candidate = Candidate(cfn, cln)
+        val httpClient = KhttpClientStats(KhttpClient(githubToken))
+        ClosePullRequestsPrograms(ConsoleUI(),
+                baseUrl + repoPath,
+                GithubAPIClient(httpClient, baseUrl),
+                httpClient,
+                candidate).execute()
     }
 }
 
