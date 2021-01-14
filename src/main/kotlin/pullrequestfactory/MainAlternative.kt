@@ -1,6 +1,4 @@
-import com.github.ajalt.clikt.core.CliktCommand
-import com.github.ajalt.clikt.core.context
-import com.github.ajalt.clikt.core.subcommands
+import com.github.ajalt.clikt.core.*
 import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.prompt
@@ -26,7 +24,21 @@ fun main(args: Array<String>) {
 }
 
 class `Github-Pr-Factory` : CliktCommand() {
+    init {
+        context {
+            valueSource = PropertiesValueSource.from("user.properties")
+        }
+    }
+
+    private val cfn by candidateFirstNameOption()
+    private val cln by candidateLastNameOption()
+    private val githubToken by gitHubAuthorizationTokenOption()
+    private val config by findOrSetObject { mutableMapOf<String, String>() }
+
     override fun run() {
+        config["CFN"] = cfn
+        config["CLN"] = cln
+        config["TOKEN"] = githubToken
     }
 }
 
@@ -38,16 +50,8 @@ class OpenCommand(
         help = """Opens pull requests of the candidate. If any option is not passed 
                  |then the app will prompt for it.""".trimMargin()) {
 
-    init {
-        context {
-            valueSource = PropertiesValueSource.from("user.properties")
-        }
-    }
-
+    private val config by requireObject<Map<String, String>>()
     private val isLastFinished by isLastIterationFinishedFlag()
-    private val cfn by candidateFirstNameOption()
-    private val cln by candidateLastNameOption()
-    private val githubToken by gitHubAuthorizationTokenOption()
     private val pp1 by pairingPartner("1")
     private val pp2 by pairingPartner("2")
     private val pp3 by pairingPartner("3")
@@ -57,10 +61,9 @@ class OpenCommand(
     private val pp7 by pairingPartner("7")
 
     override fun run() {
-        val candidate = Candidate(cfn, cln)
-        val httpClient = KhttpClientStats(KhttpClient(githubToken))
+        val candidate = Candidate(config["CFN"]!!, config["CLN"]!!)
+        val httpClient = KhttpClientStats(KhttpClient(config["TOKEN"]!!))
         val pps = listOf(pp1, pp2, pp3, pp4, pp5, pp6, pp7)
-        echo("Hello $cfn $cln $githubToken $isLastFinished $pps")
         OpenPullRequestsProgram(ConsoleUI(),
                 baseUrl + repoPath,
                 GithubAPIClient(httpClient, baseUrl),
@@ -79,19 +82,11 @@ class CloseCommand(
         help = """Close pull requests of the candidate. If any option is not passed 
                  |then the app will prompt for it.""".trimMargin()) {
 
-    init {
-        context {
-            valueSource = PropertiesValueSource.from("user.properties")
-        }
-    }
-
-    private val cfn by candidateFirstNameOption()
-    private val cln by candidateLastNameOption()
-    private val githubToken by gitHubAuthorizationTokenOption()
+    private val config by requireObject<Map<String, String>>()
 
     override fun run() {
-        val candidate = Candidate(cfn, cln)
-        val httpClient = KhttpClientStats(KhttpClient(githubToken))
+        val candidate = Candidate(config["CFN"]!!, config["CLN"]!!)
+        val httpClient = KhttpClientStats(KhttpClient(config["TOKEN"]!!))
         ClosePullRequestsPrograms(ConsoleUI(),
                 baseUrl + repoPath,
                 GithubAPIClient(httpClient, baseUrl),
