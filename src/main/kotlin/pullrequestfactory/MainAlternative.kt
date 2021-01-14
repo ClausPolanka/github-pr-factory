@@ -1,5 +1,6 @@
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.core.context
+import com.github.ajalt.clikt.core.subcommands
 import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.prompt
@@ -18,13 +19,23 @@ fun main(args: Array<String>) {
     val appProps = FileAppProperties("app.properties")
     val baseUrl = appProps.get_github_base_url()
     val repoPath = appProps.get_github_repository_path()
-    OpenCommand(baseUrl, repoPath).main(args)
+    `Github-Pr-Factory`()
+            .subcommands(OpenCommand(baseUrl, repoPath))
+            .main(args)
+}
+
+class `Github-Pr-Factory` : CliktCommand() {
+    override fun run() {
+    }
 }
 
 class OpenCommand(
         private val baseUrl: String,
         private val repoPath: String
-) : CliktCommand(name = "open") {
+) : CliktCommand(
+        name = "open",
+        help = """Opens pull requests of the candidate. If any option is not passed 
+                 |then the app will prompt for it.""".trimMargin()) {
 
     init {
         context {
@@ -60,18 +71,24 @@ class OpenCommand(
 }
 
 fun CliktCommand.isLastIterationFinishedFlag() =
-        option("-l", "--last-finsished").flag()
+        option("-l", "--last-finsished", help = "Was the last iteration finished by the candidate?")
+                .flag()
 
 fun CliktCommand.candidateFirstNameOption() =
-        option("-fn", "--first-name").prompt("Candidate First Name")
+        option("-fn", "--first-name", help = "Candidate's first name")
+                .prompt("Candidate First Name")
 
 fun CliktCommand.candidateLastNameOption() =
-        option("-ln", "--last-name").prompt("Candidate Last Name")
+        option("-ln", "--last-name", help = "Candidate's last name")
+                .prompt("Candidate Last Name")
 
 fun CliktCommand.gitHubAuthorizationTokenOption() =
-        option("-g", "--github-token").prompt("GitHub Authorization Token")
+        option("-g", "--github-token", help = """Your personal GitHub authorization token. 
+            |Can be set in a file user.properties in the root directory. The file's format: 
+            |"github-token=<your-token>."""".trimMargin())
+                .prompt("GitHub Authorization Token")
 
 fun CliktCommand.pairingPartner(nr: String) =
-        option("-pp$nr", "--pairing-partner-$nr", help = "Please chose from: ${PairingPartner.names()}")
+        option("-pp$nr", "--pairing-partner-$nr")
                 .enum<PairingPartner>()
                 .prompt()
