@@ -76,8 +76,7 @@ fun CliktCommand.pairingPartner(nr: String) =
                 .prompt()
 
 private fun from(pairingPartner: String): PairingPartner {
-    val pp = PairingPartner.value_of(pairingPartner)
-    return when (pp) {
+    return when (val pp = PairingPartner.value_of(pairingPartner)) {
         null -> throw ProgramArgs.WrongPairingPartnerArgumentSyntax("Unknown '$pairingPartner'")
         else -> pp
     }
