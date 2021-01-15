@@ -4,6 +4,7 @@ import com.github.ajalt.clikt.core.subcommands
 import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.prompt
+import com.github.ajalt.clikt.parameters.options.versionOption
 import com.github.ajalt.clikt.parameters.types.enum
 import com.github.ajalt.clikt.sources.PropertiesValueSource
 import pullrequestfactory.domain.Candidate
@@ -20,12 +21,15 @@ fun main(args: Array<String>) {
     val appProps = FileAppProperties("app.properties")
     val baseUrl = appProps.get_github_base_url()
     val repoPath = appProps.get_github_repository_path()
-    GitHubPrFactory()
+    GitHubPrFactory(appProps.get_project_version())
             .subcommands(OpenCommand(baseUrl, repoPath), CloseCommand(baseUrl, repoPath))
             .main(args)
 }
 
-class GitHubPrFactory : CliktCommand(name = "github-pr-factory") {
+class GitHubPrFactory(appVersion: String) : CliktCommand(name = "github-pr-factory") {
+    init {
+        versionOption(appVersion)
+    }
     override fun run() = Unit
 }
 
