@@ -53,11 +53,5 @@ enum class PairingPartner(vararg val pullRequestNames: String) {
             val indexedNames = values().map { "${it.pull_request_name()} (${it.ordinal + 1})" }
             return indexedNames
         }
-
-        fun names(): List<String> {
-            val names = values().map { it.pull_request_name() }
-            return names
-        }
     }
-
 }

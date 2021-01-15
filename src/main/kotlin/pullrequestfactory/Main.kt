@@ -1,3 +1,5 @@
+package pullrequestfactory
+
 import com.github.ajalt.clikt.core.subcommands
 import pullrequestfactory.io.clikt.CloseCommand
 import pullrequestfactory.io.clikt.GitHubPrFactoryCommand
