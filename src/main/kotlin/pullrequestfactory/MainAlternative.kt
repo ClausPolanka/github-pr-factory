@@ -30,6 +30,7 @@ class GitHubPrFactory(appVersion: String) : CliktCommand(name = "github-pr-facto
     init {
         versionOption(appVersion)
     }
+
     override fun run() = Unit
 }
 
