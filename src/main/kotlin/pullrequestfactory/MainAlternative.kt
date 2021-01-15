@@ -1,4 +1,6 @@
-import com.github.ajalt.clikt.core.*
+import com.github.ajalt.clikt.core.CliktCommand
+import com.github.ajalt.clikt.core.context
+import com.github.ajalt.clikt.core.subcommands
 import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.prompt
@@ -18,28 +20,13 @@ fun main(args: Array<String>) {
     val appProps = FileAppProperties("app.properties")
     val baseUrl = appProps.get_github_base_url()
     val repoPath = appProps.get_github_repository_path()
-    `Github-Pr-Factory`()
+    GitHubPrFactory()
             .subcommands(OpenCommand(baseUrl, repoPath), CloseCommand(baseUrl, repoPath))
             .main(args)
 }
 
-class `Github-Pr-Factory` : CliktCommand() {
-    init {
-        context {
-            valueSource = PropertiesValueSource.from("user.properties")
-        }
-    }
-
-    private val cfn by candidateFirstNameOption()
-    private val cln by candidateLastNameOption()
-    private val githubToken by gitHubAuthorizationTokenOption()
-    private val config by findOrSetObject { mutableMapOf<String, String>() }
-
-    override fun run() {
-        config["CFN"] = cfn
-        config["CLN"] = cln
-        config["TOKEN"] = githubToken
-    }
+class GitHubPrFactory : CliktCommand(name = "github-pr-factory") {
+    override fun run() = Unit
 }
 
 class OpenCommand(
@@ -49,8 +36,15 @@ class OpenCommand(
         name = "open",
         help = """Opens pull requests of the candidate. If any option is not passed 
                  |then the app will prompt for it.""".trimMargin()) {
+    init {
+        context {
+            valueSource = PropertiesValueSource.from("user.properties")
+        }
+    }
 
-    private val config by requireObject<Map<String, String>>()
+    private val cfn by candidateFirstNameOption()
+    private val cln by candidateLastNameOption()
+    private val githubToken by gitHubAuthorizationTokenOption()
     private val isLastFinished by isLastIterationFinishedFlag()
     private val pp1 by pairingPartner("1")
     private val pp2 by pairingPartner("2")
@@ -61,8 +55,8 @@ class OpenCommand(
     private val pp7 by pairingPartner("7")
 
     override fun run() {
-        val candidate = Candidate(config["CFN"]!!, config["CLN"]!!)
-        val httpClient = KhttpClientStats(KhttpClient(config["TOKEN"]!!))
+        val candidate = Candidate(cfn, cln)
+        val httpClient = KhttpClientStats(KhttpClient(githubToken))
         val pps = listOf(pp1, pp2, pp3, pp4, pp5, pp6, pp7)
         OpenPullRequestsProgram(ConsoleUI(),
                 baseUrl + repoPath,
@@ -81,12 +75,19 @@ class CloseCommand(
         name = "close",
         help = """Close pull requests of the candidate. If any option is not passed 
                  |then the app will prompt for it.""".trimMargin()) {
+    init {
+        context {
+            valueSource = PropertiesValueSource.from("user.properties")
+        }
+    }
 
-    private val config by requireObject<Map<String, String>>()
+    private val githubToken by gitHubAuthorizationTokenOption()
+    private val cfn by candidateFirstNameOption()
+    private val cln by candidateLastNameOption()
 
     override fun run() {
-        val candidate = Candidate(config["CFN"]!!, config["CLN"]!!)
-        val httpClient = KhttpClientStats(KhttpClient(config["TOKEN"]!!))
+        val candidate = Candidate(cfn, cln)
+        val httpClient = KhttpClientStats(KhttpClient(githubToken))
         ClosePullRequestsPrograms(ConsoleUI(),
                 baseUrl + repoPath,
                 GithubAPIClient(httpClient, baseUrl),
@@ -110,7 +111,7 @@ fun CliktCommand.candidateLastNameOption() =
 fun CliktCommand.gitHubAuthorizationTokenOption() =
         option("-g", "--github-token", help = """Your personal GitHub authorization token. 
             |Can be set in a file user.properties in the root directory. The file's format: 
-            |"github-token=<your-token>."""".trimMargin())
+            |"github-token=<your-token>."""".trimMargin(), valueSourceKey = "github-token")
                 .prompt("GitHub Authorization Token")
 
 fun CliktCommand.pairingPartner(nr: String) =
