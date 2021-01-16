@@ -6,6 +6,7 @@ adhere to https://github.com/olivierlacan/keep-a-changelog.
 
 ### Added
 - [Issue-#14] Github authentication token configurable through app.properties
+- [Issue-#29] Improve app user experience by using `Clikt` library for command line user interaction 
 
 ### Changed
 
@@ -62,3 +63,4 @@ adhere to https://github.com/olivierlacan/keep-a-changelog.
 [Issue-#22]: https://github.com/ClausPolanka/github-pr-factory/issues/22
 [Issue-#25]: https://github.com/ClausPolanka/github-pr-factory/issues/25
 [Issue-#27]: https://github.com/ClausPolanka/github-pr-factory/issues/27
+[Issue-#29]: https://github.com/ClausPolanka/github-pr-factory/issues/29
