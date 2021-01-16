@@ -10,7 +10,10 @@ fun main(args: Array<String>) {
     val appProps = FileAppProperties("app.properties")
     val baseUrl = appProps.get_github_base_url()
     val repoPath = appProps.get_github_repository_path()
+    val userPropertiesFile = "user.properties"
     GitHubPrFactoryCommand(appProps.get_project_version())
-            .subcommands(OpenCommand(baseUrl, repoPath), CloseCommand(baseUrl, repoPath))
+            .subcommands(
+                    OpenCommand(baseUrl, repoPath, userPropertiesFile),
+                    CloseCommand(baseUrl, repoPath, userPropertiesFile))
             .main(args)
 }

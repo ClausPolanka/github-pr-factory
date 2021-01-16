@@ -12,14 +12,15 @@ import pullrequestfactory.io.uis.ConsoleUI
 
 class CloseCommand(
         private val baseUrl: String,
-        private val repoPath: String
+        private val repoPath: String,
+        private val userPropertiesFile: String
 ) : CliktCommand(
         name = "close",
         help = """Close pull requests of the candidate. If any option is not passed 
                  |then the app will prompt for it.""".trimMargin()) {
     init {
         context {
-            valueSource = PropertiesValueSource.from("user.properties")
+            valueSource = PropertiesValueSource.from(userPropertiesFile)
         }
     }
 
