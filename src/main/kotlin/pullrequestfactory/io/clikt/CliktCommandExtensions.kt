@@ -8,7 +8,7 @@ import com.github.ajalt.clikt.parameters.types.enum
 import pullrequestfactory.domain.PairingPartner
 
 fun CliktCommand.isLastIterationFinishedFlag() =
-        option("-l", "--last-finsished", help = "Was the last iteration finished by the candidate?")
+        option("-l", "--last-finished", help = "Was the last iteration finished by the candidate?")
                 .flag()
 
 fun CliktCommand.candidateFirstNameOption() =
