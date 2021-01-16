@@ -19,29 +19,30 @@
         <maven-surefire-plugin.version>3.0.0-M4</maven-surefire-plugin.version>
         <maven-jar-plugin.version>3.2.0</maven-jar-plugin.version>
         <maven-assembly-plugin.version>3.3.0</maven-assembly-plugin.version>
+        <clikt-jvm.version>3.1.0</clikt-jvm.version>
     </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>com.github.ajalt.clikt</groupId>
-            <artifactId>clikt-jvm</artifactId>
-            <version>3.1.0</version>
-        </dependency>
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
             <artifactId>kotlin-stdlib</artifactId>
             <version>${kotlin.version}</version>
         </dependency>
-        <!-- Kotlin JSON parser -->
         <dependency>
             <groupId>com.beust</groupId>
             <artifactId>klaxon</artifactId>
             <version>${klaxon.version}</version>
         </dependency>
+        <!-- Kotlin JSON parser -->
         <dependency>
             <groupId>khttp</groupId>
             <artifactId>khttp</artifactId>
             <version>${khttp.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.ajalt.clikt</groupId>
+            <artifactId>clikt-jvm</artifactId>
+            <version>${clikt-jvm.version}</version>
         </dependency>
         <dependency>
             <groupId>org.assertj</groupId>
