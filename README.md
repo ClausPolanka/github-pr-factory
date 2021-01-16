@@ -24,43 +24,42 @@ Note: New branches always must branch of the previous branch.
 ### github-pr-factory usage
 
 <pre>
-Usage: github-pr-factory [OPTION] COMMAND
-
-A tool which helps opening and closing Github pull requests
-for the George backend chapter 2nd round hirings.
+Usage: github-pr-factory [OPTIONS] COMMAND [ARGS]...
 
 Options:
-  -?, --help			Print this help statement
-  -v, --version			Print version information and quit
+  --version   Show the version and exit
+  -h, --help  Show this message and exit
 
 Commands:
-  open		Open Github pull requests
-  close		Close Github pull requests
-
-Run 'github-pr-factory COMMAND --help' for more information on a command.
+  open   Opens pull requests of the candidate. If any option is not passed
+  close  Close pull requests of the candidate. If any option is not passed
 </pre>
 
 ### github-pr-factory open usage
 
 <pre>
-Usage: github-pr-factory open [OPTION]
+Usage: github-pr-factory open [OPTIONS]
 
-Open new Github pull requests for a 2nd round hiring candidate
+  Opens pull requests of the candidate. If any option is not passed then the
+  app will prompt for it.
 
 Options:
-  -c		The candidate's first name and last-name separated by hyphen
-  -g		Your Github authentication token
-  -p		Seven pairing-partner names separated by hyphen
-    		  Currently supported names:
-    		  claus, berni, bernhard, nandor, dominik, mihai, lampe, shubi
-    		  markus, tibor, christian, michal, tomas, peter, martin, john, andrej
-
-  -l, --last-finished		Marks last iteration pull request with '[PR]' as finished
-
-Example:
-  github-pr-factory open -c firstname-lastname \
-    -g 10238sadf08klasjdf098 \
-    -p claus-berni-nandor-dominik-mihai-lampe-shubi
+  -fn, --first-name TEXT           Candidate's first name
+  -ln, --last-name TEXT            Candidate's last name
+  -g, --github-token TEXT          Your personal GitHub authorization token.
+                                   Can be set in a file user.properties in the
+                                   root directory. The file's format:
+                                   "github-token=<your-token>."
+  -l, --last-finsished             Was the last iteration finished by the
+                                   candidate?
+  -pp1, --pairing-partner-1 [ANDREJ|SHUBHI|CLAUS|BERNI|DOMINIK|MIHAI|MICHAL|NANDOR|CHRISTIAN|TOMAS|LAMPE|MARKUS|JOHN|MARTIN|PETER|TIBOR|JAKUB|LUKAS|JOSEF|JAROMIR|VACLAV]
+  -pp2, --pairing-partner-2 [ANDREJ|SHUBHI|CLAUS|BERNI|DOMINIK|MIHAI|MICHAL|NANDOR|CHRISTIAN|TOMAS|LAMPE|MARKUS|JOHN|MARTIN|PETER|TIBOR|JAKUB|LUKAS|JOSEF|JAROMIR|VACLAV]
+  -pp3, --pairing-partner-3 [ANDREJ|SHUBHI|CLAUS|BERNI|DOMINIK|MIHAI|MICHAL|NANDOR|CHRISTIAN|TOMAS|LAMPE|MARKUS|JOHN|MARTIN|PETER|TIBOR|JAKUB|LUKAS|JOSEF|JAROMIR|VACLAV]
+  -pp4, --pairing-partner-4 [ANDREJ|SHUBHI|CLAUS|BERNI|DOMINIK|MIHAI|MICHAL|NANDOR|CHRISTIAN|TOMAS|LAMPE|MARKUS|JOHN|MARTIN|PETER|TIBOR|JAKUB|LUKAS|JOSEF|JAROMIR|VACLAV]
+  -pp5, --pairing-partner-5 [ANDREJ|SHUBHI|CLAUS|BERNI|DOMINIK|MIHAI|MICHAL|NANDOR|CHRISTIAN|TOMAS|LAMPE|MARKUS|JOHN|MARTIN|PETER|TIBOR|JAKUB|LUKAS|JOSEF|JAROMIR|VACLAV]
+  -pp6, --pairing-partner-6 [ANDREJ|SHUBHI|CLAUS|BERNI|DOMINIK|MIHAI|MICHAL|NANDOR|CHRISTIAN|TOMAS|LAMPE|MARKUS|JOHN|MARTIN|PETER|TIBOR|JAKUB|LUKAS|JOSEF|JAROMIR|VACLAV]
+  -pp7, --pairing-partner-7 [ANDREJ|SHUBHI|CLAUS|BERNI|DOMINIK|MIHAI|MICHAL|NANDOR|CHRISTIAN|TOMAS|LAMPE|MARKUS|JOHN|MARTIN|PETER|TIBOR|JAKUB|LUKAS|JOSEF|JAROMIR|VACLAV]
+  -h, --help                       Show this message and exit
 </pre>
 
 In root project-directory: <pre>mvn clean package</pre>
@@ -72,16 +71,19 @@ For example: <pre>java -jar target/github-pr-factory-1.0-SNAPSHOT-jar-with-depen
 ### github-pr-factory close usage
 
 <pre>
-Usage: github-pr-factory close [OPTION]
+Usage: github-pr-factory close [OPTIONS]
 
-Close Github pull requests for a 2nd round hiring candidate
+  Close pull requests of the candidate. If any option is not passed then the
+  app will prompt for it.
 
 Options:
-  -c		The candidate's first name and last-name separated by hyphen
-  -g		Your Github authentication token
-
-Example:
-  github-pr-factory close -c firstname-lastname -g 10238sadf08klasjdf098
+  -g, --github-token TEXT  Your personal GitHub authorization token. Can be
+                           set in a file user.properties in the root
+                           directory. The file's format:
+                           "github-token=<your-token>."
+  -fn, --first-name TEXT   Candidate's first name
+  -ln, --last-name TEXT    Candidate's last name
+  -h, --help               Show this message and exit
 </pre>
 
 In root project-directory: <pre>mvn clean package</pre>
