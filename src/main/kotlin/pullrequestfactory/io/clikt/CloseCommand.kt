@@ -4,8 +4,8 @@ import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.core.context
 import com.github.ajalt.clikt.sources.PropertiesValueSource
 import pullrequestfactory.domain.Candidate
-import pullrequestfactory.io.GithubAPIClient
 import pullrequestfactory.io.programs.impl.ClosePullRequestsPrograms
+import pullrequestfactory.io.programs.impl.GithubAPIClient
 import pullrequestfactory.io.repositories.KhttpClient
 import pullrequestfactory.io.repositories.KhttpClientStats
 import pullrequestfactory.io.uis.ConsoleUI

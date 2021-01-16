@@ -1,7 +1,5 @@
-package pullrequestfactory.io
+package pullrequestfactory.io.programs.impl
 
-import com.beust.klaxon.Converter
-import com.beust.klaxon.JsonValue
 import com.beust.klaxon.Klaxon
 import pullrequestfactory.io.repositories.HttpClient
 import java.time.Instant
@@ -23,19 +21,6 @@ class GithubAPIClient(
     private fun json_parser(): Klaxon {
         val jsonParser = Klaxon().converter(EpochMilliInstantConverter())
         return jsonParser
-    }
-
-}
-
-class EpochMilliInstantConverter : Converter {
-
-    override fun canConvert(cls: Class<*>) = cls == Instant::class.java
-
-    override fun toJson(value: Any): Nothing = throw NotImplementedError()
-
-    override fun fromJson(jv: JsonValue): Instant {
-        val instant = Instant.ofEpochSecond(jv.int?.toLong() ?: 0)
-        return instant
     }
 
 }

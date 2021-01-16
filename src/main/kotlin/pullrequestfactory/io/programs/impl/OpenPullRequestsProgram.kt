@@ -3,7 +3,6 @@ package pullrequestfactory.io.programs.impl
 import pullrequestfactory.domain.Candidate
 import pullrequestfactory.domain.PairingPartner
 import pullrequestfactory.domain.uis.UI
-import pullrequestfactory.io.GithubAPIClient
 import pullrequestfactory.io.programs.Program
 import pullrequestfactory.io.repositories.KhttpClientStats
 
