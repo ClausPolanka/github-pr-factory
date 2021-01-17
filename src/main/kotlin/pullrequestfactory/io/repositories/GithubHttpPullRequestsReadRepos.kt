@@ -16,10 +16,15 @@ class GithubHttpPullRequestsReadRepos(
     }
 
     private fun create_pull_requests_repo(): GithubPullRequestsReadRepo {
-        val response = httpClient.get("$repoPath/pulls?page=1")
+        val url = "$repoPath/pulls?page=1"
+        val response = httpClient.get(url)
         return when (response.statusCode) {
             403 -> {
                 ui.show("Too many requests to Github within time limit")
+                EmptyPullRequestsReadRepo()
+            }
+            404 -> {
+                ui.show("Couldn't find following URL: $url")
                 EmptyPullRequestsReadRepo()
             }
             else -> GithubHttpPullRequestsReadRepo(repoPath, response, httpClient)

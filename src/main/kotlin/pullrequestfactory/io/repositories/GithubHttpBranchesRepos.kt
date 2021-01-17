@@ -16,10 +16,15 @@ class GithubHttpBranchesRepos(
     }
 
     private fun create_branch_repo(): GithubBranchesRepo {
-        val response = httpClient.get("$repoUrl/branches?page=1")
+        val url = "$repoUrl/branches?page=1"
+        val response = httpClient.get(url)
         return when (response.statusCode) {
             403 -> {
                 ui.show("Too many requests to Github within time limit")
+                EmptyGithubBranchesRepo()
+            }
+            404 -> {
+                ui.show("Couldn't find following URL: $url")
                 EmptyGithubBranchesRepo()
             }
             else -> GithubHttpBranchesRepo(repoUrl, response, httpClient)
