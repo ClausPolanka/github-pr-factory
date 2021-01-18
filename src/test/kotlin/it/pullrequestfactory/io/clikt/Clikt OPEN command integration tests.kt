@@ -4,7 +4,6 @@ import com.beust.klaxon.Klaxon
 import com.github.tomakehurst.wiremock.client.WireMock.*
 import com.github.tomakehurst.wiremock.junit.WireMockRule
 import com.github.tomakehurst.wiremock.matching.RequestPatternBuilder
-import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.After
 import org.junit.ClassRule
 import org.junit.Test
@@ -64,12 +63,6 @@ class `Clikt OPEN command integration tests` {
         verify(PullRequest("Firstname Lastname Iteration 7 / Session 7 Vaclav", Branch("firstname_lastname_iteration_6_christian"), Branch("firstname_lastname_iteration_7_vaclav")))
     }
 
-    private fun verify(pr: PullRequest) {
-        verify(postRequestedFor(urlMatching("/repos/ClausPolanka/wordcount/pulls"))
-                .withRequestBody(matching(Regex.escape(Klaxon().toJsonString(pr))))
-                .addCommonHeaders())
-    }
-
     private fun stubRateLimit(remaining: Int = 5000, resetInMillisSinceEpoch: Long = 1608411669) {
         stubFor(get("/rate_limit").willReturn(aResponse()
                 .withStatus(200)
@@ -87,9 +80,10 @@ class `Clikt OPEN command integration tests` {
         )).parse(args)
     }
 
-    fun execute(fn: (args: Array<String>) -> Unit, args: Array<String>, `and expect`: String) {
-        assertThatThrownBy { fn(args) }
-                .hasMessage(`and expect`)
+    private fun verify(pr: PullRequest) {
+        verify(postRequestedFor(urlMatching("/repos/ClausPolanka/wordcount/pulls"))
+                .withRequestBody(matching(Regex.escape(Klaxon().toJsonString(pr))))
+                .addCommonHeaders())
     }
 
     private fun RequestPatternBuilder.addCommonHeaders(): RequestPatternBuilder? {
