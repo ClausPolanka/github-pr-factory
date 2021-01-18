@@ -1,6 +1,7 @@
 package pullrequestfactory.io.repositories
 
 import com.beust.klaxon.Klaxon
+import khttp.responses.Response
 import pullrequestfactory.domain.pullrequests.GetPullRequest
 import pullrequestfactory.domain.pullrequests.GithubPullRequestsRepo
 import pullrequestfactory.domain.pullrequests.PullRequest
@@ -22,11 +23,7 @@ class GithubHttpPullRequestsRepo(
         val response = httpClient.post(
                 url = url,
                 data = Klaxon().toJsonString(pullRequest))
-        when (response.statusCode) {
-            403 -> ui.show("Too many requests to Github within time limit")
-            404 -> ui.show("Couldn't find following URL: $url")
-            else -> ui.show(response.toString())
-        }
+        handle(response, url)
     }
 
     override fun close_pull_request(number: Int) {
@@ -37,6 +34,10 @@ class GithubHttpPullRequestsRepo(
                 data = Klaxon().toJsonString(object {
                     val state = "closed"
                 }))
+        handle(response, url)
+    }
+
+    private fun handle(response: Response, url: String) {
         when (response.statusCode) {
             403 -> ui.show("Too many requests to Github within time limit")
             404 -> ui.show("Couldn't find following URL: $url")
