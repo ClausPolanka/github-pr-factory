@@ -23,12 +23,8 @@ class GithubHttpPullRequestsRepo(
                 url = url,
                 data = Klaxon().toJsonString(pullRequest))
         when (response.statusCode) {
-            403 -> {
-                ui.show("Too many requests to Github within time limit")
-            }
-            404 -> {
-                ui.show("Couldn't find following URL: $url")
-            }
+            403 -> ui.show("Too many requests to Github within time limit")
+            404 -> ui.show("Couldn't find following URL: $url")
             else -> ui.show(response.toString())
         }
     }
@@ -42,12 +38,8 @@ class GithubHttpPullRequestsRepo(
                     val state = "closed"
                 }))
         when (response.statusCode) {
-            403 -> {
-                ui.show("Too many requests to Github within time limit")
-            }
-            404 -> {
-                ui.show("Couldn't find following URL: $url")
-            }
+            403 -> ui.show("Too many requests to Github within time limit")
+            404 -> ui.show("Couldn't find following URL: $url")
             else -> ui.show(response.toString())
         }
     }
