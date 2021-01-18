@@ -19,7 +19,7 @@ class ClosePullRequestProgram(
 
     override fun execute() {
         val branchesRepo = GithubHttpBranchesRepos(repoUrl, ui, httpClient)
-        val prRepo = GithubHttpPullRequestsRepo(repoUrl, ui, httpClient)
+        val prRepo = GithubHttpPullRequestsRepo(repoUrl, httpClient, ui)
         val f = GithubPRFactory(
                 ConsoleUI(),
                 branchesRepo,

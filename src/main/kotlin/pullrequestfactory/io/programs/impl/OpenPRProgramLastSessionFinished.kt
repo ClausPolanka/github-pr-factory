@@ -23,7 +23,7 @@ class OpenPRProgramLastSessionFinished(
     override fun execute() {
         val httpClientStats = KhttpClientStats(httpClient)
         val branchesRepo = GithubHttpBranchesRepos(repoUrl, ui, httpClientStats)
-        val prRepo = GithubHttpPullRequestsRepo(repoUrl, ui, httpClientStats)
+        val prRepo = GithubHttpPullRequestsRepo(repoUrl, httpClientStats, ui)
         val f = GithubPRFactory(
                 ConsoleUI(),
                 branchesRepo,

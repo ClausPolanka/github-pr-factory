@@ -58,8 +58,8 @@ class GithubHttpWriteRepoTest {
 
     private fun createGithubHttpRepo(): GithubHttpPullRequestsRepo = GithubHttpPullRequestsRepo(
             WIRE_MOCK_DEFAULT_URL + REPO_PATH,
-            QuietUI(),
-            KhttpClientStats(KhttpClient("auth-token")))
+            KhttpClientStats(KhttpClient("auth-token")),
+            QuietUI())
 
     private fun jsonFor(pr: PullRequest) =
             Regex.escape("""{"base" : "${pr.base}", "head" : "${pr.head}", "title" : "${pr.title}"}""")

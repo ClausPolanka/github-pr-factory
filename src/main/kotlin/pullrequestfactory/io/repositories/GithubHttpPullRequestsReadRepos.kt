@@ -7,8 +7,8 @@ import pullrequestfactory.domain.uis.UI
 
 class GithubHttpPullRequestsReadRepos(
         private val repoPath: String,
-        private val ui: UI,
-        private val httpClient: HttpClient
+        private val httpClient: HttpClient,
+        private val ui: UI
 ) : GithubPullRequestsReadRepo {
 
     override fun get_all_open_pull_requests(): List<GetPullRequest> {
@@ -27,7 +27,7 @@ class GithubHttpPullRequestsReadRepos(
                 ui.show("Couldn't find following URL: $url")
                 EmptyPullRequestsReadRepo()
             }
-            else -> GithubHttpPullRequestsReadRepo(repoPath, response, httpClient)
+            else -> GithubHttpPullRequestsReadRepo(repoPath, response, httpClient, ui)
         }
     }
 }

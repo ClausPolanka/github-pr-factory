@@ -27,7 +27,7 @@ class GithubHttpBranchesRepos(
                 ui.show("Couldn't find following URL: $url")
                 EmptyGithubBranchesRepo()
             }
-            else -> GithubHttpBranchesRepo(repoUrl, response, httpClient)
+            else -> GithubHttpBranchesRepo(repoUrl, response, httpClient, ui)
         }
     }
 
