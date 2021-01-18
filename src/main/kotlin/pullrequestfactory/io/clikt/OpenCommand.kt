@@ -8,7 +8,6 @@ import pullrequestfactory.io.programs.impl.GithubAPIClient
 import pullrequestfactory.io.programs.impl.OpenPullRequestsProgram
 import pullrequestfactory.io.repositories.KhttpClient
 import pullrequestfactory.io.repositories.KhttpClientStats
-import pullrequestfactory.io.uis.ConsoleUI
 
 class OpenCommand(
         private val args: CommandArgs
@@ -38,7 +37,7 @@ class OpenCommand(
         val candidate = Candidate(cfn, cln)
         val httpClient = KhttpClientStats(KhttpClient(githubToken))
         val pps = listOf(pp1, pp2, pp3, pp4, pp5, pp6, pp7)
-        OpenPullRequestsProgram(ConsoleUI(),
+        OpenPullRequestsProgram(args.ui,
                 args.repoUrl,
                 GithubAPIClient(httpClient, args.baseUrl),
                 httpClient,
