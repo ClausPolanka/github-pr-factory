@@ -11,7 +11,7 @@ class EpochMilliInstantConverter : Converter {
     override fun toJson(value: Any): Nothing = throw NotImplementedError()
 
     override fun fromJson(jv: JsonValue): Instant {
-        val instant = Instant.ofEpochSecond(jv.int?.toLong() ?: 0)
+        val instant = Instant.ofEpochSecond(jv.longValue ?: 0)
         return instant
     }
 
