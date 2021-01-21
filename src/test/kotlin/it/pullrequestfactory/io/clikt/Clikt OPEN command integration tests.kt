@@ -128,39 +128,39 @@ class `Clikt OPEN command integration tests` {
 
         assertThat(output.any { it.contains("remaining=0") }).isTrue()
     }
+
+    private fun stubRateLimit(remaining: Int = 5000, resetInMillisSinceEpoch: Long = 1608411669) {
+        stubFor(get("/rate_limit").willReturn(aResponse()
+                .withStatus(200)
+                .withBody("{ \n  \"rate\":  {\n    \"limit\": 5000,\n    \"used\": 0,\n    \"remaining\": $remaining,\n    \"reset\": $resetInMillisSinceEpoch\n  }\n}")))
+    }
+
+    private fun toJson(branches: Array<Branch>) = Klaxon().toJsonString(branches)
+
+    private fun `github-pr-factory OPEN pull requests`(args: Array<String>) {
+        OpenCommand(CommandArgs(
+                baseUrl = "http://localhost:8080",
+                repoPath = "/repos/ClausPolanka/wordcount",
+                userPropertiesFile = "user.properties",
+                ui = ConsoleUI()
+        )).parse(args)
+    }
+
+    private fun verify(pr: PullRequest) {
+        verify(postRequestedFor(urlMatching("/repos/ClausPolanka/wordcount/pulls"))
+                .withRequestBody(matching(Regex.escape(Klaxon().toJsonString(pr))))
+                .addCommonHeaders())
+    }
+
+    private fun RequestPatternBuilder.addCommonHeaders(): RequestPatternBuilder? {
+        return this.withHeader("Accept", matching("application/json"))
+                .withHeader("Authorization", matching("token .*"))
+                .withHeader("Content-Type", matching("application/json"))
+    }
+
+    fun execute(fn: (args: Array<String>) -> Unit, args: Array<String>, `and expect`: String) {
+        Assertions.assertThatThrownBy { fn(args) }
+                .hasMessage(`and expect`)
+    }
+
 }
-
-private fun stubRateLimit(remaining: Int = 5000, resetInMillisSinceEpoch: Long = 1608411669) {
-    stubFor(get("/rate_limit").willReturn(aResponse()
-            .withStatus(200)
-            .withBody("{ \n  \"rate\":  {\n    \"limit\": 5000,\n    \"used\": 0,\n    \"remaining\": $remaining,\n    \"reset\": $resetInMillisSinceEpoch\n  }\n}")))
-}
-
-private fun toJson(branches: Array<Branch>) = Klaxon().toJsonString(branches)
-
-private fun `github-pr-factory OPEN pull requests`(args: Array<String>) {
-    OpenCommand(CommandArgs(
-            baseUrl = "http://localhost:8080",
-            repoPath = "/repos/ClausPolanka/wordcount",
-            userPropertiesFile = "user.properties",
-            ui = ConsoleUI()
-    )).parse(args)
-}
-
-private fun verify(pr: PullRequest) {
-    verify(postRequestedFor(urlMatching("/repos/ClausPolanka/wordcount/pulls"))
-            .withRequestBody(matching(Regex.escape(Klaxon().toJsonString(pr))))
-            .addCommonHeaders())
-}
-
-private fun RequestPatternBuilder.addCommonHeaders(): RequestPatternBuilder? {
-    return this.withHeader("Accept", matching("application/json"))
-            .withHeader("Authorization", matching("token .*"))
-            .withHeader("Content-Type", matching("application/json"))
-}
-
-fun execute(fn: (args: Array<String>) -> Unit, args: Array<String>, `and expect`: String) {
-    Assertions.assertThatThrownBy { fn(args) }
-            .hasMessage(`and expect`)
-}
-
