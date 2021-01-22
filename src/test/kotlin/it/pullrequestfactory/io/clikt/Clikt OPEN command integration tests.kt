@@ -20,6 +20,18 @@ import java.time.ZoneId
 
 class `Clikt OPEN command integration tests` {
 
+    private val anyArgs = arrayOf(
+            "-g", "any-github-token",
+            "-fn", "firstname",
+            "-ln", "lastname",
+            "-pp1", "markus",
+            "-pp2", "berni",
+            "-pp3", "lukas",
+            "-pp4", "jakub",
+            "-pp5", "peter",
+            "-pp6", "christian",
+            "-pp7", "vaclav")
+
     companion object {
         @ClassRule
         @JvmField
@@ -101,8 +113,6 @@ class `Clikt OPEN command integration tests` {
                 "-pp7", "vaclav",
         ))
     }
-
-    val anyArgs = arrayOf("-fn", "firstname", "-ln", "lastname", "-pp1", "markus", "-pp2", "berni", "-pp3", "lukas", "-pp4", "jakub", "-pp5", "peter", "-pp6", "christian", "-pp7", "vaclav")
 
     @Test
     fun `OPEN pull requests where rate limit is not sufficient to fullfil the request`() {
