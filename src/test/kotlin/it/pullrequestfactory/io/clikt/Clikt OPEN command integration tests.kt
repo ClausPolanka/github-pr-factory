@@ -4,7 +4,6 @@ import com.beust.klaxon.Klaxon
 import com.github.tomakehurst.wiremock.client.WireMock.*
 import com.github.tomakehurst.wiremock.junit.WireMockRule
 import com.github.tomakehurst.wiremock.matching.RequestPatternBuilder
-import org.assertj.core.api.Assertions
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.After
 import org.junit.ClassRule
@@ -118,7 +117,7 @@ class `Clikt OPEN command integration tests` {
     fun `OPEN pull requests where rate limit is not sufficient to fullfil the request`() {
         stubFor(get("/rate_limit").willReturn(aResponse()
                 .withStatus(403)
-                .withBody("{ \n  \"rate\":  {\n    \"limit\": 50,\n    \"used\": 50,\n    \"remaining\": ${0},\n    \"reset\": ${LocalDateTime.now().plusHours(1).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()}\n  }\n}")))
+                .withBody("{  \"rate\":  {   \"limit\": 50,   \"used\": 50,   \"remaining\": ${0},   \"reset\": ${LocalDateTime.now().plusHours(1).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()} }}")))
 
         val output = mutableListOf<String>()
         OpenCommand(CommandArgs(
@@ -142,7 +141,7 @@ class `Clikt OPEN command integration tests` {
     private fun stubRateLimit(remaining: Int = 5000, resetInMillisSinceEpoch: Long = 1608411669) {
         stubFor(get("/rate_limit").willReturn(aResponse()
                 .withStatus(200)
-                .withBody("{ \n  \"rate\":  {\n    \"limit\": 5000,\n    \"used\": 0,\n    \"remaining\": $remaining,\n    \"reset\": $resetInMillisSinceEpoch\n  }\n}")))
+                .withBody("{  \"rate\":  {   \"limit\": 5000,   \"used\": 0,   \"remaining\": $remaining,   \"reset\": $resetInMillisSinceEpoch }}")))
     }
 
     private fun toJson(branches: Array<Branch>) = Klaxon().toJsonString(branches)
@@ -166,11 +165,6 @@ class `Clikt OPEN command integration tests` {
         return this.withHeader("Accept", matching("application/json"))
                 .withHeader("Authorization", matching("token .*"))
                 .withHeader("Content-Type", matching("application/json"))
-    }
-
-    fun execute(fn: (args: Array<String>) -> Unit, args: Array<String>, `and expect`: String) {
-        Assertions.assertThatThrownBy { fn(args) }
-                .hasMessage(`and expect`)
     }
 
 }

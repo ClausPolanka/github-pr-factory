@@ -60,7 +60,7 @@ class `Clikt CLOSE command integration tests` {
     private fun stubRateLimit(remaining: Int = 5000, resetInMillisSinceEpoch: Long = 1608411669) {
         stubFor(get("/rate_limit").willReturn(aResponse()
                 .withStatus(200)
-                .withBody("{ \n  \"rate\":  {\n    \"limit\": 5000,\n    \"used\": 0,\n    \"remaining\": $remaining,\n    \"reset\": $resetInMillisSinceEpoch\n  }\n}")))
+                .withBody("{ \"rate\":  {   \"limit\": 5000,   \"used\": 0,   \"remaining\": $remaining,   \"reset\": $resetInMillisSinceEpoch }}")))
     }
 
     private fun toJson(pullRequests: Array<GetPullRequest>) = Klaxon().toJsonString(pullRequests)
