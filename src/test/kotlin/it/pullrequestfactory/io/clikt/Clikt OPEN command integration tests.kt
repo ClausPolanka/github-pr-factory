@@ -103,9 +103,10 @@ class `Clikt OPEN command integration tests` {
     fun `OPEN pull requests where last session is considered to be finished`() {
         stubRateLimit()
 
-        val fn = "firstname"
-        val ln = "lastname"
-        val branches = branchesFor(listOf(MARKUS, BERNI, LUKAS, JAKUB, PETER, CHRISTIAN, VACLAV), fn, ln)
+        val branches = branchesFor(
+                listOf(MARKUS, BERNI, LUKAS, JAKUB, PETER, CHRISTIAN, VACLAV),
+                candidateFirstName,
+                candidateLastName)
 
         stubFor(get("/repos/ClausPolanka/wordcount/branches?page=1")
                 .willReturn(aResponse()
@@ -115,14 +116,15 @@ class `Clikt OPEN command integration tests` {
         `github-pr-factory OPEN pull requests`(arrayOf(
                 "--last-finished",
                 "-g", "any-github-token",
-                "-fn", "firstname", "-ln", "lastname",
-                "-pp1", "markus",
-                "-pp2", "berni",
-                "-pp3", "lukas",
-                "-pp4", "jakub",
-                "-pp5", "peter",
-                "-pp6", "christian",
-                "-pp7", "vaclav"))
+                "-fn", candidateFirstName,
+                "-ln", candidateLastName,
+                "-pp1", MARKUS.pull_request_name(),
+                "-pp2", BERNI.pull_request_name(),
+                "-pp3", LUKAS.pull_request_name(),
+                "-pp4", JAKUB.pull_request_name(),
+                "-pp5", PETER.pull_request_name(),
+                "-pp6", CHRISTIAN.pull_request_name(),
+                "-pp7", VACLAV.pull_request_name()))
 
         verify(PullRequest("Firstname Lastname Iteration 1 / Session 1 Markus [PR]",
                 Branch("master"),
