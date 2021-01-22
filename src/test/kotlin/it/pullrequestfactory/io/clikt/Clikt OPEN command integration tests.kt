@@ -97,14 +97,6 @@ class `Clikt OPEN command integration tests` {
                 Branch("firstname_lastname_iteration_7_vaclav")))
     }
 
-    private fun branchesFor(pairingPartner: List<PairingPartner>, fn: String, ln: String): Array<Branch> {
-        val branches = pairingPartner
-                .map { it.name.toLowerCase() }
-                .mapIndexed { i, pp -> Branch("${fn}_${ln}_iteration_${i.inc()}_$pp") }
-                .toTypedArray()
-        return branches
-    }
-
     @Test
     fun `OPEN pull requests where last session is considered to be finished`() {
         stubRateLimit()
@@ -170,6 +162,14 @@ class `Clikt OPEN command integration tests` {
                         used = 0,
                         remaining = remaining,
                         reset = Instant.ofEpochMilli(resetInMillisSinceEpoch)))))))
+    }
+
+    private fun branchesFor(pairingPartner: List<PairingPartner>, fn: String, ln: String): Array<Branch> {
+        val branches = pairingPartner
+                .map { it.name.toLowerCase() }
+                .mapIndexed { i, pp -> Branch("${fn}_${ln}_iteration_${i.inc()}_$pp") }
+                .toTypedArray()
+        return branches
     }
 
     private fun toJson(branches: Array<Branch>) = Klaxon().toJsonString(branches)
