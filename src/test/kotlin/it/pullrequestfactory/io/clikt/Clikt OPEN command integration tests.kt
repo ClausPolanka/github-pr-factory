@@ -127,13 +127,39 @@ class `Clikt OPEN command integration tests` {
                 "-pp6", "christian",
                 "-pp7", "vaclav",
         ))
+
+        verify(PullRequest("Firstname Lastname Iteration 1 / Session 1 Markus [PR]",
+                Branch("master"),
+                Branch("firstname_lastname_iteration_1_markus")))
+        verify(PullRequest("Firstname Lastname Iteration 2 / Session 2 Berni [PR]",
+                Branch("firstname_lastname_iteration_1_markus"),
+                Branch("firstname_lastname_iteration_2_berni")))
+        verify(PullRequest("Firstname Lastname Iteration 3 / Session 3 Lukas [PR]",
+                Branch("firstname_lastname_iteration_2_berni"),
+                Branch("firstname_lastname_iteration_3_lukas")))
+        verify(PullRequest("Firstname Lastname Iteration 4 / Session 4 Jakub [PR]",
+                Branch("firstname_lastname_iteration_3_lukas"),
+                Branch("firstname_lastname_iteration_4_jakub")))
+        verify(PullRequest("Firstname Lastname Iteration 5 / Session 5 Peter [PR]",
+                Branch("firstname_lastname_iteration_4_jakub"),
+                Branch("firstname_lastname_iteration_5_peter")))
+        verify(PullRequest("Firstname Lastname Iteration 6 / Session 6 Christian [PR]",
+                Branch("firstname_lastname_iteration_5_peter"),
+                Branch("firstname_lastname_iteration_6_christian")))
+        verify(PullRequest("Firstname Lastname Iteration 7 / Session 7 Vaclav [PR]",
+                Branch("firstname_lastname_iteration_6_christian"),
+                Branch("firstname_lastname_iteration_7_vaclav")))
     }
 
     @Test
     fun `OPEN pull requests where rate limit is not sufficient to fullfil the request`() {
         stubFor(get("/rate_limit").willReturn(aResponse()
                 .withStatus(403)
-                .withBody("{  \"rate\":  {   \"limit\": 50,   \"used\": 50,   \"remaining\": ${0},   \"reset\": ${LocalDateTime.now().plusHours(1).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()} }}")))
+                .withBody(Klaxon().toJsonString(RateLimit(Rate(
+                        limit = 50,
+                        used = 50,
+                        remaining = 0,
+                        reset = fromNowInHour()))))))
 
         val output = mutableListOf<String>()
         OpenCommand(CommandArgs(
@@ -195,4 +221,6 @@ class `Clikt OPEN command integration tests` {
                 .withHeader("Content-Type", matching("application/json"))
     }
 
+    private fun fromNowInHour() =
+            LocalDateTime.now().plusHours(1).atZone(ZoneId.systemDefault()).toInstant()
 }
