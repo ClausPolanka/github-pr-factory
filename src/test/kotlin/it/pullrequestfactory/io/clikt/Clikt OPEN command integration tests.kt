@@ -159,23 +159,11 @@ class `Clikt OPEN command integration tests` {
                         remaining = 0,
                         reset = fromNowInHour()))))))
 
-        val output = mutableListOf<String>()
-        OpenCommand(CommandArgs(
-                baseUrl = "http://localhost:8080",
-                repoPath = "/repos/ClausPolanka/wordcount",
-                userPropertiesFile = "user.properties",
-                ui = object : UI {
-                    override fun show(msg: String) {
-                        output.add(msg)
-                    }
+        val actualOutputCapture = mutableListOf<String>()
 
-                    override fun get_user_input(msg: String): String {
-                        TODO("not implemented")
-                    }
-                }
-        )).parse(anyArgs)
+        OpenCommand(argsWith(fakeUI(actualOutputCapture))).parse(anyArgs)
 
-        assertThat(output.any { it.contains("remaining=0") }).isTrue()
+        assertThat(actualOutputCapture.any { it.contains("remaining=0") }).isTrue()
     }
 
     private fun stubRateLimit(remaining: Int = 5000, resetInMillisSinceEpoch: Long = 1608411669) {
@@ -221,4 +209,22 @@ class `Clikt OPEN command integration tests` {
 
     private fun fromNowInHour() =
             LocalDateTime.now().plusHours(1).atZone(ZoneId.systemDefault()).toInstant()
+
+    private fun argsWith(ui: UI) =
+            CommandArgs(
+                    baseUrl = "http://localhost:8080",
+                    repoPath = "/repos/ClausPolanka/wordcount",
+                    userPropertiesFile = "user.properties",
+                    ui = ui)
+
+    private fun fakeUI(outputCapture: MutableList<String>) =
+            object : UI {
+                override fun show(msg: String) {
+                    outputCapture.add(msg)
+                }
+
+                override fun get_user_input(msg: String): String {
+                    TODO("Ignore")
+                }
+            }
 }
