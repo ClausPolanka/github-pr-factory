@@ -8,6 +8,8 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.After
 import org.junit.ClassRule
 import org.junit.Test
+import pullrequestfactory.domain.PairingPartner
+import pullrequestfactory.domain.PairingPartner.*
 import pullrequestfactory.domain.branches.Branch
 import pullrequestfactory.domain.pullrequests.PullRequest
 import pullrequestfactory.domain.uis.UI
@@ -49,23 +51,20 @@ class `Clikt OPEN command integration tests` {
     fun `OPEN pull requests for given options`() {
         stubRateLimit()
 
-        val br1 = Branch("firstname_lastname_iteration_1_markus")
-        val br2 = Branch("firstname_lastname_iteration_2_berni")
-        val br3 = Branch("firstname_lastname_iteration_3_lukas")
-        val br4 = Branch("firstname_lastname_iteration_4_jakub")
-        val br5 = Branch("firstname_lastname_iteration_5_peter")
-        val br6 = Branch("firstname_lastname_iteration_6_christian")
-        val br7 = Branch("firstname_lastname_iteration_7_vaclav")
+        val fn = "firstname"
+        val ln = "lastname"
+
+        val branches = branchesFor(listOf(MARKUS, BERNI, LUKAS, JAKUB, PETER, CHRISTIAN, VACLAV), fn, ln)
 
         stubFor(get("/repos/ClausPolanka/wordcount/branches?page=1")
                 .willReturn(aResponse()
                         .withStatus(200)
-                        .withBody(toJson(arrayOf(br1, br2, br3, br4, br5, br6, br7)))))
+                        .withBody(toJson(branches))))
 
         `github-pr-factory OPEN pull requests`(arrayOf(
-                "-g",
-                "any-github-token",
-                "-fn", "firstname", "-ln", "lastname",
+                "-g", "any-github-token",
+                "-fn", "firstname",
+                "-ln", "lastname",
                 "-pp1", "markus",
                 "-pp2", "berni",
                 "-pp3", "lukas",
@@ -82,6 +81,14 @@ class `Clikt OPEN command integration tests` {
         verify(PullRequest("Firstname Lastname Iteration 5 / Session 5 Peter [PR]", Branch("firstname_lastname_iteration_4_jakub"), Branch("firstname_lastname_iteration_5_peter")))
         verify(PullRequest("Firstname Lastname Iteration 6 / Session 6 Christian [PR]", Branch("firstname_lastname_iteration_5_peter"), Branch("firstname_lastname_iteration_6_christian")))
         verify(PullRequest("Firstname Lastname Iteration 7 / Session 7 Vaclav", Branch("firstname_lastname_iteration_6_christian"), Branch("firstname_lastname_iteration_7_vaclav")))
+    }
+
+    private fun branchesFor(pairingPartner: List<PairingPartner>, fn: String, ln: String): Array<Branch> {
+        val branches = pairingPartner
+                .map { it.name.toLowerCase() }
+                .mapIndexed { i, pp -> Branch("${fn}_${ln}_iteration_${i.inc()}_$pp") }
+                .toTypedArray()
+        return branches
     }
 
     @Test
