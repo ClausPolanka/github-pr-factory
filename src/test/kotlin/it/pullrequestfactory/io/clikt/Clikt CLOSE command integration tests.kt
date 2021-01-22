@@ -10,7 +10,10 @@ import org.junit.Test
 import pullrequestfactory.domain.pullrequests.GetPullRequest
 import pullrequestfactory.io.clikt.CloseCommand
 import pullrequestfactory.io.clikt.CommandArgs
+import pullrequestfactory.io.programs.impl.Rate
+import pullrequestfactory.io.programs.impl.RateLimit
 import pullrequestfactory.io.uis.ConsoleUI
+import java.time.Instant
 
 class `Clikt CLOSE command integration tests` {
 
@@ -60,7 +63,11 @@ class `Clikt CLOSE command integration tests` {
     private fun stubRateLimit(remaining: Int = 5000, resetInMillisSinceEpoch: Long = 1608411669) {
         stubFor(get("/rate_limit").willReturn(aResponse()
                 .withStatus(200)
-                .withBody("{ \"rate\":  {   \"limit\": 5000,   \"used\": 0,   \"remaining\": $remaining,   \"reset\": $resetInMillisSinceEpoch }}")))
+                .withBody(Klaxon().toJsonString(RateLimit(Rate(
+                        limit = 5000,
+                        used = 0,
+                        remaining = remaining,
+                        reset = Instant.ofEpochMilli(resetInMillisSinceEpoch)))))))
     }
 
     private fun toJson(pullRequests: Array<GetPullRequest>) = Klaxon().toJsonString(pullRequests)

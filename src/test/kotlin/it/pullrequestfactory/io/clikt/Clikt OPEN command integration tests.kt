@@ -13,7 +13,10 @@ import pullrequestfactory.domain.pullrequests.PullRequest
 import pullrequestfactory.domain.uis.UI
 import pullrequestfactory.io.clikt.CommandArgs
 import pullrequestfactory.io.clikt.OpenCommand
+import pullrequestfactory.io.programs.impl.Rate
+import pullrequestfactory.io.programs.impl.RateLimit
 import pullrequestfactory.io.uis.ConsoleUI
+import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
 
@@ -141,7 +144,11 @@ class `Clikt OPEN command integration tests` {
     private fun stubRateLimit(remaining: Int = 5000, resetInMillisSinceEpoch: Long = 1608411669) {
         stubFor(get("/rate_limit").willReturn(aResponse()
                 .withStatus(200)
-                .withBody("{  \"rate\":  {   \"limit\": 5000,   \"used\": 0,   \"remaining\": $remaining,   \"reset\": $resetInMillisSinceEpoch }}")))
+                .withBody(Klaxon().toJsonString(RateLimit(Rate(
+                        limit = 5000,
+                        used = 0,
+                        remaining = remaining,
+                        reset = Instant.ofEpochMilli(resetInMillisSinceEpoch)))))))
     }
 
     private fun toJson(branches: Array<Branch>) = Klaxon().toJsonString(branches)
