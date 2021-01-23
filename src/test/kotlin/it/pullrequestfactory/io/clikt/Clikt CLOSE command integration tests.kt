@@ -17,6 +17,9 @@ import java.time.Instant
 
 class `Clikt CLOSE command integration tests` {
 
+    private val candidateFirstName = "Firstname"
+    private val candidateLastName = "Lastname"
+
     companion object {
         @ClassRule
         @JvmField
@@ -32,32 +35,23 @@ class `Clikt CLOSE command integration tests` {
     fun `CLOSE pull requests for given options`() {
         stubRateLimit()
 
+        val prs = (1..7).map {
+            GetPullRequest(
+                    number = it,
+                    title = "$candidateFirstName $candidateLastName Iteration $it / Session $it pairingpartner-$it")
+        }.toTypedArray()
+
         stubFor(get("/repos/ClausPolanka/wordcount/pulls?page=1")
                 .willReturn(aResponse()
                         .withStatus(200)
-                        .withBody(toJson(arrayOf(
-                                GetPullRequest(1, "Firstname Lastname Iteration 1 / Session 1 Markus [PR]"),
-                                GetPullRequest(2, "Firstname Lastname Iteration 2 / Session 2 Berni [PR]"),
-                                GetPullRequest(3, "Firstname Lastname Iteration 3 / Session 3 Lukas [PR]"),
-                                GetPullRequest(4, "Firstname Lastname Iteration 4 / Session 4 Jakub [PR]"),
-                                GetPullRequest(5, "Firstname Lastname Iteration 5 / Session 5 Peter [PR]"),
-                                GetPullRequest(6, "Firstname Lastname Iteration 6 / Session 6 Christian [PR]"),
-                                GetPullRequest(7, "Firstname Lastname Iteration 7 / Session 7 Vaclav"),
-                        )))))
+                        .withBody(toJson(prs))))
 
         `github-pr-factory CLOSE pull requests`(arrayOf(
-                "-g",
-                "any-github-token",
-                "-fn", "firstname", "-ln", "lastname"
-        ))
+                "-g", "any-github-token",
+                "-fn", candidateFirstName,
+                "-ln", candidateLastName))
 
-        verifyPatchRequestToCloseOpenPullRequestsFor(1)
-        verifyPatchRequestToCloseOpenPullRequestsFor(2)
-        verifyPatchRequestToCloseOpenPullRequestsFor(3)
-        verifyPatchRequestToCloseOpenPullRequestsFor(4)
-        verifyPatchRequestToCloseOpenPullRequestsFor(5)
-        verifyPatchRequestToCloseOpenPullRequestsFor(6)
-        verifyPatchRequestToCloseOpenPullRequestsFor(7)
+        (1..7).forEach { verifyPatchRequestToCloseOpenPullRequestsFor(it) }
     }
 
     private fun stubRateLimit(remaining: Int = 5000, resetInMillisSinceEpoch: Long = 1608411669) {
