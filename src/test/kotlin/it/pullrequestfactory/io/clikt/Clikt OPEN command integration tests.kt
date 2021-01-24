@@ -56,6 +56,7 @@ class `Clikt OPEN command integration tests` {
                 listOf(MARKUS, BERNI, LUKAS, JAKUB, PETER, CHRISTIAN, VACLAV),
                 candidateFirstName,
                 candidateLastName)
+
         stubFor(get("/repos/ClausPolanka/wordcount/branches?page=1")
                 .willReturn(aResponse()
                         .withStatus(200)
