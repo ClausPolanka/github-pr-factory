@@ -4,6 +4,7 @@ import com.beust.klaxon.Klaxon
 import com.github.tomakehurst.wiremock.client.WireMock
 import com.github.tomakehurst.wiremock.client.WireMock.aResponse
 import com.github.tomakehurst.wiremock.client.WireMock.stubFor
+import com.github.tomakehurst.wiremock.matching.RequestPatternBuilder
 import pullrequestfactory.io.programs.impl.Rate
 import pullrequestfactory.io.programs.impl.RateLimit
 import java.time.Instant
@@ -19,3 +20,9 @@ fun ensureHighEnoughRateLimit(remaining: Int = 5000, resetInMillisSinceEpoch: Lo
 }
 
 fun <T> toJson(objects: Array<T>) = Klaxon().toJsonString(objects)
+
+fun RequestPatternBuilder.addCommonHeaders(): RequestPatternBuilder? {
+    return this.withHeader("Accept", WireMock.matching("application/json"))
+            .withHeader("Authorization", WireMock.matching("token .*"))
+            .withHeader("Content-Type", WireMock.matching("application/json"))
+}

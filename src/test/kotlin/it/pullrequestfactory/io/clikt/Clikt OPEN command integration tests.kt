@@ -3,7 +3,6 @@ package it.pullrequestfactory.io.clikt
 import com.beust.klaxon.Klaxon
 import com.github.tomakehurst.wiremock.client.WireMock.*
 import com.github.tomakehurst.wiremock.junit.WireMockRule
-import com.github.tomakehurst.wiremock.matching.RequestPatternBuilder
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.After
 import org.junit.ClassRule
@@ -156,7 +155,7 @@ class `Clikt OPEN command integration tests` {
                         limit = 50,
                         used = 50,
                         remaining = 0,
-                        reset = fromNowInHour()))))))
+                        reset = fromNowInOneHour()))))))
 
         val actualOutputCapture = mutableListOf<String>()
 
@@ -165,13 +164,11 @@ class `Clikt OPEN command integration tests` {
         assertThat(actualOutputCapture.any { it.contains("remaining=0") }).isTrue()
     }
 
-    private fun branchesFor(pairingPartner: List<PairingPartner>, fn: String, ln: String): Array<Branch> {
-        val branches = pairingPartner
-                .map { it.name.toLowerCase() }
-                .mapIndexed { i, pp -> Branch("${fn}_${ln}_iteration_${i.inc()}_$pp") }
-                .toTypedArray()
-        return branches
-    }
+    private fun branchesFor(pairingPartner: List<PairingPartner>, fn: String, ln: String): Array<Branch> =
+            pairingPartner
+                    .map { it.name.toLowerCase() }
+                    .mapIndexed { i, pp -> Branch("${fn}_${ln}_iteration_${i.inc()}_$pp") }
+                    .toTypedArray()
 
     private fun `github-pr-factory OPEN pull requests`(args: Array<String>) {
         OpenCommand(CommandArgs(
@@ -188,13 +185,7 @@ class `Clikt OPEN command integration tests` {
                 .addCommonHeaders())
     }
 
-    private fun RequestPatternBuilder.addCommonHeaders(): RequestPatternBuilder? {
-        return this.withHeader("Accept", matching("application/json"))
-                .withHeader("Authorization", matching("token .*"))
-                .withHeader("Content-Type", matching("application/json"))
-    }
-
-    private fun fromNowInHour() =
+    private fun fromNowInOneHour() =
             LocalDateTime.now().plusHours(1).atZone(ZoneId.systemDefault()).toInstant()
 
     private fun argsWith(ui: UI) =

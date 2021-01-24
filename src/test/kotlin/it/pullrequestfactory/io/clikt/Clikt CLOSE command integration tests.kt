@@ -2,7 +2,6 @@ package it.pullrequestfactory.io.clikt
 
 import com.github.tomakehurst.wiremock.client.WireMock.*
 import com.github.tomakehurst.wiremock.junit.WireMockRule
-import com.github.tomakehurst.wiremock.matching.RequestPatternBuilder
 import org.junit.After
 import org.junit.ClassRule
 import org.junit.Test
@@ -68,9 +67,4 @@ class `Clikt CLOSE command integration tests` {
                 .addCommonHeaders())
     }
 
-    private fun RequestPatternBuilder.addCommonHeaders(): RequestPatternBuilder? {
-        return this.withHeader("Accept", matching("application/json"))
-                .withHeader("Authorization", matching("token .*"))
-                .withHeader("Content-Type", matching("application/json"))
-    }
 }
