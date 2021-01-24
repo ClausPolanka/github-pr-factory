@@ -18,7 +18,6 @@ import pullrequestfactory.io.clikt.OpenCommand
 import pullrequestfactory.io.programs.impl.Rate
 import pullrequestfactory.io.programs.impl.RateLimit
 import pullrequestfactory.io.uis.ConsoleUI
-import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
 
@@ -52,7 +51,7 @@ class `Clikt OPEN command integration tests` {
 
     @Test
     fun `OPEN pull requests for given options`() {
-        stubRateLimit()
+        ensureHighEnoughRateLimit()
 
         val branches = branchesFor(
                 listOf(MARKUS, BERNI, LUKAS, JAKUB, PETER, CHRISTIAN, VACLAV),
@@ -101,7 +100,7 @@ class `Clikt OPEN command integration tests` {
 
     @Test
     fun `OPEN pull requests where last session is considered to be finished`() {
-        stubRateLimit()
+        ensureHighEnoughRateLimit()
 
         val branches = branchesFor(
                 listOf(MARKUS, BERNI, LUKAS, JAKUB, PETER, CHRISTIAN, VACLAV),
@@ -166,16 +165,6 @@ class `Clikt OPEN command integration tests` {
         assertThat(actualOutputCapture.any { it.contains("remaining=0") }).isTrue()
     }
 
-    private fun stubRateLimit(remaining: Int = 5000, resetInMillisSinceEpoch: Long = 1608411669) {
-        stubFor(get("/rate_limit").willReturn(aResponse()
-                .withStatus(200)
-                .withBody(Klaxon().toJsonString(RateLimit(Rate(
-                        limit = 5000,
-                        used = 0,
-                        remaining = remaining,
-                        reset = Instant.ofEpochMilli(resetInMillisSinceEpoch)))))))
-    }
-
     private fun branchesFor(pairingPartner: List<PairingPartner>, fn: String, ln: String): Array<Branch> {
         val branches = pairingPartner
                 .map { it.name.toLowerCase() }
@@ -183,8 +172,6 @@ class `Clikt OPEN command integration tests` {
                 .toTypedArray()
         return branches
     }
-
-    private fun toJson(branches: Array<Branch>) = Klaxon().toJsonString(branches)
 
     private fun `github-pr-factory OPEN pull requests`(args: Array<String>) {
         OpenCommand(CommandArgs(
