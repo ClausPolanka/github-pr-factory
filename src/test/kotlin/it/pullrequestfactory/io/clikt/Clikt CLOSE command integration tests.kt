@@ -31,24 +31,27 @@ class `Clikt CLOSE command integration tests` {
     fun `CLOSE pull requests for given options`() {
         ensureHighEnoughRateLimit()
 
-        val prs = (1..7).map {
-            GetPullRequest(
-                    number = it,
-                    title = "$candidateFirstName $candidateLastName Iteration $it / Session $it pairingpartner-$it")
-        }.toTypedArray()
+        val pr1 = prFor(candidateFirstName, candidateLastName, prNr = 1)
+        val pr2 = prFor(candidateFirstName, candidateLastName, prNr = 2)
 
         stubFor(get("/repos/ClausPolanka/wordcount/pulls?page=1")
                 .willReturn(aResponse()
                         .withStatus(200)
-                        .withBody(toJson(prs))))
+                        .withBody(toJson(arrayOf(pr1, pr2)))))
 
         `github-pr-factory CLOSE pull requests`(arrayOf(
                 "-g", "any-github-token",
                 "-fn", candidateFirstName,
                 "-ln", candidateLastName))
 
-        (1..7).forEach { verifyPatchRequestToCloseOpenPullRequestsFor(it) }
+        verifyPatchRequestToCloseOpenPullRequestsFor(pr1.number)
+        verifyPatchRequestToCloseOpenPullRequestsFor(pr2.number)
     }
+
+    private fun prFor(firstName: String, lastName: String, prNr: Int) =
+            GetPullRequest(
+                    number = prNr,
+                    title = "$firstName $lastName Iteration $prNr / Session $prNr pairingpartner-$prNr")
 
     private fun `github-pr-factory CLOSE pull requests`(args: Array<String>) {
         CloseCommand(CommandArgs(
