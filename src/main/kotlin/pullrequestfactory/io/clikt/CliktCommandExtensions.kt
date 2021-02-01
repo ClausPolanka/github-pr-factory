@@ -23,7 +23,7 @@ fun CliktCommand.candidateLastNameOption() =
 fun CliktCommand.gitHubAuthorizationTokenOption() =
         option("-g", "--github-token", help = """Your personal GitHub authorization token. 
             |Can be set in a file user.properties in the root directory. The file's format: 
-            |"github-token=<your-token>."""".trimMargin(), valueSourceKey = "github-token")
+            |"github-token=your-token"""".trimMargin(), valueSourceKey = "github-token")
                 .prompt("GitHub Authorization Token")
 
 fun CliktCommand.pairingPartner(nr: String) =
