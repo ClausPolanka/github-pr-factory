@@ -31,9 +31,9 @@ if [ $(git branch | grep '^*' | cut -c 2-) = 'master' ]; then
     NEW_DEV_VERSION=$MAJOR.$(expr $MINOR + 1).0-SNAPSHOT
 
     # Prepare Changelog for new release
-    GITHUB_COMPARE_URL="https:\/\/github\.beeone\.at\/George\/georgebackend\/compare"
+    GITHUB_COMPARE_URL="https:\/\/github\.com\/ClausPolanka\/github-pr-factory\/compare"
     RELEASE_DATE=$(date +"%Y-%m-%d")
-    PREVIOUS_RELEASE="release-$MAJOR\.$(expr $MINOR - 1)\.0"
+    PREVIOUS_RELEASE="github-pr-factory-$MAJOR\.$(expr $MINOR - 1)\.0"
 
     sed -i "s/## \[$VERSION-SNAPSHOT\]/\
 ## \[$NEW_DEV_VERSION\] \
@@ -45,8 +45,8 @@ if [ $(git branch | grep '^*' | cut -c 2-) = 'master' ]; then
 \n\n## \[$VERSION\] - $RELEASE_DATE/g" CHANGELOG.md
 
     sed -i "s/\[$VERSION-SNAPSHOT\]: $GITHUB_COMPARE_URL\/$PREVIOUS_RELEASE\.\.\.master/\
-\[$NEW_DEV_VERSION\]: $GITHUB_COMPARE_URL\/release-$VERSION\.\.\.master\
-\n\[$VERSION\]: $GITHUB_COMPARE_URL\/$PREVIOUS_RELEASE\.\.\.release-$VERSION\
+\[$NEW_DEV_VERSION\]: $GITHUB_COMPARE_URL\/github-pr-factory-$VERSION\.\.\.master\
+\n\[$VERSION\]: $GITHUB_COMPARE_URL\/$PREVIOUS_RELEASE\.\.\.github-pr-factory-$VERSION\
 /g" CHANGELOG.md
 
     git add CHANGELOG.md
