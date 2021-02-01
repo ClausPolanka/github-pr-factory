@@ -63,10 +63,10 @@ adhere to https://github.com/olivierlacan/keep-a-changelog.
 - Open pull requests for George 2nd round hiring candidates via CLI
 - Close pull requests for George 2nd round hiring candidates via CLI
 
-[1.4.0-SNAPSHOT]: https://github.beeone.at/George/georgebackend/compare/release-1.3.0...master
-[1.3.0]: https://github.beeone.at/George/georgebackend/compare/release-1.2.0...release-1.3.0
-[1.2.0]: https://github.beeone.at/George/georgebackend/compare/release-1.1.0...release-1.2.0
-[1.1.0]: https://github.beeone.at/George/georgebackend/compare/release-1.0.0...release-1.1.0
+[1.4.0-SNAPSHOT]: https://github.com/ClausPolanka/github-pr-factory/compare/github-pr-factory-1.3.0...master
+[1.3.0]: https://github.com/ClausPolanka/github-pr-factory/compare/github-pr-factory-1.2.0...github-pr-factory-1.3.0
+[1.2.0]: https://github.com/ClausPolanka/github-pr-factory/compare/github-pr-factory-1.1.0...github-pr-factory-1.2.0
+[1.1.0]: https://github.com/ClausPolanka/github-pr-factory/compare/github-pr-factory-1.0.0...github-pr-factory-1.1.0
 [Issue-#4]: https://github.com/ClausPolanka/github-pr-factory/issues/4
 [Issue-#6]: https://github.com/ClausPolanka/github-pr-factory/issues/6
 [Issue-#7]: https://github.com/ClausPolanka/github-pr-factory/issues/7
