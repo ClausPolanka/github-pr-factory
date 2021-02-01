@@ -13,8 +13,7 @@ class OpenCommand(
         private val args: CommandArgs
 ) : CliktCommand(
         name = "open",
-        help = """Opens pull requests of the candidate. If any option is not passed 
-                 |then the app will prompt for it.""".trimMargin()) {
+        help = """pull requests. App prompts for options if not passed""".trimMargin()) {
     init {
         context {
             valueSource = PropertiesValueSource.from(args.userPropertiesFile)
