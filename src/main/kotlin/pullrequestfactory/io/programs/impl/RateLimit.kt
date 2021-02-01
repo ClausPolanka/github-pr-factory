@@ -1,4 +1,4 @@
-package pullrequestfactory.io
+package pullrequestfactory.io.programs.impl
 
 import java.time.Instant
 import java.time.LocalDateTime
@@ -21,5 +21,3 @@ data class RateLimit(val rate: Rate) {
     }
 
 }
-
-data class Rate(val limit: Int, val remaining: Int, val reset: Instant, val used: Int)

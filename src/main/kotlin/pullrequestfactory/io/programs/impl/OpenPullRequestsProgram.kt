@@ -1,17 +1,19 @@
 package pullrequestfactory.io.programs.impl
 
+import pullrequestfactory.domain.Candidate
+import pullrequestfactory.domain.PairingPartner
 import pullrequestfactory.domain.uis.UI
-import pullrequestfactory.io.GithubAPIClient
 import pullrequestfactory.io.programs.Program
-import pullrequestfactory.io.programs.ProgramArgs
 import pullrequestfactory.io.repositories.KhttpClientStats
 
 class OpenPullRequestsProgram(
         private val ui: UI,
-        private val programArgs: ProgramArgs,
         private val repoUrl: String,
         private val githubAPIClient: GithubAPIClient,
-        private val httpClientStats: KhttpClientStats
+        private val httpClientStats: KhttpClientStats,
+        private val isLastIterationFinished: Boolean,
+        private val candidate: Candidate,
+        private val pairingPartner: List<PairingPartner>
 ) : Program {
 
     private val requiredNrOfRequestsForOpeningPRs = 30
@@ -25,18 +27,20 @@ class OpenPullRequestsProgram(
     }
 
     private fun create(): OpenPRProgram {
-        return when {
-            programArgs.has_open_command_with_optional_options() -> {
+        return when (isLastIterationFinished) {
+            true -> {
                 OpenPRProgramLastSessionFinished(ui,
-                        programArgs,
                         repoUrl,
-                        httpClientStats
+                        httpClientStats,
+                        candidate,
+                        pairingPartner
                 )
             }
             else -> OpenPRsProgramLastSessionNotFinished(ui,
-                    programArgs,
                     repoUrl,
-                    httpClientStats
+                    httpClientStats,
+                    candidate,
+                    pairingPartner
             )
         }
     }

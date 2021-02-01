@@ -54,5 +54,4 @@ enum class PairingPartner(vararg val pullRequestNames: String) {
             return indexedNames
         }
     }
-
 }

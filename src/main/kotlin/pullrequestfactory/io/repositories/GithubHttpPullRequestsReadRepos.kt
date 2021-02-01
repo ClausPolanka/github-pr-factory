@@ -7,8 +7,8 @@ import pullrequestfactory.domain.uis.UI
 
 class GithubHttpPullRequestsReadRepos(
         private val repoPath: String,
-        private val ui: UI,
-        private val httpClient: HttpClient
+        private val httpClient: HttpClient,
+        private val ui: UI
 ) : GithubPullRequestsReadRepo {
 
     override fun get_all_open_pull_requests(): List<GetPullRequest> {
@@ -16,13 +16,18 @@ class GithubHttpPullRequestsReadRepos(
     }
 
     private fun create_pull_requests_repo(): GithubPullRequestsReadRepo {
-        val response = httpClient.get("$repoPath/pulls?page=1")
+        val url = "$repoPath/pulls?page=1"
+        val response = httpClient.get(url)
         return when (response.statusCode) {
             403 -> {
                 ui.show("Too many requests to Github within time limit")
                 EmptyPullRequestsReadRepo()
             }
-            else -> GithubHttpPullRequestsReadRepo(repoPath, response, httpClient)
+            404 -> {
+                ui.show("Couldn't find following URL: $url")
+                EmptyPullRequestsReadRepo()
+            }
+            else -> GithubHttpPullRequestsReadRepo(repoPath, response, httpClient, ui)
         }
     }
 }
