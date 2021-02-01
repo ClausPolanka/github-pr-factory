@@ -4,7 +4,7 @@
 
     <groupId>github-pr-factory</groupId>
     <artifactId>github-pr-factory</artifactId>
-    <version>1.3.0-SNAPSHOT</version>
+    <version>1.4.0-SNAPSHOT</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -172,6 +172,6 @@
             scm:git:https://github.com/ClausPolanka/github-pr-factory
         </developerConnection>
         <url>https://github.com/ClausPolanka/github-pr-factory</url>
-        <tag>release/1.3.x</tag>
+        <tag>HEAD</tag>
     </scm>
 </project>
