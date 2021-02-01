@@ -11,7 +11,10 @@ class GithubAPIClient(
 
     fun get_rate_limit(): RateLimit {
         val res = httpClient.get("$baseUrl/rate_limit")
-        val rateLimit = (json_parser().parse(res.text) ?: DefaultRateLimit())
+        val rateLimit = when (res.statusCode) {
+            401, 403, 404 -> DefaultRateLimit()
+            else -> { (json_parser().parse(res.text) ?: DefaultRateLimit()) }
+        }
         return rateLimit
     }
 
