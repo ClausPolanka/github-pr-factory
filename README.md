@@ -31,8 +31,8 @@ Options:
   -h, --help  Show this message and exit
 
 Commands:
-  open   Opens pull requests of the candidate. If any option is not passed
-  close  Close pull requests of the candidate. If any option is not passed
+  open   pull requests. App prompts for options if not passed
+  close  pull requests. App prompts for options if not passed
 </pre>
 
 ### github-pr-factory open usage
@@ -40,8 +40,7 @@ Commands:
 <pre>
 Usage: github-pr-factory open [OPTIONS]
 
-  Opens pull requests of the candidate. If any option is not passed then the
-  app will prompt for it.
+  Opens pull requests. App prompts for options if not passed.
 
 Options:
   -fn, --first-name TEXT           Candidate's first name
@@ -73,8 +72,7 @@ For example: <pre>java -jar target/github-pr-factory-1.0-SNAPSHOT-jar-with-depen
 <pre>
 Usage: github-pr-factory close [OPTIONS]
 
-  Close pull requests of the candidate. If any option is not passed then the
-  app will prompt for it.
+  Closes pull requests. App prompts for options if not passed.
 
 Options:
   -g, --github-token TEXT  Your personal GitHub authorization token. Can be
