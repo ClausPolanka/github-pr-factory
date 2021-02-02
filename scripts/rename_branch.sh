@@ -1,5 +1,7 @@
 #! /bin/sh
 
+# ! Please run in root directory (not in scripts) !
+
 check_arg() {
   if [ -z "$1" ]
     then

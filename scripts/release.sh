@@ -1,5 +1,6 @@
 #! /bin/sh
 
+# ! Please run in root directory (not in scripts) !
 # ! Make sure Nexus Maven Proxy is running !
 # docker start 9b81e5df1f1a3abfde1ff28e2145b8e269ef3bc720513528136b70d6616234c3
 
