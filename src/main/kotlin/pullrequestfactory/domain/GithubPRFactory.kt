@@ -23,7 +23,7 @@ class GithubPRFactory(
      */
     fun open_pull_requests(candidate: Candidate, pairingPartner: List<PairingPartner>) {
         val branches = get_branches_for(candidate)
-        val prs = branches.get_pull_requests_for(pairingPartner)
+        val prs = branches.getPullRequestsFor(pairingPartner)
         prs.forEach { githubPullRequestsRepo.open_pull_request(it) }
     }
 

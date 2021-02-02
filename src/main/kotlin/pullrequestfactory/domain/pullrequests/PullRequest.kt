@@ -15,7 +15,7 @@ data class PullRequest(
         else -> this.copy()
     }
 
-    private fun has_new_iteration() = _base.iteration_nr() < _head.iteration_nr()
+    private fun has_new_iteration() = _base.iterationNr() < _head.iterationNr()
 
     fun mark_title() = this.copy(title = "$title [PR]")
 

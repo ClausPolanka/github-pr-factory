@@ -18,7 +18,7 @@ class PairingPartnerTest {
 
     @Test
     fun returns_pull_request_name_for_given_pairing_partner() {
-        val prName = PairingPartner.BERNI.pull_request_name()
+        val prName = PairingPartner.BERNI.pullRequestName()
 
         assertThat(prName).isEqualTo("Berni")
     }

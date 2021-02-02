@@ -2,7 +2,7 @@ package pullrequestfactory.domain.pullrequests
 
 class PullRequestLastNotFinishedMarker : PullRequestMarker {
 
-    override fun mark_titles_of(pullRequests: List<PullRequest>): List<PullRequest> {
+    override fun markTitlesOf(pullRequests: List<PullRequest>): List<PullRequest> {
         val prs = pullRequests.toMutableList()
         for (prIdx in 1 until prs.size) {
             val prevPr = prs[prIdx - 1]

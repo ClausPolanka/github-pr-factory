@@ -10,7 +10,7 @@ import pullrequestfactory.io.clikt.CloseCommand
 import pullrequestfactory.io.clikt.CommandArgs
 import pullrequestfactory.io.uis.ConsoleUI
 
-class `Clikt CLOSE command integration tests` {
+class CloseCommandIT {
 
     private val candidateFirstName = "Firstname"
     private val candidateLastName = "Lastname"

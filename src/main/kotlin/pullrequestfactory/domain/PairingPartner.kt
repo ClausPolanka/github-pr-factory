@@ -28,7 +28,7 @@ enum class PairingPartner(vararg val pullRequestNames: String) {
         return containsBranchName
     }
 
-    fun pull_request_name(): String {
+    fun pullRequestName(): String {
         val prName = name.toLowerCase().capitalize()
         return prName
     }
@@ -50,7 +50,7 @@ enum class PairingPartner(vararg val pullRequestNames: String) {
         }
 
         fun indexed_names(): List<String> {
-            val indexedNames = values().map { "${it.pull_request_name()} (${it.ordinal + 1})" }
+            val indexedNames = values().map { "${it.pullRequestName()} (${it.ordinal + 1})" }
             return indexedNames
         }
     }

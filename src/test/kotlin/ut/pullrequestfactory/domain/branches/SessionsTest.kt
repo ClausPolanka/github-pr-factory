@@ -9,7 +9,7 @@ class SessionsTest {
 
     @Test
     fun for_branches_of_the_same_iteration_with_different_pairing_partner_the_session_number_gets_incremented() {
-        val sessions = Sessions.create_sessions_for(listOf(
+        val sessions = Sessions.createSessionsFor(listOf(
                 branch_with(iterationNr = 1, pairingPartner = 1),
                 branch_with(iterationNr = 1, pairingPartner = 2)))
 
@@ -18,7 +18,7 @@ class SessionsTest {
 
     @Test
     fun for_branches_of_two_iterations_with_the_same_pairing_partner_the_session_number_stays_the_same() {
-        val sessions = Sessions.create_sessions_for(listOf(
+        val sessions = Sessions.createSessionsFor(listOf(
                 branch_with(iterationNr = 1, pairingPartner = 1),
                 branch_with(iterationNr = 2, pairingPartner = 1)))
 

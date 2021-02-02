@@ -20,7 +20,7 @@ import pullrequestfactory.io.uis.ConsoleUI
 import java.time.LocalDateTime
 import java.time.ZoneId
 
-class `Clikt OPEN command integration tests` {
+class OpenCommandIT {
 
     private val candidateFirstName = "firstname"
     private val candidateLastName = "lastname"
@@ -66,13 +66,13 @@ class `Clikt OPEN command integration tests` {
                 "-g", "any-github-token",
                 "-fn", candidateFirstName,
                 "-ln", candidateLastName,
-                "-pp1", MARKUS.pull_request_name(),
-                "-pp2", BERNI.pull_request_name(),
-                "-pp3", LUKAS.pull_request_name(),
-                "-pp4", JAKUB.pull_request_name(),
-                "-pp5", PETER.pull_request_name(),
-                "-pp6", CHRISTIAN.pull_request_name(),
-                "-pp7", VACLAV.pull_request_name()))
+                "-pp1", MARKUS.pullRequestName(),
+                "-pp2", BERNI.pullRequestName(),
+                "-pp3", LUKAS.pullRequestName(),
+                "-pp4", JAKUB.pullRequestName(),
+                "-pp5", PETER.pullRequestName(),
+                "-pp6", CHRISTIAN.pullRequestName(),
+                "-pp7", VACLAV.pullRequestName()))
 
         verify(PullRequest("Firstname Lastname Iteration 1 / Session 1 Markus [PR]", Branch("master"), branches[0]))
         verify(PullRequest("Firstname Lastname Iteration 2 / Session 2 Berni [PR]", branches[0], branches[1]))
@@ -102,13 +102,13 @@ class `Clikt OPEN command integration tests` {
                 "-g", "any-github-token",
                 "-fn", candidateFirstName,
                 "-ln", candidateLastName,
-                "-pp1", MARKUS.pull_request_name(),
-                "-pp2", BERNI.pull_request_name(),
-                "-pp3", LUKAS.pull_request_name(),
-                "-pp4", JAKUB.pull_request_name(),
-                "-pp5", PETER.pull_request_name(),
-                "-pp6", CHRISTIAN.pull_request_name(),
-                "-pp7", VACLAV.pull_request_name()))
+                "-pp1", MARKUS.pullRequestName(),
+                "-pp2", BERNI.pullRequestName(),
+                "-pp3", LUKAS.pullRequestName(),
+                "-pp4", JAKUB.pullRequestName(),
+                "-pp5", PETER.pullRequestName(),
+                "-pp6", CHRISTIAN.pullRequestName(),
+                "-pp7", VACLAV.pullRequestName()))
 
         verify(PullRequest("Firstname Lastname Iteration 1 / Session 1 Markus [PR]", Branch("master"), branches[0]))
         verify(PullRequest("Firstname Lastname Iteration 2 / Session 2 Berni [PR]", branches[0], branches[1]))
