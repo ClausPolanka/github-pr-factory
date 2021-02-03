@@ -20,10 +20,12 @@ class BranchSyntaxValidatorTest {
                 Ignore()
             }
         })
-        listOf("_lastname_iteration_1_pairingpartner",
-                "firstname_lastname_iter_1_pairingpartner",
-                "firstname_lastname_iteration_x_pairingpartner",
-                "firstname_lastname_iteration_1_").forEach {
+        listOf(
+            "_lastname_iteration_1_pairingpartner",
+            "firstname_lastname_iter_1_pairingpartner",
+            "firstname_lastname_iteration_x_pairingpartner",
+            "firstname_lastname_iteration_1_"
+        ).forEach {
 
             sut.validate(Branch(it))
 

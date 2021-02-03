@@ -7,7 +7,7 @@ class PullRequestLastNotFinishedMarker : PullRequestMarker {
         for (prIdx in 1 until prs.size) {
             val prevPr = prs[prIdx - 1]
             val nextPr = prs[prIdx]
-            prs[prIdx - 1] = prevPr.mark_title_when_next_has_new_iteration(nextPr)
+            prs[prIdx - 1] = prevPr.markTitleWhenNextHasNewIteration(nextPr)
         }
         return prs
     }

@@ -28,7 +28,7 @@ class OpenPRsProgramLastSessionNotFinished(
                 prRepo,
                 BranchSyntaxValidator(ui),
                 PullRequestLastNotFinishedMarker())
-        f.open_pull_requests(candidate, pairingPartner)
+        f.openPullRequests(candidate, pairingPartner)
     }
 
 }

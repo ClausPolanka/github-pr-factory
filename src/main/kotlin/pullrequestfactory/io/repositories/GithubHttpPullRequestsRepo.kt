@@ -17,7 +17,7 @@ class GithubHttpPullRequestsRepo(
         return GithubHttpPullRequestsReadRepos(repoPath, httpClient, ui).get_all_open_pull_requests()
     }
 
-    override fun open_pull_request(pullRequest: PullRequest) {
+    override fun openPullRequest(pullRequest: PullRequest) {
         ui.show("Open pull request on Github: $pullRequest")
         val url = "$repoPath/pulls"
         val response = httpClient.post(
@@ -26,7 +26,7 @@ class GithubHttpPullRequestsRepo(
         handle(response, url)
     }
 
-    override fun close_pull_request(number: Int) {
+    override fun closePullRequest(number: Int) {
         ui.show("Close pull request with number: '$number'")
         val url = "$repoPath/pulls/$number"
         val response = httpClient.patch(
