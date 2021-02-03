@@ -7,7 +7,7 @@ class PullRequestLastFinishedMarker : PullRequestMarker {
         if (prs.isEmpty()) {
             return emptyList()
         }
-        val newLastPr = prs.last().mark_title()
+        val newLastPr = prs.last().markTitle()
         return prs.dropLast(1) + newLastPr
     }
 

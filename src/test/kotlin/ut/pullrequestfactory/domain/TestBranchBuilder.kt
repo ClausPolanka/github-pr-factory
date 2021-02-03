@@ -12,22 +12,22 @@ class TestBranchBuilder {
     private var _pairingPartnerBranchName: String? = null
     private var _candidate: Candidate = Candidate("test-first-name", "test-last-name")
 
-    fun with_iteration(iteration: Int): TestBranchBuilder {
+    fun withIteration(iteration: Int): TestBranchBuilder {
         _iteration = iteration
         return this
     }
 
-    fun with_pairing_partner(pairingPartner: PairingPartner): TestBranchBuilder {
+    fun withPairingPartner(pairingPartner: PairingPartner): TestBranchBuilder {
         _pairingPartner = pairingPartner
         return this
     }
 
-    fun with_pairing_partner(pairingPartner: String): TestBranchBuilder {
+    fun withPairingPartner(pairingPartner: String): TestBranchBuilder {
         _pairingPartnerBranchName = pairingPartner
         return this
     }
 
-    fun with_candidate(candidate: Candidate): TestBranchBuilder {
+    fun withCandidate(candidate: Candidate): TestBranchBuilder {
         _candidate = candidate
         return this
     }

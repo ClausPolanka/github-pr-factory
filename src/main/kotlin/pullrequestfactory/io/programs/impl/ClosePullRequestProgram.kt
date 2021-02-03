@@ -26,7 +26,7 @@ class ClosePullRequestProgram(
                 prRepo,
                 BranchSyntaxValidator(ui),
                 PullRequestLastNotFinishedMarker())
-        f.close_pull_requests_for(candidate)
+        f.closePullRequestsFor(candidate)
     }
 
 }

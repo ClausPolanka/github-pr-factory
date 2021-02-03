@@ -1,6 +1,7 @@
 package it.pullrequestfactory.io.repositories
 
 import com.github.tomakehurst.wiremock.client.WireMock
+import com.github.tomakehurst.wiremock.client.WireMock.*
 import com.github.tomakehurst.wiremock.junit.WireMockRule
 import com.github.tomakehurst.wiremock.matching.RequestPatternBuilder
 import org.junit.After
@@ -12,16 +13,18 @@ import pullrequestfactory.domain.uis.QuietUI
 import pullrequestfactory.io.repositories.GithubHttpPullRequestsRepo
 import pullrequestfactory.io.repositories.KhttpClient
 import pullrequestfactory.io.repositories.KhttpClientStats
+import kotlin.text.Regex.Companion.escape
 
 class GithubHttpWriteRepoTest {
 
-    private val REPO_PATH = "/repos/ClausPolanka/repository-name"
-    private val WIRE_MOCK_DEFAULT_URL = "http://localhost:8080"
-    private val PULL_REQUEST_PATH = "$REPO_PATH/pulls"
+    private val repoPath = "/repos/ClausPolanka/repository-name"
+    private val wireMockDefaultUrl = "http://localhost:8080"
+    private val pullRequestPath = "$repoPath/pulls"
     private val pullRequest = PullRequest(
-            title = "Radek Leifer Iteration 1 / Session 1 Claus",
-            _base = Branch("master"),
-            _head = Branch("radek_leifer_interation_1_claus"))
+        title = "Radek Leifer Iteration 1 / Session 1 Claus",
+        _base = Branch("master"),
+        _head = Branch("radek_leifer_interation_1_claus")
+    )
 
     companion object {
         @ClassRule
@@ -35,39 +38,44 @@ class GithubHttpWriteRepoTest {
     }
 
     @Test
-    fun create_pull_request() {
+    fun `open pull request`() {
         val sut = createGithubHttpRepo()
 
-        sut.open_pull_request(pullRequest)
+        sut.openPullRequest(pullRequest)
 
-        WireMock.verify(WireMock.postRequestedFor(WireMock.urlMatching(PULL_REQUEST_PATH))
-                .withRequestBody(WireMock.matching(jsonFor(pullRequest)))
-                .addCommonHeaders())
+        verify(
+            postRequestedFor(urlMatching(pullRequestPath))
+                .withRequestBody(matching(jsonFor(pullRequest)))
+                .addCommonHeaders()
+        )
     }
 
     @Test
-    fun close_pull_request_for_given_pull_request_number() {
+    fun `close pull request for given pull request number`() {
         val sut = createGithubHttpRepo()
 
-        sut.close_pull_request(number = 1)
+        sut.closePullRequest(number = 1)
 
-        WireMock.verify(WireMock.patchRequestedFor(WireMock.urlMatching("$PULL_REQUEST_PATH/1"))
-                .withRequestBody(WireMock.matching(Regex.escape("""{"state" : "closed"}""")))
-                .addCommonHeaders())
+        verify(
+            patchRequestedFor(urlMatching("$pullRequestPath/1"))
+                .withRequestBody(matching(escape("""{"state" : "closed"}""")))
+                .addCommonHeaders()
+        )
     }
 
     private fun createGithubHttpRepo(): GithubHttpPullRequestsRepo = GithubHttpPullRequestsRepo(
-            WIRE_MOCK_DEFAULT_URL + REPO_PATH,
-            KhttpClientStats(KhttpClient("auth-token")),
-            QuietUI())
+        wireMockDefaultUrl + repoPath,
+        KhttpClientStats(KhttpClient("auth-token")),
+        QuietUI()
+    )
 
     private fun jsonFor(pr: PullRequest) =
-            Regex.escape("""{"base" : "${pr.base}", "head" : "${pr.head}", "title" : "${pr.title}"}""")
+        escape("""{"base" : "${pr.base}", "head" : "${pr.head}", "title" : "${pr.title}"}""")
 
     private fun RequestPatternBuilder.addCommonHeaders(): RequestPatternBuilder? {
         return this
-                .withHeader("Accept", WireMock.matching("application/json"))
-                .withHeader("Authorization", WireMock.matching("token.*"))
-                .withHeader("Content-Type", WireMock.matching("application/json"))
+            .withHeader("Accept", matching("application/json"))
+            .withHeader("Authorization", matching("token.*"))
+            .withHeader("Content-Type", matching("application/json"))
     }
 }

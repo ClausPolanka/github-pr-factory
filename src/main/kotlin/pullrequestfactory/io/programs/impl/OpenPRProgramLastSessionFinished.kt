@@ -30,7 +30,7 @@ class OpenPRProgramLastSessionFinished(
                 prRepo,
                 BranchSyntaxValidator(ui),
                 PullRequestLastFinishedMarker())
-        f.open_pull_requests(candidate, pairingPartner)
+        f.openPullRequests(candidate, pairingPartner)
     }
 
 }
