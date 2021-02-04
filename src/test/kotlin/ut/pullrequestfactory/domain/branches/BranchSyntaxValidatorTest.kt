@@ -17,7 +17,7 @@ class BranchSyntaxValidatorTest {
             }
 
             override fun get_user_input(msg: String): String {
-                Ignore()
+                ignore()
             }
         })
         listOf(
@@ -42,7 +42,7 @@ class BranchSyntaxValidatorTest {
             }
 
             override fun get_user_input(msg: String): String {
-                Ignore()
+                ignore()
             }
         })
 
@@ -51,7 +51,7 @@ class BranchSyntaxValidatorTest {
         assertThat(message).isEmpty()
     }
 
-    private fun Ignore(): Nothing {
+    private fun ignore(): Nothing {
         throw NotImplementedError("Ooperation is not required")
     }
 
