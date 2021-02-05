@@ -30,27 +30,4 @@ class KhttpClientStats(private val httpClient: HttpClient) : HttpClient {
                 "patch-requests:\t$patchCounter"
     }
 
-    fun getCounter(): Int {
-        return getCounter
-    }
-
-    fun postCounter(): Int {
-        return postCounter
-    }
-
-    fun patchCounter(): Int {
-        return patchCounter
-    }
-
-    fun resetGetCounter() {
-        getCounter = 0
-    }
-
-    fun resetPostCounter() {
-        postCounter = 0
-    }
-
-    fun resetPatchCounter() {
-        patchCounter = 0
-    }
 }
