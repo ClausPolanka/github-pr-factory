@@ -224,7 +224,7 @@ class GithubPRFactoryTest {
 
     private fun github_branches_repo(branches: List<Branch>): GithubBranchesRepo {
         return object : GithubBranchesRepo {
-            override fun get_all_branches(): List<Branch> {
+            override fun getAllBranches(): List<Branch> {
                 return branches
             }
         }
@@ -235,7 +235,7 @@ class GithubPRFactoryTest {
         expectedPrs: MutableList<GetPullRequest> = mutableListOf()
     ): GithubPullRequestsRepo {
         return object : GithubPullRequestsRepo {
-            override fun get_all_open_pull_requests(): List<GetPullRequest> {
+            override fun getAllOpenPullRequests(): List<GetPullRequest> {
                 return expectedPrs
             }
 

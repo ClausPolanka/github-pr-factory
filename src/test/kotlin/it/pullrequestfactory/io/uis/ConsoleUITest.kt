@@ -31,7 +31,7 @@ class ConsoleUITest {
         user_enters("user input")
         val sut = ConsoleUI()
 
-        val actual = sut.get_user_input(msg = "any")
+        val actual = sut.getUserInput(msg = "any")
 
         assertThat(actual).isEqualTo("user input")
     }

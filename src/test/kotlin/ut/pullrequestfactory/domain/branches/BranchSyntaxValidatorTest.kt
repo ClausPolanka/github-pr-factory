@@ -9,14 +9,14 @@ import pullrequestfactory.domain.uis.UI
 class BranchSyntaxValidatorTest {
 
     @Test
-    fun ui_shows_message_for_invalid_branch_names() {
+    fun `ui shows message for invalid branch names`() {
         var message = ""
         val sut = BranchSyntaxValidator(object : UI {
             override fun show(msg: String) {
                 message = msg
             }
 
-            override fun get_user_input(msg: String): String {
+            override fun getUserInput(msg: String): String {
                 ignore()
             }
         })
@@ -26,22 +26,22 @@ class BranchSyntaxValidatorTest {
             "firstname_lastname_iteration_x_pairingpartner",
             "firstname_lastname_iteration_1_"
         ).forEach {
-
             sut.validate(Branch(it))
-
-            assertThat(message).withFailMessage("'$it' has correct syntax").contains("WARNING")
+            assertThat(message)
+                .withFailMessage("'$it' has correct syntax")
+                .contains("WARNING")
         }
     }
 
     @Test
-    fun ui_shows_no_message_for_valid_branch_names() {
+    fun `ui shows no message for valid branch names`() {
         var message = ""
         val sut = BranchSyntaxValidator(object : UI {
             override fun show(msg: String) {
                 message = msg
             }
 
-            override fun get_user_input(msg: String): String {
+            override fun getUserInput(msg: String): String {
                 ignore()
             }
         })

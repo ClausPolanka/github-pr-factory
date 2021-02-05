@@ -12,8 +12,8 @@ class GithubHttpPullRequestsReadRepo(
         private val ui: UI
 ) : GithubPullRequestsReadRepo {
 
-    override fun get_all_open_pull_requests(): List<GetPullRequest> {
-        return GithubHttpReadRepo(httpClient, ui).get_list(response, "$repoUrl/pulls")
+    override fun getAllOpenPullRequests(): List<GetPullRequest> {
+        return GithubHttpReadRepo(httpClient, ui).getList(response, "$repoUrl/pulls")
     }
 
 }

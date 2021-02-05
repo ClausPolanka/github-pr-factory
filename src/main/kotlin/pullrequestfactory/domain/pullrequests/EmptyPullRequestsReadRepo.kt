@@ -2,7 +2,7 @@ package pullrequestfactory.domain.pullrequests
 
 class EmptyPullRequestsReadRepo : GithubPullRequestsReadRepo {
 
-    override fun get_all_open_pull_requests(): List<GetPullRequest> {
+    override fun getAllOpenPullRequests(): List<GetPullRequest> {
         return emptyList()
     }
 

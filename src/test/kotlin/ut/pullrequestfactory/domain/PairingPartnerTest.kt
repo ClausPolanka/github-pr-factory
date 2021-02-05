@@ -85,7 +85,7 @@ class PairingPartnerTest {
 
     @Test
     fun returns_indexed_pairing_partner_pull_request_names() {
-        val pps = PairingPartner.indexed_names()
+        val pps = PairingPartner.indexedNames()
 
         assertThat(pps.size).isEqualTo(pps.size)
         assertThat(pps[0]).isEqualTo("Andrej (1)")

@@ -173,7 +173,7 @@ class OpenCommandIT {
                     outputCapture.add(msg)
                 }
 
-                override fun get_user_input(msg: String): String {
+                override fun getUserInput(msg: String): String {
                     TODO("Ignore")
                 }
             }

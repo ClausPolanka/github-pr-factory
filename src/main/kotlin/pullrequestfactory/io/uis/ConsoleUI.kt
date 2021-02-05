@@ -8,7 +8,7 @@ class ConsoleUI : UI {
         println(msg)
     }
 
-    override fun get_user_input(msg: String): String {
+    override fun getUserInput(msg: String): String {
         var userInput: String? = null
         while (userInput.isNullOrEmpty()) {
             print(msg)

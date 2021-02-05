@@ -11,7 +11,7 @@ class RateLimitCheckedProgram(
 ) : Program {
 
     override fun execute() {
-        val rateLimitBefore = githubApiClient.get_rate_limit()
+        val rateLimitBefore = githubApiClient.getRateLimit()
         when {
             rateLimitBefore.isExeeded(requiredNrOfRequests) -> {
                 ui.showRateLimitExeeded(rateLimitBefore)
