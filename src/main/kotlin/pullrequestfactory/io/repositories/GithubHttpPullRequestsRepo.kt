@@ -8,9 +8,9 @@ import pullrequestfactory.domain.pullrequests.PullRequest
 import pullrequestfactory.domain.uis.UI
 
 class GithubHttpPullRequestsRepo(
-        private val repoPath: String,
-        private val httpClient: HttpClient,
-        private val ui: UI
+    private val repoPath: String,
+    private val httpClient: HttpClient,
+    private val ui: UI
 ) : GithubPullRequestsRepo {
 
     override fun getAllOpenPullRequests(): List<GetPullRequest> {
@@ -21,8 +21,9 @@ class GithubHttpPullRequestsRepo(
         ui.show("Open pull request on Github: $pullRequest")
         val url = "$repoPath/pulls"
         val response = httpClient.post(
-                url = url,
-                data = Klaxon().toJsonString(pullRequest))
+            url = url,
+            data = Klaxon().toJsonString(pullRequest)
+        )
         handle(response, url)
     }
 
@@ -30,10 +31,9 @@ class GithubHttpPullRequestsRepo(
         ui.show("Close pull request with number: '$number'")
         val url = "$repoPath/pulls/$number"
         val response = httpClient.patch(
-                url = url,
-                data = Klaxon().toJsonString(object {
-                    val state = "closed"
-                }))
+            url = url,
+            data = Klaxon().toJsonString(PullRequstPatch(state = "closed"))
+        )
         handle(response, url)
     }
 
@@ -46,3 +46,5 @@ class GithubHttpPullRequestsRepo(
     }
 
 }
+
+data class PullRequstPatch(val state: String)

@@ -13,11 +13,11 @@ import pullrequestfactory.io.repositories.KhttpClientStats
 import pullrequestfactory.io.uis.ConsoleUI
 
 class OpenPRProgramLastSessionFinished(
-        private val ui: UI,
-        private val repoUrl: String,
-        private val httpClient: HttpClient,
-        private val candidate: Candidate,
-        private val pairingPartner: List<PairingPartner>
+    private val ui: UI,
+    private val repoUrl: String,
+    private val httpClient: HttpClient,
+    private val candidate: Candidate,
+    private val pairingPartner: List<PairingPartner>
 ) : OpenPRProgram {
 
     override fun execute() {
@@ -25,11 +25,12 @@ class OpenPRProgramLastSessionFinished(
         val branchesRepo = GithubHttpBranchesRepos(repoUrl, ui, httpClientStats)
         val prRepo = GithubHttpPullRequestsRepo(repoUrl, httpClientStats, ui)
         val f = GithubPRFactory(
-                ConsoleUI(),
-                branchesRepo,
-                prRepo,
-                BranchSyntaxValidator(ui),
-                PullRequestLastFinishedMarker())
+            ConsoleUI(),
+            branchesRepo,
+            prRepo,
+            BranchSyntaxValidator(ui),
+            PullRequestLastFinishedMarker()
+        )
         f.openPullRequests(candidate, pairingPartner)
     }
 

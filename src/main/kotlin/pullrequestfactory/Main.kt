@@ -11,11 +11,12 @@ import pullrequestfactory.io.uis.ConsoleUI
 fun main(args: Array<String>) {
     val appProps = FileAppProperties("app.properties")
     val cmdArgs = CommandArgs(
-            appProps.getGithubBaseUrl(),
-            appProps.getGithubRepositoryPath(),
-            "user.properties",
-            ConsoleUI())
+        appProps.getGithubBaseUrl(),
+        appProps.getGithubRepositoryPath(),
+        "user.properties",
+        ConsoleUI()
+    )
     GitHubPrFactoryCommand(appProps.getProjectVersion())
-            .subcommands(OpenCommand(cmdArgs), CloseCommand(cmdArgs))
-            .main(args)
+        .subcommands(OpenCommand(cmdArgs), CloseCommand(cmdArgs))
+        .main(args)
 }

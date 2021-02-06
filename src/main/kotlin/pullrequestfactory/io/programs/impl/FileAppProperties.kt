@@ -9,8 +9,8 @@ class FileAppProperties(fileName: String) {
         props.load(this::class.java.classLoader.getResourceAsStream(fileName))
     }
 
-    fun getGithubBaseUrl() = props.getProperty("baseUrl", defaultUrl)
-    fun getProjectVersion() = props.getProperty("projectVersion", defaultUrl)
-    fun getGithubRepositoryPath() = props.getProperty("repoPath", defaultUrl)
+    fun getGithubBaseUrl(): String = props.getProperty("baseUrl", defaultUrl)
+    fun getProjectVersion(): String = props.getProperty("projectVersion", defaultUrl)
+    fun getGithubRepositoryPath(): String = props.getProperty("repoPath", defaultUrl)
 
 }

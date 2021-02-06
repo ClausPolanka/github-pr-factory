@@ -7,40 +7,44 @@ import pullrequestfactory.io.programs.Program
 import pullrequestfactory.io.repositories.KhttpClientStats
 
 class OpenPullRequestsProgram(
-        private val ui: UI,
-        private val repoUrl: String,
-        private val githubAPIClient: GithubAPIClient,
-        private val httpClientStats: KhttpClientStats,
-        private val isLastIterationFinished: Boolean,
-        private val candidate: Candidate,
-        private val pairingPartner: List<PairingPartner>
+    private val ui: UI,
+    private val repoUrl: String,
+    private val githubAPIClient: GithubAPIClient,
+    private val httpClientStats: KhttpClientStats,
+    private val isLastIterationFinished: Boolean,
+    private val candidate: Candidate,
+    private val pairingPartner: List<PairingPartner>
 ) : Program {
 
     private val requiredNrOfRequestsForOpeningPRs = 30
 
     override fun execute() {
-        RateLimitCheckedPrograms(ui,
-                githubAPIClient,
-                httpClientStats,
-                create(),
-                requiredNrOfRequestsForOpeningPRs).instance(debug = true).execute()
+        RateLimitCheckedPrograms(
+            ui,
+            githubAPIClient,
+            httpClientStats,
+            create(),
+            requiredNrOfRequestsForOpeningPRs
+        ).instance(debug = true).execute()
     }
 
     private fun create(): OpenPRProgram {
         return when (isLastIterationFinished) {
             true -> {
-                OpenPRProgramLastSessionFinished(ui,
-                        repoUrl,
-                        httpClientStats,
-                        candidate,
-                        pairingPartner
-                )
-            }
-            else -> OpenPRsProgramLastSessionNotFinished(ui,
+                OpenPRProgramLastSessionFinished(
+                    ui,
                     repoUrl,
                     httpClientStats,
                     candidate,
                     pairingPartner
+                )
+            }
+            else -> OpenPRsProgramLastSessionNotFinished(
+                ui,
+                repoUrl,
+                httpClientStats,
+                candidate,
+                pairingPartner
             )
         }
     }

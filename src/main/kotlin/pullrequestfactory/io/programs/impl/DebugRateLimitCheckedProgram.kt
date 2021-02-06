@@ -6,11 +6,11 @@ import pullrequestfactory.io.repositories.KhttpClientStats
 import java.lang.System.lineSeparator
 
 class DebugRateLimitCheckedProgram(
-        private val ui: UI,
-        private val githubApiClient: GithubAPIClient,
-        private val httpClientStats: KhttpClientStats,
-        private val delegate: Program,
-        private val requiredNrOfRequests: Int
+    private val ui: UI,
+    private val githubApiClient: GithubAPIClient,
+    private val httpClientStats: KhttpClientStats,
+    private val delegate: Program,
+    private val requiredNrOfRequests: Int
 ) : Program {
 
     override fun execute() {

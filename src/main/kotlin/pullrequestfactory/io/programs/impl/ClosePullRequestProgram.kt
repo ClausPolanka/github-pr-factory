@@ -11,21 +11,22 @@ import pullrequestfactory.io.repositories.HttpClient
 import pullrequestfactory.io.uis.ConsoleUI
 
 class ClosePullRequestProgram(
-        private val ui: UI,
-        private val repoUrl: String,
-        private val httpClient: HttpClient,
-        private val candidate: Candidate
+    private val ui: UI,
+    private val repoUrl: String,
+    private val httpClient: HttpClient,
+    private val candidate: Candidate
 ) : ClosePRProgram {
 
     override fun execute() {
         val branchesRepo = GithubHttpBranchesRepos(repoUrl, ui, httpClient)
         val prRepo = GithubHttpPullRequestsRepo(repoUrl, httpClient, ui)
         val f = GithubPRFactory(
-                ConsoleUI(),
-                branchesRepo,
-                prRepo,
-                BranchSyntaxValidator(ui),
-                PullRequestLastNotFinishedMarker())
+            ConsoleUI(),
+            branchesRepo,
+            prRepo,
+            BranchSyntaxValidator(ui),
+            PullRequestLastNotFinishedMarker()
+        )
         f.closePullRequestsFor(candidate)
     }
 

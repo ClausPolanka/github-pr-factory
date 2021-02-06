@@ -6,10 +6,10 @@ import pullrequestfactory.domain.pullrequests.GithubPullRequestsReadRepo
 import pullrequestfactory.domain.uis.UI
 
 class GithubHttpPullRequestsReadRepo(
-        private val repoUrl: String,
-        private val response: Response,
-        private val httpClient: HttpClient,
-        private val ui: UI
+    private val repoUrl: String,
+    private val response: Response,
+    private val httpClient: HttpClient,
+    private val ui: UI
 ) : GithubPullRequestsReadRepo {
 
     override fun getAllOpenPullRequests(): List<GetPullRequest> {

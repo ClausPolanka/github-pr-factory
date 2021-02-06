@@ -11,10 +11,11 @@ import pullrequestfactory.io.repositories.KhttpClientStats
 import pullrequestfactory.io.uis.ConsoleUI
 
 class CloseCommand(
-        private val args: CommandArgs
+    private val args: CommandArgs
 ) : CliktCommand(
-        name = "close",
-        help = """Closes pull requests. App prompts for options if not passed.""".trimMargin()) {
+    name = "close",
+    help = """Closes pull requests. App prompts for options if not passed.""".trimMargin()
+) {
     init {
         context {
             valueSource = PropertiesValueSource.from(args.userPropertiesFile)
@@ -28,10 +29,12 @@ class CloseCommand(
     override fun run() {
         val candidate = Candidate(cfn, cln)
         val httpClient = KhttpClientStats(KhttpClient(githubToken))
-        ClosePullRequestsPrograms(ConsoleUI(),
-                args.repoUrl,
-                GithubAPIClient(httpClient, args.baseUrl),
-                httpClient,
-                candidate).execute()
+        ClosePullRequestsPrograms(
+            ConsoleUI(),
+            args.repoUrl,
+            GithubAPIClient(httpClient, args.baseUrl),
+            httpClient,
+            candidate
+        ).execute()
     }
 }

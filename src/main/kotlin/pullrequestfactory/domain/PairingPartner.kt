@@ -29,10 +29,10 @@ enum class PairingPartner(vararg val pullRequestNames: String) {
 
     companion object {
 
-        fun value_of(value: String) =
+        fun from(value: String) =
             values().find { it.pullRequestNames.contains(value.capitalize()) }
 
-        fun value_of(ordinal: Int) = try {
+        fun from(ordinal: Int) = try {
             val pp = values()[ordinal]
             pp
         } catch (e: Exception) {
