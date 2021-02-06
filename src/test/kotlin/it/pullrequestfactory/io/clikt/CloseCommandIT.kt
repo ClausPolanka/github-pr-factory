@@ -33,38 +33,50 @@ class CloseCommandIT {
         val pr1 = prFor(candidateFirstName, candidateLastName, prNr = 1)
         val pr2 = prFor(candidateFirstName, candidateLastName, prNr = 2)
 
-        stubFor(get("/repos/ClausPolanka/wordcount/pulls?page=1")
-                .willReturn(aResponse()
+        stubFor(
+            get("/repos/ClausPolanka/wordcount/pulls?page=1")
+                .willReturn(
+                    aResponse()
                         .withStatus(200)
-                        .withBody(toJson(arrayOf(pr1, pr2)))))
+                        .withBody(toJson(arrayOf(pr1, pr2)))
+                )
+        )
 
-        `github-pr-factory CLOSE pull requests`(arrayOf(
+        `github-pr-factory CLOSE pull requests`(
+            arrayOf(
                 "-g", "any-github-token",
                 "-fn", candidateFirstName,
-                "-ln", candidateLastName))
+                "-ln", candidateLastName
+            )
+        )
 
         verifyPatchRequestToCloseOpenPullRequestsFor(pr1.number)
         verifyPatchRequestToCloseOpenPullRequestsFor(pr2.number)
     }
 
     private fun prFor(firstName: String, lastName: String, prNr: Int) =
-            GetPullRequest(
-                    number = prNr,
-                    title = "$firstName $lastName Iteration $prNr / Session $prNr pairingpartner-$prNr")
+        GetPullRequest(
+            number = prNr,
+            title = "$firstName $lastName Iteration $prNr / Session $prNr pairingpartner-$prNr"
+        )
 
     private fun `github-pr-factory CLOSE pull requests`(args: Array<String>) {
-        CloseCommand(CommandArgs(
+        CloseCommand(
+            CommandArgs(
                 baseUrl = "http://localhost:8080",
                 repoPath = "/repos/ClausPolanka/wordcount",
                 userPropertiesFile = "user.properties",
                 ui = ConsoleUI()
-        )).parse(args)
+            )
+        ).parse(args)
     }
 
     private fun verifyPatchRequestToCloseOpenPullRequestsFor(prNumber: Int) {
-        verify(patchRequestedFor(urlMatching("/repos/ClausPolanka/wordcount/pulls/$prNumber"))
+        verify(
+            patchRequestedFor(urlMatching("/repos/ClausPolanka/wordcount/pulls/$prNumber"))
                 .withRequestBody(matching(Regex.escape("""{"state" : "closed"}""")))
-                .addCommonHeaders())
+                .addCommonHeaders()
+        )
     }
 
 }
