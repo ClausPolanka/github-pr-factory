@@ -76,7 +76,7 @@ class Branches(
             "/",
             "Session",
             createSessionsFor(branches)[idx],
-            PairingPartner.value_of(pairingPartner)?.pullRequestName()
+            PairingPartner.from(pairingPartner)?.pullRequestName()
         )
         titleParts.joinToString(" ")
     }

@@ -26,16 +26,17 @@ class OpenCommandIT {
     private val candidateLastName = "lastname"
 
     private val anyArgs = arrayOf(
-            "-g", "any-github-token",
-            "-fn", "firstname",
-            "-ln", "lastname",
-            "-pp1", "markus",
-            "-pp2", "berni",
-            "-pp3", "lukas",
-            "-pp4", "jakub",
-            "-pp5", "peter",
-            "-pp6", "christian",
-            "-pp7", "vaclav")
+        "-g", "any-github-token",
+        "-fn", "firstname",
+        "-ln", "lastname",
+        "-pp1", "markus",
+        "-pp2", "berni",
+        "-pp3", "lukas",
+        "-pp4", "jakub",
+        "-pp5", "peter",
+        "-pp6", "christian",
+        "-pp7", "vaclav"
+    )
 
     companion object {
         @ClassRule
@@ -53,16 +54,22 @@ class OpenCommandIT {
         ensureHighEnoughRateLimit()
 
         val branches = branchesFor(
-                listOf(MARKUS, BERNI, LUKAS, JAKUB, PETER, CHRISTIAN, VACLAV),
-                candidateFirstName,
-                candidateLastName)
+            listOf(MARKUS, BERNI, LUKAS, JAKUB, PETER, CHRISTIAN, VACLAV),
+            candidateFirstName,
+            candidateLastName
+        )
 
-        stubFor(get("/repos/ClausPolanka/wordcount/branches?page=1")
-                .willReturn(aResponse()
+        stubFor(
+            get("/repos/ClausPolanka/wordcount/branches?page=1")
+                .willReturn(
+                    aResponse()
                         .withStatus(200)
-                        .withBody(toJson(branches))))
+                        .withBody(toJson(branches))
+                )
+        )
 
-        `github-pr-factory OPEN pull requests`(arrayOf(
+        `github-pr-factory OPEN pull requests`(
+            arrayOf(
                 "-g", "any-github-token",
                 "-fn", candidateFirstName,
                 "-ln", candidateLastName,
@@ -72,7 +79,9 @@ class OpenCommandIT {
                 "-pp4", JAKUB.pullRequestName(),
                 "-pp5", PETER.pullRequestName(),
                 "-pp6", CHRISTIAN.pullRequestName(),
-                "-pp7", VACLAV.pullRequestName()))
+                "-pp7", VACLAV.pullRequestName()
+            )
+        )
 
         verify(PullRequest("Firstname Lastname Iteration 1 / Session 1 Markus [PR]", Branch("master"), branches[0]))
         verify(PullRequest("Firstname Lastname Iteration 2 / Session 2 Berni [PR]", branches[0], branches[1]))
@@ -88,16 +97,22 @@ class OpenCommandIT {
         ensureHighEnoughRateLimit()
 
         val branches = branchesFor(
-                listOf(MARKUS, BERNI, LUKAS, JAKUB, PETER, CHRISTIAN, VACLAV),
-                candidateFirstName,
-                candidateLastName)
+            listOf(MARKUS, BERNI, LUKAS, JAKUB, PETER, CHRISTIAN, VACLAV),
+            candidateFirstName,
+            candidateLastName
+        )
 
-        stubFor(get("/repos/ClausPolanka/wordcount/branches?page=1")
-                .willReturn(aResponse()
+        stubFor(
+            get("/repos/ClausPolanka/wordcount/branches?page=1")
+                .willReturn(
+                    aResponse()
                         .withStatus(200)
-                        .withBody(toJson(branches))))
+                        .withBody(toJson(branches))
+                )
+        )
 
-        `github-pr-factory OPEN pull requests`(arrayOf(
+        `github-pr-factory OPEN pull requests`(
+            arrayOf(
                 "--last-finished",
                 "-g", "any-github-token",
                 "-fn", candidateFirstName,
@@ -108,7 +123,9 @@ class OpenCommandIT {
                 "-pp4", JAKUB.pullRequestName(),
                 "-pp5", PETER.pullRequestName(),
                 "-pp6", CHRISTIAN.pullRequestName(),
-                "-pp7", VACLAV.pullRequestName()))
+                "-pp7", VACLAV.pullRequestName()
+            )
+        )
 
         verify(PullRequest("Firstname Lastname Iteration 1 / Session 1 Markus [PR]", Branch("master"), branches[0]))
         verify(PullRequest("Firstname Lastname Iteration 2 / Session 2 Berni [PR]", branches[0], branches[1]))
@@ -121,60 +138,79 @@ class OpenCommandIT {
 
     @Test
     fun `OPEN pull requests where rate limit is not sufficient to fullfil the request`() {
-        stubFor(get("/rate_limit").willReturn(aResponse()
-                .withStatus(403)
-                .withBody(Klaxon().toJsonString(RateLimit(Rate(
-                        limit = 50,
-                        used = 50,
-                        remaining = 0,
-                        reset = fromNowInOneHour()))))))
+        stubFor(
+            get("/rate_limit").willReturn(
+                aResponse()
+                    .withStatus(403)
+                    .withBody(
+                        Klaxon().toJsonString(
+                            RateLimit(
+                                Rate(
+                                    limit = 50,
+                                    used = 50,
+                                    remaining = 0,
+                                    reset = fromNowInOneHour()
+                                )
+                            )
+                        )
+                    )
+            )
+        )
 
         val actualOutputCapture = mutableListOf<String>()
 
         OpenCommand(argsWith(fakeUI(actualOutputCapture))).parse(anyArgs)
 
-        assertThat(actualOutputCapture.any { it.contains("remaining=0") }).isTrue()
+        assertThat(actualOutputCapture.any { it.contains("remaining=0") }).isTrue
     }
 
-    private fun branchesFor(pairingPartner: List<PairingPartner>, fn: String, ln: String): Array<Branch> =
-            pairingPartner
-                    .map { it.name.toLowerCase() }
-                    .mapIndexed { i, pp -> Branch("${fn}_${ln}_iteration_${i.inc()}_$pp") }
-                    .toTypedArray()
+    private fun branchesFor(
+        pairingPartner: List<PairingPartner>,
+        fn: String,
+        ln: String
+    ) = pairingPartner
+        .map { it.name.toLowerCase() }
+        .mapIndexed { i, pp -> Branch("${fn}_${ln}_iteration_${i.inc()}_$pp") }
+        .toTypedArray()
 
     private fun `github-pr-factory OPEN pull requests`(args: Array<String>) {
-        OpenCommand(CommandArgs(
+        OpenCommand(
+            CommandArgs(
                 baseUrl = "http://localhost:8080",
                 repoPath = "/repos/ClausPolanka/wordcount",
                 userPropertiesFile = "user.properties",
                 ui = ConsoleUI()
-        )).parse(args)
+            )
+        ).parse(args)
     }
 
     private fun verify(pr: PullRequest) {
-        verify(postRequestedFor(urlMatching("/repos/ClausPolanka/wordcount/pulls"))
+        verify(
+            postRequestedFor(urlMatching("/repos/ClausPolanka/wordcount/pulls"))
                 .withRequestBody(matching(Regex.escape(Klaxon().toJsonString(pr))))
-                .addCommonHeaders())
+                .addCommonHeaders()
+        )
     }
 
     private fun fromNowInOneHour() =
-            LocalDateTime.now().plusHours(1).atZone(ZoneId.systemDefault()).toInstant()
+        LocalDateTime.now().plusHours(1).atZone(ZoneId.systemDefault()).toInstant()
 
     private fun argsWith(ui: UI) =
-            CommandArgs(
-                    baseUrl = "http://localhost:8080",
-                    repoPath = "/repos/ClausPolanka/wordcount",
-                    userPropertiesFile = "user.properties",
-                    ui = ui)
+        CommandArgs(
+            baseUrl = "http://localhost:8080",
+            repoPath = "/repos/ClausPolanka/wordcount",
+            userPropertiesFile = "user.properties",
+            ui = ui
+        )
 
     private fun fakeUI(outputCapture: MutableList<String>) =
-            object : UI {
-                override fun show(msg: String) {
-                    outputCapture.add(msg)
-                }
-
-                override fun getUserInput(msg: String): String {
-                    TODO("Ignore")
-                }
+        object : UI {
+            override fun show(msg: String) {
+                outputCapture.add(msg)
             }
+
+            override fun getUserInput(msg: String): String {
+                TODO("Ignore")
+            }
+        }
 }
