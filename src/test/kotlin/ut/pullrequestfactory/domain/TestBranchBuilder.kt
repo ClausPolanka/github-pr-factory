@@ -39,11 +39,11 @@ class TestBranchBuilder {
 
     fun build(): Branch {
         val name = _branchName ?: listOf(
-                _candidate.firstName.toLowerCase(),
-                _candidate.lastName.toLowerCase(),
-                "iteration",
-                _iteration,
-                pairing_partner() ?: throwException()
+            _candidate.firstName.toLowerCase(),
+            _candidate.lastName.toLowerCase(),
+            "iteration",
+            _iteration,
+            pairing_partner() ?: throwException()
         ).joinToString("_")
         return Branch(name)
     }
