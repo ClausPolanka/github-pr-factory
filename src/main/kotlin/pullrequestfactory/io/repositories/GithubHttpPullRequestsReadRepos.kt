@@ -6,16 +6,16 @@ import pullrequestfactory.domain.pullrequests.GithubPullRequestsReadRepo
 import pullrequestfactory.domain.uis.UI
 
 class GithubHttpPullRequestsReadRepos(
-        private val repoPath: String,
-        private val httpClient: HttpClient,
-        private val ui: UI
+    private val repoPath: String,
+    private val httpClient: HttpClient,
+    private val ui: UI
 ) : GithubPullRequestsReadRepo {
 
-    override fun get_all_open_pull_requests(): List<GetPullRequest> {
-        return create_pull_requests_repo().get_all_open_pull_requests()
+    override fun getAllOpenPullRequests(): List<GetPullRequest> {
+        return createPullRequestsRepo().getAllOpenPullRequests()
     }
 
-    private fun create_pull_requests_repo(): GithubPullRequestsReadRepo {
+    private fun createPullRequestsRepo(): GithubPullRequestsReadRepo {
         val url = "$repoPath/pulls?page=1"
         val response = httpClient.get(url)
         return when (response.statusCode) {

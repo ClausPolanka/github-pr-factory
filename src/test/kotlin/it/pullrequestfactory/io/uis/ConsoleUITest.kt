@@ -25,13 +25,13 @@ class ConsoleUITest {
         System.setIn(systemIn)
         System.setOut(systemOut)
     }
-    
+
     @Test
     fun returns_user_input_entered_by_the_user() {
         user_enters("user input")
         val sut = ConsoleUI()
 
-        val actual = sut.get_user_input(msg = "any")
+        val actual = sut.getUserInput(msg = "any")
 
         assertThat(actual).isEqualTo("user input")
     }

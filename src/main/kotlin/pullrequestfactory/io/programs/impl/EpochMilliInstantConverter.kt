@@ -8,11 +8,10 @@ class EpochMilliInstantConverter : Converter {
 
     override fun canConvert(cls: Class<*>) = cls == Instant::class.java
 
-    override fun toJson(value: Any): Nothing = throw NotImplementedError()
+    override fun toJson(value: Any) = throw NotImplementedError()
 
     override fun fromJson(jv: JsonValue): Instant {
-        val instant = Instant.ofEpochSecond(jv.longValue ?: 0)
-        return instant
+        return Instant.ofEpochSecond(jv.longValue ?: 0)
     }
 
 }

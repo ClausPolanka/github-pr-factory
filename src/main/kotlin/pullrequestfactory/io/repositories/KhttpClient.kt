@@ -5,9 +5,10 @@ import khttp.responses.Response
 class KhttpClient(authToken: String) : HttpClient {
 
     private val defaultHeaders = mapOf(
-            "Accept" to "application/json",
-            "Authorization" to "token $authToken",
-            "Content-Type" to "application/json")
+        "Accept" to "application/json",
+        "Authorization" to "token $authToken",
+        "Content-Type" to "application/json"
+    )
 
     override fun get(url: String): Response {
         return khttp.get(url, defaultHeaders)

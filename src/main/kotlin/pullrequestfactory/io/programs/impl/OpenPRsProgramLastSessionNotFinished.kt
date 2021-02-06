@@ -12,23 +12,24 @@ import pullrequestfactory.io.repositories.HttpClient
 import pullrequestfactory.io.uis.ConsoleUI
 
 class OpenPRsProgramLastSessionNotFinished(
-        private val ui: UI,
-        private val repoUrl: String,
-        private val httpClient: HttpClient,
-        private val candidate: Candidate,
-        private val pairingPartner: List<PairingPartner>
+    private val ui: UI,
+    private val repoUrl: String,
+    private val httpClient: HttpClient,
+    private val candidate: Candidate,
+    private val pairingPartner: List<PairingPartner>
 ) : OpenPRProgram {
 
     override fun execute() {
         val branchesRepo = GithubHttpBranchesRepos(repoUrl, ui, httpClient)
         val prRepo = GithubHttpPullRequestsRepo(repoUrl, httpClient, ui)
         val f = GithubPRFactory(
-                ConsoleUI(),
-                branchesRepo,
-                prRepo,
-                BranchSyntaxValidator(ui),
-                PullRequestLastNotFinishedMarker())
-        f.open_pull_requests(candidate, pairingPartner)
+            ConsoleUI(),
+            branchesRepo,
+            prRepo,
+            BranchSyntaxValidator(ui),
+            PullRequestLastNotFinishedMarker()
+        )
+        f.openPullRequests(candidate, pairingPartner)
     }
 
 }

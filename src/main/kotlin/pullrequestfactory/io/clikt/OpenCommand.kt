@@ -10,10 +10,11 @@ import pullrequestfactory.io.repositories.KhttpClient
 import pullrequestfactory.io.repositories.KhttpClientStats
 
 class OpenCommand(
-        private val args: CommandArgs
+    private val args: CommandArgs
 ) : CliktCommand(
-        name = "open",
-        help = """Opens pull requests. App prompts for options if not passed.""".trimMargin()) {
+    name = "open",
+    help = """Opens pull requests. App prompts for options if not passed.""".trimMargin()
+) {
     init {
         context {
             valueSource = PropertiesValueSource.from(args.userPropertiesFile)
@@ -36,12 +37,14 @@ class OpenCommand(
         val candidate = Candidate(cfn, cln)
         val httpClient = KhttpClientStats(KhttpClient(githubToken))
         val pps = listOf(pp1, pp2, pp3, pp4, pp5, pp6, pp7)
-        OpenPullRequestsProgram(args.ui,
-                args.repoUrl,
-                GithubAPIClient(httpClient, args.baseUrl),
-                httpClient,
-                isLastFinished,
-                candidate,
-                pps).execute()
+        OpenPullRequestsProgram(
+            args.ui,
+            args.repoUrl,
+            GithubAPIClient(httpClient, args.baseUrl),
+            httpClient,
+            isLastFinished,
+            candidate,
+            pps
+        ).execute()
     }
 }

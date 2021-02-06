@@ -7,14 +7,14 @@ package pullrequestfactory.domain.branches
  */
 internal object Sessions {
 
-    fun create_sessions_for(branches: List<Branch>): List<String> {
+    fun createSessionsFor(branches: List<Branch>): List<String> {
         var prevSession = 1
         return branches.mapIndexed { idx, branch ->
             when (idx) {
                 0 -> prevSession.toString()
                 else -> {
-                    val prevPairingPartner = branches[idx - 1].pairing_partner()
-                    val currPairingPartner = branch.pairing_partner()
+                    val prevPairingPartner = branches[idx - 1].pairingPartner()
+                    val currPairingPartner = branch.pairingPartner()
                     if (prevPairingPartner == currPairingPartner) {
                         "$prevSession"
                     } else {

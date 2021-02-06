@@ -6,7 +6,7 @@ class QuietUI : UI {
         // Do nothing here
     }
 
-    override fun get_user_input(msg: String): String {
+    override fun getUserInput(msg: String): String {
         // Do nothing here
         return ""
     }

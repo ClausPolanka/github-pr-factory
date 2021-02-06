@@ -8,37 +8,42 @@ import pullrequestfactory.domain.pullrequests.PullRequest
 
 class PullRequestTest {
 
-    private val PULL_REQUEST_TITLE = "Firstname Lastname Iteration 1 / Session 1 pairingpartner"
+    private val pullRequestTitle = "Firstname Lastname Iteration 1 / Session 1 pairingpartner"
 
     @Test
-    fun mark_title_of_current_pull_request_when_next_pull_request_has_new_iteration() {
-        val sut = create_pull_request_with(PULL_REQUEST_TITLE)
+    fun `mark title of current pull request when next pull request has new iteration`() {
+        val sut = createPullRequest()
 
-        val newPr = sut.mark_title_when_next_has_new_iteration(nextPr = PullRequest(
+        val newPr = sut.markTitleWhenNextHasNewIteration(
+            nextPr = PullRequest(
                 title = "any",
-                _base = create_branch_for(iterationNr = 1),
-                _head = create_branch_for(iterationNr = 2)))
+                _base = createBranchFor(iterationNr = 1),
+                _head = createBranchFor(iterationNr = 2)
+            )
+        )
 
-        assertThat(newPr.title).isEqualTo("$PULL_REQUEST_TITLE [PR]")
+        assertThat(newPr.title).isEqualTo("${sut.title} [PR]")
     }
 
     @Test
-    fun keep_title_of_current_pull_request_when_next_pull_request_has_same_iteration() {
-        val sut = create_pull_request_with(PULL_REQUEST_TITLE)
+    fun `keep title of current pull request when next pull request has same iteration`() {
+        val sut = createPullRequest()
 
-        val newPr = sut.mark_title_when_next_has_new_iteration(nextPr = PullRequest(
+        val newPr = sut.markTitleWhenNextHasNewIteration(
+            nextPr = PullRequest(
                 title = "any",
-                _base = create_branch_for(iterationNr = 1),
-                _head = create_branch_for(iterationNr = 1)))
+                _base = createBranchFor(iterationNr = 1),
+                _head = createBranchFor(iterationNr = 1)
+            )
+        )
 
-        assertThat(newPr.title).isEqualTo(PULL_REQUEST_TITLE)
+        assertThat(newPr.title).isEqualTo(sut.title)
     }
 
-    private fun create_pull_request_with(title: String): PullRequest {
-        return PullRequest(title = title, _base = Branch("any"), _head = Branch("any"))
-    }
+    private fun createPullRequest() =
+        PullRequest(pullRequestTitle, _base = Branch("any"), _head = Branch("any"))
 
-    private fun create_branch_for(iterationNr: Int) =
-            Branch("firstname_lastname_iteration_${iterationNr}_pairingpartner")
+    private fun createBranchFor(iterationNr: Int) =
+        Branch("firstname_lastname_iteration_${iterationNr}_pairingpartner")
 
 }

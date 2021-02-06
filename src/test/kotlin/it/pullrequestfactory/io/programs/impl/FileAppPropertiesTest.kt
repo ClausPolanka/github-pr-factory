@@ -21,7 +21,7 @@ class FileAppPropertiesTest {
         val fileName = createPropsWith("baseUrl=http://localhost:8080")
         val sut = FileAppProperties(fileName)
 
-        val baseUrl = sut.get_github_base_url()
+        val baseUrl = sut.getGithubBaseUrl()
 
         assertThat(baseUrl).isEqualTo("http://localhost:8080")
     }
@@ -31,7 +31,7 @@ class FileAppPropertiesTest {
         val fileName = createPropsWith("projectVersion=1.0-SNAPSHOT")
         val sut = FileAppProperties(fileName)
 
-        val baseUrl = sut.get_project_version()
+        val baseUrl = sut.getProjectVersion()
 
         assertThat(baseUrl).isEqualTo("1.0-SNAPSHOT")
     }
@@ -41,7 +41,7 @@ class FileAppPropertiesTest {
         val fileName = createPropsWith("x=y")
         val sut = FileAppProperties(fileName)
 
-        val baseUrl = sut.get_github_base_url()
+        val baseUrl = sut.getGithubBaseUrl()
 
         assertThat(baseUrl).isEqualTo("http://localhost")
     }

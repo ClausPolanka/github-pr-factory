@@ -13,6 +13,7 @@ adhere to https://github.com/olivierlacan/keep-a-changelog.
 ### Removed     
 
 ### Internal    
+- [Issue-#31] Reformat code according to Kotlin coding conventions
 
 ## [1.3.0] - 2021-02-01 
 
@@ -77,3 +78,4 @@ adhere to https://github.com/olivierlacan/keep-a-changelog.
 [Issue-#25]: https://github.com/ClausPolanka/github-pr-factory/issues/25
 [Issue-#27]: https://github.com/ClausPolanka/github-pr-factory/issues/27
 [Issue-#29]: https://github.com/ClausPolanka/github-pr-factory/issues/29
+[Issue-#31]: https://github.com/ClausPolanka/github-pr-factory/issues/31

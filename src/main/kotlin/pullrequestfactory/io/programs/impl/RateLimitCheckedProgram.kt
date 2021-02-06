@@ -4,14 +4,14 @@ import pullrequestfactory.domain.uis.UI
 import pullrequestfactory.io.programs.Program
 
 class RateLimitCheckedProgram(
-        private val ui: UI,
-        private val githubApiClient: GithubAPIClient,
-        private val delegate: Program,
-        private val requiredNrOfRequests: Int
+    private val ui: UI,
+    private val githubApiClient: GithubAPIClient,
+    private val delegate: Program,
+    private val requiredNrOfRequests: Int
 ) : Program {
 
     override fun execute() {
-        val rateLimitBefore = githubApiClient.get_rate_limit()
+        val rateLimitBefore = githubApiClient.getRateLimit()
         when {
             rateLimitBefore.isExeeded(requiredNrOfRequests) -> {
                 ui.showRateLimitExeeded(rateLimitBefore)

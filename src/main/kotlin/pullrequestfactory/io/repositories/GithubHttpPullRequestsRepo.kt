@@ -8,32 +8,32 @@ import pullrequestfactory.domain.pullrequests.PullRequest
 import pullrequestfactory.domain.uis.UI
 
 class GithubHttpPullRequestsRepo(
-        private val repoPath: String,
-        private val httpClient: HttpClient,
-        private val ui: UI
+    private val repoPath: String,
+    private val httpClient: HttpClient,
+    private val ui: UI
 ) : GithubPullRequestsRepo {
 
-    override fun get_all_open_pull_requests(): List<GetPullRequest> {
-        return GithubHttpPullRequestsReadRepos(repoPath, httpClient, ui).get_all_open_pull_requests()
+    override fun getAllOpenPullRequests(): List<GetPullRequest> {
+        return GithubHttpPullRequestsReadRepos(repoPath, httpClient, ui).getAllOpenPullRequests()
     }
 
-    override fun open_pull_request(pullRequest: PullRequest) {
+    override fun openPullRequest(pullRequest: PullRequest) {
         ui.show("Open pull request on Github: $pullRequest")
         val url = "$repoPath/pulls"
         val response = httpClient.post(
-                url = url,
-                data = Klaxon().toJsonString(pullRequest))
+            url = url,
+            data = Klaxon().toJsonString(pullRequest)
+        )
         handle(response, url)
     }
 
-    override fun close_pull_request(number: Int) {
+    override fun closePullRequest(number: Int) {
         ui.show("Close pull request with number: '$number'")
         val url = "$repoPath/pulls/$number"
         val response = httpClient.patch(
-                url = url,
-                data = Klaxon().toJsonString(object {
-                    val state = "closed"
-                }))
+            url = url,
+            data = Klaxon().toJsonString(PullRequstPatch(state = "closed"))
+        )
         handle(response, url)
     }
 
@@ -46,3 +46,5 @@ class GithubHttpPullRequestsRepo(
     }
 
 }
+
+data class PullRequstPatch(val state: String)

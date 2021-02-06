@@ -6,16 +6,16 @@ import pullrequestfactory.domain.branches.GithubBranchesRepo
 import pullrequestfactory.domain.uis.UI
 
 class GithubHttpBranchesRepos(
-        private val repoUrl: String,
-        private val ui: UI,
-        private val httpClient: HttpClient
+    private val repoUrl: String,
+    private val ui: UI,
+    private val httpClient: HttpClient
 ) : GithubBranchesRepo {
 
-    override fun get_all_branches(): List<Branch> {
-        return create_branch_repo().get_all_branches()
+    override fun getAllBranches(): List<Branch> {
+        return createBranchRepo().getAllBranches()
     }
 
-    private fun create_branch_repo(): GithubBranchesRepo {
+    private fun createBranchRepo(): GithubBranchesRepo {
         val url = "$repoUrl/branches?page=1"
         val response = httpClient.get(url)
         return when (response.statusCode) {
