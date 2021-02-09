@@ -7,7 +7,7 @@ import pullrequestfactory.domain.PairingPartner
 class PairingPartnerTest {
 
     @Test
-    fun pairing_partner_contains_given_branch_name() {
+    fun `pairing partner contains given branch name`() {
         val branchName = "berni"
         val contains = PairingPartner.BERNI.contains(branchName)
 
@@ -17,14 +17,14 @@ class PairingPartnerTest {
     }
 
     @Test
-    fun returns_pull_request_name_for_given_pairing_partner() {
+    fun `returns pull request name for given pairing partner`() {
         val prName = PairingPartner.BERNI.pullRequestName()
 
         assertThat(prName).isEqualTo("Berni")
     }
 
     @Test
-    fun pairing_partner_branch_names_for_definied_pairing_partner() {
+    fun `pairing partner branch names for definied pairing partner`() {
         val ppName = "tomasr"
         val pp = PairingPartner.from(ppName)
 
@@ -34,7 +34,7 @@ class PairingPartnerTest {
     }
 
     @Test
-    fun pairing_partner_branch_names_for_definied_pairing_partner_berni() {
+    fun `pairing partner branch names for definied pairing partner berni`() {
         val ppName = "berni"
         val pp = PairingPartner.from(ppName)
 
@@ -44,7 +44,7 @@ class PairingPartnerTest {
     }
 
     @Test
-    fun pairing_partner_branch_names_for_definied_pairing_partner_shubi() {
+    fun `pairing partner branch names for definied pairing partner shubi`() {
         val ppName = "shubi"
         val pp = PairingPartner.from(ppName)
 
@@ -54,7 +54,7 @@ class PairingPartnerTest {
     }
 
     @Test
-    fun returns_null_when_pairing_partner_name_in_branch_is_invalid() {
+    fun `returns null when pairing partner name in branch is invalid`() {
         val ppName = "xxx"
         val pp = PairingPartner.from(ppName)
 
@@ -64,7 +64,7 @@ class PairingPartnerTest {
     }
 
     @Test
-    fun returns_null_when_when_ordinal_is_too_high() {
+    fun `returns null when when ordinal is too high`() {
         val ordinal = PairingPartner.values().size
         val pp = PairingPartner.from(ordinal)
 
@@ -74,7 +74,7 @@ class PairingPartnerTest {
     }
 
     @Test
-    fun returns_pairing_partner_for_given_ordinal() {
+    fun `returns pairing partner for given ordinal`() {
         val ordinal = 0
         val pp = PairingPartner.from(ordinal)
 
@@ -84,7 +84,7 @@ class PairingPartnerTest {
     }
 
     @Test
-    fun returns_indexed_pairing_partner_pull_request_names() {
+    fun `returns indexed pairing partner pull request names`() {
         val pps = PairingPartner.indexedNames()
 
         assertThat(pps.size).isEqualTo(pps.size)
