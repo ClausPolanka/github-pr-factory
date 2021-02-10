@@ -17,7 +17,7 @@ class FileAppPropertiesTest {
     }
 
     @Test
-    fun get_base_url_from_given_file() {
+    fun `get base url from given file`() {
         val fileName = createPropsWith("baseUrl=http://localhost:8080")
         val sut = FileAppProperties(fileName)
 
@@ -27,7 +27,7 @@ class FileAppPropertiesTest {
     }
 
     @Test
-    fun get_project_version_from_given_file() {
+    fun `get project version from given file`() {
         val fileName = createPropsWith("projectVersion=1.0-SNAPSHOT")
         val sut = FileAppProperties(fileName)
 
@@ -37,7 +37,7 @@ class FileAppPropertiesTest {
     }
 
     @Test
-    fun get_default_base_url_in_case_file_does_not_exist() {
+    fun `get default base url in case file does not exist`() {
         val fileName = createPropsWith("x=y")
         val sut = FileAppProperties(fileName)
 

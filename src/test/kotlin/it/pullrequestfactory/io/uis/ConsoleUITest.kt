@@ -27,8 +27,8 @@ class ConsoleUITest {
     }
 
     @Test
-    fun returns_user_input_entered_by_the_user() {
-        user_enters("user input")
+    fun `returns user input entered by the user`() {
+        userEnters("user input")
         val sut = ConsoleUI()
 
         val actual = sut.getUserInput(msg = "any")
@@ -36,7 +36,7 @@ class ConsoleUITest {
         assertThat(actual).isEqualTo("user input")
     }
 
-    private fun user_enters(userInput: String) {
+    private fun userEnters(userInput: String) {
         val input = ByteArrayInputStream(userInput.toByteArray())
         System.setIn(input)
     }

@@ -7,28 +7,28 @@ import pullrequestfactory.io.repositories.GithubHttpHeaderLinkPageParser
 class GithubHttpHeaderLinkPageParserTest {
 
     @Test
-    fun default_value_for_null() {
+    fun `default value for null`() {
         val pages = GithubHttpHeaderLinkPageParser.parsePages(linkHeader = null)
 
         assertThat(pages).isEqualTo(1..1)
     }
 
     @Test
-    fun pages_for_a_single_page() {
+    fun `pages for a single page`() {
         val pages = GithubHttpHeaderLinkPageParser.parsePages(linkHeader = "page=1")
 
         assertThat(pages).isEqualTo(1..1)
     }
 
     @Test
-    fun pages_for_100_pages() {
+    fun `pages for 100 pages`() {
         val pages = GithubHttpHeaderLinkPageParser.parsePages(linkHeader = "page=100")
 
         assertThat(pages).isEqualTo(1..100)
     }
 
     @Test
-    fun default_value_for_missing_page_in_link_header() {
+    fun `default value for missing page in link header`() {
         val pages = GithubHttpHeaderLinkPageParser.parsePages(linkHeader = "foo")
 
         assertThat(pages).isEqualTo(1..1)
