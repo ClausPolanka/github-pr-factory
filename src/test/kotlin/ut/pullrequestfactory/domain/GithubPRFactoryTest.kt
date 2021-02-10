@@ -187,11 +187,11 @@ class GithubPRFactoryTest {
 
     private fun createGithubPrFactory(branches: List<Branch>): Pair<MutableList<PullRequest>, GithubPRFactory> {
         val pullRequests = mutableListOf<PullRequest>()
-        val githubBranchesRepo = github_branches_repo(branches)
+        val githubBranchesRepo = githubBranchesRepo(branches)
         val sut = GithubPRFactory(
             ConsoleUI(),
             githubBranchesRepo,
-            github_pull_requests_repo(github_write_repo(pullRequests)),
+            githubPullRequestsRepo(github_write_repo(pullRequests)),
             BranchSyntaxValidator(QuietUI()),
             PullRequestLastNotFinishedMarker()
         )
@@ -202,8 +202,8 @@ class GithubPRFactoryTest {
         val pullRequestNumbersToBeClosed = mutableListOf<Int>()
         val sut = GithubPRFactory(
             ConsoleUI(),
-            github_branches_repo(emptyList()),
-            github_pull_requests_repo(
+            githubBranchesRepo(emptyList()),
+            githubPullRequestsRepo(
                 github_write_repo(mutableListOf(), pullRequestNumbersToBeClosed),
                 pullRequests.toMutableList()
             ),
@@ -216,13 +216,13 @@ class GithubPRFactoryTest {
     private fun createGithubPrFactoryFor(branchName: String) =
         GithubPRFactory(
             ConsoleUI(),
-            github_branches_repo(listOf(Branch(branchName))),
-            github_pull_requests_repo(noop_github_write_repo()),
+            githubBranchesRepo(listOf(Branch(branchName))),
+            githubPullRequestsRepo(noopGithubWriteRepo()),
             BranchSyntaxValidator(QuietUI()),
             PullRequestLastNotFinishedMarker()
         )
 
-    private fun github_branches_repo(branches: List<Branch>): GithubBranchesRepo {
+    private fun githubBranchesRepo(branches: List<Branch>): GithubBranchesRepo {
         return object : GithubBranchesRepo {
             override fun getAllBranches(): List<Branch> {
                 return branches
@@ -230,7 +230,7 @@ class GithubPRFactoryTest {
         }
     }
 
-    private fun github_pull_requests_repo(
+    private fun githubPullRequestsRepo(
         writeRepo: GithubPullRequestsWriteRepo,
         expectedPrs: MutableList<GetPullRequest> = mutableListOf()
     ): GithubPullRequestsRepo {
@@ -264,7 +264,7 @@ class GithubPRFactoryTest {
         }
     }
 
-    private fun noop_github_write_repo() = object : GithubPullRequestsWriteRepo {
+    private fun noopGithubWriteRepo() = object : GithubPullRequestsWriteRepo {
         override fun openPullRequest(pullRequest: PullRequest) {
             // can be ignored in this test
         }

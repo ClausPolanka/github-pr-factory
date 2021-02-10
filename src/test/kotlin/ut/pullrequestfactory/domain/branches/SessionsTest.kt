@@ -8,11 +8,11 @@ import pullrequestfactory.domain.branches.Sessions
 class SessionsTest {
 
     @Test
-    fun for_branches_of_the_same_iteration_with_different_pairing_partner_the_session_number_gets_incremented() {
+    fun `for branches of the same iteration with different pairing partner the session number gets incremented`() {
         val sessions = Sessions.createSessionsFor(
             listOf(
-                branch_with(iterationNr = 1, pairingPartner = 1),
-                branch_with(iterationNr = 1, pairingPartner = 2)
+                branchWith(iterationNr = 1, pairingPartner = 1),
+                branchWith(iterationNr = 1, pairingPartner = 2)
             )
         )
 
@@ -20,18 +20,18 @@ class SessionsTest {
     }
 
     @Test
-    fun for_branches_of_two_iterations_with_the_same_pairing_partner_the_session_number_stays_the_same() {
+    fun `for branches of two iterations with the same pairing partner the session number stays the same`() {
         val sessions = Sessions.createSessionsFor(
             listOf(
-                branch_with(iterationNr = 1, pairingPartner = 1),
-                branch_with(iterationNr = 2, pairingPartner = 1)
+                branchWith(iterationNr = 1, pairingPartner = 1),
+                branchWith(iterationNr = 2, pairingPartner = 1)
             )
         )
 
         assertThat(sessions).isEqualTo(listOf("1", "1"))
     }
 
-    private fun branch_with(iterationNr: Int, pairingPartner: Int) =
+    private fun branchWith(iterationNr: Int, pairingPartner: Int) =
         Branch("firstname_lastname_iteration_${iterationNr}_pairingpartner$pairingPartner")
 
 }

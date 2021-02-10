@@ -17,13 +17,13 @@ class CreatePullRequestsForAListOfBranches {
     private val pairingPartner2 = PairingPartner.BERNI
 
     @Test
-    fun create_pull_request_for_one_session_within_same_iteration_for_same_pairing_partner() {
+    fun `create pull request for one session within same iteration for same pairing partner`() {
         val branch = TestBranchBuilder()
             .withCandidate(Candidate("Firstname", "Lastname"))
             .withIteration(1)
             .withPairingPartner(pairingPartner)
             .build()
-        val sut = create_branches_for(listOf(branch))
+        val sut = createBranchesFor(listOf(branch))
 
         val prs = sut.getPullRequestsFor(listOf(pairingPartner))
 
@@ -37,7 +37,7 @@ class CreatePullRequestsForAListOfBranches {
     }
 
     @Test
-    fun create_pull_requests_for_one_session_and_two_iterations_for_same_pairing_partner() {
+    fun `create pull requests for one session and two iterations for same pairing partner`() {
         val candidate = Candidate("Firstname", "Lastname")
         val branch1 = TestBranchBuilder()
             .withCandidate(candidate)
@@ -49,7 +49,7 @@ class CreatePullRequestsForAListOfBranches {
             .withIteration(2)
             .withPairingPartner(pairingPartner)
             .build()
-        val sut = create_branches_for(listOf(branch1, branch2))
+        val sut = createBranchesFor(listOf(branch1, branch2))
 
         val prs = sut.getPullRequestsFor(listOf(pairingPartner))
 
@@ -71,7 +71,7 @@ class CreatePullRequestsForAListOfBranches {
     }
 
     @Test
-    fun create_pull_requests_for_two_sessions_within_same_iteration_for_different_pairing_partner() {
+    fun `create pull requests for two sessions within same iteration for different pairing partner`() {
         val candidate = Candidate("Firstname", "Lastname")
         val branch1 = TestBranchBuilder()
             .withCandidate(candidate)
@@ -83,7 +83,7 @@ class CreatePullRequestsForAListOfBranches {
             .withIteration(1)
             .withPairingPartner(pairingPartner2)
             .build()
-        val sut = create_branches_for(listOf(branch1, branch2))
+        val sut = createBranchesFor(listOf(branch1, branch2))
 
         val prs = sut.getPullRequestsFor(listOf(pairingPartner1, pairingPartner2))
 
@@ -105,7 +105,7 @@ class CreatePullRequestsForAListOfBranches {
     }
 
     @Test
-    fun create_pull_requests_for_two_sessions_for_two_iterations_for_different_pairing_partner() {
+    fun `create pull requests for two sessions for two iterations for different pairing partner`() {
         val candidate = Candidate("Firstname", "Lastname")
         val branch1 = TestBranchBuilder()
             .withCandidate(candidate)
@@ -117,7 +117,7 @@ class CreatePullRequestsForAListOfBranches {
             .withIteration(2)
             .withPairingPartner("berni")
             .build()
-        val sut = create_branches_for(listOf(branch1, branch2))
+        val sut = createBranchesFor(listOf(branch1, branch2))
 
         val prs = sut.getPullRequestsFor(listOf(PairingPartner.SHUBHI, PairingPartner.BERNI))
 
@@ -139,7 +139,7 @@ class CreatePullRequestsForAListOfBranches {
     }
 
     @Test
-    fun create_pull_requests_for_two_different_sessions_where_in_first_session_a_new_iteration_is_started() {
+    fun `create pull requests for two different sessions where in first session a new iteration is started`() {
         val candidate = Candidate("Firstname", "Lastname")
         val branch1 = TestBranchBuilder()
             .withCandidate(candidate)
@@ -156,7 +156,7 @@ class CreatePullRequestsForAListOfBranches {
             .withIteration(2)
             .withPairingPartner(pairingPartner2)
             .build()
-        val sut = create_branches_for(listOf(branch1, branch2, branch3))
+        val sut = createBranchesFor(listOf(branch1, branch2, branch3))
 
         val prs = sut.getPullRequestsFor(listOf(pairingPartner1, pairingPartner2))
 
@@ -185,17 +185,17 @@ class CreatePullRequestsForAListOfBranches {
     }
 
     @Test
-    fun support_multiple_sessions_for_same_pairing_partner() {
+    fun `support multiple sessions for same pairing partner`() {
         val branch1 = TestBranchBuilder()
-            .with_branch_name("firstname_lastname_Iteration_1_tomas")
+            .withBranchName("firstname_lastname_Iteration_1_tomas")
             .build()
         val branch2 = TestBranchBuilder()
-            .with_branch_name("firstname_lastname_Iteration_1_shubi")
+            .withBranchName("firstname_lastname_Iteration_1_shubi")
             .build()
         val branch3 = TestBranchBuilder()
-            .with_branch_name("firstname_lastname_Iteration_1_tomasr")
+            .withBranchName("firstname_lastname_Iteration_1_tomasr")
             .build()
-        val sut = create_branches_for(listOf(branch1, branch2, branch3))
+        val sut = createBranchesFor(listOf(branch1, branch2, branch3))
 
         val prs = sut.getPullRequestsFor(
             listOf(
@@ -230,14 +230,14 @@ class CreatePullRequestsForAListOfBranches {
     }
 
     @Test
-    fun create_pull_requests_where_branches_are_in_wrong_order_compared_to_given_pairing_partner() {
+    fun `create pull requests where branches are in wrong order compared to given pairing partner`() {
         val branch1 = TestBranchBuilder()
-            .with_branch_name("firstname_lastname_Iteration_1_berni")
+            .withBranchName("firstname_lastname_Iteration_1_berni")
             .build()
         val branch2 = TestBranchBuilder()
-            .with_branch_name("firstname_lastname_Iteration_1_claus")
+            .withBranchName("firstname_lastname_Iteration_1_claus")
             .build()
-        val sut = create_branches_for(listOf(branch1, branch2))
+        val sut = createBranchesFor(listOf(branch1, branch2))
 
         val prs = sut.getPullRequestsFor(
             listOf(
@@ -263,6 +263,6 @@ class CreatePullRequestsForAListOfBranches {
             )
     }
 
-    private fun create_branches_for(branches: List<Branch>) = Branches(branches, PullRequestLastNotFinishedMarker())
+    private fun createBranchesFor(branches: List<Branch>) = Branches(branches, PullRequestLastNotFinishedMarker())
 
 }

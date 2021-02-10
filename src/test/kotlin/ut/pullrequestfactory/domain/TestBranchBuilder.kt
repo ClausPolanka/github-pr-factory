@@ -32,7 +32,7 @@ class TestBranchBuilder {
         return this
     }
 
-    fun with_branch_name(branchName: String): TestBranchBuilder {
+    fun withBranchName(branchName: String): TestBranchBuilder {
         _branchName = branchName
         return this
     }
