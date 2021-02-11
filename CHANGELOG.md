@@ -14,6 +14,7 @@ adhere to https://github.com/olivierlacan/keep-a-changelog.
 
 ### Internal    
 - [Issue-#31] Reformat code according to Kotlin coding conventions
+- [Issue-#33] Move all GitHub API calls to GitHubAPIClient to adhere to the Single Responsibility Principle
 
 ## [1.3.0] - 2021-02-01 
 
@@ -79,3 +80,4 @@ adhere to https://github.com/olivierlacan/keep-a-changelog.
 [Issue-#27]: https://github.com/ClausPolanka/github-pr-factory/issues/27
 [Issue-#29]: https://github.com/ClausPolanka/github-pr-factory/issues/29
 [Issue-#31]: https://github.com/ClausPolanka/github-pr-factory/issues/31
+[Issue-#33]: https://github.com/ClausPolanka/github-pr-factory/issues/33
