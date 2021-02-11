@@ -39,8 +39,7 @@ class OpenCommand(
         val pps = listOf(pp1, pp2, pp3, pp4, pp5, pp6, pp7)
         OpenPullRequestsProgram(
             args.ui,
-            args.repoUrl,
-            GithubAPIClient(httpClient, args.baseUrl),
+            GithubAPIClient(httpClient, args.baseUrl, args.repoUrl),
             httpClient,
             isLastFinished,
             candidate,

@@ -7,7 +7,6 @@ import pullrequestfactory.io.repositories.KhttpClientStats
 
 class ClosePullRequestsPrograms(
     private val ui: UI,
-    private val repoUrl: String,
     private val githubAPIClient: GithubAPIClient,
     private val httpClientStats: KhttpClientStats,
     private val candidate: Candidate
@@ -20,18 +19,9 @@ class ClosePullRequestsPrograms(
             ui,
             githubAPIClient,
             httpClientStats,
-            create(),
+            ClosePullRequestProgram(ui, githubAPIClient, candidate),
             requiredNrOfRequestsForClosingPRs
         ).instance(debug = true).execute()
-    }
-
-    private fun create(): ClosePRProgram {
-        return ClosePullRequestProgram(
-            ui,
-            repoUrl,
-            httpClientStats,
-            candidate
-        )
     }
 
 }

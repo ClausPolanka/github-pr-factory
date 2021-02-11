@@ -2,7 +2,7 @@ package pullrequestfactory.domain.branches
 
 class EmptyGithubBranchesRepo : GithubBranchesRepo {
 
-    override fun getAllBranches(): List<Branch> {
+    override fun getBranches(): List<Branch> {
         return emptyList()
     }
 

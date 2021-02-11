@@ -34,7 +34,7 @@ class CloseCommandIT {
         val pr2 = prFor(candidateFirstName, candidateLastName, prNr = 2)
 
         stubFor(
-            get("/repos/ClausPolanka/wordcount/pulls?page=1")
+            get(urlPathMatching("/repos/ClausPolanka/wordcount/pulls(\\?page\\=1)?"))
                 .willReturn(
                     aResponse()
                         .withStatus(200)

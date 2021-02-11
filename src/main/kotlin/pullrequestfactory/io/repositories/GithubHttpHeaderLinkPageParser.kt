@@ -1,6 +1,6 @@
 package pullrequestfactory.io.repositories
 
-object GithubHttpHeaderLinkPageParser {
+internal object GithubHttpHeaderLinkPageParser {
 
     private val DEFAULT_VALUE = 1..1
     private const val IDX_OF_MATCHED_VAL = 1

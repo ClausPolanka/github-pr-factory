@@ -28,7 +28,7 @@ class GithubPRFactory(
     }
 
     private fun getBranchesFor(candidate: Candidate): Branches {
-        val branches = githubBranchesRepo.getAllBranches()
+        val branches = githubBranchesRepo.getBranches()
             .filter { it.name.contains(candidate.firstName, ignoreCase = true) }
             .filter { it.name.contains(candidate.lastName, ignoreCase = true) }
             .map {
@@ -40,7 +40,7 @@ class GithubPRFactory(
 
     fun closePullRequestsFor(candidate: Candidate) {
         ui.show("Closing pull requests for: $candidate")
-        val prs = githubPullRequestsRepo.getAllOpenPullRequests()
+        val prs = githubPullRequestsRepo.getPullRequests()
             .filter { it.title.contains(candidate.firstName, ignoreCase = true) }
             .filter { it.title.contains(candidate.lastName, ignoreCase = true) }
 
