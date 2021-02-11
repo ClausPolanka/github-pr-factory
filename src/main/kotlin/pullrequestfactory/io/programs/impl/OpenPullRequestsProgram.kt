@@ -8,7 +8,6 @@ import pullrequestfactory.io.repositories.KhttpClientStats
 
 class OpenPullRequestsProgram(
     private val ui: UI,
-    private val repoUrl: String,
     private val githubAPIClient: GithubAPIClient,
     private val httpClientStats: KhttpClientStats,
     private val isLastIterationFinished: Boolean,
@@ -33,16 +32,14 @@ class OpenPullRequestsProgram(
             true -> {
                 OpenPRProgramLastSessionFinished(
                     ui,
-                    repoUrl,
-                    httpClientStats,
+                    githubAPIClient,
                     candidate,
                     pairingPartner
                 )
             }
             else -> OpenPRsProgramLastSessionNotFinished(
                 ui,
-                repoUrl,
-                httpClientStats,
+                githubAPIClient,
                 candidate,
                 pairingPartner
             )

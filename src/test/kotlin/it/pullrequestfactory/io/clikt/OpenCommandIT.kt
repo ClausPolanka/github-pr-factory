@@ -60,7 +60,7 @@ class OpenCommandIT {
         )
 
         stubFor(
-            get("/repos/ClausPolanka/wordcount/branches?page=1")
+            get(urlPathMatching("/repos/ClausPolanka/wordcount/branches(\\?page\\=1)?"))
                 .willReturn(
                     aResponse()
                         .withStatus(200)
@@ -103,7 +103,7 @@ class OpenCommandIT {
         )
 
         stubFor(
-            get("/repos/ClausPolanka/wordcount/branches?page=1")
+            get(urlPathMatching("/repos/ClausPolanka/wordcount/branches(\\?page\\=1)?"))
                 .willReturn(
                     aResponse()
                         .withStatus(200)

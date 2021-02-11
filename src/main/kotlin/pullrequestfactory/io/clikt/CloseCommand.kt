@@ -8,7 +8,6 @@ import pullrequestfactory.io.programs.impl.ClosePullRequestsPrograms
 import pullrequestfactory.io.programs.impl.GithubAPIClient
 import pullrequestfactory.io.repositories.KhttpClient
 import pullrequestfactory.io.repositories.KhttpClientStats
-import pullrequestfactory.io.uis.ConsoleUI
 
 class CloseCommand(
     private val args: CommandArgs
@@ -30,9 +29,8 @@ class CloseCommand(
         val candidate = Candidate(cfn, cln)
         val httpClient = KhttpClientStats(KhttpClient(githubToken))
         ClosePullRequestsPrograms(
-            ConsoleUI(),
-            args.repoUrl,
-            GithubAPIClient(httpClient, args.baseUrl),
+            args.ui,
+            GithubAPIClient(httpClient, args.baseUrl, args.repoUrl, args.ui),
             httpClient,
             candidate
         ).execute()
