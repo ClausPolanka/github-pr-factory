@@ -24,7 +24,13 @@ class GithubPRFactory(
     fun openPullRequests(candidate: Candidate, pairingPartner: List<PairingPartner>) {
         val branches = getBranchesFor(candidate)
         val prs = branches.getPullRequestsFor(pairingPartner)
-        prs.forEach { githubPullRequestsRepo.openPullRequest(it) }
+        ui.show("Opening pull requests for: $candidate")
+        prs.forEach {
+            ui.show("Opening pull request: $it")
+            githubPullRequestsRepo.openPullRequest(it)
+        }
+        ui.show("Successfully opened all pull requests for: $candidate")
+        ui.show("Have a nice day. Bye bye.")
     }
 
     private fun getBranchesFor(candidate: Candidate): Branches {

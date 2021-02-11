@@ -7,6 +7,7 @@ import pullrequestfactory.domain.branches.GithubBranchesRepo
 import pullrequestfactory.domain.pullrequests.GetPullRequest
 import pullrequestfactory.domain.pullrequests.GithubPullRequestsRepo
 import pullrequestfactory.domain.pullrequests.PullRequest
+import pullrequestfactory.domain.uis.UI
 import pullrequestfactory.io.repositories.GithubHttpHeaderLinkPageParser
 import pullrequestfactory.io.repositories.HttpClient
 import java.time.Instant
@@ -14,24 +15,31 @@ import java.time.Instant
 class GithubAPIClient(
     private val httpClient: HttpClient,
     baseUrl: String,
-    repoUrl: String
+    repoUrl: String,
+    private val ui: UI
 ) : GithubBranchesRepo, GithubPullRequestsRepo {
     private val urlForGitHubRateLimit = "$baseUrl/rate_limit"
     private val urlForGitHubBranches = "$repoUrl/branches"
     private val urlForGitHubPullRequests = "$repoUrl/pulls"
 
     fun getRateLimit(): RateLimit {
-        val res = httpClient.get(urlForGitHubRateLimit)
-        return when (res.statusCode) {
-            401, 403, 404 -> defaultRateLimit()
-            else -> (jsonParser().parse(res.text) ?: defaultRateLimit())
+        val response = httpClient.get(urlForGitHubRateLimit)
+        return when (response.statusCode) {
+            401, 403, 404 -> {
+                ui.show("Response Code: '${response.statusCode}'")
+                defaultRateLimit()
+            }
+            else -> jsonParser().parse(response.text) ?: defaultRateLimit()
         }
     }
 
     override fun getBranches(): List<Branch> {
         val response = httpClient.get(urlForGitHubBranches)
         return when (response.statusCode) {
-            403, 404 -> emptyList()
+            401, 403, 404 -> {
+                ui.show("Response Code: '${response.statusCode}'")
+                emptyList()
+            }
             else -> getList(response, urlForGitHubBranches)
         }
     }
@@ -39,7 +47,10 @@ class GithubAPIClient(
     override fun getPullRequests(): List<GetPullRequest> {
         val response = httpClient.get(urlForGitHubPullRequests)
         return when (response.statusCode) {
-            403, 404 -> emptyList()
+            401, 403, 404 -> {
+                ui.show("Response Code: '${response.statusCode}'")
+                emptyList()
+            }
             else -> getList(response, urlForGitHubPullRequests)
         }
     }
@@ -47,7 +58,7 @@ class GithubAPIClient(
     override fun openPullRequest(pullRequest: PullRequest) {
         httpClient.post(
             url = urlForGitHubPullRequests,
-            data = Klaxon().toJsonString(pullRequest)
+            data = jsonParser().toJsonString(pullRequest)
         )
     }
 
@@ -55,7 +66,7 @@ class GithubAPIClient(
         val url = "$urlForGitHubPullRequests/$number"
         httpClient.patch(
             url = url,
-            data = Klaxon().toJsonString(PullRequstPatch(state = "closed"))
+            data = jsonParser().toJsonString(PullRequstPatch(state = "closed"))
         )
     }
 
@@ -65,8 +76,11 @@ class GithubAPIClient(
         pages.forEach {
             val pagedUrl = "$url?page=$it"
             val response = httpClient.get(pagedUrl)
+            when (response.statusCode) {
+                401, 403, 404 -> ui.show("Response Code: '${response.statusCode}'")
+            }
             val json = response.text
-            branches.add((Klaxon().parseArray(json) ?: emptyList()))
+            branches.add((jsonParser().parseArray(json) ?: emptyList()))
         }
         return branches.flatten()
     }
