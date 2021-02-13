@@ -28,11 +28,6 @@ class DebugRateLimitCheckedProgram(
         }
     }
 
-    private fun UI.showRateLimitExeeded(rateLimitBefore: RateLimit) {
-        show("The limit exeeded for calling the Github API with your Github user")
-        show("Please retry at: ${rateLimitBefore.localResetDateTime()}")
-    }
-
     private fun UI.show(rateLimitBefore: RateLimit) {
         show("Before: $rateLimitBefore")
     }
