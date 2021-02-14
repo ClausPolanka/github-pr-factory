@@ -6,9 +6,9 @@ import org.junit.After
 import org.junit.ClassRule
 import org.junit.Test
 import pullrequestfactory.domain.pullrequests.GetPullRequest
+import pullrequestfactory.domain.uis.QuietUI
 import pullrequestfactory.io.clikt.CloseCommand
 import pullrequestfactory.io.clikt.CommandArgs
-import pullrequestfactory.io.uis.ConsoleUI
 
 class CloseCommandIT {
 
@@ -66,7 +66,7 @@ class CloseCommandIT {
                 baseUrl = "http://localhost:8080",
                 repoPath = "/repos/ClausPolanka/wordcount",
                 userPropertiesFile = "user.properties",
-                ui = ConsoleUI()
+                ui = QuietUI()
             )
         ).parse(args)
     }

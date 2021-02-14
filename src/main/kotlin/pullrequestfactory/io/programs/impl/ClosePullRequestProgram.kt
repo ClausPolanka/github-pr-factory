@@ -5,7 +5,6 @@ import pullrequestfactory.domain.GithubPRFactory
 import pullrequestfactory.domain.branches.BranchSyntaxValidator
 import pullrequestfactory.domain.pullrequests.PullRequestLastNotFinishedMarker
 import pullrequestfactory.domain.uis.UI
-import pullrequestfactory.io.uis.ConsoleUI
 
 class ClosePullRequestProgram(
     private val ui: UI,
@@ -15,7 +14,7 @@ class ClosePullRequestProgram(
 
     override fun execute() {
         val f = GithubPRFactory(
-            ConsoleUI(),
+            ui,
             gitHubApiClient,
             gitHubApiClient,
             BranchSyntaxValidator(ui),

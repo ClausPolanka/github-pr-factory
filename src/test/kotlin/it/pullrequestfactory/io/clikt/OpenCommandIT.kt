@@ -11,12 +11,12 @@ import pullrequestfactory.domain.PairingPartner
 import pullrequestfactory.domain.PairingPartner.*
 import pullrequestfactory.domain.branches.Branch
 import pullrequestfactory.domain.pullrequests.PullRequest
+import pullrequestfactory.domain.uis.QuietUI
 import pullrequestfactory.domain.uis.UI
 import pullrequestfactory.io.clikt.CommandArgs
 import pullrequestfactory.io.clikt.OpenCommand
 import pullrequestfactory.io.programs.impl.Rate
 import pullrequestfactory.io.programs.impl.RateLimit
-import pullrequestfactory.io.uis.ConsoleUI
 import java.time.LocalDateTime
 import java.time.ZoneId
 
@@ -179,7 +179,7 @@ class OpenCommandIT {
                 baseUrl = "http://localhost:8080",
                 repoPath = "/repos/ClausPolanka/wordcount",
                 userPropertiesFile = "user.properties",
-                ui = ConsoleUI()
+                ui = QuietUI()
             )
         ).parse(args)
     }

@@ -6,7 +6,6 @@ import pullrequestfactory.domain.PairingPartner
 import pullrequestfactory.domain.branches.BranchSyntaxValidator
 import pullrequestfactory.domain.pullrequests.PullRequestLastFinishedMarker
 import pullrequestfactory.domain.uis.UI
-import pullrequestfactory.io.uis.ConsoleUI
 
 class OpenPRProgramLastSessionFinished(
     private val ui: UI,
@@ -17,7 +16,7 @@ class OpenPRProgramLastSessionFinished(
 
     override fun execute() {
         val f = GithubPRFactory(
-            ConsoleUI(),
+            ui,
             gitHubApiClient,
             gitHubApiClient,
             BranchSyntaxValidator(ui),
