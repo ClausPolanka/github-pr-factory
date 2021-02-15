@@ -34,3 +34,5 @@ fun CliktCommand.pairingPartner(nr: String) =
     option("-pp$nr", "--pairing-partner-$nr")
         .enum<PairingPartner>()
         .prompt()
+
+fun CliktCommand.debugOption() = option("-d", "--debug").flag(default = false)
