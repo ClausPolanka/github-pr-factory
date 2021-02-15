@@ -11,6 +11,15 @@ class PullRequestTest {
     private val pullRequestTitle = "Firstname Lastname Iteration 1 / Session 1 pairingpartner"
 
     @Test
+    fun `base and head return corresponding branch names`() {
+        val sut = PullRequest(pullRequestTitle, _base = Branch(name = "branch1"), _head = Branch(name = "branch2"))
+        val base = sut.base
+        val head = sut.head
+        assertThat(base).isEqualTo("branch1")
+        assertThat(head).isEqualTo("branch2")
+    }
+
+    @Test
     fun `mark title of current pull request when next pull request has new iteration`() {
         val sut = createPullRequest()
 

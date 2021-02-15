@@ -8,6 +8,9 @@ data class PullRequest(
     private val _head: Branch
 ) {
 
+    val base: String = _base.name
+    val head: String = _head.name
+
     fun markTitleWhenNextHasNewIteration(nextPr: PullRequest) = when {
         nextPr.hasNewIteration() -> markTitle()
         else -> this.copy()
