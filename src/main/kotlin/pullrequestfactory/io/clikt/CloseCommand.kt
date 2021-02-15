@@ -2,6 +2,8 @@ package pullrequestfactory.io.clikt
 
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.core.context
+import com.github.ajalt.clikt.parameters.options.flag
+import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.sources.PropertiesValueSource
 import pullrequestfactory.domain.Candidate
 import pullrequestfactory.io.programs.impl.ClosePullRequestsPrograms
@@ -21,6 +23,7 @@ class CloseCommand(
         }
     }
 
+    private val debug by option("-d", "--debug").flag(default = false)
     private val githubToken by gitHubAuthorizationTokenOption()
     private val cfn by candidateFirstNameOption()
     private val cln by candidateLastNameOption()
@@ -32,7 +35,8 @@ class CloseCommand(
             args.ui,
             GithubAPIClient(httpClient, args.baseUrl, args.repoUrl, args.ui),
             httpClient,
-            candidate
+            candidate,
+            debug
         ).execute()
     }
 }

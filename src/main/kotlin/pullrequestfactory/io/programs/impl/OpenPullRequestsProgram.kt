@@ -13,7 +13,8 @@ class OpenPullRequestsProgram(
     private val httpClientStats: KhttpClientStats,
     private val isLastIterationFinished: Boolean,
     private val candidate: Candidate,
-    private val pairingPartner: List<PairingPartner>
+    private val pairingPartner: List<PairingPartner>,
+    private val debug: Boolean
 ) : Program {
 
     private val requiredNrOfRequestsForOpeningPRs = 30
@@ -25,7 +26,7 @@ class OpenPullRequestsProgram(
             httpClientStats,
             create(),
             requiredNrOfRequestsForOpeningPRs
-        ).instance(debug = true).execute()
+        ).instance(debug).execute()
     }
 
     private fun create(): OpenPRProgram {

@@ -10,7 +10,8 @@ class ClosePullRequestsPrograms(
     private val ui: UI,
     private val githubAPIClient: GithubAPIClient,
     private val httpClientStats: KhttpClientStats,
-    private val candidate: Candidate
+    private val candidate: Candidate,
+    private val debug: Boolean
 ) : Program {
 
     private val requiredNrOfRequestsForClosingPRs = 15
@@ -22,7 +23,7 @@ class ClosePullRequestsPrograms(
             httpClientStats,
             ClosePullRequestProgram(ui, githubAPIClient, candidate),
             requiredNrOfRequestsForClosingPRs
-        ).instance(debug = true).execute()
+        ).instance(debug).execute()
     }
 
 }

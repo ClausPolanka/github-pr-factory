@@ -2,6 +2,8 @@ package pullrequestfactory.io.clikt
 
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.core.context
+import com.github.ajalt.clikt.parameters.options.flag
+import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.sources.PropertiesValueSource
 import pullrequestfactory.domain.Candidate
 import pullrequestfactory.io.programs.impl.OpenPullRequestsProgram
@@ -21,6 +23,7 @@ class OpenCommand(
         }
     }
 
+    private val debug by option("-d", "--debug").flag(default = false)
     private val cfn by candidateFirstNameOption()
     private val cln by candidateLastNameOption()
     private val githubToken by gitHubAuthorizationTokenOption()
@@ -43,7 +46,8 @@ class OpenCommand(
             httpClient,
             isLastFinished,
             candidate,
-            pps
+            pps,
+            debug
         ).execute()
     }
 }
