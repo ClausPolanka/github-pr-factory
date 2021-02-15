@@ -4,7 +4,8 @@ adhere to https://github.com/olivierlacan/keep-a-changelog.
 
 ## [1.4.0-SNAPSHOT] 
 
-### Added       
+### Added
+- [Issue-#35] Add -d, --debug flag to open and close command. Currently, when active rate limit info is shown
 
 ### Changed     
 
@@ -82,4 +83,5 @@ adhere to https://github.com/olivierlacan/keep-a-changelog.
 [Issue-#29]: https://github.com/ClausPolanka/github-pr-factory/issues/29
 [Issue-#31]: https://github.com/ClausPolanka/github-pr-factory/issues/31
 [Issue-#33]: https://github.com/ClausPolanka/github-pr-factory/issues/33
+[Issue-#35]: https://github.com/ClausPolanka/github-pr-factory/issues/35
 [Issue-#36]: https://github.com/ClausPolanka/github-pr-factory/issues/36

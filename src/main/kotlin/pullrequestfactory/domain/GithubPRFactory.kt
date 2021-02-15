@@ -29,7 +29,7 @@ class GithubPRFactory(
             ui.show("Opening pull request: $it")
             githubPullRequestsRepo.openPullRequest(it)
         }
-        ui.show("Successfully opened all pull requests for: $candidate")
+        ui.show("Finished opening pull requests for: $candidate")
         ui.show("Have a nice day. Bye bye.")
     }
 
@@ -51,7 +51,7 @@ class GithubPRFactory(
             .filter { it.title.contains(candidate.lastName, ignoreCase = true) }
 
         prs.forEach { githubPullRequestsRepo.closePullRequest(it.number) }
-        ui.show("Successfully closed all pull requests for: $candidate")
+        ui.show("Finished closing pull requests for: $candidate")
         ui.show("Have a nice day. Bye bye.")
     }
 

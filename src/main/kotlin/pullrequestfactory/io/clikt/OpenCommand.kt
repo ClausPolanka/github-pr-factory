@@ -21,6 +21,7 @@ class OpenCommand(
         }
     }
 
+    private val debug by debugOption()
     private val cfn by candidateFirstNameOption()
     private val cln by candidateLastNameOption()
     private val githubToken by gitHubAuthorizationTokenOption()
@@ -43,7 +44,8 @@ class OpenCommand(
             httpClient,
             isLastFinished,
             candidate,
-            pps
+            pps,
+            debug
         ).execute()
     }
 }

@@ -43,6 +43,7 @@ Usage: github-pr-factory open [OPTIONS]
   Opens pull requests. App prompts for options if not passed.
 
 Options:
+  -d, --debug
   -fn, --first-name TEXT           Candidate's first name
   -ln, --last-name TEXT            Candidate's last name
   -g, --github-token TEXT          Your personal GitHub authorization token.
@@ -70,6 +71,7 @@ Usage: github-pr-factory close [OPTIONS]
   Closes pull requests. App prompts for options if not passed.
 
 Options:
+  -d, --debug
   -g, --github-token TEXT  Your personal GitHub authorization token. Can be
                            set in a file user.properties in the root
                            directory. The file's format:

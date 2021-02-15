@@ -159,7 +159,7 @@ class OpenCommandIT {
 
         val actualOutputCapture = mutableListOf<String>()
 
-        OpenCommand(argsWith(fakeUI(actualOutputCapture))).parse(anyArgs)
+        OpenCommand(argsWith(fakeUI(actualOutputCapture))).parse(anyArgs.withOption("--debug"))
 
         assertThat(actualOutputCapture.any { it.contains("remaining=0") }).isTrue
     }
@@ -214,4 +214,10 @@ class OpenCommandIT {
                 TODO("Ignore")
             }
         }
+}
+
+private inline fun <reified T> Array<T>.withOption(option: T): Array<T> {
+    val elems = this.toMutableList()
+    elems.add(option)
+    return elems.toTypedArray()
 }

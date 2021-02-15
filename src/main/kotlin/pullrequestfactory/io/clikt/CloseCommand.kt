@@ -21,6 +21,7 @@ class CloseCommand(
         }
     }
 
+    private val debug by debugOption()
     private val githubToken by gitHubAuthorizationTokenOption()
     private val cfn by candidateFirstNameOption()
     private val cln by candidateLastNameOption()
@@ -32,7 +33,8 @@ class CloseCommand(
             args.ui,
             GithubAPIClient(httpClient, args.baseUrl, args.repoUrl, args.ui),
             httpClient,
-            candidate
+            candidate,
+            debug
         ).execute()
     }
 }

@@ -27,7 +27,7 @@ class GithubAPIClient(
         val response = httpClient.get(urlForGitHubRateLimit)
         return when (response.statusCode) {
             401, 403, 404 -> {
-                ui.show("Response Code: '${response.statusCode}'")
+                ui.show("Get Rate Limit Response Code: '${response.statusCode}'")
                 defaultRateLimit()
             }
             else -> jsonParser().parse(response.text) ?: defaultRateLimit()
@@ -38,7 +38,7 @@ class GithubAPIClient(
         val response = httpClient.get(urlForGitHubBranches)
         return when (response.statusCode) {
             401, 403, 404 -> {
-                ui.show("Response Code: '${response.statusCode}'")
+                ui.show("Get Branches Response Code: '${response.statusCode}'")
                 emptyList()
             }
             else -> getList(response, urlForGitHubBranches)
@@ -49,7 +49,7 @@ class GithubAPIClient(
         val response = httpClient.get(urlForGitHubPullRequests)
         return when (response.statusCode) {
             401, 403, 404 -> {
-                ui.show("Response Code: '${response.statusCode}'")
+                ui.show("Get Pull Requests Response Code: '${response.statusCode}'")
                 emptyList()
             }
             else -> getList(response, urlForGitHubPullRequests)
@@ -57,33 +57,35 @@ class GithubAPIClient(
     }
 
     override fun openPullRequest(pullRequest: PullRequest) {
-        httpClient.post(
+        val response = httpClient.post(
             url = urlForGitHubPullRequests,
             data = jsonParser().toJsonString(pullRequest)
         )
+        ui.show("Open Pull Request Response Code: '${response.statusCode}'")
     }
 
     override fun closePullRequest(number: Int) {
         val url = "$urlForGitHubPullRequests/$number"
-        httpClient.patch(
+        val response = httpClient.patch(
             url = url,
             data = jsonParser().toJsonString(PullRequstPatch(state = "closed"))
         )
+        ui.show("Close Pull Request Response Code: '${response.statusCode}'")
     }
 
     private inline fun <reified T> getList(res: Response, url: String): List<T> {
         val pages = GithubHttpHeaderLinkPageParser.parsePages(res.headers["link"])
-        val branches = mutableListOf<List<T>>()
+        val list = mutableListOf<List<T>>()
         pages.forEach {
             val pagedUrl = "$url?page=$it"
             val response = httpClient.get(pagedUrl)
             when (response.statusCode) {
-                401, 403, 404 -> ui.show("Response Code: '${response.statusCode}'")
+                401, 403, 404 -> ui.show("Get Response Code: '${response.statusCode}'")
             }
             val json = response.text
-            branches.add((jsonParser().parseArray(json) ?: emptyList()))
+            list.add((jsonParser().parseArray(json) ?: emptyList()))
         }
-        return branches.flatten()
+        return list.flatten()
     }
 
     private fun defaultRateLimit() =
