@@ -185,9 +185,10 @@ class OpenCommandIT {
     }
 
     private fun verify(pr: PullRequest) {
+        val json = """{"base" : "${pr.base}", "head" : "${pr.head}", "title" : "${pr.title}"}"""
         verify(
             postRequestedFor(urlMatching("/repos/ClausPolanka/wordcount/pulls"))
-                .withRequestBody(matching(Regex.escape(Klaxon().toJsonString(pr))))
+                .withRequestBody(matching(Regex.escape(json)))
                 .addCommonHeaders()
         )
     }
