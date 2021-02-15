@@ -1,4 +1,4 @@
-package pullrequestfactory.io.programs.impl
+package pullrequestfactory.io.repositories
 
 import com.beust.klaxon.Klaxon
 import khttp.responses.Response
@@ -8,8 +8,9 @@ import pullrequestfactory.domain.pullrequests.GetPullRequest
 import pullrequestfactory.domain.pullrequests.GithubPullRequestsRepo
 import pullrequestfactory.domain.pullrequests.PullRequest
 import pullrequestfactory.domain.uis.UI
-import pullrequestfactory.io.repositories.GithubHttpHeaderLinkPageParser
-import pullrequestfactory.io.repositories.HttpClient
+import pullrequestfactory.io.programs.impl.EpochMilliInstantConverter
+import pullrequestfactory.io.programs.impl.Rate
+import pullrequestfactory.io.programs.impl.RateLimit
 import java.time.Instant
 
 class GithubAPIClient(

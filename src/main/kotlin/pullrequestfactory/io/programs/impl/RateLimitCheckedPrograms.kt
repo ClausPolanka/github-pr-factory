@@ -2,6 +2,7 @@ package pullrequestfactory.io.programs.impl
 
 import pullrequestfactory.domain.uis.UI
 import pullrequestfactory.io.programs.Program
+import pullrequestfactory.io.repositories.GithubAPIClient
 import pullrequestfactory.io.repositories.KhttpClientStats
 
 class RateLimitCheckedPrograms(

@@ -6,6 +6,7 @@ import pullrequestfactory.domain.PairingPartner
 import pullrequestfactory.domain.branches.BranchSyntaxValidator
 import pullrequestfactory.domain.pullrequests.PullRequestLastFinishedMarker
 import pullrequestfactory.domain.uis.UI
+import pullrequestfactory.io.repositories.GithubAPIClient
 
 class OpenPRProgramLastSessionFinished(
     private val ui: UI,
