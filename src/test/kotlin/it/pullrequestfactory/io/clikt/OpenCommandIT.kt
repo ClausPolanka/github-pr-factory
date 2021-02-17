@@ -22,6 +22,7 @@ import java.time.ZoneId
 
 class OpenCommandIT {
 
+    private val repoPath = "/repos/ClausPolanka/wordcount"
     private val candidateFirstName = "firstname"
     private val candidateLastName = "lastname"
 
@@ -60,7 +61,7 @@ class OpenCommandIT {
         )
 
         stubFor(
-            get(urlPathMatching("/repos/ClausPolanka/wordcount/branches(\\?page\\=1)?"))
+            get(urlPathMatching("$repoPath/branches(\\?page\\=1)?"))
                 .willReturn(
                     aResponse()
                         .withStatus(200)
@@ -103,7 +104,7 @@ class OpenCommandIT {
         )
 
         stubFor(
-            get(urlPathMatching("/repos/ClausPolanka/wordcount/branches(\\?page\\=1)?"))
+            get(urlPathMatching("$repoPath/branches(\\?page\\=1)?"))
                 .willReturn(
                     aResponse()
                         .withStatus(200)
@@ -177,7 +178,7 @@ class OpenCommandIT {
         OpenCommand(
             CommandArgs(
                 baseUrl = "http://localhost:8080",
-                repoPath = "/repos/ClausPolanka/wordcount",
+                repoPath = repoPath,
                 userPropertiesFile = "user.properties",
                 ui = QuietUI()
             )
@@ -187,7 +188,7 @@ class OpenCommandIT {
     private fun verify(pr: PullRequest) {
         val json = """{"base" : "${pr.base}", "head" : "${pr.head}", "title" : "${pr.title}"}"""
         verify(
-            postRequestedFor(urlMatching("/repos/ClausPolanka/wordcount/pulls"))
+            postRequestedFor(urlMatching("$repoPath/pulls"))
                 .withRequestBody(matching(Regex.escape(json)))
                 .addCommonHeaders()
         )
@@ -199,7 +200,7 @@ class OpenCommandIT {
     private fun argsWith(ui: UI) =
         CommandArgs(
             baseUrl = "http://localhost:8080",
-            repoPath = "/repos/ClausPolanka/wordcount",
+            repoPath = repoPath,
             userPropertiesFile = "user.properties",
             ui = ui
         )
