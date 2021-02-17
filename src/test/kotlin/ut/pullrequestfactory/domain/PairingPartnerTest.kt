@@ -24,7 +24,7 @@ class PairingPartnerTest {
     }
 
     @Test
-    fun `pairing partner branch names for definied pairing partner`() {
+    fun `pairing partner branch names for defined pairing partner`() {
         val ppName = "tomasr"
         val pp = PairingPartner.from(ppName)
 
@@ -34,7 +34,7 @@ class PairingPartnerTest {
     }
 
     @Test
-    fun `pairing partner branch names for definied pairing partner berni`() {
+    fun `pairing partner branch names for defined pairing partner berni`() {
         val ppName = "berni"
         val pp = PairingPartner.from(ppName)
 
@@ -44,7 +44,7 @@ class PairingPartnerTest {
     }
 
     @Test
-    fun `pairing partner branch names for definied pairing partner shubi`() {
+    fun `pairing partner branch names for defined pairing partner shubi`() {
         val ppName = "shubi"
         val pp = PairingPartner.from(ppName)
 
