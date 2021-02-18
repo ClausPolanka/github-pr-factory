@@ -53,21 +53,18 @@ class CreatePullRequestsForAListOfBranches {
 
         val prs = sut.getPullRequestsFor(listOf(pairingPartner))
 
-        assertThat(prs)
-            .contains(
-                PullRequest(
-                    "Firstname Lastname Iteration 1 / Session 1 ${pairingPartner.pullRequestName()} [PR]",
-                    Branch("master"),
-                    branch1
-                )
+        assertThat(prs).contains(
+            PullRequest(
+                "Firstname Lastname Iteration 1 / Session 1 ${pairingPartner.pullRequestName()} [PR]",
+                Branch("master"),
+                branch1
+            ),
+            PullRequest(
+                "Firstname Lastname Iteration 2 / Session 1 ${pairingPartner.pullRequestName()}",
+                branch1,
+                branch2
             )
-            .contains(
-                PullRequest(
-                    "Firstname Lastname Iteration 2 / Session 1 ${pairingPartner.pullRequestName()}",
-                    branch1,
-                    branch2
-                )
-            )
+        )
     }
 
     @Test
@@ -87,21 +84,18 @@ class CreatePullRequestsForAListOfBranches {
 
         val prs = sut.getPullRequestsFor(listOf(pairingPartner1, pairingPartner2))
 
-        assertThat(prs)
-            .contains(
-                PullRequest(
-                    "Firstname Lastname Iteration 1 / Session 1 ${pairingPartner1.pullRequestName()}",
-                    Branch("master"),
-                    branch1
-                )
+        assertThat(prs).contains(
+            PullRequest(
+                "Firstname Lastname Iteration 1 / Session 1 ${pairingPartner1.pullRequestName()}",
+                Branch("master"),
+                branch1
+            ),
+            PullRequest(
+                "Firstname Lastname Iteration 1 / Session 2 ${pairingPartner2.pullRequestName()}",
+                branch1,
+                branch2
             )
-            .contains(
-                PullRequest(
-                    "Firstname Lastname Iteration 1 / Session 2 ${pairingPartner2.pullRequestName()}",
-                    branch1,
-                    branch2
-                )
-            )
+        )
     }
 
     @Test
@@ -121,21 +115,10 @@ class CreatePullRequestsForAListOfBranches {
 
         val prs = sut.getPullRequestsFor(listOf(PairingPartner.SHUBHI, PairingPartner.BERNI))
 
-        assertThat(prs)
-            .contains(
-                PullRequest(
-                    "Firstname Lastname Iteration 1 / Session 1 Shubhi [PR]",
-                    Branch("master"),
-                    branch1
-                )
-            )
-            .contains(
-                PullRequest(
-                    "Firstname Lastname Iteration 2 / Session 2 Berni",
-                    branch1,
-                    branch2
-                )
-            )
+        assertThat(prs).contains(
+            PullRequest("Firstname Lastname Iteration 1 / Session 1 Shubhi [PR]", Branch("master"), branch1),
+            PullRequest("Firstname Lastname Iteration 2 / Session 2 Berni", branch1, branch2)
+        )
     }
 
     @Test
@@ -160,107 +143,53 @@ class CreatePullRequestsForAListOfBranches {
 
         val prs = sut.getPullRequestsFor(listOf(pairingPartner1, pairingPartner2))
 
-        assertThat(prs)
-            .contains(
-                PullRequest(
-                    "Firstname Lastname Iteration 1 / Session 1 ${pairingPartner1.pullRequestName()} [PR]",
-                    Branch("master"),
-                    branch1
-                )
+        assertThat(prs).contains(
+            PullRequest(
+                "Firstname Lastname Iteration 1 / Session 1 ${pairingPartner1.pullRequestName()} [PR]",
+                Branch("master"),
+                branch1
+            ),
+            PullRequest(
+                "Firstname Lastname Iteration 2 / Session 1 ${pairingPartner1.pullRequestName()}",
+                branch1,
+                branch2
+            ),
+            PullRequest(
+                "Firstname Lastname Iteration 2 / Session 2 ${pairingPartner2.pullRequestName()}",
+                branch2,
+                branch3
             )
-            .contains(
-                PullRequest(
-                    "Firstname Lastname Iteration 2 / Session 1 ${pairingPartner1.pullRequestName()}",
-                    branch1,
-                    branch2
-                )
-            )
-            .contains(
-                PullRequest(
-                    "Firstname Lastname Iteration 2 / Session 2 ${pairingPartner2.pullRequestName()}",
-                    branch2,
-                    branch3
-                )
-            )
+        )
     }
 
     @Test
     fun `support multiple sessions for same pairing partner`() {
-        val branch1 = TestBranchBuilder()
-            .withBranchName("firstname_lastname_Iteration_1_tomas")
-            .build()
-        val branch2 = TestBranchBuilder()
-            .withBranchName("firstname_lastname_Iteration_1_shubi")
-            .build()
-        val branch3 = TestBranchBuilder()
-            .withBranchName("firstname_lastname_Iteration_1_tomasr")
-            .build()
+        val branch1 = TestBranchBuilder().withBranchName("firstname_lastname_Iteration_1_tomas").build()
+        val branch2 = TestBranchBuilder().withBranchName("firstname_lastname_Iteration_1_shubi").build()
+        val branch3 = TestBranchBuilder().withBranchName("firstname_lastname_Iteration_1_tomasr").build()
         val sut = createBranchesFor(listOf(branch1, branch2, branch3))
 
-        val prs = sut.getPullRequestsFor(
-            listOf(
-                PairingPartner.TOMAS,
-                PairingPartner.SHUBHI,
-                PairingPartner.TOMAS
-            )
-        )
+        val prs = sut.getPullRequestsFor(listOf(PairingPartner.TOMAS, PairingPartner.SHUBHI, PairingPartner.TOMAS))
 
-        assertThat(prs)
-            .contains(
-                PullRequest(
-                    "Firstname Lastname Iteration 1 / Session 1 Tomas",
-                    Branch("master"),
-                    branch1
-                )
-            )
-            .contains(
-                PullRequest(
-                    "Firstname Lastname Iteration 1 / Session 2 Shubhi",
-                    branch1,
-                    branch2
-                )
-            )
-            .contains(
-                PullRequest(
-                    "Firstname Lastname Iteration 1 / Session 3 Tomas",
-                    branch2,
-                    branch3
-                )
-            )
+        assertThat(prs).contains(
+            PullRequest("Firstname Lastname Iteration 1 / Session 1 Tomas", Branch("master"), branch1),
+            PullRequest("Firstname Lastname Iteration 1 / Session 2 Shubhi", branch1, branch2),
+            PullRequest("Firstname Lastname Iteration 1 / Session 3 Tomas", branch2, branch3)
+        )
     }
 
     @Test
     fun `create pull requests where branches are in wrong order compared to given pairing partner`() {
-        val branch1 = TestBranchBuilder()
-            .withBranchName("firstname_lastname_Iteration_1_berni")
-            .build()
-        val branch2 = TestBranchBuilder()
-            .withBranchName("firstname_lastname_Iteration_1_claus")
-            .build()
+        val branch1 = TestBranchBuilder().withBranchName("firstname_lastname_Iteration_1_berni").build()
+        val branch2 = TestBranchBuilder().withBranchName("firstname_lastname_Iteration_1_claus").build()
         val sut = createBranchesFor(listOf(branch1, branch2))
 
-        val prs = sut.getPullRequestsFor(
-            listOf(
-                PairingPartner.CLAUS,
-                PairingPartner.BERNI
-            )
-        )
+        val prs = sut.getPullRequestsFor(listOf(PairingPartner.CLAUS, PairingPartner.BERNI))
 
-        assertThat(prs)
-            .contains(
-                PullRequest(
-                    "Firstname Lastname Iteration 1 / Session 1 Claus",
-                    Branch("master"),
-                    branch2
-                )
-            )
-            .contains(
-                PullRequest(
-                    "Firstname Lastname Iteration 1 / Session 2 Berni",
-                    branch2,
-                    branch1
-                )
-            )
+        assertThat(prs).contains(
+            PullRequest("Firstname Lastname Iteration 1 / Session 1 Claus", Branch("master"), branch2),
+            PullRequest("Firstname Lastname Iteration 1 / Session 2 Berni", branch2, branch1)
+        )
     }
 
     private fun createBranchesFor(branches: List<Branch>) = Branches(branches, PullRequestLastNotFinishedMarker())
