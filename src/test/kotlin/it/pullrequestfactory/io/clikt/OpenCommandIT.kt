@@ -22,8 +22,9 @@ import java.time.ZoneId
 
 class OpenCommandIT {
 
-    private val candidateFirstName = "firstname"
-    private val candidateLastName = "lastname"
+    private val repoPath = "/repos/ClausPolanka/wordcount"
+    private val candidateFirstName = "Firstname"
+    private val candidateLastName = "Lastname"
 
     private val anyArgs = arrayOf(
         "-g", "any-github-token",
@@ -60,7 +61,7 @@ class OpenCommandIT {
         )
 
         stubFor(
-            get(urlPathMatching("/repos/ClausPolanka/wordcount/branches(\\?page\\=1)?"))
+            get(urlPathMatching("$repoPath/branches(\\?page\\=1)?"))
                 .willReturn(
                     aResponse()
                         .withStatus(200)
@@ -83,13 +84,13 @@ class OpenCommandIT {
             )
         )
 
-        verify(PullRequest("Firstname Lastname Iteration 1 / Session 1 Markus [PR]", Branch("master"), branches[0]))
-        verify(PullRequest("Firstname Lastname Iteration 2 / Session 2 Berni [PR]", branches[0], branches[1]))
-        verify(PullRequest("Firstname Lastname Iteration 3 / Session 3 Lukas [PR]", branches[1], branches[2]))
-        verify(PullRequest("Firstname Lastname Iteration 4 / Session 4 Jakub [PR]", branches[2], branches[3]))
-        verify(PullRequest("Firstname Lastname Iteration 5 / Session 5 Peter [PR]", branches[3], branches[4]))
-        verify(PullRequest("Firstname Lastname Iteration 6 / Session 6 Christian [PR]", branches[4], branches[5]))
-        verify(PullRequest("Firstname Lastname Iteration 7 / Session 7 Vaclav", branches[5], branches[6]))
+        verify(PullRequest("$candidateFirstName $candidateLastName Iteration 1 / Session 1 Markus [PR]", Branch("master"), branches[0]))
+        verify(PullRequest("$candidateFirstName $candidateLastName Iteration 2 / Session 2 Berni [PR]", branches[0], branches[1]))
+        verify(PullRequest("$candidateFirstName $candidateLastName Iteration 3 / Session 3 Lukas [PR]", branches[1], branches[2]))
+        verify(PullRequest("$candidateFirstName $candidateLastName Iteration 4 / Session 4 Jakub [PR]", branches[2], branches[3]))
+        verify(PullRequest("$candidateFirstName $candidateLastName Iteration 5 / Session 5 Peter [PR]", branches[3], branches[4]))
+        verify(PullRequest("$candidateFirstName $candidateLastName Iteration 6 / Session 6 Christian [PR]", branches[4], branches[5]))
+        verify(PullRequest("$candidateFirstName $candidateLastName Iteration 7 / Session 7 Vaclav", branches[5], branches[6]))
     }
 
     @Test
@@ -103,7 +104,7 @@ class OpenCommandIT {
         )
 
         stubFor(
-            get(urlPathMatching("/repos/ClausPolanka/wordcount/branches(\\?page\\=1)?"))
+            get(urlPathMatching("$repoPath/branches(\\?page\\=1)?"))
                 .willReturn(
                     aResponse()
                         .withStatus(200)
@@ -127,17 +128,17 @@ class OpenCommandIT {
             )
         )
 
-        verify(PullRequest("Firstname Lastname Iteration 1 / Session 1 Markus [PR]", Branch("master"), branches[0]))
-        verify(PullRequest("Firstname Lastname Iteration 2 / Session 2 Berni [PR]", branches[0], branches[1]))
-        verify(PullRequest("Firstname Lastname Iteration 3 / Session 3 Lukas [PR]", branches[1], branches[2]))
-        verify(PullRequest("Firstname Lastname Iteration 4 / Session 4 Jakub [PR]", branches[2], branches[3]))
-        verify(PullRequest("Firstname Lastname Iteration 5 / Session 5 Peter [PR]", branches[3], branches[4]))
-        verify(PullRequest("Firstname Lastname Iteration 6 / Session 6 Christian [PR]", branches[4], branches[5]))
-        verify(PullRequest("Firstname Lastname Iteration 7 / Session 7 Vaclav [PR]", branches[5], branches[6]))
+        verify(PullRequest("$candidateFirstName $candidateLastName Iteration 1 / Session 1 Markus [PR]", Branch("master"), branches[0]))
+        verify(PullRequest("$candidateFirstName $candidateLastName Iteration 2 / Session 2 Berni [PR]", branches[0], branches[1]))
+        verify(PullRequest("$candidateFirstName $candidateLastName Iteration 3 / Session 3 Lukas [PR]", branches[1], branches[2]))
+        verify(PullRequest("$candidateFirstName $candidateLastName Iteration 4 / Session 4 Jakub [PR]", branches[2], branches[3]))
+        verify(PullRequest("$candidateFirstName $candidateLastName Iteration 5 / Session 5 Peter [PR]", branches[3], branches[4]))
+        verify(PullRequest("$candidateFirstName $candidateLastName Iteration 6 / Session 6 Christian [PR]", branches[4], branches[5]))
+        verify(PullRequest("$candidateFirstName $candidateLastName Iteration 7 / Session 7 Vaclav [PR]", branches[5], branches[6]))
     }
 
     @Test
-    fun `OPEN pull requests where rate limit is not sufficient to fullfil the request`() {
+    fun `OPEN pull requests where rate limit is not sufficient to fulfil the request`() {
         stubFor(
             get("/rate_limit").willReturn(
                 aResponse()
@@ -177,7 +178,7 @@ class OpenCommandIT {
         OpenCommand(
             CommandArgs(
                 baseUrl = "http://localhost:8080",
-                repoPath = "/repos/ClausPolanka/wordcount",
+                repoPath = repoPath,
                 userPropertiesFile = "user.properties",
                 ui = QuietUI()
             )
@@ -187,7 +188,7 @@ class OpenCommandIT {
     private fun verify(pr: PullRequest) {
         val json = """{"base" : "${pr.base}", "head" : "${pr.head}", "title" : "${pr.title}"}"""
         verify(
-            postRequestedFor(urlMatching("/repos/ClausPolanka/wordcount/pulls"))
+            postRequestedFor(urlMatching("$repoPath/pulls"))
                 .withRequestBody(matching(Regex.escape(json)))
                 .addCommonHeaders()
         )
@@ -199,7 +200,7 @@ class OpenCommandIT {
     private fun argsWith(ui: UI) =
         CommandArgs(
             baseUrl = "http://localhost:8080",
-            repoPath = "/repos/ClausPolanka/wordcount",
+            repoPath = repoPath,
             userPropertiesFile = "user.properties",
             ui = ui
         )

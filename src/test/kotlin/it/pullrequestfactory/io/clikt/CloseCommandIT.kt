@@ -12,6 +12,7 @@ import pullrequestfactory.io.clikt.CommandArgs
 
 class CloseCommandIT {
 
+    private val repoPath = "/repos/ClausPolanka/wordcount"
     private val candidateFirstName = "Firstname"
     private val candidateLastName = "Lastname"
 
@@ -34,7 +35,7 @@ class CloseCommandIT {
         val pr2 = prFor(candidateFirstName, candidateLastName, prNr = 2)
 
         stubFor(
-            get(urlPathMatching("/repos/ClausPolanka/wordcount/pulls(\\?page\\=1)?"))
+            get(urlPathMatching("$repoPath/pulls(\\?page\\=1)?"))
                 .willReturn(
                     aResponse()
                         .withStatus(200)
@@ -64,7 +65,7 @@ class CloseCommandIT {
         CloseCommand(
             CommandArgs(
                 baseUrl = "http://localhost:8080",
-                repoPath = "/repos/ClausPolanka/wordcount",
+                repoPath = repoPath,
                 userPropertiesFile = "user.properties",
                 ui = QuietUI()
             )
@@ -73,7 +74,7 @@ class CloseCommandIT {
 
     private fun verifyPatchRequestToCloseOpenPullRequestsFor(prNumber: Int) {
         verify(
-            patchRequestedFor(urlMatching("/repos/ClausPolanka/wordcount/pulls/$prNumber"))
+            patchRequestedFor(urlMatching("$repoPath/pulls/$prNumber"))
                 .withRequestBody(matching(Regex.escape("""{"state" : "closed"}""")))
                 .addCommonHeaders()
         )
