@@ -7,7 +7,6 @@ import pullrequestfactory.domain.Candidate
 import pullrequestfactory.domain.GithubPRFactory
 import pullrequestfactory.domain.PairingPartner
 import pullrequestfactory.domain.branches.Branch
-import pullrequestfactory.domain.branches.BranchSyntaxValidator
 import pullrequestfactory.domain.branches.GithubBranchesRepo
 import pullrequestfactory.domain.pullrequests.*
 import pullrequestfactory.domain.uis.QuietUI
@@ -191,7 +190,6 @@ class GithubPRFactoryTest {
             QuietUI(),
             githubBranchesRepo,
             githubPullRequestsRepo(github_write_repo(pullRequests)),
-            BranchSyntaxValidator(QuietUI()),
             PullRequestLastNotFinishedMarker()
         )
         return Pair(pullRequests, sut)
@@ -206,7 +204,6 @@ class GithubPRFactoryTest {
                 github_write_repo(mutableListOf(), pullRequestNumbersToBeClosed),
                 pullRequests.toMutableList()
             ),
-            BranchSyntaxValidator(QuietUI()),
             PullRequestLastNotFinishedMarker()
         )
         return Pair(pullRequestNumbersToBeClosed, sut)
@@ -217,7 +214,6 @@ class GithubPRFactoryTest {
             QuietUI(),
             githubBranchesRepo(listOf(Branch(branchName))),
             githubPullRequestsRepo(noopGithubWriteRepo()),
-            BranchSyntaxValidator(QuietUI()),
             PullRequestLastNotFinishedMarker()
         )
 

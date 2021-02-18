@@ -2,7 +2,6 @@ package pullrequestfactory.io.programs.impl
 
 import pullrequestfactory.domain.Candidate
 import pullrequestfactory.domain.GithubPRFactory
-import pullrequestfactory.domain.branches.BranchSyntaxValidator
 import pullrequestfactory.domain.pullrequests.PullRequestLastNotFinishedMarker
 import pullrequestfactory.domain.uis.UI
 import pullrequestfactory.io.repositories.GithubAPIClient
@@ -18,7 +17,6 @@ class ClosePullRequestProgram(
             ui,
             gitHubApiClient,
             gitHubApiClient,
-            BranchSyntaxValidator(ui),
             PullRequestLastNotFinishedMarker()
         )
         f.closePullRequestsFor(candidate)

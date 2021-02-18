@@ -11,7 +11,6 @@ class GithubPRFactory(
     private val ui: UI,
     private val githubBranchesRepo: GithubBranchesRepo,
     private val githubPullRequestsRepo: GithubPullRequestsRepo,
-    private val branchSyntaxValidator: BranchSyntaxValidator,
     private val pullRequestMarker: PullRequestMarker
 ) {
 
@@ -34,6 +33,7 @@ class GithubPRFactory(
     }
 
     private fun getBranchesFor(candidate: Candidate): Branches {
+        val branchSyntaxValidator = BranchSyntaxValidator(ui)
         val branches = githubBranchesRepo.getBranches()
             .filter { it.name.contains(candidate.firstName, ignoreCase = true) }
             .filter { it.name.contains(candidate.lastName, ignoreCase = true) }

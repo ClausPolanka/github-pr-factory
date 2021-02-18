@@ -3,7 +3,6 @@ package pullrequestfactory.io.programs.impl
 import pullrequestfactory.domain.Candidate
 import pullrequestfactory.domain.GithubPRFactory
 import pullrequestfactory.domain.PairingPartner
-import pullrequestfactory.domain.branches.BranchSyntaxValidator
 import pullrequestfactory.domain.pullrequests.PullRequestLastFinishedMarker
 import pullrequestfactory.domain.uis.UI
 import pullrequestfactory.io.repositories.GithubAPIClient
@@ -20,7 +19,6 @@ class OpenPRProgramLastSessionFinished(
             ui,
             gitHubApiClient,
             gitHubApiClient,
-            BranchSyntaxValidator(ui),
             PullRequestLastFinishedMarker()
         )
         f.openPullRequests(candidate, pairingPartner)
