@@ -57,20 +57,33 @@ class GithubAPIClient(
     }
 
     override fun openPullRequest(pullRequest: PullRequest) {
+        val json = jsonParser().toJsonString(pullRequest)
         val response = httpClient.post(
             url = urlForGitHubPullRequests,
-            data = jsonParser().toJsonString(pullRequest)
+            data = json
         )
-        ui.show("Open Pull Request Response Code: '${response.statusCode}'")
+        handleResponse(response, json)
+    }
+
+    private fun handleResponse(response: Response, json: String) {
+        when (response.statusCode) {
+            401, 403, 404, 422 -> {
+                ui.show("Get Pull Requests Response Code: '${response.statusCode}'")
+                ui.show("There seems to be something wrong with following JSON: $json")
+                ui.show("Response: ${response.text}")
+            }
+            else -> ui.show("Open Pull Request Response Code: '${response.statusCode}'")
+        }
     }
 
     override fun closePullRequest(number: Int) {
         val url = "$urlForGitHubPullRequests/$number"
+        val json = jsonParser().toJsonString(PullRequstPatch(state = "closed"))
         val response = httpClient.patch(
             url = url,
-            data = jsonParser().toJsonString(PullRequstPatch(state = "closed"))
+            data = json
         )
-        ui.show("Close Pull Request Response Code: '${response.statusCode}'")
+        handleResponse(response, json)
     }
 
     private inline fun <reified T> getList(res: Response, url: String): List<T> {
