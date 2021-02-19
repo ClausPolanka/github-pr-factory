@@ -28,6 +28,7 @@ class GithubAPIClient(
         return when (response.statusCode) {
             401, 403, 404 -> {
                 ui.show("Get Rate Limit Response Code: '${response.statusCode}'")
+                ui.show("Response: ${response.text}")
                 defaultRateLimit()
             }
             else -> jsonParser().parse(response.text) ?: defaultRateLimit()
@@ -39,6 +40,7 @@ class GithubAPIClient(
         return when (response.statusCode) {
             401, 403, 404 -> {
                 ui.show("Get Branches Response Code: '${response.statusCode}'")
+                ui.show("Response: ${response.text}")
                 emptyList()
             }
             else -> getList(response, urlForGitHubBranches)
@@ -50,6 +52,7 @@ class GithubAPIClient(
         return when (response.statusCode) {
             401, 403, 404 -> {
                 ui.show("Get Pull Requests Response Code: '${response.statusCode}'")
+                ui.show("Response: ${response.text}")
                 emptyList()
             }
             else -> getList(response, urlForGitHubPullRequests)
@@ -93,7 +96,10 @@ class GithubAPIClient(
             val pagedUrl = "$url?page=$it"
             val response = httpClient.get(pagedUrl)
             when (response.statusCode) {
-                401, 403, 404 -> ui.show("Get Response Code: '${response.statusCode}'")
+                401, 403, 404, 422 -> {
+                    ui.show("Get Pull Requests Response Code: '${response.statusCode}'")
+                    ui.show("Response: ${response.text}")
+                }
             }
             val json = response.text
             list.add((jsonParser().parseArray(json) ?: emptyList()))
