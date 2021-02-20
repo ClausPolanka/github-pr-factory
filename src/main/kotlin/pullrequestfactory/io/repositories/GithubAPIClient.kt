@@ -100,9 +100,11 @@ class GithubAPIClient(
                     ui.show("Get Pull Requests Response Code: '${response.statusCode}'")
                     ui.show("Response: ${response.text}")
                 }
+                else -> {
+                    val json = response.text
+                    list.add((jsonParser().parseArray(json) ?: emptyList()))
+                }
             }
-            val json = response.text
-            list.add((jsonParser().parseArray(json) ?: emptyList()))
         }
         return list.flatten()
     }
