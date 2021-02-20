@@ -69,13 +69,12 @@ class GithubAPIClient(
     }
 
     private fun handleResponse(response: Response, json: String) {
+        ui.show("Response Code: '${response.statusCode}'")
         when (response.statusCode) {
             401, 403, 404, 422 -> {
-                ui.show("Response Code: '${response.statusCode}'")
                 ui.show("There seems to be something wrong with following JSON: $json")
                 ui.show("Response: ${response.text}")
             }
-            else -> ui.show("Response Code: '${response.statusCode}'")
         }
     }
 
