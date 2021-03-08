@@ -9,13 +9,13 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <kotlin.version>1.4.30</kotlin.version>
+        <kotlin.version>1.4.31</kotlin.version>
         <kotlin.compiler.incremental>true</kotlin.compiler.incremental>
         <junit.version>4.13.2</junit.version>
         <assertj.version>3.19.0</assertj.version>
         <wiremock.version>2.27.2</wiremock.version>
         <khttp.version>1.0.0</khttp.version>
-        <klaxon.version>5.4</klaxon.version>
+        <klaxon.version>5.5</klaxon.version>
         <maven-surefire-plugin.version>3.0.0-M4</maven-surefire-plugin.version>
         <maven-jar-plugin.version>3.2.0</maven-jar-plugin.version>
         <maven-assembly-plugin.version>3.3.0</maven-assembly-plugin.version>
