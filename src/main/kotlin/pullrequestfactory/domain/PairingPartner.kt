@@ -23,6 +23,7 @@ enum class PairingPartner(vararg val pullRequestNames: String) {
     JAROMIR("Jaromir"),
     VACLAV("Vaclav"),
     ALPER("Alper"),
+    ALI("Ali"),
     ;
 
     fun contains(branchName: String): Boolean = pullRequestNames.contains(branchName.capitalize())
