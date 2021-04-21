@@ -19,7 +19,7 @@ enum class PairingPartner(vararg val pullRequestNames: String) {
     TIBOR("Tibor"),
     JAKUB("Jakub"),
     LUKAS("Lukas"),
-    LUKASL("Lukas L"),
+    LUKASL("Lukasl"),
     JOSEF("Josef"),
     JAROMIR("Jaromir"),
     VACLAV("Vaclav"),
