@@ -1,5 +1,6 @@
 package pullrequestfactory.domain.branches
 
+import pullrequestfactory.domain.PairingPartner
 import pullrequestfactory.domain.uis.UI
 
 class BranchSyntaxValidator(private val ui: UI) {
@@ -13,7 +14,12 @@ class BranchSyntaxValidator(private val ui: UI) {
             !branchSyntaxRegex.matches(branch.name) -> {
                 ui.show("[WARNING] Branch has incorrect syntax: $branch")
             }
+
+            PairingPartner.from(branch.pairingPartner()) == null -> {
+                ui.show("[WARNING] Branch contains unknown pairing partner: $branch")
+            }
         }
+
     }
 
     private fun errorMessageFor(branch: Branch) =

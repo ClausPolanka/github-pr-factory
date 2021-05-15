@@ -34,6 +34,29 @@ class BranchSyntaxValidatorTest {
     }
 
     @Test
+    fun `ui shows message for invalid branch names containing an unknown pairing partner`() {
+        var message = ""
+        val sut = BranchSyntaxValidator(object : UI {
+            override fun show(msg: String) {
+                message = msg
+            }
+
+            override fun getUserInput(msg: String): String {
+                ignore()
+            }
+        })
+        listOf(
+            "firstname_lastname_iteration_1_marci",
+            "firstname_lastname_iteration_1_martin"
+        ).forEach {
+            sut.validate(Branch(it))
+            assertThat(message)
+                .withFailMessage("'$it' has known pairing partner")
+                .contains("WARNING")
+        }
+    }
+
+    @Test
     fun `ui shows no message for valid branch names`() {
         var message = ""
         val sut = BranchSyntaxValidator(object : UI {
