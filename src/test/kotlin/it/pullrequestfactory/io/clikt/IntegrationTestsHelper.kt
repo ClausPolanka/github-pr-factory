@@ -1,9 +1,12 @@
 package it.pullrequestfactory.io.clikt
 
-import com.beust.klaxon.Klaxon
-import com.github.tomakehurst.wiremock.client.WireMock
 import com.github.tomakehurst.wiremock.client.WireMock.*
 import com.github.tomakehurst.wiremock.matching.RequestPatternBuilder
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.modules.SerializersModule
+import kotlinx.serialization.modules.contextual
+import pullrequestfactory.io.programs.impl.InstantSerializer
 import pullrequestfactory.io.programs.impl.Rate
 import pullrequestfactory.io.programs.impl.RateLimit
 import java.time.Instant
@@ -14,7 +17,7 @@ fun ensureHighEnoughRateLimit(remaining: Int = 5000, resetInMillisSinceEpoch: Lo
             aResponse()
                 .withStatus(200)
                 .withBody(
-                    Klaxon().toJsonString(
+                    Json { serializersModule = SerializersModule { contextual(InstantSerializer) } }.encodeToString(
                         RateLimit(
                             Rate(
                                 limit = 5000,
@@ -28,8 +31,6 @@ fun ensureHighEnoughRateLimit(remaining: Int = 5000, resetInMillisSinceEpoch: Lo
         )
     )
 }
-
-fun <T> toJson(objects: Array<T>) = Klaxon().toJsonString(objects)
 
 fun RequestPatternBuilder.addCommonHeaders(): RequestPatternBuilder? {
     return this.withHeader("Accept", matching("application/json"))

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>github-pr-factory</groupId>
@@ -15,7 +16,7 @@
         <assertj.version>3.19.0</assertj.version>
         <wiremock.version>2.28.0</wiremock.version>
         <khttp.version>1.0.0</khttp.version>
-        <klaxon.version>5.5</klaxon.version>
+        <kotlinx.serialization.version>1.2.1</kotlinx.serialization.version>
         <maven-surefire-plugin.version>3.0.0-M4</maven-surefire-plugin.version>
         <maven-jar-plugin.version>3.2.0</maven-jar-plugin.version>
         <maven-assembly-plugin.version>3.3.0</maven-assembly-plugin.version>
@@ -33,16 +34,15 @@
             <artifactId>kotlin-reflect</artifactId>
             <version>${kotlin.version}</version>
         </dependency>
-        <!-- Kotlin JSON parser -->
-        <dependency>
-            <groupId>com.beust</groupId>
-            <artifactId>klaxon</artifactId>
-            <version>${klaxon.version}</version>
-        </dependency>
         <dependency>
             <groupId>khttp</groupId>
             <artifactId>khttp</artifactId>
             <version>${khttp.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jetbrains.kotlinx</groupId>
+            <artifactId>kotlinx-serialization-json</artifactId>
+            <version>${kotlinx.serialization.version}</version>
         </dependency>
         <dependency>
             <groupId>com.github.ajalt.clikt</groupId>
@@ -84,6 +84,11 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>${maven-surefire-plugin.version}</version>
+                <configuration>
+                    <includes>
+                        <include>**/*IT</include>
+                    </includes>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.jetbrains.kotlin</groupId>
@@ -104,8 +109,18 @@
                     </execution>
                 </executions>
                 <configuration>
+                    <compilerPlugins>
+                        <plugin>kotlinx-serialization</plugin>
+                    </compilerPlugins>
                     <jvmTarget>1.8</jvmTarget>
                 </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.jetbrains.kotlin</groupId>
+                        <artifactId>kotlin-maven-serialization</artifactId>
+                        <version>${kotlin.version}</version>
+                    </dependency>
+                </dependencies>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

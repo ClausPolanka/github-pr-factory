@@ -1,7 +1,9 @@
 package pullrequestfactory.domain.pullrequests
 
+import kotlinx.serialization.Serializable
 import pullrequestfactory.domain.branches.Branch
 
+@Serializable
 data class PullRequest(
     val title: String,
     private val _base: Branch,

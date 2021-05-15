@@ -1,14 +1,19 @@
 package pullrequestfactory.io.repositories
 
-import com.beust.klaxon.Klaxon
 import khttp.responses.Response
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.modules.SerializersModule
+import kotlinx.serialization.modules.contextual
 import pullrequestfactory.domain.branches.Branch
 import pullrequestfactory.domain.branches.GithubBranchesRepo
 import pullrequestfactory.domain.pullrequests.GetPullRequest
 import pullrequestfactory.domain.pullrequests.GithubPullRequestsRepo
 import pullrequestfactory.domain.pullrequests.PullRequest
 import pullrequestfactory.domain.uis.UI
-import pullrequestfactory.io.programs.impl.EpochMilliInstantConverter
+import pullrequestfactory.io.programs.impl.InstantSerializer
 import pullrequestfactory.io.programs.impl.Rate
 import pullrequestfactory.io.programs.impl.RateLimit
 import java.time.Instant
@@ -31,7 +36,7 @@ class GithubAPIClient(
                 ui.show("Response: ${response.text}")
                 defaultRateLimit()
             }
-            else -> jsonParser().parse(response.text) ?: defaultRateLimit()
+            else -> Json { serializersModule = SerializersModule { contextual(InstantSerializer) } }.decodeFromString(response.text) ?: defaultRateLimit()
         }
     }
 
@@ -60,7 +65,7 @@ class GithubAPIClient(
     }
 
     override fun openPullRequest(pullRequest: PullRequest) {
-        val json = jsonParser().toJsonString(pullRequest)
+        val json = Json { serializersModule = SerializersModule { contextual(InstantSerializer) } }.encodeToString(pullRequest)
         val response = httpClient.post(
             url = urlForGitHubPullRequests,
             data = json
@@ -80,7 +85,7 @@ class GithubAPIClient(
 
     override fun closePullRequest(number: Int) {
         val url = "$urlForGitHubPullRequests/$number"
-        val json = jsonParser().toJsonString(PullRequstPatch(state = "closed"))
+        val json = Json { serializersModule = SerializersModule { contextual(InstantSerializer) } }.encodeToString(PullRequstPatch(state = "closed"))
         val response = httpClient.patch(
             url = url,
             data = json
@@ -101,7 +106,7 @@ class GithubAPIClient(
                 }
                 else -> {
                     val json = response.text
-                    list.add((jsonParser().parseArray(json) ?: emptyList()))
+                    list.add((Json { serializersModule = SerializersModule { contextual(InstantSerializer) } }.decodeFromString(json) ?: emptyList()))
                 }
             }
         }
@@ -111,9 +116,7 @@ class GithubAPIClient(
     private fun defaultRateLimit() =
         RateLimit((Rate(limit = 0, remaining = 0, Instant.now(), 0)))
 
-    private fun jsonParser(): Klaxon =
-        Klaxon().converter(EpochMilliInstantConverter())
-
 }
 
+@Serializable
 data class PullRequstPatch(val state: String)

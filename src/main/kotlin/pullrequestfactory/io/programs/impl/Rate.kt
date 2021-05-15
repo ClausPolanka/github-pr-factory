@@ -1,5 +1,28 @@
 package pullrequestfactory.io.programs.impl
 
+import kotlinx.serialization.*
+import kotlinx.serialization.descriptors.PrimitiveKind
+import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
+import kotlinx.serialization.descriptors.SerialDescriptor
+import kotlinx.serialization.encoding.CompositeEncoder
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
+import kotlinx.serialization.internal.NamedValueEncoder
 import java.time.Instant
 
-data class Rate(val limit: Int, val remaining: Int, val reset: Instant, val used: Int)
+@Serializable
+data class Rate(val limit: Int, val remaining: Int, @Contextual val reset: Instant, val used: Int)
+
+@OptIn(ExperimentalSerializationApi::class)
+@Serializer(forClass = Instant::class)
+object InstantSerializer : KSerializer<Instant> {
+    override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("Instant", PrimitiveKind.STRING)
+
+    override fun serialize(encoder: Encoder, value: Instant) {
+        encoder.encodeString("$value")
+    }
+
+    override fun deserialize(decoder: Decoder): Instant {
+        return Instant.parse(decoder.decodeString())
+    }
+}

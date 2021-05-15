@@ -1,8 +1,11 @@
 package it.pullrequestfactory.io.clikt
 
-import com.beust.klaxon.Klaxon
 import com.github.tomakehurst.wiremock.client.WireMock.*
 import com.github.tomakehurst.wiremock.junit.WireMockRule
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.modules.SerializersModule
+import kotlinx.serialization.modules.contextual
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.After
 import org.junit.ClassRule
@@ -15,6 +18,7 @@ import pullrequestfactory.domain.uis.QuietUI
 import pullrequestfactory.domain.uis.UI
 import pullrequestfactory.io.clikt.CommandArgs
 import pullrequestfactory.io.clikt.OpenCommand
+import pullrequestfactory.io.programs.impl.InstantSerializer
 import pullrequestfactory.io.programs.impl.Rate
 import pullrequestfactory.io.programs.impl.RateLimit
 import java.time.LocalDateTime
@@ -65,7 +69,7 @@ class OpenCommandIT {
                 .willReturn(
                     aResponse()
                         .withStatus(200)
-                        .withBody(toJson(branches))
+                        .withBody(Json { serializersModule = SerializersModule { contextual(InstantSerializer) } }.encodeToString(branches))
                 )
         )
 
@@ -108,7 +112,7 @@ class OpenCommandIT {
                 .willReturn(
                     aResponse()
                         .withStatus(200)
-                        .withBody(toJson(branches))
+                        .withBody(Json { serializersModule = SerializersModule { contextual(InstantSerializer) } }.encodeToString(branches))
                 )
         )
 
@@ -144,7 +148,7 @@ class OpenCommandIT {
                 aResponse()
                     .withStatus(403)
                     .withBody(
-                        Klaxon().toJsonString(
+                        Json { serializersModule = SerializersModule { contextual(InstantSerializer) } }.encodeToString(
                             RateLimit(
                                 Rate(
                                     limit = 50,

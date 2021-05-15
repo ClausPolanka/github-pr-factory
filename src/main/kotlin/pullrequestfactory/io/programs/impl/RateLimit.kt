@@ -1,10 +1,14 @@
 package pullrequestfactory.io.programs.impl
 
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 
+@Serializable
 data class RateLimit(val rate: Rate) {
 
     fun localResetDateTime() = toLocalDateTime(rate.reset)

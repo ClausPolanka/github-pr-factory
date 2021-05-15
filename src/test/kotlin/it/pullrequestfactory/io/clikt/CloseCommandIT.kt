@@ -2,6 +2,10 @@ package it.pullrequestfactory.io.clikt
 
 import com.github.tomakehurst.wiremock.client.WireMock.*
 import com.github.tomakehurst.wiremock.junit.WireMockRule
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.modules.SerializersModule
+import kotlinx.serialization.modules.contextual
 import org.junit.After
 import org.junit.ClassRule
 import org.junit.Test
@@ -9,6 +13,7 @@ import pullrequestfactory.domain.pullrequests.GetPullRequest
 import pullrequestfactory.domain.uis.QuietUI
 import pullrequestfactory.io.clikt.CloseCommand
 import pullrequestfactory.io.clikt.CommandArgs
+import pullrequestfactory.io.programs.impl.InstantSerializer
 
 class CloseCommandIT {
 
@@ -39,7 +44,7 @@ class CloseCommandIT {
                 .willReturn(
                     aResponse()
                         .withStatus(200)
-                        .withBody(toJson(arrayOf(pr1, pr2)))
+                        .withBody(Json { serializersModule = SerializersModule { contextual(InstantSerializer) } }.encodeToString(arrayOf(pr1, pr2)))
                 )
         )
 
