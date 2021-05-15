@@ -33,12 +33,12 @@
             <artifactId>kotlin-reflect</artifactId>
             <version>${kotlin.version}</version>
         </dependency>
+        <!-- Kotlin JSON parser -->
         <dependency>
             <groupId>com.beust</groupId>
             <artifactId>klaxon</artifactId>
             <version>${klaxon.version}</version>
         </dependency>
-        <!-- Kotlin JSON parser -->
         <dependency>
             <groupId>khttp</groupId>
             <artifactId>khttp</artifactId>
