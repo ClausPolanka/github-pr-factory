@@ -19,7 +19,7 @@
         <maven-surefire-plugin.version>3.0.0-M4</maven-surefire-plugin.version>
         <maven-jar-plugin.version>3.2.0</maven-jar-plugin.version>
         <maven-assembly-plugin.version>3.3.0</maven-assembly-plugin.version>
-        <clikt-jvm.version>3.1.0</clikt-jvm.version>
+        <clikt-jvm.version>3.2.0</clikt-jvm.version>
     </properties>
 
     <dependencies>
