@@ -65,7 +65,7 @@ class GithubAPIClient(
     }
 
     override fun openPullRequest(pullRequest: PullRequest) {
-        val dto = PullRequestDto(title = pullRequest.title, base = pullRequest._base.name, head = pullRequest._head.name)
+        val dto = PullRequestDto(title = pullRequest.title, base = pullRequest.base.name, head = pullRequest.head.name)
         val json = jsonSerializer().encodeToString(dto)
         val response = httpClient.post(
             url = urlForGitHubPullRequests,

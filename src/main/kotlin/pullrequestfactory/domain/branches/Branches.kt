@@ -16,8 +16,8 @@ class Branches(
             val prs = branches.mapIndexed { idx, branch ->
                 PullRequest(
                     title = getBranchTitles()[idx],
-                    _base = getBaseBranches()[idx].copy(),
-                    _head = branch.copy()
+                    base = getBaseBranches()[idx].copy(),
+                    head = branch.copy()
                 )
             }
             return prMarker.markTitlesOf(prs)

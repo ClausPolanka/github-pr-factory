@@ -190,7 +190,7 @@ class OpenCommandIT {
     }
 
     private fun verify(pr: PullRequest) {
-        val json = """{"base" : "${pr.base}", "head" : "${pr.head}", "title" : "${pr.title}"}"""
+        val json = """{"base" : "${pr.base.name}", "head" : "${pr.head.name}", "title" : "${pr.title}"}"""
         verify(
             postRequestedFor(urlMatching("$repoPath/pulls"))
                 .withRequestBody(equalToJson(json))
