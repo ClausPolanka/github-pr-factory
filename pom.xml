@@ -163,7 +163,7 @@
     </build>
 
     <repositories>
-        <!-- Klaxon, khttp dependencies are located in jcenter maven repository -->
+        <!-- khttp dependencies are located in jcenter maven repository -->
         <repository>
             <id>jcenter</id>
             <url>https://jcenter.bintray.com/</url>
