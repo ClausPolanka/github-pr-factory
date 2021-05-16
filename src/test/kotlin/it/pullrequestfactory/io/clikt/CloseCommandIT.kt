@@ -2,6 +2,7 @@ package it.pullrequestfactory.io.clikt
 
 import com.github.tomakehurst.wiremock.client.WireMock.*
 import com.github.tomakehurst.wiremock.junit.WireMockRule
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
@@ -14,6 +15,7 @@ import pullrequestfactory.domain.uis.QuietUI
 import pullrequestfactory.io.clikt.CloseCommand
 import pullrequestfactory.io.programs.impl.InstantSerializer
 
+@ExperimentalSerializationApi
 class CloseCommandIT {
 
     private val repoPath = "/repos/ClausPolanka/wordcount"

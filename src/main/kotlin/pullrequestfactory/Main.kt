@@ -21,9 +21,13 @@ fun main(args: Array<String>) {
         appProps.getGithubRepositoryPath(),
         "user.properties",
         ConsoleUI(),
-        Json { ignoreUnknownKeys = true; serializersModule = SerializersModule { contextual(InstantSerializer) } }
+        jsonSerializer()
     )
     GitHubPrFactoryCommand(appProps.getProjectVersion())
         .subcommands(OpenCommand(cmdArgs), CloseCommand(cmdArgs))
         .main(args)
 }
+
+@ExperimentalSerializationApi
+fun jsonSerializer() =
+    Json { ignoreUnknownKeys = true; serializersModule = SerializersModule { contextual(InstantSerializer) } }

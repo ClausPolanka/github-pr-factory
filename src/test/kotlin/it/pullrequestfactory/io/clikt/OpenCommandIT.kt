@@ -2,6 +2,7 @@ package it.pullrequestfactory.io.clikt
 
 import com.github.tomakehurst.wiremock.client.WireMock.*
 import com.github.tomakehurst.wiremock.junit.WireMockRule
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
@@ -22,6 +23,7 @@ import pullrequestfactory.io.programs.impl.RateLimit
 import java.time.LocalDateTime
 import java.time.ZoneId
 
+@ExperimentalSerializationApi
 class OpenCommandIT {
 
     private val repoPath = "/repos/ClausPolanka/wordcount"
