@@ -1,20 +1,25 @@
 package it.pullrequestfactory.io.clikt
 
-import com.beust.klaxon.Klaxon
-import com.github.tomakehurst.wiremock.client.WireMock
 import com.github.tomakehurst.wiremock.client.WireMock.*
 import com.github.tomakehurst.wiremock.matching.RequestPatternBuilder
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.encodeToString
+import pullrequestfactory.domain.uis.QuietUI
+import pullrequestfactory.domain.uis.UI
+import pullrequestfactory.io.clikt.CommandArgs
 import pullrequestfactory.io.programs.impl.Rate
 import pullrequestfactory.io.programs.impl.RateLimit
+import pullrequestfactory.jsonSerializer
 import java.time.Instant
 
+@ExperimentalSerializationApi
 fun ensureHighEnoughRateLimit(remaining: Int = 5000, resetInMillisSinceEpoch: Long = 1608411669) {
     stubFor(
         get("/rate_limit").willReturn(
             aResponse()
                 .withStatus(200)
                 .withBody(
-                    Klaxon().toJsonString(
+                    jsonSerializer().encodeToString(
                         RateLimit(
                             Rate(
                                 limit = 5000,
@@ -29,10 +34,17 @@ fun ensureHighEnoughRateLimit(remaining: Int = 5000, resetInMillisSinceEpoch: Lo
     )
 }
 
-fun <T> toJson(objects: Array<T>) = Klaxon().toJsonString(objects)
-
 fun RequestPatternBuilder.addCommonHeaders(): RequestPatternBuilder? {
     return this.withHeader("Accept", matching("application/json"))
         .withHeader("Authorization", matching("token .*"))
         .withHeader("Content-Type", matching("application/json"))
 }
+
+@ExperimentalSerializationApi
+fun cmdArgsFor(repoPath: String, ui: UI = QuietUI()) = CommandArgs(
+    baseUrl = "http://localhost:8080",
+    repoPath = repoPath,
+    userPropertiesFile = "user.properties",
+    ui = ui,
+    jsonSerizalizer = jsonSerializer()
+)

@@ -39,13 +39,13 @@ class GithubPRFactoryTest {
         assertThat(pullRequests).containsExactly(
             PullRequest(
                 title = "Firstname Lastname Iteration 1 / Session 1 ${pairingPartner1.pullRequestName()} [PR]",
-                _base = Branch("master"),
-                _head = branch1
+                base = Branch("master"),
+                head = branch1
             ),
             PullRequest(
                 title = "Firstname Lastname Iteration 2 / Session 2 ${pairingPartner2.pullRequestName()}",
-                _base = branch1,
-                _head = branch2
+                base = branch1,
+                head = branch2
             )
         )
     }
@@ -65,8 +65,8 @@ class GithubPRFactoryTest {
         assertThat(pullRequests).containsExactly(
             PullRequest(
                 title = "Firstname Lastname Iteration 1 / Session 1 ${pairingPartner.pullRequestName()}",
-                _base = Branch("master"),
-                _head = branch
+                base = Branch("master"),
+                head = branch
             )
         )
     }
@@ -86,8 +86,8 @@ class GithubPRFactoryTest {
         assertThat(pullRequests).containsExactly(
             PullRequest(
                 title = "Firstname Lastname Iteration 1 / Session 1 ${pairingPartner.pullRequestName()}",
-                _base = Branch("master"),
-                _head = branch
+                base = Branch("master"),
+                head = branch
             )
         )
     }
@@ -139,8 +139,8 @@ class GithubPRFactoryTest {
     fun `close pull requests for two candidates with same first name`() {
         val (pullRequestNumbersToBeClosed, sut) = createGithubPrFactoryFor(
             listOf(
-                GetPullRequest(1, "Firstname1 Lastname1 Iteration 1 / Session 1 ${pairingPartner.name.toLowerCase()}"),
-                GetPullRequest(2, "Firstname1 Lastname2 Iteration 1 / Session 1 ${pairingPartner.name.toLowerCase()}")
+                GetPullRequest(1, "Firstname1 Lastname1 Iteration 1 / Session 1 ${pairingPartner.name.lowercase()}"),
+                GetPullRequest(2, "Firstname1 Lastname2 Iteration 1 / Session 1 ${pairingPartner.name.lowercase()}")
             )
         )
 
@@ -155,8 +155,8 @@ class GithubPRFactoryTest {
     fun `close pull requests for two candidates with same last name`() {
         val (pullRequestNumbersToBeClosed, sut) = createGithubPrFactoryFor(
             listOf(
-                GetPullRequest(1, "Firstname1 Lastname1 Iteration 1 / Session 1 ${pairingPartner.name.toLowerCase()}"),
-                GetPullRequest(2, "Firstname2 Lastname1 Iteration 1 / Session 1 ${pairingPartner.name.toLowerCase()}")
+                GetPullRequest(1, "Firstname1 Lastname1 Iteration 1 / Session 1 ${pairingPartner.name.lowercase()}"),
+                GetPullRequest(2, "Firstname2 Lastname1 Iteration 1 / Session 1 ${pairingPartner.name.lowercase()}")
             )
         )
 
@@ -171,8 +171,8 @@ class GithubPRFactoryTest {
     fun `close pull requests for one candidate`() {
         val (pullRequestNumbersToBeClosed, sut) = createGithubPrFactoryFor(
             listOf(
-                GetPullRequest(1, "Firstname1 Lastname1 Iteration 1 / Session 1 ${pairingPartner1.name.toLowerCase()}"),
-                GetPullRequest(2, "Firstname1 Lastname1 Iteration 1 / Session 2 ${pairingPartner2.name.toLowerCase()}")
+                GetPullRequest(1, "Firstname1 Lastname1 Iteration 1 / Session 1 ${pairingPartner1.name.lowercase()}"),
+                GetPullRequest(2, "Firstname1 Lastname1 Iteration 1 / Session 2 ${pairingPartner2.name.lowercase()}")
             )
         )
 

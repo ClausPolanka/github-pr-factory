@@ -31,7 +31,7 @@ class CloseCommand(
         val httpClient = KhttpClientStats(KhttpClient(githubToken))
         ClosePullRequestsPrograms(
             args.ui,
-            GithubAPIClient(httpClient, args.baseUrl, args.repoUrl, args.ui),
+            GithubAPIClient(httpClient, args.baseUrl, args.repoUrl, args.ui, args.jsonSerizalizer),
             httpClient,
             candidate,
             debug
