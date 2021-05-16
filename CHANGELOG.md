@@ -21,7 +21,7 @@ adhere to https://github.com/olivierlacan/keep-a-changelog.
 ## [1.3.0] - 2021-02-01 
 
 ### Added
-- [Issue-#14] Github authentication token configurable through app.properties
+- [Issue-#14] GitHub's authentication token configurable through app.properties
 - [Issue-#29] Improve app user experience by using `Clikt` library for command line user interaction 
 
 ### Changed
