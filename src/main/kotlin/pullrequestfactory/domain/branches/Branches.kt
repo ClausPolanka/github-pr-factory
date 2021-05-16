@@ -4,7 +4,6 @@ import pullrequestfactory.domain.PairingPartner
 import pullrequestfactory.domain.branches.Sessions.createSessionsFor
 import pullrequestfactory.domain.pullrequests.PullRequest
 import pullrequestfactory.domain.pullrequests.PullRequestMarker
-import java.util.*
 
 class Branches(
     private val branches: List<Branch>,

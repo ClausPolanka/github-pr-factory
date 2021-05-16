@@ -10,7 +10,6 @@ import pullrequestfactory.domain.branches.Branch
 import pullrequestfactory.domain.branches.GithubBranchesRepo
 import pullrequestfactory.domain.pullrequests.*
 import pullrequestfactory.domain.uis.QuietUI
-import java.util.*
 
 class GithubPRFactoryTest {
 

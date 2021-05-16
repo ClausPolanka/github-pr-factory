@@ -38,7 +38,7 @@ enum class PairingPartner(vararg val pullRequestNames: String) {
     companion object {
 
         fun from(value: String) =
-            values().find { it.pullRequestNames.contains(value.replaceFirstChar { it.titlecase() }) }
+            values().find { it.pullRequestNames.contains(value.replaceFirstChar { c -> c.titlecase() }) }
 
         fun from(ordinal: Int) = try {
             val pp = values()[ordinal]
