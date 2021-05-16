@@ -193,7 +193,7 @@ class OpenCommandIT {
         val json = """{"base" : "${pr.base}", "head" : "${pr.head}", "title" : "${pr.title}"}"""
         verify(
             postRequestedFor(urlMatching("$repoPath/pulls"))
-                .withRequestBody(matching(Regex.escape(json)))
+                .withRequestBody(equalToJson(json))
                 .addCommonHeaders()
         )
     }

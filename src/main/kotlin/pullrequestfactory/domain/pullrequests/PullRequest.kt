@@ -6,8 +6,8 @@ import pullrequestfactory.domain.branches.Branch
 @Serializable
 data class PullRequest(
     val title: String,
-    private val _base: Branch,
-    private val _head: Branch
+    val _base: Branch,
+    val _head: Branch
 ) {
 
     val base: String = _base.name

@@ -36,7 +36,7 @@ class GithubAPIClient(
                 ui.show("Response: ${response.text}")
                 defaultRateLimit()
             }
-            else -> Json { serializersModule = SerializersModule { contextual(InstantSerializer) } }.decodeFromString(response.text) ?: defaultRateLimit()
+            else -> jsonSerializer().decodeFromString(response.text) ?: defaultRateLimit()
         }
     }
 
@@ -65,13 +65,16 @@ class GithubAPIClient(
     }
 
     override fun openPullRequest(pullRequest: PullRequest) {
-        val json = Json { serializersModule = SerializersModule { contextual(InstantSerializer) } }.encodeToString(pullRequest)
+        val dto = PullRequestDto(title = pullRequest.title, base = pullRequest._base.name, head = pullRequest._head.name)
+        val json = jsonSerializer().encodeToString(dto)
         val response = httpClient.post(
             url = urlForGitHubPullRequests,
             data = json
         )
         handleResponse(response, json)
     }
+
+    private fun jsonSerializer() = Json { serializersModule = SerializersModule { contextual(InstantSerializer) } }
 
     private fun handleResponse(response: Response, json: String) {
         ui.show("Response Code: '${response.statusCode}'")
@@ -85,7 +88,7 @@ class GithubAPIClient(
 
     override fun closePullRequest(number: Int) {
         val url = "$urlForGitHubPullRequests/$number"
-        val json = Json { serializersModule = SerializersModule { contextual(InstantSerializer) } }.encodeToString(PullRequstPatch(state = "closed"))
+        val json = jsonSerializer().encodeToString(PullRequstPatch(state = "closed"))
         val response = httpClient.patch(
             url = url,
             data = json
@@ -106,7 +109,7 @@ class GithubAPIClient(
                 }
                 else -> {
                     val json = response.text
-                    list.add((Json { serializersModule = SerializersModule { contextual(InstantSerializer) } }.decodeFromString(json) ?: emptyList()))
+                    list.add((jsonSerializer().decodeFromString(json) ?: emptyList()))
                 }
             }
         }
@@ -117,6 +120,9 @@ class GithubAPIClient(
         RateLimit((Rate(limit = 0, remaining = 0, Instant.now(), 0)))
 
 }
+
+@Serializable
+data class PullRequestDto(val title: String, val base: String, val head: String)
 
 @Serializable
 data class PullRequstPatch(val state: String)

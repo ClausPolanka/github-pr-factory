@@ -80,7 +80,7 @@ class CloseCommandIT {
     private fun verifyPatchRequestToCloseOpenPullRequestsFor(prNumber: Int) {
         verify(
             patchRequestedFor(urlMatching("$repoPath/pulls/$prNumber"))
-                .withRequestBody(matching(Regex.escape("""{"state" : "closed"}""")))
+                .withRequestBody(equalToJson("""{"state":"closed"}"""))
                 .addCommonHeaders()
         )
     }
