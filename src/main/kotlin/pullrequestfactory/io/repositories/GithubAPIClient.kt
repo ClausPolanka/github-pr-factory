@@ -22,7 +22,8 @@ class GithubAPIClient(
     private val httpClient: HttpClient,
     baseUrl: String,
     repoUrl: String,
-    private val ui: UI
+    private val ui: UI,
+    private val jsonSerializer: Json
 ) : GithubBranchesRepo, GithubPullRequestsRepo {
     private val urlForGitHubRateLimit = "$baseUrl/rate_limit"
     private val urlForGitHubBranches = "$repoUrl/branches"
@@ -36,7 +37,7 @@ class GithubAPIClient(
                 ui.show("Response: ${response.text}")
                 defaultRateLimit()
             }
-            else -> jsonSerializer().decodeFromString(response.text) ?: defaultRateLimit()
+            else -> jsonSerializer.decodeFromString(response.text) ?: defaultRateLimit()
         }
     }
 
@@ -66,15 +67,13 @@ class GithubAPIClient(
 
     override fun openPullRequest(pullRequest: PullRequest) {
         val dto = PullRequestDto(title = pullRequest.title, base = pullRequest.base.name, head = pullRequest.head.name)
-        val json = jsonSerializer().encodeToString(dto)
+        val json = jsonSerializer.encodeToString(dto)
         val response = httpClient.post(
             url = urlForGitHubPullRequests,
             data = json
         )
         handleResponse(response, json)
     }
-
-    private fun jsonSerializer() = Json { serializersModule = SerializersModule { contextual(InstantSerializer) } }
 
     private fun handleResponse(response: Response, json: String) {
         ui.show("Response Code: '${response.statusCode}'")
@@ -88,7 +87,7 @@ class GithubAPIClient(
 
     override fun closePullRequest(number: Int) {
         val url = "$urlForGitHubPullRequests/$number"
-        val json = jsonSerializer().encodeToString(PullRequstPatch(state = "closed"))
+        val json = jsonSerializer.encodeToString(PullRequstPatch(state = "closed"))
         val response = httpClient.patch(
             url = url,
             data = json
@@ -107,10 +106,7 @@ class GithubAPIClient(
                     ui.show("Get Pull Requests Response Code: '${response.statusCode}'")
                     ui.show("Response: ${response.text}")
                 }
-                else -> {
-                    val json = response.text
-                    list.add((jsonSerializer().decodeFromString(json) ?: emptyList()))
-                }
+                else -> list.add((jsonSerializer.decodeFromString(response.text) ?: emptyList()))
             }
         }
         return list.flatten()

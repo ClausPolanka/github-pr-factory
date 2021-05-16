@@ -69,7 +69,9 @@ class OpenCommandIT {
                 .willReturn(
                     aResponse()
                         .withStatus(200)
-                        .withBody(Json { serializersModule = SerializersModule { contextual(InstantSerializer) } }.encodeToString(branches))
+                        .withBody(Json {
+                            serializersModule = SerializersModule { contextual(InstantSerializer) }
+                        }.encodeToString(branches))
                 )
         )
 
@@ -88,13 +90,55 @@ class OpenCommandIT {
             )
         )
 
-        verify(PullRequest("$candidateFirstName $candidateLastName Iteration 1 / Session 1 Markus [PR]", Branch("master"), branches[0]))
-        verify(PullRequest("$candidateFirstName $candidateLastName Iteration 2 / Session 2 Berni [PR]", branches[0], branches[1]))
-        verify(PullRequest("$candidateFirstName $candidateLastName Iteration 3 / Session 3 Lukas [PR]", branches[1], branches[2]))
-        verify(PullRequest("$candidateFirstName $candidateLastName Iteration 4 / Session 4 Jakub [PR]", branches[2], branches[3]))
-        verify(PullRequest("$candidateFirstName $candidateLastName Iteration 5 / Session 5 Peter [PR]", branches[3], branches[4]))
-        verify(PullRequest("$candidateFirstName $candidateLastName Iteration 6 / Session 6 Christian [PR]", branches[4], branches[5]))
-        verify(PullRequest("$candidateFirstName $candidateLastName Iteration 7 / Session 7 Vaclav", branches[5], branches[6]))
+        verify(
+            PullRequest(
+                "$candidateFirstName $candidateLastName Iteration 1 / Session 1 Markus [PR]",
+                Branch("master"),
+                branches[0]
+            )
+        )
+        verify(
+            PullRequest(
+                "$candidateFirstName $candidateLastName Iteration 2 / Session 2 Berni [PR]",
+                branches[0],
+                branches[1]
+            )
+        )
+        verify(
+            PullRequest(
+                "$candidateFirstName $candidateLastName Iteration 3 / Session 3 Lukas [PR]",
+                branches[1],
+                branches[2]
+            )
+        )
+        verify(
+            PullRequest(
+                "$candidateFirstName $candidateLastName Iteration 4 / Session 4 Jakub [PR]",
+                branches[2],
+                branches[3]
+            )
+        )
+        verify(
+            PullRequest(
+                "$candidateFirstName $candidateLastName Iteration 5 / Session 5 Peter [PR]",
+                branches[3],
+                branches[4]
+            )
+        )
+        verify(
+            PullRequest(
+                "$candidateFirstName $candidateLastName Iteration 6 / Session 6 Christian [PR]",
+                branches[4],
+                branches[5]
+            )
+        )
+        verify(
+            PullRequest(
+                "$candidateFirstName $candidateLastName Iteration 7 / Session 7 Vaclav",
+                branches[5],
+                branches[6]
+            )
+        )
     }
 
     @Test
@@ -112,7 +156,9 @@ class OpenCommandIT {
                 .willReturn(
                     aResponse()
                         .withStatus(200)
-                        .withBody(Json { serializersModule = SerializersModule { contextual(InstantSerializer) } }.encodeToString(branches))
+                        .withBody(Json {
+                            serializersModule = SerializersModule { contextual(InstantSerializer) }
+                        }.encodeToString(branches))
                 )
         )
 
@@ -132,13 +178,55 @@ class OpenCommandIT {
             )
         )
 
-        verify(PullRequest("$candidateFirstName $candidateLastName Iteration 1 / Session 1 Markus [PR]", Branch("master"), branches[0]))
-        verify(PullRequest("$candidateFirstName $candidateLastName Iteration 2 / Session 2 Berni [PR]", branches[0], branches[1]))
-        verify(PullRequest("$candidateFirstName $candidateLastName Iteration 3 / Session 3 Lukas [PR]", branches[1], branches[2]))
-        verify(PullRequest("$candidateFirstName $candidateLastName Iteration 4 / Session 4 Jakub [PR]", branches[2], branches[3]))
-        verify(PullRequest("$candidateFirstName $candidateLastName Iteration 5 / Session 5 Peter [PR]", branches[3], branches[4]))
-        verify(PullRequest("$candidateFirstName $candidateLastName Iteration 6 / Session 6 Christian [PR]", branches[4], branches[5]))
-        verify(PullRequest("$candidateFirstName $candidateLastName Iteration 7 / Session 7 Vaclav [PR]", branches[5], branches[6]))
+        verify(
+            PullRequest(
+                "$candidateFirstName $candidateLastName Iteration 1 / Session 1 Markus [PR]",
+                Branch("master"),
+                branches[0]
+            )
+        )
+        verify(
+            PullRequest(
+                "$candidateFirstName $candidateLastName Iteration 2 / Session 2 Berni [PR]",
+                branches[0],
+                branches[1]
+            )
+        )
+        verify(
+            PullRequest(
+                "$candidateFirstName $candidateLastName Iteration 3 / Session 3 Lukas [PR]",
+                branches[1],
+                branches[2]
+            )
+        )
+        verify(
+            PullRequest(
+                "$candidateFirstName $candidateLastName Iteration 4 / Session 4 Jakub [PR]",
+                branches[2],
+                branches[3]
+            )
+        )
+        verify(
+            PullRequest(
+                "$candidateFirstName $candidateLastName Iteration 5 / Session 5 Peter [PR]",
+                branches[3],
+                branches[4]
+            )
+        )
+        verify(
+            PullRequest(
+                "$candidateFirstName $candidateLastName Iteration 6 / Session 6 Christian [PR]",
+                branches[4],
+                branches[5]
+            )
+        )
+        verify(
+            PullRequest(
+                "$candidateFirstName $candidateLastName Iteration 7 / Session 7 Vaclav [PR]",
+                branches[5],
+                branches[6]
+            )
+        )
     }
 
     @Test
@@ -184,7 +272,8 @@ class OpenCommandIT {
                 baseUrl = "http://localhost:8080",
                 repoPath = repoPath,
                 userPropertiesFile = "user.properties",
-                ui = QuietUI()
+                ui = QuietUI(),
+                jsonSerizalizer = Json { serializersModule = SerializersModule { contextual(InstantSerializer) } }
             )
         ).parse(args)
     }
@@ -206,7 +295,8 @@ class OpenCommandIT {
             baseUrl = "http://localhost:8080",
             repoPath = repoPath,
             userPropertiesFile = "user.properties",
-            ui = ui
+            ui = ui,
+            jsonSerizalizer = Json { serializersModule = SerializersModule { contextual(InstantSerializer) } }
         )
 
     private fun fakeUI(outputCapture: MutableList<String>) =

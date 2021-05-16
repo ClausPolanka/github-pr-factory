@@ -72,7 +72,9 @@ class CloseCommandIT {
                 baseUrl = "http://localhost:8080",
                 repoPath = repoPath,
                 userPropertiesFile = "user.properties",
-                ui = QuietUI()
+                ui = QuietUI(),
+                jsonSerizalizer = Json { serializersModule = SerializersModule { contextual(InstantSerializer) } }
+
             )
         ).parse(args)
     }
