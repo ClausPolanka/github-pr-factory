@@ -6,6 +6,9 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.contextual
+import pullrequestfactory.domain.uis.QuietUI
+import pullrequestfactory.domain.uis.UI
+import pullrequestfactory.io.clikt.CommandArgs
 import pullrequestfactory.io.programs.impl.InstantSerializer
 import pullrequestfactory.io.programs.impl.Rate
 import pullrequestfactory.io.programs.impl.RateLimit
@@ -37,3 +40,11 @@ fun RequestPatternBuilder.addCommonHeaders(): RequestPatternBuilder? {
         .withHeader("Authorization", matching("token .*"))
         .withHeader("Content-Type", matching("application/json"))
 }
+
+fun cmdArgsFor(repoPath: String, ui: UI = QuietUI()) = CommandArgs(
+    baseUrl = "http://localhost:8080",
+    repoPath = repoPath,
+    userPropertiesFile = "user.properties",
+    ui = ui,
+    jsonSerizalizer = Json { serializersModule = SerializersModule { contextual(InstantSerializer) } }
+)

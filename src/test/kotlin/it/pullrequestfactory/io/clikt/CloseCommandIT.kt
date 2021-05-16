@@ -12,7 +12,6 @@ import org.junit.Test
 import pullrequestfactory.domain.pullrequests.GetPullRequest
 import pullrequestfactory.domain.uis.QuietUI
 import pullrequestfactory.io.clikt.CloseCommand
-import pullrequestfactory.io.clikt.CommandArgs
 import pullrequestfactory.io.programs.impl.InstantSerializer
 
 class CloseCommandIT {
@@ -67,16 +66,7 @@ class CloseCommandIT {
         )
 
     private fun `github-pr-factory CLOSE pull requests`(args: Array<String>) {
-        CloseCommand(
-            CommandArgs(
-                baseUrl = "http://localhost:8080",
-                repoPath = repoPath,
-                userPropertiesFile = "user.properties",
-                ui = QuietUI(),
-                jsonSerizalizer = Json { serializersModule = SerializersModule { contextual(InstantSerializer) } }
-
-            )
-        ).parse(args)
+        CloseCommand(cmdArgsFor(repoPath, QuietUI())).parse(args)
     }
 
     private fun verifyPatchRequestToCloseOpenPullRequestsFor(prNumber: Int) {

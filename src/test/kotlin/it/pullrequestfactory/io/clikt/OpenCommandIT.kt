@@ -14,9 +14,7 @@ import pullrequestfactory.domain.PairingPartner
 import pullrequestfactory.domain.PairingPartner.*
 import pullrequestfactory.domain.branches.Branch
 import pullrequestfactory.domain.pullrequests.PullRequest
-import pullrequestfactory.domain.uis.QuietUI
 import pullrequestfactory.domain.uis.UI
-import pullrequestfactory.io.clikt.CommandArgs
 import pullrequestfactory.io.clikt.OpenCommand
 import pullrequestfactory.io.programs.impl.InstantSerializer
 import pullrequestfactory.io.programs.impl.Rate
@@ -267,15 +265,7 @@ class OpenCommandIT {
         .toTypedArray()
 
     private fun `github-pr-factory OPEN pull requests`(args: Array<String>) {
-        OpenCommand(
-            CommandArgs(
-                baseUrl = "http://localhost:8080",
-                repoPath = repoPath,
-                userPropertiesFile = "user.properties",
-                ui = QuietUI(),
-                jsonSerizalizer = Json { serializersModule = SerializersModule { contextual(InstantSerializer) } }
-            )
-        ).parse(args)
+        OpenCommand(cmdArgsFor(repoPath)).parse(args)
     }
 
     private fun verify(pr: PullRequest) {
@@ -290,14 +280,7 @@ class OpenCommandIT {
     private fun fromNowInOneHour() =
         LocalDateTime.now().plusHours(1).atZone(ZoneId.systemDefault()).toInstant()
 
-    private fun argsWith(ui: UI) =
-        CommandArgs(
-            baseUrl = "http://localhost:8080",
-            repoPath = repoPath,
-            userPropertiesFile = "user.properties",
-            ui = ui,
-            jsonSerizalizer = Json { serializersModule = SerializersModule { contextual(InstantSerializer) } }
-        )
+    private fun argsWith(ui: UI) = cmdArgsFor(repoPath, ui)
 
     private fun fakeUI(outputCapture: MutableList<String>) =
         object : UI {
