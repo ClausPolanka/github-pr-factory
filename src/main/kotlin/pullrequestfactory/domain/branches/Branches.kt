@@ -4,6 +4,7 @@ import pullrequestfactory.domain.PairingPartner
 import pullrequestfactory.domain.branches.Sessions.createSessionsFor
 import pullrequestfactory.domain.pullrequests.PullRequest
 import pullrequestfactory.domain.pullrequests.PullRequestMarker
+import java.util.*
 
 class Branches(
     private val branches: List<Branch>,
@@ -69,8 +70,8 @@ class Branches(
     private fun getBranchTitles(): List<String> = branches.mapIndexed { idx, br ->
         val (firstName, lastName, _, iterationNr, pairingPartner) = br.parts()
         val titleParts = listOf(
-            firstName.capitalize(),
-            lastName.capitalize(),
+            firstName.replaceFirstChar { it.titlecase() },
+            lastName.replaceFirstChar { it.titlecase() },
             "Iteration",
             iterationNr,
             "/",

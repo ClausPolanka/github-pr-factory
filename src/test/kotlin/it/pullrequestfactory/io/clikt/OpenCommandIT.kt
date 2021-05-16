@@ -260,7 +260,7 @@ class OpenCommandIT {
         fn: String,
         ln: String
     ) = pairingPartner
-        .map { it.name.toLowerCase() }
+        .map { it.name.lowercase() }
         .mapIndexed { i, pp -> Branch("${fn}_${ln}_iteration_${i.inc()}_$pp") }
         .toTypedArray()
 
