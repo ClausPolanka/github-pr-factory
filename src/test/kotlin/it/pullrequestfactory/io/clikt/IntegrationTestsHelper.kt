@@ -4,13 +4,9 @@ import com.github.tomakehurst.wiremock.client.WireMock.*
 import com.github.tomakehurst.wiremock.matching.RequestPatternBuilder
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.modules.SerializersModule
-import kotlinx.serialization.modules.contextual
 import pullrequestfactory.domain.uis.QuietUI
 import pullrequestfactory.domain.uis.UI
 import pullrequestfactory.io.clikt.CommandArgs
-import pullrequestfactory.io.programs.impl.InstantSerializer
 import pullrequestfactory.io.programs.impl.Rate
 import pullrequestfactory.io.programs.impl.RateLimit
 import pullrequestfactory.jsonSerializer
@@ -50,5 +46,5 @@ fun cmdArgsFor(repoPath: String, ui: UI = QuietUI()) = CommandArgs(
     repoPath = repoPath,
     userPropertiesFile = "user.properties",
     ui = ui,
-    jsonSerizalizer = Json { serializersModule = SerializersModule { contextual(InstantSerializer) } }
+    jsonSerizalizer = jsonSerializer()
 )

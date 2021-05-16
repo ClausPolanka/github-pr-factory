@@ -4,9 +4,6 @@ import com.github.tomakehurst.wiremock.client.WireMock.*
 import com.github.tomakehurst.wiremock.junit.WireMockRule
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.modules.SerializersModule
-import kotlinx.serialization.modules.contextual
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.After
 import org.junit.ClassRule
@@ -17,9 +14,9 @@ import pullrequestfactory.domain.branches.Branch
 import pullrequestfactory.domain.pullrequests.PullRequest
 import pullrequestfactory.domain.uis.UI
 import pullrequestfactory.io.clikt.OpenCommand
-import pullrequestfactory.io.programs.impl.InstantSerializer
 import pullrequestfactory.io.programs.impl.Rate
 import pullrequestfactory.io.programs.impl.RateLimit
+import pullrequestfactory.jsonSerializer
 import java.time.LocalDateTime
 import java.time.ZoneId
 
@@ -69,9 +66,7 @@ class OpenCommandIT {
                 .willReturn(
                     aResponse()
                         .withStatus(200)
-                        .withBody(Json {
-                            serializersModule = SerializersModule { contextual(InstantSerializer) }
-                        }.encodeToString(branches))
+                        .withBody(jsonSerializer().encodeToString(branches))
                 )
         )
 
@@ -156,9 +151,7 @@ class OpenCommandIT {
                 .willReturn(
                     aResponse()
                         .withStatus(200)
-                        .withBody(Json {
-                            serializersModule = SerializersModule { contextual(InstantSerializer) }
-                        }.encodeToString(branches))
+                        .withBody(jsonSerializer().encodeToString(branches))
                 )
         )
 
@@ -236,7 +229,7 @@ class OpenCommandIT {
                 aResponse()
                     .withStatus(403)
                     .withBody(
-                        Json { serializersModule = SerializersModule { contextual(InstantSerializer) } }.encodeToString(
+                        jsonSerializer().encodeToString(
                             RateLimit(
                                 Rate(
                                     limit = 50,
