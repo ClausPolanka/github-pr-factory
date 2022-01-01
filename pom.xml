@@ -13,7 +13,7 @@
         <kotlin.compiler.incremental>true</kotlin.compiler.incremental>
         <junit.version>4.13.2</junit.version>
         <assertj.version>3.21.0</assertj.version>
-        <wiremock.version>2.28.0</wiremock.version>
+        <wiremock.version>2.32.0</wiremock.version>
         <khttp.version>1.0.0</khttp.version>
         <klaxon.version>5.5</klaxon.version>
         <maven-surefire-plugin.version>3.0.0-M4</maven-surefire-plugin.version>
