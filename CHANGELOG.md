@@ -17,11 +17,12 @@ adhere to https://github.com/olivierlacan/keep-a-changelog.
 ### Internal    
 - [Issue-#31] Reformat code according to Kotlin coding conventions
 - [Issue-#33] Move all GitHub API calls to GitHubAPIClient to adhere to the Single Responsibility Principle
+- [Issue-#40] Migrate Klaxon to kotlinx.serialization JSON Serializer library
 
 ## [1.3.0] - 2021-02-01 
 
 ### Added
-- [Issue-#14] Github authentication token configurable through app.properties
+- [Issue-#14] GitHub's authentication token configurable through app.properties
 - [Issue-#29] Improve app user experience by using `Clikt` library for command line user interaction 
 
 ### Changed
@@ -85,3 +86,4 @@ adhere to https://github.com/olivierlacan/keep-a-changelog.
 [Issue-#33]: https://github.com/ClausPolanka/github-pr-factory/issues/33
 [Issue-#35]: https://github.com/ClausPolanka/github-pr-factory/issues/35
 [Issue-#36]: https://github.com/ClausPolanka/github-pr-factory/issues/36
+[Issue-#40]: https://github.com/ClausPolanka/github-pr-factory/issues/40

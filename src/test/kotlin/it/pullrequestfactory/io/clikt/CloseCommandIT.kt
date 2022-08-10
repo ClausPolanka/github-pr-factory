@@ -2,14 +2,17 @@ package it.pullrequestfactory.io.clikt
 
 import com.github.tomakehurst.wiremock.client.WireMock.*
 import com.github.tomakehurst.wiremock.junit.WireMockRule
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.encodeToString
 import org.junit.After
 import org.junit.ClassRule
 import org.junit.Test
 import pullrequestfactory.domain.pullrequests.GetPullRequest
 import pullrequestfactory.domain.uis.QuietUI
 import pullrequestfactory.io.clikt.CloseCommand
-import pullrequestfactory.io.clikt.CommandArgs
+import pullrequestfactory.jsonSerializer
 
+@ExperimentalSerializationApi
 class CloseCommandIT {
 
     private val repoPath = "/repos/ClausPolanka/wordcount"
@@ -39,7 +42,7 @@ class CloseCommandIT {
                 .willReturn(
                     aResponse()
                         .withStatus(200)
-                        .withBody(toJson(arrayOf(pr1, pr2)))
+                        .withBody(jsonSerializer().encodeToString(arrayOf(pr1, pr2)))
                 )
         )
 
@@ -62,20 +65,13 @@ class CloseCommandIT {
         )
 
     private fun `github-pr-factory CLOSE pull requests`(args: Array<String>) {
-        CloseCommand(
-            CommandArgs(
-                baseUrl = "http://localhost:8080",
-                repoPath = repoPath,
-                userPropertiesFile = "user.properties",
-                ui = QuietUI()
-            )
-        ).parse(args)
+        CloseCommand(cmdArgsFor(repoPath, QuietUI())).parse(args)
     }
 
     private fun verifyPatchRequestToCloseOpenPullRequestsFor(prNumber: Int) {
         verify(
             patchRequestedFor(urlMatching("$repoPath/pulls/$prNumber"))
-                .withRequestBody(matching(Regex.escape("""{"state" : "closed"}""")))
+                .withRequestBody(equalToJson("""{"state":"closed"}"""))
                 .addCommonHeaders()
         )
     }

@@ -44,14 +44,14 @@ enum class PairingPartner(vararg val pullRequestNames: String) {
     MILOS("Milos"),
     ;
 
-    fun contains(branchName: String): Boolean = pullRequestNames.contains(branchName.capitalize())
+    fun contains(branchName: String): Boolean = pullRequestNames.contains(branchName.replaceFirstChar { it.titlecase() })
 
-    fun pullRequestName() = name.toLowerCase().capitalize()
+    fun pullRequestName() = name.lowercase().replaceFirstChar { it.titlecase() }
 
     companion object {
 
         fun from(value: String) =
-            values().find { it.pullRequestNames.contains(value.capitalize()) }
+            values().find { it.pullRequestNames.contains(value.replaceFirstChar { c -> c.titlecase() }) }
 
         fun from(ordinal: Int) = try {
             val pp = values()[ordinal]

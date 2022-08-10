@@ -1,8 +1,9 @@
 package it.pullrequestfactory.io.clikt
 
-import com.beust.klaxon.Klaxon
 import com.github.tomakehurst.wiremock.client.WireMock.*
 import com.github.tomakehurst.wiremock.junit.WireMockRule
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.encodeToString
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.After
 import org.junit.ClassRule
@@ -11,15 +12,15 @@ import pullrequestfactory.domain.PairingPartner
 import pullrequestfactory.domain.PairingPartner.*
 import pullrequestfactory.domain.branches.Branch
 import pullrequestfactory.domain.pullrequests.PullRequest
-import pullrequestfactory.domain.uis.QuietUI
 import pullrequestfactory.domain.uis.UI
-import pullrequestfactory.io.clikt.CommandArgs
 import pullrequestfactory.io.clikt.OpenCommand
 import pullrequestfactory.io.programs.impl.Rate
 import pullrequestfactory.io.programs.impl.RateLimit
+import pullrequestfactory.jsonSerializer
 import java.time.LocalDateTime
 import java.time.ZoneId
 
+@ExperimentalSerializationApi
 class OpenCommandIT {
 
     private val repoPath = "/repos/ClausPolanka/wordcount"
@@ -65,7 +66,7 @@ class OpenCommandIT {
                 .willReturn(
                     aResponse()
                         .withStatus(200)
-                        .withBody(toJson(branches))
+                        .withBody(jsonSerializer().encodeToString(branches))
                 )
         )
 
@@ -84,13 +85,55 @@ class OpenCommandIT {
             )
         )
 
-        verify(PullRequest("$candidateFirstName $candidateLastName Iteration 1 / Session 1 Markus [PR]", Branch("master"), branches[0]))
-        verify(PullRequest("$candidateFirstName $candidateLastName Iteration 2 / Session 2 Berni [PR]", branches[0], branches[1]))
-        verify(PullRequest("$candidateFirstName $candidateLastName Iteration 3 / Session 3 Lukas [PR]", branches[1], branches[2]))
-        verify(PullRequest("$candidateFirstName $candidateLastName Iteration 4 / Session 4 Jakub [PR]", branches[2], branches[3]))
-        verify(PullRequest("$candidateFirstName $candidateLastName Iteration 5 / Session 5 Peter [PR]", branches[3], branches[4]))
-        verify(PullRequest("$candidateFirstName $candidateLastName Iteration 6 / Session 6 Christian [PR]", branches[4], branches[5]))
-        verify(PullRequest("$candidateFirstName $candidateLastName Iteration 7 / Session 7 Vaclav", branches[5], branches[6]))
+        verify(
+            PullRequest(
+                "$candidateFirstName $candidateLastName Iteration 1 / Session 1 Markus [PR]",
+                Branch("master"),
+                branches[0]
+            )
+        )
+        verify(
+            PullRequest(
+                "$candidateFirstName $candidateLastName Iteration 2 / Session 2 Berni [PR]",
+                branches[0],
+                branches[1]
+            )
+        )
+        verify(
+            PullRequest(
+                "$candidateFirstName $candidateLastName Iteration 3 / Session 3 Lukas [PR]",
+                branches[1],
+                branches[2]
+            )
+        )
+        verify(
+            PullRequest(
+                "$candidateFirstName $candidateLastName Iteration 4 / Session 4 Jakub [PR]",
+                branches[2],
+                branches[3]
+            )
+        )
+        verify(
+            PullRequest(
+                "$candidateFirstName $candidateLastName Iteration 5 / Session 5 Peter [PR]",
+                branches[3],
+                branches[4]
+            )
+        )
+        verify(
+            PullRequest(
+                "$candidateFirstName $candidateLastName Iteration 6 / Session 6 Christian [PR]",
+                branches[4],
+                branches[5]
+            )
+        )
+        verify(
+            PullRequest(
+                "$candidateFirstName $candidateLastName Iteration 7 / Session 7 Vaclav",
+                branches[5],
+                branches[6]
+            )
+        )
     }
 
     @Test
@@ -108,7 +151,7 @@ class OpenCommandIT {
                 .willReturn(
                     aResponse()
                         .withStatus(200)
-                        .withBody(toJson(branches))
+                        .withBody(jsonSerializer().encodeToString(branches))
                 )
         )
 
@@ -128,13 +171,55 @@ class OpenCommandIT {
             )
         )
 
-        verify(PullRequest("$candidateFirstName $candidateLastName Iteration 1 / Session 1 Markus [PR]", Branch("master"), branches[0]))
-        verify(PullRequest("$candidateFirstName $candidateLastName Iteration 2 / Session 2 Berni [PR]", branches[0], branches[1]))
-        verify(PullRequest("$candidateFirstName $candidateLastName Iteration 3 / Session 3 Lukas [PR]", branches[1], branches[2]))
-        verify(PullRequest("$candidateFirstName $candidateLastName Iteration 4 / Session 4 Jakub [PR]", branches[2], branches[3]))
-        verify(PullRequest("$candidateFirstName $candidateLastName Iteration 5 / Session 5 Peter [PR]", branches[3], branches[4]))
-        verify(PullRequest("$candidateFirstName $candidateLastName Iteration 6 / Session 6 Christian [PR]", branches[4], branches[5]))
-        verify(PullRequest("$candidateFirstName $candidateLastName Iteration 7 / Session 7 Vaclav [PR]", branches[5], branches[6]))
+        verify(
+            PullRequest(
+                "$candidateFirstName $candidateLastName Iteration 1 / Session 1 Markus [PR]",
+                Branch("master"),
+                branches[0]
+            )
+        )
+        verify(
+            PullRequest(
+                "$candidateFirstName $candidateLastName Iteration 2 / Session 2 Berni [PR]",
+                branches[0],
+                branches[1]
+            )
+        )
+        verify(
+            PullRequest(
+                "$candidateFirstName $candidateLastName Iteration 3 / Session 3 Lukas [PR]",
+                branches[1],
+                branches[2]
+            )
+        )
+        verify(
+            PullRequest(
+                "$candidateFirstName $candidateLastName Iteration 4 / Session 4 Jakub [PR]",
+                branches[2],
+                branches[3]
+            )
+        )
+        verify(
+            PullRequest(
+                "$candidateFirstName $candidateLastName Iteration 5 / Session 5 Peter [PR]",
+                branches[3],
+                branches[4]
+            )
+        )
+        verify(
+            PullRequest(
+                "$candidateFirstName $candidateLastName Iteration 6 / Session 6 Christian [PR]",
+                branches[4],
+                branches[5]
+            )
+        )
+        verify(
+            PullRequest(
+                "$candidateFirstName $candidateLastName Iteration 7 / Session 7 Vaclav [PR]",
+                branches[5],
+                branches[6]
+            )
+        )
     }
 
     @Test
@@ -144,7 +229,7 @@ class OpenCommandIT {
                 aResponse()
                     .withStatus(403)
                     .withBody(
-                        Klaxon().toJsonString(
+                        jsonSerializer().encodeToString(
                             RateLimit(
                                 Rate(
                                     limit = 50,
@@ -170,26 +255,19 @@ class OpenCommandIT {
         fn: String,
         ln: String
     ) = pairingPartner
-        .map { it.name.toLowerCase() }
+        .map { it.name.lowercase() }
         .mapIndexed { i, pp -> Branch("${fn}_${ln}_iteration_${i.inc()}_$pp") }
         .toTypedArray()
 
     private fun `github-pr-factory OPEN pull requests`(args: Array<String>) {
-        OpenCommand(
-            CommandArgs(
-                baseUrl = "http://localhost:8080",
-                repoPath = repoPath,
-                userPropertiesFile = "user.properties",
-                ui = QuietUI()
-            )
-        ).parse(args)
+        OpenCommand(cmdArgsFor(repoPath)).parse(args)
     }
 
     private fun verify(pr: PullRequest) {
-        val json = """{"base" : "${pr.base}", "head" : "${pr.head}", "title" : "${pr.title}"}"""
+        val json = """{"base" : "${pr.base.name}", "head" : "${pr.head.name}", "title" : "${pr.title}"}"""
         verify(
             postRequestedFor(urlMatching("$repoPath/pulls"))
-                .withRequestBody(matching(Regex.escape(json)))
+                .withRequestBody(equalToJson(json))
                 .addCommonHeaders()
         )
     }
@@ -197,13 +275,7 @@ class OpenCommandIT {
     private fun fromNowInOneHour() =
         LocalDateTime.now().plusHours(1).atZone(ZoneId.systemDefault()).toInstant()
 
-    private fun argsWith(ui: UI) =
-        CommandArgs(
-            baseUrl = "http://localhost:8080",
-            repoPath = repoPath,
-            userPropertiesFile = "user.properties",
-            ui = ui
-        )
+    private fun argsWith(ui: UI) = cmdArgsFor(repoPath, ui)
 
     private fun fakeUI(outputCapture: MutableList<String>) =
         object : UI {

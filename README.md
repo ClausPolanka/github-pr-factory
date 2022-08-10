@@ -1,5 +1,5 @@
 ## github-pr-factory
-George Hiring Github Pull Request Factory
+George Hiring GitHub Pull Request Factory
 
 The **github-pr-factory** allows creating pull requests via command line.
 The candidate has to create git branches with the following naming scheme: 
@@ -83,10 +83,10 @@ Options:
 
 ### user.properties - Setting user properties to reduce typing
 
-You can set your Github authentication token in a file called `user.properties`. 
+You can set your GitHub authentication token in a file called `user.properties`. 
 The `github-pr-factory` app expects the file to be either on the classpath or in 
 the same directory in which the app gets executed. 
-In case you are using a `user.properties` you can set the Github authentication 
+In case you are using a `user.properties` you can set the GitHub authentication 
 token by adding a key-value-pair `github-token=TODO` to the file where the `TODO` 
 must be replaced with your token. Therefore, you don't need to pass the token 
 neither to the `open` nor `close` command.
